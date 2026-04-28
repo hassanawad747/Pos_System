@@ -67,6 +67,8 @@
             this.panelweek = new System.Windows.Forms.Panel();
             this.panelitems = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnwarhouse = new System.Windows.Forms.Button();
+            this.btnearningreport = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -100,6 +102,7 @@
             this.panelheader.Name = "panelheader";
             this.panelheader.Size = new System.Drawing.Size(1462, 74);
             this.panelheader.TabIndex = 0;
+            this.panelheader.Paint += new System.Windows.Forms.PaintEventHandler(this.panelheader_Paint);
             // 
             // button1
             // 
@@ -172,20 +175,22 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(793, 24);
+            this.label3.Location = new System.Drawing.Point(792, 24);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(0, 32);
             this.label3.TabIndex = 2;
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(672, 24);
+            this.label2.Location = new System.Drawing.Point(659, 24);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(121, 29);
             this.label2.TabIndex = 1;
             this.label2.Text = "Welcome,";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label1
             // 
@@ -499,6 +504,8 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.btnwarhouse);
+            this.panel1.Controls.Add(this.btnearningreport);
             this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.button3);
@@ -509,6 +516,34 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1437, 133);
             this.panel1.TabIndex = 6;
+            // 
+            // btnwarhouse
+            // 
+            this.btnwarhouse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnwarhouse.BackColor = System.Drawing.Color.Transparent;
+            this.btnwarhouse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnwarhouse.ForeColor = System.Drawing.Color.Black;
+            this.btnwarhouse.Location = new System.Drawing.Point(193, 43);
+            this.btnwarhouse.Name = "btnwarhouse";
+            this.btnwarhouse.Size = new System.Drawing.Size(148, 90);
+            this.btnwarhouse.TabIndex = 14;
+            this.btnwarhouse.Text = "Warhouse Reports";
+            this.btnwarhouse.UseVisualStyleBackColor = false;
+            this.btnwarhouse.Click += new System.EventHandler(this.btnwarhouse_Click);
+            // 
+            // btnearningreport
+            // 
+            this.btnearningreport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnearningreport.BackColor = System.Drawing.Color.Transparent;
+            this.btnearningreport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnearningreport.ForeColor = System.Drawing.Color.Black;
+            this.btnearningreport.Location = new System.Drawing.Point(1109, 43);
+            this.btnearningreport.Name = "btnearningreport";
+            this.btnearningreport.Size = new System.Drawing.Size(148, 90);
+            this.btnearningreport.TabIndex = 13;
+            this.btnearningreport.Text = "Earning Report";
+            this.btnearningreport.UseVisualStyleBackColor = false;
+            this.btnearningreport.Click += new System.EventHandler(this.btnearningreport_Click);
             // 
             // button5
             // 
@@ -536,6 +571,7 @@
             this.button4.TabIndex = 11;
             this.button4.Text = "Reports";
             this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
@@ -669,5 +705,7 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button btnearningreport;
+        private System.Windows.Forms.Button btnwarhouse;
     }
 }

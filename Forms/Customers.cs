@@ -12,6 +12,7 @@ namespace Pos_System.Forms
         public Customers()
         {
             InitializeComponent();
+            POS_System.Program.SettingsManager.RegisterForm(this);
         }
 
         private void Customers_Load(object sender, EventArgs e)
@@ -44,7 +45,7 @@ namespace Pos_System.Forms
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            LoadCustomers(txtsearch.Text); // البحث التلقائي عند الكتابة
+           
         }
 
         private void LoadCustomers(string keyword)
@@ -92,16 +93,20 @@ namespace Pos_System.Forms
                     string newName = dataGridView1.Rows[e.RowIndex].Cells["name"].Value.ToString();
                     string newPhone = dataGridView1.Rows[e.RowIndex].Cells["phone"].Value.ToString();
                     string newEmail = dataGridView1.Rows[e.RowIndex].Cells["email"].Value.ToString();
+                    string createdby = dataGridView1.Rows[e.RowIndex].Cells["created_by"].Value.ToString();
+                    string balance = dataGridView1.Rows[e.RowIndex].Cells["balance"].Value.ToString();
 
 
                     using (SqlConnection conn = new SqlConnection(connStr))
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand("UPDATE Customers SET name=@name, phone=@phone, email=@email WHERE customer_id=@id", conn);
+                        SqlCommand cmd = new SqlCommand("UPDATE Customers SET name=@name, phone=@phone, email=@email, created_by=@created_by, balance=@balance WHERE customer_id=@id", conn);
                         cmd.Parameters.AddWithValue("@id", customerId);
                         cmd.Parameters.AddWithValue("@name", newName);
                         cmd.Parameters.AddWithValue("@phone", newPhone);
                         cmd.Parameters.AddWithValue("@email", newEmail);
+                        cmd.Parameters.AddWithValue("@created_by", createdby);
+                        cmd.Parameters.AddWithValue("@balance", balance);
                         cmd.ExecuteNonQuery();
                     }
 
@@ -130,6 +135,11 @@ namespace Pos_System.Forms
                     }
                 }
             }
+        }
+
+        private void txtsearch_TextChanged_1(object sender, EventArgs e)
+        {
+            LoadCustomers(txtsearch.Text); // البحث التلقائي عند الكتابة
         }
     }
 }

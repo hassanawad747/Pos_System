@@ -35,38 +35,28 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.datagridProducts = new System.Windows.Forms.DataGridView();
-            this.productsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.pos_systemDataSet5 = new Pos_System.pos_systemDataSet5();
-            this.button1 = new System.Windows.Forms.Button();
-            this.txtsearch = new System.Windows.Forms.TextBox();
-            this.pos_systemDataSet4 = new Pos_System.pos_systemDataSet4();
-            this.productsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.productsTableAdapter = new Pos_System.pos_systemDataSet4TableAdapters.ProductsTableAdapter();
-            this.productsTableAdapter1 = new Pos_System.pos_systemDataSet5TableAdapters.ProductsTableAdapter();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.datagridCategories = new System.Windows.Forms.DataGridView();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.datagridSuppliers = new System.Windows.Forms.DataGridView();
-            this.pos_systemDataSet12 = new Pos_System.pos_systemDataSet12();
-            this.categoriesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.categoriesTableAdapter = new Pos_System.pos_systemDataSet12TableAdapters.CategoriesTableAdapter();
-            this.pos_systemDataSet13 = new Pos_System.pos_systemDataSet13();
-            this.suppliersBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.suppliersTableAdapter = new Pos_System.pos_systemDataSet13TableAdapters.SuppliersTableAdapter();
-            this.category_id1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.category_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Edit1 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Delete1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.supplier_id1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contact_info = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Edit2 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Delete2 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.suppliersBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.pos_systemDataSet13 = new Pos_System.pos_systemDataSet13();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.datagridCategories = new System.Windows.Forms.DataGridView();
+            this.category_id1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.category_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Edit1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Delete1 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.categoriesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.pos_systemDataSet12 = new Pos_System.pos_systemDataSet12();
+            this.button2 = new System.Windows.Forms.Button();
+            this.datagridProducts = new System.Windows.Forms.DataGridView();
             this.product_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.price_usd = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -81,22 +71,32 @@
             this.created_at = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Edit = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.productsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.pos_systemDataSet5 = new Pos_System.pos_systemDataSet5();
+            this.button1 = new System.Windows.Forms.Button();
+            this.txtsearch = new System.Windows.Forms.TextBox();
+            this.pos_systemDataSet4 = new Pos_System.pos_systemDataSet4();
+            this.productsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.productsTableAdapter = new Pos_System.pos_systemDataSet4TableAdapters.ProductsTableAdapter();
+            this.productsTableAdapter1 = new Pos_System.pos_systemDataSet5TableAdapters.ProductsTableAdapter();
+            this.categoriesTableAdapter = new Pos_System.pos_systemDataSet12TableAdapters.CategoriesTableAdapter();
+            this.suppliersTableAdapter = new Pos_System.pos_systemDataSet13TableAdapters.SuppliersTableAdapter();
             this.panelheader.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.datagridSuppliers)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.suppliersBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet13)).BeginInit();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.datagridCategories)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.categoriesBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.datagridProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.productsBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.productsBindingSource)).BeginInit();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.datagridCategories)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.datagridSuppliers)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet12)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.categoriesBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet13)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.suppliersBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // panelheader
@@ -171,114 +171,6 @@
             this.panel1.Size = new System.Drawing.Size(1544, 694);
             this.panel1.TabIndex = 2;
             // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.Green;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(1417, 7);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(115, 60);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Excel";
-            this.button2.UseVisualStyleBackColor = false;
-            // 
-            // datagridProducts
-            // 
-            this.datagridProducts.AutoGenerateColumns = false;
-            this.datagridProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.datagridProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.datagridProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.product_id,
-            this.name,
-            this.price_usd,
-            this.price_lb,
-            this.sale_price_usd,
-            this.sale_price_lb,
-            this.category_id,
-            this.stock_quantity,
-            this.barcode,
-            this.exchange_rate,
-            this.supplier_id,
-            this.created_at,
-            this.Edit,
-            this.Delete});
-            this.datagridProducts.DataSource = this.productsBindingSource1;
-            this.datagridProducts.Location = new System.Drawing.Point(12, 106);
-            this.datagridProducts.Name = "datagridProducts";
-            this.datagridProducts.RowHeadersWidth = 51;
-            this.datagridProducts.RowTemplate.Height = 24;
-            this.datagridProducts.Size = new System.Drawing.Size(1520, 333);
-            this.datagridProducts.TabIndex = 2;
-            this.datagridProducts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datagridProducts_CellContentClick_1);
-            // 
-            // productsBindingSource1
-            // 
-            this.productsBindingSource1.DataMember = "Products";
-            this.productsBindingSource1.DataSource = this.pos_systemDataSet5;
-            // 
-            // pos_systemDataSet5
-            // 
-            this.pos_systemDataSet5.DataSetName = "pos_systemDataSet5";
-            this.pos_systemDataSet5.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.Blue;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(954, 7);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(115, 60);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "اضافة منتج";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // txtsearch
-            // 
-            this.txtsearch.Location = new System.Drawing.Point(399, 15);
-            this.txtsearch.Multiline = true;
-            this.txtsearch.Name = "txtsearch";
-            this.txtsearch.Size = new System.Drawing.Size(543, 40);
-            this.txtsearch.TabIndex = 0;
-            this.txtsearch.TextChanged += new System.EventHandler(this.txtsearch_TextChanged);
-            // 
-            // pos_systemDataSet4
-            // 
-            this.pos_systemDataSet4.DataSetName = "pos_systemDataSet4";
-            this.pos_systemDataSet4.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // productsBindingSource
-            // 
-            this.productsBindingSource.DataMember = "Products";
-            this.productsBindingSource.DataSource = this.pos_systemDataSet4;
-            // 
-            // productsTableAdapter
-            // 
-            this.productsTableAdapter.ClearBeforeFill = true;
-            // 
-            // productsTableAdapter1
-            // 
-            this.productsTableAdapter1.ClearBeforeFill = true;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.datagridSuppliers);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(748, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(796, 257);
-            this.panel2.TabIndex = 4;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.datagridCategories);
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(749, 257);
-            this.panel3.TabIndex = 5;
-            // 
             // panel4
             // 
             this.panel4.Controls.Add(this.panel2);
@@ -289,26 +181,14 @@
             this.panel4.Size = new System.Drawing.Size(1544, 257);
             this.panel4.TabIndex = 5;
             // 
-            // datagridCategories
+            // panel2
             // 
-            this.datagridCategories.AutoGenerateColumns = false;
-            this.datagridCategories.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.datagridCategories.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.datagridCategories.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.category_id1,
-            this.category_name,
-            this.description,
-            this.Edit1,
-            this.Delete1});
-            this.datagridCategories.DataSource = this.categoriesBindingSource;
-            this.datagridCategories.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.datagridCategories.Location = new System.Drawing.Point(0, 0);
-            this.datagridCategories.Name = "datagridCategories";
-            this.datagridCategories.RowHeadersWidth = 51;
-            this.datagridCategories.RowTemplate.Height = 24;
-            this.datagridCategories.Size = new System.Drawing.Size(749, 257);
-            this.datagridCategories.TabIndex = 0;
-            this.datagridCategories.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datagridCategories_CellContentClick_1);
+            this.panel2.Controls.Add(this.datagridSuppliers);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel2.Location = new System.Drawing.Point(748, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(796, 257);
+            this.panel2.TabIndex = 4;
             // 
             // datagridSuppliers
             // 
@@ -331,72 +211,6 @@
             this.datagridSuppliers.Size = new System.Drawing.Size(796, 257);
             this.datagridSuppliers.TabIndex = 1;
             this.datagridSuppliers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datagridSuppliers_CellContentClick_1);
-            // 
-            // pos_systemDataSet12
-            // 
-            this.pos_systemDataSet12.DataSetName = "pos_systemDataSet12";
-            this.pos_systemDataSet12.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // categoriesBindingSource
-            // 
-            this.categoriesBindingSource.DataMember = "Categories";
-            this.categoriesBindingSource.DataSource = this.pos_systemDataSet12;
-            // 
-            // categoriesTableAdapter
-            // 
-            this.categoriesTableAdapter.ClearBeforeFill = true;
-            // 
-            // pos_systemDataSet13
-            // 
-            this.pos_systemDataSet13.DataSetName = "pos_systemDataSet13";
-            this.pos_systemDataSet13.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // suppliersBindingSource
-            // 
-            this.suppliersBindingSource.DataMember = "Suppliers";
-            this.suppliersBindingSource.DataSource = this.pos_systemDataSet13;
-            // 
-            // suppliersTableAdapter
-            // 
-            this.suppliersTableAdapter.ClearBeforeFill = true;
-            // 
-            // category_id1
-            // 
-            this.category_id1.DataPropertyName = "category_id";
-            this.category_id1.HeaderText = "category_id";
-            this.category_id1.MinimumWidth = 6;
-            this.category_id1.Name = "category_id1";
-            this.category_id1.ReadOnly = true;
-            // 
-            // category_name
-            // 
-            this.category_name.DataPropertyName = "category_name";
-            this.category_name.HeaderText = "category_name";
-            this.category_name.MinimumWidth = 6;
-            this.category_name.Name = "category_name";
-            // 
-            // description
-            // 
-            this.description.DataPropertyName = "description";
-            this.description.HeaderText = "description";
-            this.description.MinimumWidth = 6;
-            this.description.Name = "description";
-            // 
-            // Edit1
-            // 
-            this.Edit1.DataPropertyName = "Edit";
-            this.Edit1.HeaderText = "Edit";
-            this.Edit1.MinimumWidth = 6;
-            this.Edit1.Name = "Edit1";
-            this.Edit1.ReadOnly = true;
-            // 
-            // Delete1
-            // 
-            this.Delete1.DataPropertyName = "Delete";
-            this.Delete1.HeaderText = "Delete";
-            this.Delete1.MinimumWidth = 6;
-            this.Delete1.Name = "Delete1";
-            this.Delete1.ReadOnly = true;
             // 
             // supplier_id1
             // 
@@ -442,6 +256,134 @@
             this.Delete2.MinimumWidth = 6;
             this.Delete2.Name = "Delete2";
             this.Delete2.ReadOnly = true;
+            // 
+            // suppliersBindingSource
+            // 
+            this.suppliersBindingSource.DataMember = "Suppliers";
+            this.suppliersBindingSource.DataSource = this.pos_systemDataSet13;
+            // 
+            // pos_systemDataSet13
+            // 
+            this.pos_systemDataSet13.DataSetName = "pos_systemDataSet13";
+            this.pos_systemDataSet13.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.datagridCategories);
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(749, 257);
+            this.panel3.TabIndex = 5;
+            // 
+            // datagridCategories
+            // 
+            this.datagridCategories.AutoGenerateColumns = false;
+            this.datagridCategories.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.datagridCategories.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.datagridCategories.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.category_id1,
+            this.category_name,
+            this.description,
+            this.Edit1,
+            this.Delete1});
+            this.datagridCategories.DataSource = this.categoriesBindingSource;
+            this.datagridCategories.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.datagridCategories.Location = new System.Drawing.Point(0, 0);
+            this.datagridCategories.Name = "datagridCategories";
+            this.datagridCategories.RowHeadersWidth = 51;
+            this.datagridCategories.RowTemplate.Height = 24;
+            this.datagridCategories.Size = new System.Drawing.Size(749, 257);
+            this.datagridCategories.TabIndex = 0;
+            this.datagridCategories.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datagridCategories_CellContentClick_1);
+            // 
+            // category_id1
+            // 
+            this.category_id1.DataPropertyName = "category_id";
+            this.category_id1.HeaderText = "category_id";
+            this.category_id1.MinimumWidth = 6;
+            this.category_id1.Name = "category_id1";
+            this.category_id1.ReadOnly = true;
+            // 
+            // category_name
+            // 
+            this.category_name.DataPropertyName = "category_name";
+            this.category_name.HeaderText = "category_name";
+            this.category_name.MinimumWidth = 6;
+            this.category_name.Name = "category_name";
+            // 
+            // description
+            // 
+            this.description.DataPropertyName = "description";
+            this.description.HeaderText = "description";
+            this.description.MinimumWidth = 6;
+            this.description.Name = "description";
+            // 
+            // Edit1
+            // 
+            this.Edit1.DataPropertyName = "Edit";
+            this.Edit1.HeaderText = "Edit";
+            this.Edit1.MinimumWidth = 6;
+            this.Edit1.Name = "Edit1";
+            this.Edit1.ReadOnly = true;
+            // 
+            // Delete1
+            // 
+            this.Delete1.DataPropertyName = "Delete";
+            this.Delete1.HeaderText = "Delete";
+            this.Delete1.MinimumWidth = 6;
+            this.Delete1.Name = "Delete1";
+            this.Delete1.ReadOnly = true;
+            // 
+            // categoriesBindingSource
+            // 
+            this.categoriesBindingSource.DataMember = "Categories";
+            this.categoriesBindingSource.DataSource = this.pos_systemDataSet12;
+            // 
+            // pos_systemDataSet12
+            // 
+            this.pos_systemDataSet12.DataSetName = "pos_systemDataSet12";
+            this.pos_systemDataSet12.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Green;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(1417, 7);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(115, 60);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "Excel";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // datagridProducts
+            // 
+            this.datagridProducts.AutoGenerateColumns = false;
+            this.datagridProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.datagridProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.datagridProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.product_id,
+            this.name,
+            this.price_usd,
+            this.price_lb,
+            this.sale_price_usd,
+            this.sale_price_lb,
+            this.category_id,
+            this.stock_quantity,
+            this.barcode,
+            this.exchange_rate,
+            this.supplier_id,
+            this.created_at,
+            this.Edit,
+            this.Delete});
+            this.datagridProducts.DataSource = this.productsBindingSource1;
+            this.datagridProducts.Location = new System.Drawing.Point(12, 106);
+            this.datagridProducts.Name = "datagridProducts";
+            this.datagridProducts.RowHeadersWidth = 51;
+            this.datagridProducts.RowTemplate.Height = 24;
+            this.datagridProducts.Size = new System.Drawing.Size(1520, 333);
+            this.datagridProducts.TabIndex = 2;
+            this.datagridProducts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datagridProducts_CellContentClick_1);
             // 
             // product_id
             // 
@@ -544,6 +486,64 @@
             this.Delete.Name = "Delete";
             this.Delete.ReadOnly = true;
             // 
+            // productsBindingSource1
+            // 
+            this.productsBindingSource1.DataMember = "Products";
+            this.productsBindingSource1.DataSource = this.pos_systemDataSet5;
+            // 
+            // pos_systemDataSet5
+            // 
+            this.pos_systemDataSet5.DataSetName = "pos_systemDataSet5";
+            this.pos_systemDataSet5.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Blue;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(954, 7);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(115, 60);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "اضافة منتج";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // txtsearch
+            // 
+            this.txtsearch.Location = new System.Drawing.Point(399, 15);
+            this.txtsearch.Multiline = true;
+            this.txtsearch.Name = "txtsearch";
+            this.txtsearch.Size = new System.Drawing.Size(543, 40);
+            this.txtsearch.TabIndex = 0;
+            this.txtsearch.TextChanged += new System.EventHandler(this.txtsearch_TextChanged);
+            // 
+            // pos_systemDataSet4
+            // 
+            this.pos_systemDataSet4.DataSetName = "pos_systemDataSet4";
+            this.pos_systemDataSet4.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // productsBindingSource
+            // 
+            this.productsBindingSource.DataMember = "Products";
+            this.productsBindingSource.DataSource = this.pos_systemDataSet4;
+            // 
+            // productsTableAdapter
+            // 
+            this.productsTableAdapter.ClearBeforeFill = true;
+            // 
+            // productsTableAdapter1
+            // 
+            this.productsTableAdapter1.ClearBeforeFill = true;
+            // 
+            // categoriesTableAdapter
+            // 
+            this.categoriesTableAdapter.ClearBeforeFill = true;
+            // 
+            // suppliersTableAdapter
+            // 
+            this.suppliersTableAdapter.ClearBeforeFill = true;
+            // 
             // Products
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -558,20 +558,20 @@
             this.panelheader.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.datagridSuppliers)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.suppliersBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet13)).EndInit();
+            this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.datagridCategories)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.categoriesBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.datagridProducts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.productsBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.productsBindingSource)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.datagridCategories)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.datagridSuppliers)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet12)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.categoriesBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet13)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.suppliersBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }

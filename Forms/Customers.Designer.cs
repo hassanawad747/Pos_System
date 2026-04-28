@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelheader = new System.Windows.Forms.Panel();
             this.labeldate = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -40,9 +42,9 @@
             this.txtsearch = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.pos_systemDataSet15 = new Pos_System.pos_systemDataSet15();
             this.customersBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.pos_systemDataSet15 = new Pos_System.pos_systemDataSet15();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.customersTableAdapter1 = new Pos_System.pos_systemDataSet15TableAdapters.CustomersTableAdapter();
             this.customer_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -58,8 +60,8 @@
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customersBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet15)).BeginInit();
             this.SuspendLayout();
             // 
             // panelheader
@@ -169,6 +171,7 @@
             this.txtsearch.Name = "txtsearch";
             this.txtsearch.Size = new System.Drawing.Size(543, 40);
             this.txtsearch.TabIndex = 7;
+            this.txtsearch.TextChanged += new System.EventHandler(this.txtsearch_TextChanged_1);
             // 
             // panel2
             // 
@@ -206,6 +209,16 @@
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
+            // customersBindingSource1
+            // 
+            this.customersBindingSource1.DataMember = "Customers";
+            this.customersBindingSource1.DataSource = this.pos_systemDataSet15;
+            // 
+            // pos_systemDataSet15
+            // 
+            this.pos_systemDataSet15.DataSetName = "pos_systemDataSet15";
+            this.pos_systemDataSet15.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
             // panel3
             // 
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -213,16 +226,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1442, 66);
             this.panel3.TabIndex = 0;
-            // 
-            // pos_systemDataSet15
-            // 
-            this.pos_systemDataSet15.DataSetName = "pos_systemDataSet15";
-            this.pos_systemDataSet15.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // customersBindingSource1
-            // 
-            this.customersBindingSource1.DataMember = "Customers";
-            this.customersBindingSource1.DataSource = this.pos_systemDataSet15;
             // 
             // customersTableAdapter1
             // 
@@ -288,13 +291,27 @@
             // Edit
             // 
             this.Edit.DataPropertyName = "Edit";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Green;
+            this.Edit.DefaultCellStyle = dataGridViewCellStyle1;
             this.Edit.HeaderText = "Edit";
             this.Edit.MinimumWidth = 6;
             this.Edit.Name = "Edit";
+            this.Edit.Text = "Edit";
+            this.Edit.ToolTipText = "عدل داخل الجدول ثم اضغط على التعديل";
             // 
             // Delete
             // 
             this.Delete.DataPropertyName = "Delete";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Red;
+            this.Delete.DefaultCellStyle = dataGridViewCellStyle2;
             this.Delete.HeaderText = "Delete";
             this.Delete.MinimumWidth = 6;
             this.Delete.Name = "Delete";
@@ -316,8 +333,8 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customersBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet15)).EndInit();
             this.ResumeLayout(false);
 
         }

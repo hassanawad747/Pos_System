@@ -18,6 +18,7 @@ namespace Pos_System.Forms
         public AddCustomers()
         {
             InitializeComponent();
+            POS_System.Program.SettingsManager.RegisterForm(this);
         }
 
         private void clearinput()
@@ -29,6 +30,7 @@ namespace Pos_System.Forms
 
         private void btnadd_Click(object sender, EventArgs e)
         {
+            LoginForm loginForm = new LoginForm();
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))

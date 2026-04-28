@@ -1,164 +1,231 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace Pos_System.Forms
 {
     public partial class CategoryForm : Form
     {
+        private const string EditColumnName = "CategoryEditButton";
+        private const string DeleteColumnName = "CategoryDeleteButton";
 
-        string connStr = "Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;";
-        public CategoryForm()
+        private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
+        private readonly bool openNextAfterSave;
+
+        public CategoryForm() : this(true)
+        {
+        }
+
+        public CategoryForm(bool openNextAfterSave)
         {
             InitializeComponent();
-        }
+            POS_System.Program.SettingsManager.RegisterForm(this);
 
-        private void btnadd_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("INSERT INTO Categories (category_name,description) VALUES (@name,@description)", conn);
-                cmd.Parameters.AddWithValue("@name", txttypeitem.Text);
-                cmd.Parameters.AddWithValue("@description", txtdescreption.Text);
-                cmd.ExecuteNonQuery();
-            }
-
-            MessageBox.Show("✅ تم إضافة الصنف بنجاح");
-
-            // افتح فورم الموردين مباشرة
-            SupplierForm supplierForm = new SupplierForm();
-            supplierForm.ShowDialog();
-            this.Close();
-
-        }
-
-
-        private void LoadCategories(string keyword)
-        {
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                conn.Open();
-
-                string query = @"
-            SELECT category_id, category_name, description
-            FROM Categories
-            WHERE category_name LIKE @keyword OR description LIKE @keyword";
-
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
-
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                dataGridView1.DataSource = dt; // تأكد أن اسم الـ DataGridView عندك هو datagridCategories
-            }
-        }
-
-
-
-        private void btndelete_Click(object sender, EventArgs e)
-        {
-            Products productsForm = new Products();
-            productsForm.ShowDialog();
-            this.Close();
+            this.openNextAfterSave = openNextAfterSave;
+            dataGridView1.CellClick += dataGridView1_CellClick;
         }
 
         private void CategoryForm_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'pos_systemDataSet9.Suppliers' table. You can move, or remove it, as needed.
-            //this.suppliersTableAdapter.Fill(this.pos_systemDataSet9.Suppliers);
-            LoadCategories("");
-
-            // TODO: This line of code loads data into the 'pos_systemDataSet8.Categories' table. You can move, or remove it, as needed.
-            this.categoriesTableAdapter.Fill(this.pos_systemDataSet8.Categories);
-           // LoadCategories("");
-
-            // إضافة زر Edit
-            DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
-            btnEdit.HeaderText = "Edit";
-            btnEdit.Text = "Edit";
-            btnEdit.UseColumnTextForButtonValue = true;
-            dataGridView1.Columns.Add(btnEdit);
-
-            // إضافة زر Delete
-            DataGridViewButtonColumn btnDelete = new DataGridViewButtonColumn();
-            btnDelete.HeaderText = "Delete";
-            btnDelete.Text = "Delete";
-            btnDelete.UseColumnTextForButtonValue = true;
-            dataGridView1.Columns.Add(btnDelete);
-
+            EnsureActionColumns();
+            RefreshCategories();
         }
 
-        private void txttypeitem_TextChanged(object sender, EventArgs e)
+        private void btnadd_Click(object sender, EventArgs e)
         {
-            LoadCategories(txttypeitem.Text);
-        }
-
-        private void btnskip_Click(object sender, EventArgs e)
-        {
-            SupplierForm supplierForm = new SupplierForm();
-            supplierForm.ShowDialog();
-            this.Close();
-        }
-
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
+            if (!TryValidateInput(out string categoryName, out string description))
             {
-                // زر Edit
-                if (dataGridView1.Columns[e.ColumnIndex].HeaderText == "Edit")
+                return;
+            }
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(
+                "INSERT INTO Categories (category_name, description) VALUES (@name, @description)",
+                conn))
+            {
+                conn.Open();
+                cmd.Parameters.AddWithValue("@name", categoryName);
+                cmd.Parameters.AddWithValue("@description", description);
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("✅ تم إضافة الصنف بنجاح");
+            RefreshCategories();
+
+            if (openNextAfterSave)
+            {
+                OpenSupplierFormAndClose();
+                return;
+            }
+
+            ClearInputs();
+        }
+
+        private bool TryValidateInput(out string categoryName, out string description)
+        {
+            categoryName = txttypeitem.Text.Trim();
+            description = txtdescreption.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(categoryName))
+            {
+                MessageBox.Show("يرجى إدخال اسم الصنف.");
+                txttypeitem.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void RefreshCategories(string keyword = "")
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(
+                @"SELECT category_id, category_name, description
+                  FROM Categories
+                  WHERE @keyword = ''
+                     OR category_name LIKE @search
+                     OR description LIKE @search
+                  ORDER BY category_id DESC",
+                conn))
+            {
+                conn.Open();
+                cmd.Parameters.AddWithValue("@keyword", keyword);
+                cmd.Parameters.AddWithValue("@search", $"%{keyword}%");
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                 {
-                    int categoryId = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells["category_id"].Value);
-
-                    string newName = dataGridView1.Rows[e.RowIndex].Cells["category_name"].Value.ToString();
-                    string newDescription = dataGridView1.Rows[e.RowIndex].Cells["description"].Value.ToString();
-
-                    using (SqlConnection conn = new SqlConnection(connStr))
-                    {
-                        conn.Open();
-                        SqlCommand cmd = new SqlCommand("UPDATE Categories SET category_name=@name, description=@desc WHERE category_id=@id", conn);
-                        cmd.Parameters.AddWithValue("@id", categoryId);
-                        cmd.Parameters.AddWithValue("@name", newName);
-                        cmd.Parameters.AddWithValue("@desc", newDescription);
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    MessageBox.Show("✅ تم تعديل الصنف بنجاح");
-                    LoadCategories("");
-                }
-
-                // زر Delete
-                if (dataGridView1.Columns[e.ColumnIndex].HeaderText == "Delete")
-                {
-                    int categoryId = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells["category_id"].Value);
-
-                    var confirm = MessageBox.Show("هل تريد حذف الصنف؟", "تأكيد الحذف", MessageBoxButtons.YesNo);
-                    if (confirm == DialogResult.Yes)
-                    {
-                        using (SqlConnection conn = new SqlConnection(connStr))
-                        {
-                            conn.Open();
-                            SqlCommand cmd = new SqlCommand("DELETE FROM Categories WHERE category_id=@id", conn);
-                            cmd.Parameters.AddWithValue("@id", categoryId);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        MessageBox.Show("✅ تم حذف الصنف بنجاح");
-                        LoadCategories("");
-                    }
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    dataGridView1.DataSource = table;
                 }
             }
         }
 
+        private void EnsureActionColumns()
+        {
+            if (dataGridView1.Columns[EditColumnName] == null)
+            {
+                dataGridView1.Columns.Add(new DataGridViewButtonColumn
+                {
+                    Name = EditColumnName,
+                    HeaderText = "Edit",
+                    Text = "Edit",
+                    UseColumnTextForButtonValue = true
+                });
+            }
 
+            if (dataGridView1.Columns[DeleteColumnName] == null)
+            {
+                dataGridView1.Columns.Add(new DataGridViewButtonColumn
+                {
+                    Name = DeleteColumnName,
+                    HeaderText = "Delete",
+                    Text = "Delete",
+                    UseColumnTextForButtonValue = true
+                });
+            }
+        }
+
+        private void ClearInputs()
+        {
+            txttypeitem.Clear();
+            txtdescreption.Clear();
+            txttypeitem.Focus();
+        }
+
+        private void btndelete_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btnskip_Click(object sender, EventArgs e)
+        {
+            OpenSupplierFormAndClose();
+        }
+
+        private void OpenSupplierFormAndClose()
+        {
+            using (SupplierForm supplierForm = new SupplierForm(true))
+            {
+                Hide();
+                supplierForm.ShowDialog(GetDialogOwner());
+            }
+
+            Close();
+        }
+
+        private IWin32Window GetDialogOwner()
+        {
+            return TopLevelControl as IWin32Window ?? this;
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+            {
+                return;
+            }
+
+            string columnName = dataGridView1.Columns[e.ColumnIndex].Name;
+            int categoryId = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells["category_id"].Value);
+
+            if (columnName == EditColumnName)
+            {
+                string categoryName = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells["category_name"].Value)?.Trim() ?? string.Empty;
+                string description = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells["description"].Value)?.Trim() ?? string.Empty;
+
+                if (string.IsNullOrWhiteSpace(categoryName))
+                {
+                    MessageBox.Show("اسم الصنف لا يمكن أن يكون فارغاً.");
+                    return;
+                }
+
+                using (SqlConnection conn = new SqlConnection(connStr))
+                using (SqlCommand cmd = new SqlCommand(
+                    "UPDATE Categories SET category_name = @name, description = @description WHERE category_id = @id",
+                    conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@id", categoryId);
+                    cmd.Parameters.AddWithValue("@name", categoryName);
+                    cmd.Parameters.AddWithValue("@description", description);
+                    cmd.ExecuteNonQuery();
+                }
+
+                MessageBox.Show("✅ تم تعديل الصنف بنجاح");
+                RefreshCategories();
+                return;
+            }
+
+            if (columnName == DeleteColumnName)
+            {
+                DialogResult confirm = MessageBox.Show("هل تريد حذف الصنف؟", "تأكيد الحذف", MessageBoxButtons.YesNo);
+                if (confirm != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                using (SqlConnection conn = new SqlConnection(connStr))
+                using (SqlCommand cmd = new SqlCommand("DELETE FROM Categories WHERE category_id = @id", conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@id", categoryId);
+                    cmd.ExecuteNonQuery();
+                }
+
+                MessageBox.Show("✅ تم حذف الصنف بنجاح");
+                RefreshCategories();
+            }
+        }
+
+        private void txttypeitem_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void btnback_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

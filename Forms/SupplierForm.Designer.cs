@@ -35,9 +35,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.btndelete = new System.Windows.Forms.Button();
-            this.btnadd = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.supplier_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contact_info = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.address = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.suppliersBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.pos_systemDataSet10 = new Pos_System.pos_systemDataSet10();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -45,22 +49,18 @@
             this.txtnumber = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtname = new System.Windows.Forms.TextBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.pos_systemDataSet10 = new Pos_System.pos_systemDataSet10();
-            this.suppliersBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.suppliersTableAdapter = new Pos_System.pos_systemDataSet10TableAdapters.SuppliersTableAdapter();
-            this.supplier_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contact_info = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.address = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.btnskip = new System.Windows.Forms.Button();
+            this.btndelete = new System.Windows.Forms.Button();
+            this.btnadd = new System.Windows.Forms.Button();
+            this.suppliersTableAdapter = new Pos_System.pos_systemDataSet10TableAdapters.SuppliersTableAdapter();
             this.panelheader.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.suppliersBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet10)).BeginInit();
+            this.panel3.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelheader
@@ -133,42 +133,63 @@
             this.panel1.Size = new System.Drawing.Size(1010, 313);
             this.panel1.TabIndex = 5;
             // 
-            // panel2
+            // dataGridView1
             // 
-            this.panel2.Controls.Add(this.btnskip);
-            this.panel2.Controls.Add(this.btndelete);
-            this.panel2.Controls.Add(this.btnadd);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 254);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1010, 59);
-            this.panel2.TabIndex = 3;
+            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.supplier_id,
+            this.name,
+            this.contact_info,
+            this.address});
+            this.dataGridView1.DataSource = this.suppliersBindingSource;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.Size = new System.Drawing.Size(752, 254);
+            this.dataGridView1.TabIndex = 11;
             // 
-            // btndelete
+            // supplier_id
             // 
-            this.btndelete.BackColor = System.Drawing.Color.Transparent;
-            this.btndelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btndelete.ForeColor = System.Drawing.Color.Black;
-            this.btndelete.Location = new System.Drawing.Point(838, 6);
-            this.btndelete.Name = "btndelete";
-            this.btndelete.Size = new System.Drawing.Size(58, 44);
-            this.btndelete.TabIndex = 1;
-            this.btndelete.Text = "الغاء";
-            this.btndelete.UseVisualStyleBackColor = false;
-            this.btndelete.Click += new System.EventHandler(this.btndelete_Click);
+            this.supplier_id.DataPropertyName = "supplier_id";
+            this.supplier_id.HeaderText = "supplier_id";
+            this.supplier_id.MinimumWidth = 6;
+            this.supplier_id.Name = "supplier_id";
+            this.supplier_id.ReadOnly = true;
             // 
-            // btnadd
+            // name
             // 
-            this.btnadd.BackColor = System.Drawing.Color.Green;
-            this.btnadd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnadd.ForeColor = System.Drawing.Color.White;
-            this.btnadd.Location = new System.Drawing.Point(906, 6);
-            this.btnadd.Name = "btnadd";
-            this.btnadd.Size = new System.Drawing.Size(91, 44);
-            this.btnadd.TabIndex = 0;
-            this.btnadd.Text = "حفظ ";
-            this.btnadd.UseVisualStyleBackColor = false;
-            this.btnadd.Click += new System.EventHandler(this.btnadd_Click);
+            this.name.DataPropertyName = "name";
+            this.name.HeaderText = "name";
+            this.name.MinimumWidth = 6;
+            this.name.Name = "name";
+            // 
+            // contact_info
+            // 
+            this.contact_info.DataPropertyName = "contact_info";
+            this.contact_info.HeaderText = "contact_info";
+            this.contact_info.MinimumWidth = 6;
+            this.contact_info.Name = "contact_info";
+            // 
+            // address
+            // 
+            this.address.DataPropertyName = "address";
+            this.address.HeaderText = "address";
+            this.address.MinimumWidth = 6;
+            this.address.Name = "address";
+            // 
+            // suppliersBindingSource
+            // 
+            this.suppliersBindingSource.DataMember = "Suppliers";
+            this.suppliersBindingSource.DataSource = this.pos_systemDataSet10;
+            // 
+            // pos_systemDataSet10
+            // 
+            this.pos_systemDataSet10.DataSetName = "pos_systemDataSet10";
+            this.pos_systemDataSet10.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // panel3
             // 
@@ -243,80 +264,59 @@
             this.txtname.TabIndex = 10;
             this.txtname.TextChanged += new System.EventHandler(this.txtname_TextChanged);
             // 
-            // dataGridView1
+            // panel2
             // 
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.supplier_id,
-            this.name,
-            this.contact_info,
-            this.address});
-            this.dataGridView1.DataSource = this.suppliersBindingSource;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(752, 254);
-            this.dataGridView1.TabIndex = 11;
-            // 
-            // pos_systemDataSet10
-            // 
-            this.pos_systemDataSet10.DataSetName = "pos_systemDataSet10";
-            this.pos_systemDataSet10.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // suppliersBindingSource
-            // 
-            this.suppliersBindingSource.DataMember = "Suppliers";
-            this.suppliersBindingSource.DataSource = this.pos_systemDataSet10;
-            // 
-            // suppliersTableAdapter
-            // 
-            this.suppliersTableAdapter.ClearBeforeFill = true;
-            // 
-            // supplier_id
-            // 
-            this.supplier_id.DataPropertyName = "supplier_id";
-            this.supplier_id.HeaderText = "supplier_id";
-            this.supplier_id.MinimumWidth = 6;
-            this.supplier_id.Name = "supplier_id";
-            this.supplier_id.ReadOnly = true;
-            // 
-            // name
-            // 
-            this.name.DataPropertyName = "name";
-            this.name.HeaderText = "name";
-            this.name.MinimumWidth = 6;
-            this.name.Name = "name";
-            // 
-            // contact_info
-            // 
-            this.contact_info.DataPropertyName = "contact_info";
-            this.contact_info.HeaderText = "contact_info";
-            this.contact_info.MinimumWidth = 6;
-            this.contact_info.Name = "contact_info";
-            // 
-            // address
-            // 
-            this.address.DataPropertyName = "address";
-            this.address.HeaderText = "address";
-            this.address.MinimumWidth = 6;
-            this.address.Name = "address";
+            this.panel2.Controls.Add(this.btnskip);
+            this.panel2.Controls.Add(this.btndelete);
+            this.panel2.Controls.Add(this.btnadd);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 254);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1010, 59);
+            this.panel2.TabIndex = 3;
             // 
             // btnskip
             // 
             this.btnskip.BackColor = System.Drawing.Color.Green;
             this.btnskip.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnskip.ForeColor = System.Drawing.Color.White;
-            this.btnskip.Location = new System.Drawing.Point(12, 7);
+            this.btnskip.Location = new System.Drawing.Point(3, 7);
             this.btnskip.Name = "btnskip";
             this.btnskip.Size = new System.Drawing.Size(91, 44);
             this.btnskip.TabIndex = 2;
             this.btnskip.Text = "تخطي -->";
             this.btnskip.UseVisualStyleBackColor = false;
             this.btnskip.Click += new System.EventHandler(this.btnskip_Click);
+            // 
+            // btndelete
+            // 
+            this.btndelete.BackColor = System.Drawing.Color.Transparent;
+            this.btndelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btndelete.ForeColor = System.Drawing.Color.Black;
+            this.btndelete.Location = new System.Drawing.Point(838, 6);
+            this.btndelete.Name = "btndelete";
+            this.btndelete.Size = new System.Drawing.Size(58, 44);
+            this.btndelete.TabIndex = 1;
+            this.btndelete.Text = "الغاء";
+            this.btndelete.UseVisualStyleBackColor = false;
+            this.btndelete.Click += new System.EventHandler(this.btndelete_Click);
+            // 
+            // btnadd
+            // 
+            this.btnadd.BackColor = System.Drawing.Color.Green;
+            this.btnadd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnadd.ForeColor = System.Drawing.Color.White;
+            this.btnadd.Location = new System.Drawing.Point(906, 6);
+            this.btnadd.Name = "btnadd";
+            this.btnadd.Size = new System.Drawing.Size(91, 44);
+            this.btnadd.TabIndex = 0;
+            this.btnadd.Text = "حفظ ";
+            this.btnadd.UseVisualStyleBackColor = false;
+            this.btnadd.Click += new System.EventHandler(this.btnadd_Click);
+            // 
+            // suppliersTableAdapter
+            // 
+            this.suppliersTableAdapter.ClearBeforeFill = true;
             // 
             // SupplierForm
             // 
@@ -331,12 +331,12 @@
             this.panelheader.ResumeLayout(false);
             this.panelheader.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.suppliersBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet10)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pos_systemDataSet10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.suppliersBindingSource)).EndInit();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
