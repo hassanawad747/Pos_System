@@ -11,7 +11,7 @@ namespace Pos_System.Forms
 {
     public partial class ReportsForm : Form
     {
-        private const string ConnectionString = "Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;";
+        private static readonly string ConnectionString = POS_System.Program.SettingsManager.ConnectionString;
 
         private DataTable currentSummaryTable = new DataTable();
         private string currentReportType = "all";

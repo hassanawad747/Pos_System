@@ -2,12 +2,13 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
     public partial class Customers : Form
     {
-        string connStr = "Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;";
+        private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
 
         public Customers()
         {
@@ -110,6 +111,7 @@ namespace Pos_System.Forms
                         cmd.ExecuteNonQuery();
                     }
 
+                    AuditService.Log("Customers", "Edit", customerId.ToString(), "Updated customer " + newName);
                     MessageBox.Show("✅ تم تعديل العميل بنجاح");
                     LoadCustomers(txtsearch.Text);
                 }
@@ -130,6 +132,7 @@ namespace Pos_System.Forms
                             cmd.ExecuteNonQuery();
                         }
 
+                        AuditService.Log("Customers", "Delete", customerId.ToString(), "Deleted customer ID " + customerId);
                         MessageBox.Show("✅ تم حذف العميل بنجاح");
                         LoadCustomers(txtsearch.Text);
                     }

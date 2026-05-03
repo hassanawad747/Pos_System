@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
@@ -110,6 +111,11 @@ namespace Pos_System.Forms
                 }
             }
 
+            AuditService.Log(
+                "Products",
+                productId.HasValue ? "Edit" : "Create",
+                productId.HasValue ? productId.Value.ToString() : values.Barcode,
+                (productId.HasValue ? "Updated product " : "Created product ") + values.Name);
             MessageBox.Show(productId.HasValue ? "✅ تم تعديل المنتج بنجاح" : "✅ تم إضافة المنتج بنجاح");
             RefreshProductsGrid();
 
@@ -120,6 +126,13 @@ namespace Pos_System.Forms
             //}
 
             if (productId.HasValue)
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+                return;
+            }
+
+            if (!openProductsAfterSave)
             {
                 DialogResult = DialogResult.OK;
                 Close();
@@ -475,6 +488,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditService.Log("Products", "Delete", selectedProductId.ToString(), "Deleted product ID " + selectedProductId);
                 MessageBox.Show("✅ تم حذف المنتج بنجاح");
                 RefreshProductsGrid();
             }

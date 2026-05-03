@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
+using Pos_System.Services;
 //using ClosedXML.Excel;  //l7atta 7afez data do8re be file excel 
 //using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -15,7 +16,7 @@ namespace Pos_System.Forms
 {
     public partial class Sales : Form
     {
-        string connStr = "Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;";
+        private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
         private const decimal SqlMoneyMax = 9999999999999999.99999999m;
         private const byte SqlMoneyPrecision = 24;
         private const byte SqlMoneyScale = 8;
@@ -1254,6 +1255,7 @@ VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_
                 }
             }
 
+            AuditService.Log("Sales", "Create", saleId.ToString(), "Created sale invoice " + saleId);
             MessageBox.Show("تمت العملية بنجاح - رقم الفاتورة: " + saleId);
 
             if (printReceipt)
@@ -1361,6 +1363,7 @@ VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_
 
                         if (rowsAffected > 0)
                         {
+                            AuditService.Log("Sales", "Delete", saleId.ToString(), "Deleted sale invoice " + saleId);
                             MessageBox.Show("تم حذف الفاتورة بنجاح");
                         }
                         else
@@ -1447,6 +1450,7 @@ VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_
                 conn.Close();
             }
 
+            AuditService.Log("Sales", "Edit", saleId.ToString(), "Registered return for sale invoice " + saleId);
             MessageBox.Show("تم تسجيل المرتجع وإضافة المنتجات مرة أخرى للمخزون");
 
         }

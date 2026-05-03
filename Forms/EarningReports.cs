@@ -20,7 +20,7 @@ namespace Pos_System.Forms
 
     public partial class EarningReports : Form
     {
-        string connStr = "Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;";
+        private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
 
         public EarningReports()
         {

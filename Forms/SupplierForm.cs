@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
@@ -51,6 +52,7 @@ namespace Pos_System.Forms
                 cmd.ExecuteNonQuery();
             }
 
+            AuditService.Log("Suppliers", "Create", supplierName, "Created supplier " + supplierName);
             MessageBox.Show("✅ تم إضافة المورد بنجاح");
             RefreshSuppliers();
 
@@ -60,7 +62,8 @@ namespace Pos_System.Forms
                 return;
             }
 
-            ClearInputs();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private bool TryValidateInput(out string supplierName, out string contactInfo, out string address)
@@ -199,6 +202,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditService.Log("Suppliers", "Edit", supplierId.ToString(), "Updated supplier " + supplierName);
                 MessageBox.Show("✅ تم تعديل المورد بنجاح");
                 RefreshSuppliers();
                 return;
@@ -220,6 +224,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditService.Log("Suppliers", "Delete", supplierId.ToString(), "Deleted supplier ID " + supplierId);
                 MessageBox.Show("✅ تم حذف المورد بنجاح");
                 RefreshSuppliers();
             }

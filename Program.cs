@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Pos_System;
 using Pos_System.Data;
 using Pos_System.Forms;
+using Pos_System.Services;
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -23,6 +25,7 @@ namespace POS_System
             var context = new POSDbContext(options);
 
             InitializeDefaultSettings();
+            EnsureAuditLogTable();
             SettingsManager.LoadSettings();
 
             Application.EnableVisualStyles();
@@ -33,6 +36,29 @@ namespace POS_System
         private static void InitializeDefaultSettings()
         {
             SettingsManager.EnsureDefaultSettings();
+        }
+
+        private static void EnsureAuditLogTable()
+        {
+            using (SqlConnection conn = new SqlConnection(SettingsManager.ConnectionString))
+            using (SqlCommand cmd = new SqlCommand(@"
+                IF OBJECT_ID('dbo.AuditLogs', 'U') IS NULL
+                BEGIN
+                    CREATE TABLE dbo.AuditLogs
+                    (
+                        audit_log_id INT IDENTITY(1,1) PRIMARY KEY,
+                        entity_name NVARCHAR(100) NOT NULL,
+                        action_type NVARCHAR(30) NOT NULL,
+                        record_key NVARCHAR(100) NULL,
+                        description NVARCHAR(500) NULL,
+                        changed_by NVARCHAR(100) NULL,
+                        created_at DATETIME NOT NULL CONSTRAINT DF_AuditLogs_created_at DEFAULT(GETDATE())
+                    )
+                END", conn))
+            {
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public static class SettingsManager
@@ -66,7 +92,30 @@ namespace POS_System
                 new Dictionary<Control, ControlColorSnapshot>();
 
             public static string ConnectionString =>
-                Pos_System.Properties.Settings.Default.pos_systemConnectionString;
+                ConfigurationManager.ConnectionStrings["Pos_System.Properties.Settings.pos_systemConnectionString"]?.ConnectionString
+                ?? Pos_System.Properties.Settings.Default.pos_systemConnectionString;
+
+            public static void SetConnectionString(string connectionString)
+            {
+                Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                ConnectionStringSettings settings = configuration.ConnectionStrings.ConnectionStrings["Pos_System.Properties.Settings.pos_systemConnectionString"];
+
+                if (settings == null)
+                {
+                    configuration.ConnectionStrings.ConnectionStrings.Add(
+                        new ConnectionStringSettings(
+                            "Pos_System.Properties.Settings.pos_systemConnectionString",
+                            connectionString,
+                            "System.Data.SqlClient"));
+                }
+                else
+                {
+                    settings.ConnectionString = connectionString;
+                }
+
+                configuration.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("connectionStrings");
+            }
 
             public static IReadOnlyDictionary<string, string> DefaultSettings => defaultSettings;
 

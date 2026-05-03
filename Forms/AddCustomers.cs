@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Data.SqlClient;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
     public partial class AddCustomers : Form
     {
-        string connStr = "Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;";
+        private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
         public AddCustomers()
         {
             InitializeComponent();
@@ -30,7 +31,6 @@ namespace Pos_System.Forms
 
         private void btnadd_Click(object sender, EventArgs e)
         {
-            LoginForm loginForm = new LoginForm();
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -44,21 +44,21 @@ namespace Pos_System.Forms
                     cmd.Parameters.AddWithValue("@phone", txtnumber.Text);
                     cmd.Parameters.AddWithValue("@email", txtemail.Text);
                     cmd.Parameters.AddWithValue("@balance",txtprice.Text);
-                    cmd.Parameters.AddWithValue("@created_by", LoginForm.LoggedInUsername); // يمكنك تعديل هذا حسب المستخدم الحالي
+                    cmd.Parameters.AddWithValue("@created_by", AppSession.Username);
                     cmd.ExecuteNonQuery();
                 }
 
-                MessageBox.Show("✅ تم إضافة العميل بنجاح بواسطة " + LoginForm.LoggedInUsername);
-                this.Close(); // إغلاق الفورم بعد الإضافة
+                AuditService.Log("Customers", "Create", txtnumber.Text.Trim(), "Created customer " + txtname.Text.Trim());
+                MessageBox.Show("✅ تم إضافة العميل بنجاح بواسطة " + AppSession.Username);
+                DialogResult = DialogResult.OK;
+                Close();
+                return;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("حدث خطأ: " + ex.Message);
             }
             clearinput();
-            Customers customers = new Customers();
-            customers.ShowDialog();
-            this.Close();
         }
 
         private void btncancle_Click(object sender, EventArgs e)
