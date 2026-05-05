@@ -9,11 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Data.SqlClient;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
     public partial class AddUsers : Form
     {
+        private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
+
         public AddUsers()
         {
             InitializeComponent();
@@ -82,7 +85,7 @@ namespace Pos_System.Forms
 
         private void LoadUsers()
         {
-            using (SqlConnection conn = new SqlConnection("Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;"))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
                 SqlDataAdapter da = new SqlDataAdapter("SELECT user_id, username, role, created_at, created_by, password_hash FROM Users", conn);
@@ -120,7 +123,7 @@ namespace Pos_System.Forms
 
             //string hashedPassword = HashPassword(password);
 
-            using (SqlConnection conn = new SqlConnection("Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;"))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
                 string query = "INSERT INTO Users (username, password_hash, role, created_by) VALUES (@username, @password, @role, @createdBy)";
@@ -134,6 +137,7 @@ namespace Pos_System.Forms
                     try
                     {
                         cmd.ExecuteNonQuery();
+                        AuditLogger.Log("ADD", "Users", null, "Created user: " + username + " / role: " + role);
                         MessageBox.Show("User created successfully!");
                         LoadUsers(); // refresh DataGridView
                     }
@@ -162,13 +166,14 @@ namespace Pos_System.Forms
 
                 if (result == DialogResult.Yes)
                 {
-                    using (SqlConnection conn = new SqlConnection("Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;"))
+                    using (SqlConnection conn = new SqlConnection(connStr))
                     {
                         conn.Open();
                         SqlCommand cmd = new SqlCommand("DELETE FROM Users WHERE user_id=@id", conn);
                         cmd.Parameters.AddWithValue("@id", userId);
                         cmd.ExecuteNonQuery();
 
+                        AuditLogger.Log("DELETE", "Users", userId, "Deleted user id: " + userId);
                         MessageBox.Show("User deleted successfully!", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         LoadUsers();   // refresh DataGridView
@@ -232,7 +237,7 @@ namespace Pos_System.Forms
                 return;
             }
 
-            using (SqlConnection conn = new SqlConnection("Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;"))
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
 
@@ -261,6 +266,7 @@ namespace Pos_System.Forms
                     try
                     {
                         cmd.ExecuteNonQuery();
+                        AuditLogger.Log("EDIT", "Users", userId, "Updated user: " + username + " / role: " + role);
                         MessageBox.Show("User updated successfully!");
                         LoadUsers(); // refresh grid
                     }

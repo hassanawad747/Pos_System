@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
@@ -47,6 +48,8 @@ namespace Pos_System.Forms
             LoadCategories();
             LoadSuppliers();
             RefreshProductsGrid();
+            UseSettingsExchangeRate();
+            HideLocalExchangeRateInput();
 
             if (productId.HasValue)
             {
@@ -110,6 +113,11 @@ namespace Pos_System.Forms
                 }
             }
 
+            AuditLogger.Log(
+                productId.HasValue ? "EDIT" : "ADD",
+                "Products",
+                productId,
+                (productId.HasValue ? "Updated product: " : "Added product: ") + values.Name);
             MessageBox.Show(productId.HasValue ? "✅ تم تعديل المنتج بنجاح" : "✅ تم إضافة المنتج بنجاح");
             RefreshProductsGrid();
 
@@ -165,13 +173,7 @@ namespace Pos_System.Forms
                 return false;
             }
 
-            if (!decimal.TryParse(txtdollar.Text.Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out decimal exchangeRate) &&
-                !decimal.TryParse(txtdollar.Text.Trim(), out exchangeRate))
-            {
-                MessageBox.Show("يرجى إدخال سعر صرف صحيح.");
-                txtdollar.Focus();
-                return false;
-            }
+            decimal exchangeRate = POS_System.Program.SettingsManager.GetExchangeRate();
 
             if (!decimal.TryParse(txtsaledollar.Text.Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out decimal salePriceUsd) &&
                 !decimal.TryParse(txtsaledollar.Text.Trim(), out salePriceUsd))
@@ -289,7 +291,7 @@ namespace Pos_System.Forms
                     comboitem.SelectedValue = Convert.ToInt32(reader["category_id"]);
                     txtpricedollar.Text = Convert.ToString(reader["price_usd"]);
                     txtpriceLebanon.Text = Convert.ToString(reader["price_lb"]);
-                    txtdollar.Text = Convert.ToString(reader["exchange_rate"]);
+                    UseSettingsExchangeRate();
                     txtsaledollar.Text = Convert.ToString(reader["sale_price_usd"]);
                     txtsalelebanon.Text = Convert.ToString(reader["sale_price_lb"]);
                     txtquentity.Text = Convert.ToString(reader["stock_quantity"]);
@@ -323,7 +325,7 @@ namespace Pos_System.Forms
                     comboitem.SelectedValue = Convert.ToInt32(reader["category_id"]);
                     txtpricedollar.Text = Convert.ToString(reader["price_usd"]);
                     txtpriceLebanon.Text = Convert.ToString(reader["price_lb"]);
-                    txtdollar.Text = Convert.ToString(reader["exchange_rate"]);
+                    UseSettingsExchangeRate();
                     txtsaledollar.Text = Convert.ToString(reader["sale_price_usd"]);
                     txtsalelebanon.Text = Convert.ToString(reader["sale_price_lb"]);
                     txtquentity.Text = Convert.ToString(reader["stock_quantity"]);
@@ -362,7 +364,7 @@ namespace Pos_System.Forms
             txtname.Clear();
             txtpricedollar.Clear();
             txtpriceLebanon.Clear();
-            txtdollar.Clear();
+            UseSettingsExchangeRate();
             txtsaledollar.Clear();
             txtsalelebanon.Clear();
             txtquentity.Clear();
@@ -375,8 +377,9 @@ namespace Pos_System.Forms
 
         private void UpdateConvertedPrices()
         {
-            if (TryParseDecimal(txtpricedollar.Text, out decimal priceUsd) &&
-                TryParseDecimal(txtdollar.Text, out decimal exchangeRate))
+            decimal exchangeRate = POS_System.Program.SettingsManager.GetExchangeRate();
+
+            if (TryParseDecimal(txtpricedollar.Text, out decimal priceUsd))
             {
                 txtpriceLebanon.Text = (priceUsd * exchangeRate).ToString("0.##");
             }
@@ -385,8 +388,7 @@ namespace Pos_System.Forms
                 txtpriceLebanon.Clear();
             }
 
-            if (TryParseDecimal(txtsaledollar.Text, out decimal salePriceUsd) &&
-                TryParseDecimal(txtdollar.Text, out exchangeRate))
+            if (TryParseDecimal(txtsaledollar.Text, out decimal salePriceUsd))
             {
                 txtsalelebanon.Text = (salePriceUsd * exchangeRate).ToString("0.##");
             }
@@ -405,6 +407,17 @@ namespace Pos_System.Forms
         private void PriceInput_TextChanged(object sender, EventArgs e)
         {
             UpdateConvertedPrices();
+        }
+
+        private void UseSettingsExchangeRate()
+        {
+            txtdollar.Text = POS_System.Program.SettingsManager.GetExchangeRate().ToString("0.####", CultureInfo.InvariantCulture);
+        }
+
+        private void HideLocalExchangeRateInput()
+        {
+            txtdollar.Visible = false;
+            label11.Visible = false;
         }
 
         private void txtbarcode_TextChanged(object sender, EventArgs e)
@@ -475,6 +488,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditLogger.Log("DELETE", "Products", selectedProductId, "Deleted product");
                 MessageBox.Show("✅ تم حذف المنتج بنجاح");
                 RefreshProductsGrid();
             }

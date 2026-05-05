@@ -6,7 +6,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Windows.Forms;
+using Pos_System.Services;
 //using ClosedXML.Excel;  //l7atta 7afez data do8re be file excel 
 //using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -15,7 +17,7 @@ namespace Pos_System.Forms
 {
     public partial class Sales : Form
     {
-        string connStr = "Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;";
+        private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
         private const decimal SqlMoneyMax = 9999999999999999.99999999m;
         private const byte SqlMoneyPrecision = 24;
         private const byte SqlMoneyScale = 8;
@@ -98,7 +100,6 @@ namespace Pos_System.Forms
             StyleComboBox(comboPaymentMethod);
 
             StylePrimaryButton(button5, Color.FromArgb(37, 99, 235));
-            StylePrimaryButton(btndollar, Color.FromArgb(37, 99, 235));
             StylePrimaryButton(btnSaveSale, Color.FromArgb(22, 163, 74));
             StylePrimaryButton(btnsare3, Color.FromArgb(59, 130, 246));
             StylePrimaryButton(btnexcel, Color.FromArgb(5, 150, 105));
@@ -130,6 +131,12 @@ namespace Pos_System.Forms
             lbtotal_lebanon.BorderStyle = BorderStyle.FixedSingle;
 
             StyleDataGridView();
+
+            btnSaveSale.Text = "بيع";
+            btnsare3.Visible = false;
+            txtdollar.Visible = false;
+            btndollar.Visible = false;
+            label4.Visible = false;
         }
 
         private void StyleTextBox(TextBox textBox, float fontSize, bool centered)
@@ -635,20 +642,12 @@ namespace Pos_System.Forms
             // ممكن تستدعي هنا أيضاً لو تحب
             LoadCategories();
 
-            SqlConnection conn = new SqlConnection(connStr);
-            SqlCommand cmd = new SqlCommand("SELECT value FROM Settings WHERE key_name='default_price'", conn);
-            conn.Open();
-            string rate = cmd.ExecuteScalar().ToString();
-            conn.Close();
-
-            txtdollar.Text = rate;
+            txtdollar.Text = POS_System.Program.SettingsManager.GetExchangeRate().ToString("0.####", CultureInfo.InvariantCulture);
             //  _role = reader["role"].ToString().Trim().ToLower();
 
             // التحقق من صلاحية المستخدم
             if (_role.Trim().ToLower() == "admin" || _role.Trim().ToLower() == "manager")
             {
-                txtdollar.ReadOnly = false;
-                btndollar.Enabled = true;
                 btndelete.Enabled = true;
                 btnexcel.Enabled = true;
                 btnmortaja3.Enabled = true;
@@ -656,8 +655,6 @@ namespace Pos_System.Forms
             }
             else
             {
-                txtdollar.ReadOnly = true;
-                btndollar.Enabled = false;
                 btndelete.Enabled = false;
                 btnexcel.Enabled = false;
                 btnmortaja3.Enabled = false;
@@ -745,14 +742,7 @@ namespace Pos_System.Forms
 
         private void btndollar_Click(object sender, EventArgs e)
         {
-            SqlConnection conn = new SqlConnection(connStr);
-            SqlCommand cmd = new SqlCommand("UPDATE Settings SET value=@rate WHERE key_name='default_price'", conn);
-            cmd.Parameters.AddWithValue("@rate", txtdollar.Text);
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            conn.Close();
-
-            MessageBox.Show("تم حفظ سعر الدولار بنجاح");
+            MessageBox.Show("يتم تعديل سعر الدولار من شاشة Settings فقط.");
         }
 
 
@@ -767,7 +757,11 @@ namespace Pos_System.Forms
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlDataAdapter da = new SqlDataAdapter(
-                    @"SELECT p.product_id, p.name, p.price_usd, p.price_lb, p.exchange_rate 
+                    @"SELECT p.product_id,
+                             p.name,
+                             COALESCE(NULLIF(p.sale_price_usd, 0), p.price_usd, 0) AS price_usd,
+                             COALESCE(NULLIF(p.sale_price_lb, 0), p.price_lb, 0) AS price_lb,
+                             p.exchange_rate 
               FROM Products p
               WHERE p.category_id = @catId", conn);
 
@@ -840,8 +834,8 @@ namespace Pos_System.Forms
                         string productName = productRow["name"].ToString();
 
                         decimal priceUsd = productRow["price_usd"] == DBNull.Value ? 0 : Convert.ToDecimal(productRow["price_usd"]);
-                        decimal priceLb = productRow["price_lb"] == DBNull.Value ? 0 : Convert.ToDecimal(productRow["price_lb"]);
-                        decimal exchangeRate = productRow["exchange_rate"] == DBNull.Value ? 0 : Convert.ToDecimal(productRow["exchange_rate"]);
+                        decimal exchangeRate = POS_System.Program.SettingsManager.GetExchangeRate();
+                        decimal priceLb = priceUsd * exchangeRate;
 
                         DateTime now = DateTime.Now;
 
@@ -892,7 +886,11 @@ namespace Pos_System.Forms
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                string query = @"SELECT product_id, name, price_usd, price_lb, exchange_rate
+                string query = @"SELECT product_id,
+                                        name,
+                                        COALESCE(NULLIF(sale_price_usd, 0), price_usd, 0) AS price_usd,
+                                        COALESCE(NULLIF(sale_price_lb, 0), price_lb, 0) AS price_lb,
+                                        exchange_rate
                      FROM Products
                      WHERE name = @keyword OR barcode = @keyword";
 
@@ -907,8 +905,8 @@ namespace Pos_System.Forms
                     int productId = Convert.ToInt32(reader["product_id"]);
                     string productName = reader["name"].ToString();
                     decimal priceUsd = reader["price_usd"] == DBNull.Value ? 0 : Convert.ToDecimal(reader["price_usd"]);
-                    decimal priceLb = reader["price_lb"] == DBNull.Value ? 0 : Convert.ToDecimal(reader["price_lb"]);
-                    decimal exchangeRate = reader["exchange_rate"] == DBNull.Value ? 0 : Convert.ToDecimal(reader["exchange_rate"]);
+                    decimal exchangeRate = POS_System.Program.SettingsManager.GetExchangeRate();
+                    decimal priceLb = priceUsd * exchangeRate;
                     DateTime now = DateTime.Now;
 
                     decimal totalUsd = priceUsd * qty;
@@ -1061,10 +1059,304 @@ namespace Pos_System.Forms
 
         private void btnSaveSale_Click_1(object sender, EventArgs e)
         {
-            ProcessSale(true);
+            DialogResult saleType = MessageBox.Show(
+                "هل تريد البيع مع فاتورة؟\n\nYes = مع فاتورة وطباعة\nNo = بدون فاتورة مع مراجعة قبل البيع",
+                "نوع البيع",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question);
+
+            if (saleType == DialogResult.Cancel)
+                return;
+
+            if (saleType == DialogResult.Yes)
+            {
+                ProcessSale(true);
+                return;
+            }
+
+            if (ShowSaleWithoutInvoiceReview())
+            {
+                ProcessSale(false);
+            }
         }
 
-        private void ProcessSale(bool printReceipt)
+        private bool TryReadPaidAmount(out decimal customerPaid)
+        {
+            if (!decimal.TryParse(txtPaidAmount.Text, out customerPaid))
+            {
+                MessageBox.Show("أدخل المبلغ المدفوع بشكل صحيح");
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool HasSaleItems()
+        {
+            foreach (DataGridViewRow row in datagridsales.Rows)
+            {
+                if (!row.IsNewRow)
+                    return true;
+            }
+
+            return false;
+        }
+
+        private bool ShowSaleWithoutInvoiceReview()
+        {
+            if (!HasSaleItems())
+            {
+                MessageBox.Show("أضف منتجات قبل البيع");
+                return false;
+            }
+
+            if (!TryReadPaidAmount(out decimal customerPaid))
+                return false;
+
+            if (!rbDollar.Checked && !rbLebanon.Checked)
+            {
+                MessageBox.Show("اختر العملة قبل إتمام عملية البيع");
+                return false;
+            }
+
+            decimal exchangeRate = POS_System.Program.SettingsManager.GetExchangeRate();
+
+            Form reviewForm = new Form
+            {
+                Text = "مراجعة البيع بدون فاتورة",
+                StartPosition = FormStartPosition.CenterParent,
+                Size = new Size(980, 640),
+                MinimumSize = new Size(780, 520),
+                RightToLeft = RightToLeft.Yes,
+                RightToLeftLayout = true,
+                BackColor = Color.White
+            };
+
+            Label titleLabel = new Label
+            {
+                Text = "مراجعة المنتجات قبل البيع",
+                Dock = DockStyle.Top,
+                Height = 48,
+                Font = new Font("Segoe UI", 14F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(15, 23, 42),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            DataGridView reviewGrid = new DataGridView
+            {
+                Dock = DockStyle.Fill,
+                AllowUserToAddRows = false,
+                AllowUserToResizeRows = false,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                MultiSelect = false,
+                RowHeadersVisible = false,
+                Font = new Font("Segoe UI", 10F)
+            };
+
+            reviewGrid.Columns.Add("product_id", "Product ID");
+            reviewGrid.Columns["product_id"].Visible = false;
+            reviewGrid.Columns.Add("product_name", "المنتج");
+            reviewGrid.Columns.Add("price_usd", "السعر $");
+            reviewGrid.Columns.Add("price_lb", "السعر ل.ل");
+            reviewGrid.Columns.Add("quantity", "الكمية");
+            reviewGrid.Columns.Add("total", "المجموع $");
+            reviewGrid.Columns.Add("exchange_dollar", "Exchange");
+            reviewGrid.Columns["exchange_dollar"].Visible = false;
+            reviewGrid.Columns.Add("date_time", "الوقت");
+
+            DataGridViewButtonColumn deleteColumn = new DataGridViewButtonColumn
+            {
+                Name = "Delete",
+                HeaderText = "حذف",
+                Text = "حذف",
+                UseColumnTextForButtonValue = true,
+                Width = 70
+            };
+            reviewGrid.Columns.Add(deleteColumn);
+
+            foreach (DataGridViewRow row in datagridsales.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                reviewGrid.Rows.Add(
+                    row.Cells["product_id"].Value,
+                    row.Cells["product_name"].Value,
+                    row.Cells["price_usd"].Value,
+                    row.Cells["price_lb"].Value,
+                    row.Cells["quantity"].Value,
+                    row.Cells["total"].Value,
+                    row.Cells["exchange_dollar"].Value,
+                    row.Cells["date_time"].Value);
+            }
+
+            reviewGrid.Columns["product_name"].ReadOnly = true;
+            reviewGrid.Columns["total"].ReadOnly = true;
+            reviewGrid.Columns["date_time"].ReadOnly = true;
+
+            Panel summaryPanel = new Panel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 150,
+                BackColor = Color.FromArgb(248, 250, 252),
+                Padding = new Padding(12)
+            };
+
+            Label totalsLabel = new Label
+            {
+                Dock = DockStyle.Top,
+                Height = 86,
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(30, 41, 59),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            Button okButton = new Button
+            {
+                Text = "OK",
+                DialogResult = DialogResult.OK,
+                Width = 130,
+                Height = 38,
+                Left = 170,
+                Top = 98,
+                BackColor = Color.FromArgb(22, 163, 74),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+
+            Button noButton = new Button
+            {
+                Text = "NO",
+                DialogResult = DialogResult.Cancel,
+                Width = 130,
+                Height = 38,
+                Left = 25,
+                Top = 98,
+                BackColor = Color.FromArgb(220, 38, 38),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+
+            void RefreshReviewTotals()
+            {
+                decimal totalUsd = 0m;
+                decimal totalLb = 0m;
+
+                foreach (DataGridViewRow row in reviewGrid.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    int qty = GetReviewIntCellValue(row, "quantity");
+                    decimal priceUsd = GetReviewDecimalCellValue(row, "price_usd");
+                    decimal priceLb = GetReviewDecimalCellValue(row, "price_lb");
+
+                    row.Cells["total"].Value = Math.Round(priceUsd * qty, 2);
+                    totalUsd += priceUsd * qty;
+                    totalLb += priceLb * qty;
+                }
+
+                decimal selectedTotal = rbDollar.Checked ? totalUsd : totalLb;
+                decimal balance = selectedTotal - customerPaid;
+                decimal customerOwes = balance > 0 ? balance : 0m;
+                decimal change = balance < 0 ? Math.Abs(balance) : 0m;
+
+                decimal customerOwesUsd = rbDollar.Checked
+                    ? customerOwes
+                    : exchangeRate > 0 ? customerOwes / exchangeRate : 0m;
+                decimal customerOwesLb = rbDollar.Checked
+                    ? customerOwes * exchangeRate
+                    : customerOwes;
+                decimal changeUsd = rbDollar.Checked
+                    ? change
+                    : exchangeRate > 0 ? change / exchangeRate : 0m;
+                decimal changeLb = rbDollar.Checked
+                    ? change * exchangeRate
+                    : change;
+
+                totalsLabel.Text =
+                    $"المجموع: {totalUsd:N2} $   |   {totalLb:N2} ل.ل\n" +
+                    $"المدفوع: {customerPaid:N2} {(rbDollar.Checked ? "$" : "ل.ل")}   |   الباقي عليه لنا: {customerOwesUsd:N2} $ / {customerOwesLb:N2} ل.ل\n" +
+                    $"كم اريد ان ارد له من المال: {changeUsd:N2} $ / {changeLb:N2} ل.ل";
+            }
+
+            reviewGrid.CellContentClick += (s, e) =>
+            {
+                if (e.RowIndex >= 0 && reviewGrid.Columns[e.ColumnIndex].Name == "Delete")
+                {
+                    reviewGrid.Rows.RemoveAt(e.RowIndex);
+                    RefreshReviewTotals();
+                }
+            };
+
+            reviewGrid.CellEndEdit += (s, e) => RefreshReviewTotals();
+            reviewGrid.RowsRemoved += (s, e) => RefreshReviewTotals();
+
+            summaryPanel.Controls.Add(totalsLabel);
+            summaryPanel.Controls.Add(okButton);
+            summaryPanel.Controls.Add(noButton);
+            reviewForm.Controls.Add(reviewGrid);
+            reviewForm.Controls.Add(summaryPanel);
+            reviewForm.Controls.Add(titleLabel);
+            reviewForm.AcceptButton = okButton;
+            reviewForm.CancelButton = noButton;
+
+            RefreshReviewTotals();
+
+            if (reviewForm.ShowDialog(this) != DialogResult.OK)
+                return false;
+
+            if (reviewGrid.Rows.Count == 0)
+            {
+                MessageBox.Show("لا يوجد منتجات للبيع");
+                return false;
+            }
+
+            datagridsales.Rows.Clear();
+
+            foreach (DataGridViewRow row in reviewGrid.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                int qty = GetReviewIntCellValue(row, "quantity");
+                if (qty <= 0)
+                {
+                    MessageBox.Show("الكمية غير صحيحة");
+                    return false;
+                }
+
+                decimal priceUsd = GetReviewDecimalCellValue(row, "price_usd");
+                decimal priceLb = GetReviewDecimalCellValue(row, "price_lb");
+                decimal total = priceUsd * qty;
+
+                datagridsales.Rows.Add(
+                    row.Cells["product_id"].Value,
+                    row.Cells["product_name"].Value,
+                    priceUsd,
+                    priceLb,
+                    qty,
+                    total,
+                    row.Cells["exchange_dollar"].Value,
+                    row.Cells["date_time"].Value,
+                    "");
+            }
+
+            UpdateTotals();
+            return true;
+        }
+
+        private decimal GetReviewDecimalCellValue(DataGridViewRow row, string columnName)
+        {
+            return decimal.TryParse(row.Cells[columnName].Value?.ToString(), out decimal value) ? value : 0m;
+        }
+
+        private int GetReviewIntCellValue(DataGridViewRow row, string columnName)
+        {
+            return int.TryParse(row.Cells[columnName].Value?.ToString(), out int value) ? value : 0;
+        }
+
+        private bool ProcessSale(bool printReceipt)
         {
             decimal totalUsd = 0;
             decimal totalLb = 0;
@@ -1084,19 +1376,22 @@ namespace Pos_System.Forms
                 totalQuantity += qty;
             }
 
-            // ✅ Validate payment
-            if (!decimal.TryParse(txtPaidAmount.Text, out decimal customerPaid))
+            if (totalQuantity <= 0)
             {
-                MessageBox.Show("أدخل المبلغ المدفوع بشكل صحيح");
-                return;
+                MessageBox.Show("أضف منتجات قبل البيع");
+                return false;
             }
+
+            // ✅ Validate payment
+            if (!TryReadPaidAmount(out decimal customerPaid))
+                return false;
 
             int userId = LoginForm.LoggedInUserId;
 
             if (!int.TryParse(cmbCustomer.SelectedValue?.ToString(), out int customerId))
             {
                 MessageBox.Show("اختر زبون صحيح");
-                return;
+                return false;
             }
 
             string customerName = cmbCustomer.Text;
@@ -1105,12 +1400,13 @@ namespace Pos_System.Forms
             if (comboPaymentMethod.SelectedIndex < 0 || string.IsNullOrWhiteSpace(paymentMethod))
             {
                 MessageBox.Show("اختر طريقة الدفع أولاً");
-                return;
+                return false;
             }
 
-            // ✅ Balances
-           decimal? balanceUsd = rbDollar.Checked ? (decimal?)(customerPaid - totalUsd) : null;
-            decimal? balanceLb = rbLebanon.Checked ? (decimal?)(customerPaid - totalLb) : null;
+            // Positive balance means the customer owes the business.
+            // Negative balance means the business owes the customer.
+            decimal? balanceUsd = rbDollar.Checked ? (decimal?)(totalUsd - customerPaid) : null;
+            decimal? balanceLb = rbLebanon.Checked ? (decimal?)(totalLb - customerPaid) : null;
 
             // ✅ Safe rounding
             decimal safeTotalUsd = Math.Round(totalUsd, SqlMoneyScale);
@@ -1121,7 +1417,7 @@ namespace Pos_System.Forms
             if (!rbDollar.Checked && !rbLebanon.Checked)
             {
                 MessageBox.Show("اختر العملة قبل إتمام عملية البيع");
-                return;
+                return false;
             }
 
             decimal selectedTotalAmount = rbDollar.Checked ? safeTotalUsd : safeTotalLb;
@@ -1130,7 +1426,7 @@ namespace Pos_System.Forms
             if (!ValidateSaleAmounts(selectedTotalAmount, selectedBalanceAmount, out string validationMessage))
             {
                 MessageBox.Show(validationMessage);
-                return;
+                return false;
             }
 
             int saleId;
@@ -1144,9 +1440,9 @@ namespace Pos_System.Forms
                 {
                     // ✅ INSERT SALES
                     string query = @"INSERT INTO Sales 
-(user_id, customer_id, total_amount, payment_method, created_by, customer_name, balance_usd, balance_lb, quantity)
-VALUES (@user_id, @customer_id, @total_amount, @payment_method, @created_by, @customer_name, @balance_usd, @balance_lb, @quantity);
-SELECT CAST(SCOPE_IDENTITY() AS int);";
+                                (user_id, customer_id, total_amount, payment_method, created_by, customer_name, balance_usd, balance_lb, quantity)
+                                VALUES (@user_id, @customer_id, @total_amount, @payment_method, @created_by, @customer_name, @balance_usd, @balance_lb, @quantity);
+                                SELECT CAST(SCOPE_IDENTITY() AS int);";
 
                     SqlCommand cmd = new SqlCommand(query, conn, transaction);
 
@@ -1214,8 +1510,8 @@ SELECT CAST(SCOPE_IDENTITY() AS int);";
 
                         // Insert item
                         SqlCommand cmdItem = new SqlCommand(@"INSERT INTO Sale_Items 
-(sale_id, product_id, quantity, unit_price, name_product, customer_name, created_by)
-VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_name, @created_by)", conn, transaction);
+                            (sale_id, product_id, quantity, unit_price, name_product, customer_name, created_by)
+                            VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_name, @created_by)", conn, transaction);
 
                         cmdItem.Parameters.Add("@sale_id", SqlDbType.Int).Value = saleId;
                         cmdItem.Parameters.Add("@product_id", SqlDbType.Int).Value = productId;
@@ -1244,16 +1540,19 @@ VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_
                         update.ExecuteNonQuery();
                     }
 
+                    UpdateCustomerBalance(conn, transaction, customerId, safeBalanceUsd, safeBalanceLb);
+
                     transaction.Commit();
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
                     MessageBox.Show("خطأ: " + ex.Message);
-                    return;
+                    return false;
                 }
             }
 
+            AuditLogger.Log("ADD", "Sales", saleId, "Created sale for " + customerName + " / total: " + selectedTotalAmount.ToString("N2"));
             MessageBox.Show("تمت العملية بنجاح - رقم الفاتورة: " + saleId);
 
             if (printReceipt)
@@ -1262,6 +1561,44 @@ VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_
             }
 
             clearinput();
+            return true;
+        }
+
+        private void UpdateCustomerBalance(
+            SqlConnection conn,
+            SqlTransaction transaction,
+            int customerId,
+            decimal? balanceUsdDelta,
+            decimal? balanceLbDelta)
+        {
+            using (SqlCommand command = new SqlCommand(@"
+                UPDATE Customers
+                SET balance_usd = ISNULL(balance_usd, 0) + @balanceUsdDelta,
+                    balance_lb = ISNULL(balance_lb, 0) + @balanceLbDelta,
+                    balance = CASE
+                        WHEN @balanceUsdDelta <> 0 THEN ISNULL(balance_usd, 0) + @balanceUsdDelta
+                        WHEN @balanceLbDelta <> 0 THEN ISNULL(balance_lb, 0) + @balanceLbDelta
+                        ELSE ISNULL(balance, 0)
+                    END,
+                    balance_updated_at = GETDATE()
+                WHERE customer_id = @customerId;", conn, transaction))
+            {
+                command.Parameters.Add("@customerId", SqlDbType.Int).Value = customerId;
+                command.Parameters.Add(new SqlParameter("@balanceUsdDelta", SqlDbType.Decimal)
+                {
+                    Precision = SqlMoneyPrecision,
+                    Scale = SqlMoneyScale,
+                    Value = balanceUsdDelta.HasValue ? balanceUsdDelta.Value : 0m
+                });
+                command.Parameters.Add(new SqlParameter("@balanceLbDelta", SqlDbType.Decimal)
+                {
+                    Precision = SqlMoneyPrecision,
+                    Scale = SqlMoneyScale,
+                    Value = balanceLbDelta.HasValue ? balanceLbDelta.Value : 0m
+                });
+
+                command.ExecuteNonQuery();
+            }
         }
 
         private void clearinput()
@@ -1277,7 +1614,10 @@ VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_
 
         private void button4_Click(object sender, EventArgs e)
         {
-            ProcessSale(false);
+            if (ShowSaleWithoutInvoiceReview())
+            {
+                ProcessSale(false);
+            }
         }
 
         private void btn3rdfetora_Click(object sender, EventArgs e)
@@ -1361,6 +1701,7 @@ VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_
 
                         if (rowsAffected > 0)
                         {
+                            AuditLogger.Log("DELETE", "Sales", saleId, "Deleted invoice and sale items");
                             MessageBox.Show("تم حذف الفاتورة بنجاح");
                         }
                         else
@@ -1382,73 +1723,287 @@ VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private class ReturnItemSelection
         {
-            int saleId;
-            if (!int.TryParse(txtSaleId.Text, out saleId))
+            public int SaleId { get; set; }
+            public int ProductId { get; set; }
+            public string ProductName { get; set; }
+            public int AvailableQuantity { get; set; }
+        }
+
+        private bool TryGetReturnQuantity(out int quantity)
+        {
+            quantity = 1;
+
+            if (string.IsNullOrWhiteSpace(txtquantity.Text))
+                return true;
+
+            if (!int.TryParse(txtquantity.Text.Trim(), out quantity) || quantity <= 0)
             {
-                MessageBox.Show("أدخل رقم فاتورة صحيح");
-                return;
+                MessageBox.Show("الكمية غير صحيحة");
+                return false;
             }
 
+            return true;
+        }
+
+        private bool TryGetProductIdByBarcodeOrName(SqlConnection conn, SqlTransaction transaction, string keyword, out int productId)
+        {
+            productId = 0;
+
+            using (SqlCommand cmd = new SqlCommand(
+                @"SELECT TOP 1 product_id
+                  FROM Products
+                  WHERE barcode = @keyword OR name = @keyword", conn, transaction))
+            {
+                cmd.Parameters.Add("@keyword", SqlDbType.NVarChar, 100).Value = keyword;
+
+                object result = cmd.ExecuteScalar();
+                if (result == null || result == DBNull.Value)
+                    return false;
+
+                productId = Convert.ToInt32(result);
+                return true;
+            }
+        }
+
+        private ReturnItemSelection FindReturnableSaleItem(SqlConnection conn, SqlTransaction transaction, int productId, int quantity, int? saleId)
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                @"SELECT TOP 1
+                         si.sale_id,
+                         si.product_id,
+                         p.name,
+                         si.quantity - ISNULL((
+                             SELECT SUM(r.quantity)
+                             FROM Returns r
+                             WHERE r.sale_id = si.sale_id
+                               AND r.product_id = si.product_id
+                         ), 0) AS available_quantity
+                  FROM Sale_Items si
+                  INNER JOIN Sales s ON s.sale_id = si.sale_id
+                  INNER JOIN Products p ON p.product_id = si.product_id
+                  WHERE si.product_id = @product_id
+                    AND (@sale_id IS NULL OR si.sale_id = @sale_id)
+                    AND si.quantity - ISNULL((
+                        SELECT SUM(r.quantity)
+                        FROM Returns r
+                        WHERE r.sale_id = si.sale_id
+                          AND r.product_id = si.product_id
+                    ), 0) >= @quantity
+                  ORDER BY s.sale_date DESC, si.sale_item_id DESC", conn, transaction))
+            {
+                cmd.Parameters.Add("@product_id", SqlDbType.Int).Value = productId;
+                cmd.Parameters.Add("@quantity", SqlDbType.Int).Value = quantity;
+                cmd.Parameters.Add("@sale_id", SqlDbType.Int).Value = saleId.HasValue ? (object)saleId.Value : DBNull.Value;
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (!reader.Read())
+                        return null;
+
+                    return new ReturnItemSelection
+                    {
+                        SaleId = Convert.ToInt32(reader["sale_id"]),
+                        ProductId = Convert.ToInt32(reader["product_id"]),
+                        ProductName = reader["name"].ToString(),
+                        AvailableQuantity = Convert.ToInt32(reader["available_quantity"])
+                    };
+                }
+            }
+        }
+
+        private void InsertReturnAndRestoreStock(SqlConnection conn, SqlTransaction transaction, int saleId, int productId, int quantity)
+        {
+            using (SqlCommand cmdUpdate = new SqlCommand(
+                @"UPDATE Products
+                  SET stock_quantity = stock_quantity + @qty
+                  WHERE product_id = @product_id", conn, transaction))
+            {
+                cmdUpdate.Parameters.Add("@qty", SqlDbType.Int).Value = quantity;
+                cmdUpdate.Parameters.Add("@product_id", SqlDbType.Int).Value = productId;
+                cmdUpdate.ExecuteNonQuery();
+            }
+
+            using (SqlCommand cmdReturn = new SqlCommand(
+                @"INSERT INTO Returns (sale_id, product_id, quantity, return_date)
+                  VALUES (@sale_id, @product_id, @quantity, GETDATE())", conn, transaction))
+            {
+                cmdReturn.Parameters.Add("@sale_id", SqlDbType.Int).Value = saleId;
+                cmdReturn.Parameters.Add("@product_id", SqlDbType.Int).Value = productId;
+                cmdReturn.Parameters.Add("@quantity", SqlDbType.Int).Value = quantity;
+                cmdReturn.ExecuteNonQuery();
+            }
+        }
+
+        private void UpdateSaleReturnStatus(SqlConnection conn, SqlTransaction transaction, int saleId)
+        {
+            using (SqlCommand cmd = new SqlCommand(
+                @"IF NOT EXISTS (
+                      SELECT 1
+                      FROM Sale_Items si
+                      WHERE si.sale_id = @sale_id
+                        AND si.quantity - ISNULL((
+                            SELECT SUM(r.quantity)
+                            FROM Returns r
+                            WHERE r.sale_id = si.sale_id
+                              AND r.product_id = si.product_id
+                        ), 0) > 0
+                  )
+                  BEGIN
+                      UPDATE Sales SET is_returned = 1, status = N'مرتجع' WHERE sale_id = @sale_id
+                  END
+                  ELSE
+                  BEGIN
+                      UPDATE Sales SET is_returned = 0, status = N'مرتجع جزئي' WHERE sale_id = @sale_id
+                  END", conn, transaction))
+            {
+                cmd.Parameters.Add("@sale_id", SqlDbType.Int).Value = saleId;
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private bool ReturnWholeInvoice(int saleId)
+        {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
+                SqlTransaction transaction = conn.BeginTransaction();
 
-                // أولاً: جيب المنتجات من جدول Sale_Items الصحيح
-                string queryDetails = @"SELECT product_id, quantity 
-                            FROM Sale_Items 
-                            WHERE sale_id = @sale_id";
-
-                SqlCommand cmdDetails = new SqlCommand(queryDetails, conn);
-                cmdDetails.Parameters.AddWithValue("@sale_id", saleId);
-
-                SqlDataReader reader = cmdDetails.ExecuteReader();
-
-                List<(int productId, int qty)> returnedProducts = new List<(int, int)>();
-
-                while (reader.Read())
+                try
                 {
-                    int productId = Convert.ToInt32(reader["product_id"]);
-                    int qty = Convert.ToInt32(reader["quantity"]);
-                    returnedProducts.Add((productId, qty));
-                }
-                reader.Close();
+                    List<(int productId, int qty)> returnedProducts = new List<(int, int)>();
 
-                // ثانياً: زيد الكمية في جدول Products
-                foreach (var item in returnedProducts)
+                    using (SqlCommand cmdDetails = new SqlCommand(
+                        @"SELECT
+                                 si.product_id,
+                                 si.quantity - ISNULL((
+                                     SELECT SUM(r.quantity)
+                                     FROM Returns r
+                                     WHERE r.sale_id = si.sale_id
+                                       AND r.product_id = si.product_id
+                                 ), 0) AS remaining_quantity
+                          FROM Sale_Items si
+                          WHERE si.sale_id = @sale_id
+                            AND si.quantity - ISNULL((
+                                SELECT SUM(r.quantity)
+                                FROM Returns r
+                                WHERE r.sale_id = si.sale_id
+                                  AND r.product_id = si.product_id
+                            ), 0) > 0", conn, transaction))
+                    {
+                        cmdDetails.Parameters.Add("@sale_id", SqlDbType.Int).Value = saleId;
+
+                        using (SqlDataReader reader = cmdDetails.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                returnedProducts.Add((
+                                    Convert.ToInt32(reader["product_id"]),
+                                    Convert.ToInt32(reader["remaining_quantity"])));
+                            }
+                        }
+                    }
+
+                    if (returnedProducts.Count == 0)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("لم يتم العثور على الفاتورة أو أنها مرتجعة بالكامل");
+                        return false;
+                    }
+
+                    foreach (var item in returnedProducts)
+                    {
+                        InsertReturnAndRestoreStock(conn, transaction, saleId, item.productId, item.qty);
+                    }
+
+                    UpdateSaleReturnStatus(conn, transaction, saleId);
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception ex)
                 {
-                    string updateQuery = @"UPDATE Products 
-                               SET stock_quantity = stock_quantity + @qty 
-                               WHERE product_id = @product_id";   // ✅ استخدم stock_quantity بدل stock
-
-                    SqlCommand cmdUpdate = new SqlCommand(updateQuery, conn);
-                    cmdUpdate.Parameters.AddWithValue("@qty", item.qty);
-                    cmdUpdate.Parameters.AddWithValue("@product_id", item.productId);
-                    cmdUpdate.ExecuteNonQuery();
-
-                    // ثالثاً: سجل العملية في جدول Returns مع الكمية والمنتج
-                    string insertReturn = @"INSERT INTO Returns (sale_id, product_id, quantity, return_date) 
-                                VALUES (@sale_id, @product_id, @quantity, GETDATE())";
-
-                    SqlCommand cmdReturn = new SqlCommand(insertReturn, conn);
-                    cmdReturn.Parameters.AddWithValue("@sale_id", saleId);
-                    cmdReturn.Parameters.AddWithValue("@product_id", item.productId);
-                    cmdReturn.Parameters.AddWithValue("@quantity", item.qty);
-                    cmdReturn.ExecuteNonQuery();
+                    transaction.Rollback();
+                    MessageBox.Show("خطأ أثناء تسجيل المرتجع: " + ex.Message);
+                    return false;
                 }
+            }
+        }
 
-                // رابعاً: حدّث جدول Sales ليظهر أن الفاتورة مرتجعة
-                string updateSale = "UPDATE Sales SET is_returned = 1, status = N'مرتجع' WHERE sale_id = @sale_id";
-                SqlCommand cmdUpdateSale = new SqlCommand(updateSale, conn);
-                cmdUpdateSale.Parameters.AddWithValue("@sale_id", saleId);
-                cmdUpdateSale.ExecuteNonQuery();
+        private bool ReturnProductByBarcodeOrName(string keyword, int quantity, int? saleId)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+                SqlTransaction transaction = conn.BeginTransaction();
 
-                conn.Close();
+                try
+                {
+                    if (!TryGetProductIdByBarcodeOrName(conn, transaction, keyword, out int productId))
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("المنتج غير موجود");
+                        return false;
+                    }
+
+                    ReturnItemSelection item = FindReturnableSaleItem(conn, transaction, productId, quantity, saleId);
+                    if (item == null)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show(saleId.HasValue
+                            ? "هذا المنتج غير موجود في الفاتورة أو تم إرجاعه سابقاً"
+                            : "لم يتم العثور على عملية بيع لهذا المنتج أو تم إرجاع الكمية سابقاً");
+                        return false;
+                    }
+
+                    InsertReturnAndRestoreStock(conn, transaction, item.SaleId, item.ProductId, quantity);
+                    UpdateSaleReturnStatus(conn, transaction, item.SaleId);
+                    transaction.Commit();
+
+                    AuditLogger.Log("EDIT", "Sales", item.SaleId, "Returned product " + item.ProductId + " / quantity: " + quantity);
+                    MessageBox.Show("تم تسجيل مرتجع المنتج: " + item.ProductName + "\nالكمية: " + quantity);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show("خطأ أثناء تسجيل المرتجع: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            bool hasSaleId = int.TryParse(txtSaleId.Text.Trim(), out int saleId);
+            string keyword = txtsearch.Text.Trim();
+            bool hasKeyword = !string.IsNullOrWhiteSpace(keyword) &&
+                              !keyword.Equals("search by name product or barcode", StringComparison.OrdinalIgnoreCase);
+
+            if (hasKeyword)
+            {
+                if (!TryGetReturnQuantity(out int quantity))
+                    return;
+
+                bool returnedByItem = ReturnProductByBarcodeOrName(keyword, quantity, hasSaleId ? (int?)saleId : null);
+                if (returnedByItem)
+                    clearinput();
+
+                return;
             }
 
-            MessageBox.Show("تم تسجيل المرتجع وإضافة المنتجات مرة أخرى للمخزون");
+            if (!hasSaleId)
+            {
+                MessageBox.Show("أدخل رقم الفاتورة أو باركود المنتج في خانة البحث");
+                return;
+            }
 
+            if (ReturnWholeInvoice(saleId))
+            {
+                AuditLogger.Log("EDIT", "Sales", saleId, "Marked invoice as returned and restored stock");
+                MessageBox.Show("تم تسجيل المرتجع وإضافة المنتجات مرة أخرى للمخزون");
+                clearinput();
+            }
         }
 
 

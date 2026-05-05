@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Data.SqlClient;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
     public partial class AddCustomers : Form
     {
-        string connStr = "Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;";
+        private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
         public AddCustomers()
         {
             InitializeComponent();
@@ -48,17 +49,18 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditLogger.Log("ADD", "Customers", null, "Added customer: " + txtname.Text);
                 MessageBox.Show("✅ تم إضافة العميل بنجاح بواسطة " + LoginForm.LoggedInUsername);
-                this.Close(); // إغلاق الفورم بعد الإضافة
+                //this.Close(); // إغلاق الفورم بعد الإضافة
             }
             catch (Exception ex)
             {
                 MessageBox.Show("حدث خطأ: " + ex.Message);
             }
             clearinput();
-            Customers customers = new Customers();
-            customers.ShowDialog();
-            this.Close();
+            //Customers customers = new Customers();
+            //customers.ShowDialog();
+            //this.Close();
         }
 
         private void btncancle_Click(object sender, EventArgs e)

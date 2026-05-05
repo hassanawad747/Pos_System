@@ -12,7 +12,7 @@ namespace Pos_System.Forms
 {
     public partial class addsalesform : Form
     {
-        string connStr = "Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;";
+        private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
 
         public addsalesform()
         {
@@ -40,7 +40,7 @@ namespace Pos_System.Forms
                      WHERE (@ProductName = '' OR p.name LIKE '%' + @ProductName + '%')
                        AND (@SupplierName = '' OR s.name = @SupplierName)";
 
-            using (SqlConnection con = new SqlConnection("Data Source=.;Initial Catalog=pos_system;Integrated Security=True"))
+            using (SqlConnection con = new SqlConnection(connStr))
             {
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@ProductName", productName);
@@ -97,7 +97,7 @@ namespace Pos_System.Forms
             LoadStock("", ""); // عرض كل البيانات بدون فلترة
 
             // تعبئة ComboBox بالموردين
-            using (SqlConnection con = new SqlConnection("Data Source=.;Initial Catalog=pos_system;Integrated Security=True"))
+            using (SqlConnection con = new SqlConnection(connStr))
             {
                 SqlDataAdapter da = new SqlDataAdapter("SELECT name FROM Suppliers", con);
                 DataTable dt = new DataTable();
@@ -144,7 +144,7 @@ namespace Pos_System.Forms
                      FROM Products p
                      INNER JOIN Suppliers s ON p.supplier_id = s.supplier_id";
 
-            using (SqlConnection con = new SqlConnection("Data Source=.;Initial Catalog=pos_system;Integrated Security=True"))
+            using (SqlConnection con = new SqlConnection(connStr))
             {
                 SqlDataAdapter da = new SqlDataAdapter(query, con);
                 DataTable dt = new DataTable();

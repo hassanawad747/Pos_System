@@ -1,0 +1,468 @@
+C:\Users\user\Desktop\Pos_System\bin\Debug\Pos_System.exe.config
+C:\Users\user\Desktop\Pos_System\bin\Debug\Pos_System.exe
+C:\Users\user\Desktop\Pos_System\bin\Debug\Pos_System.pdb
+C:\Users\user\Desktop\Pos_System\bin\Debug\ClosedXML.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\ClosedXML.Parser.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\DocumentFormat.OpenXml.Framework.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\ExcelNumberFormat.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Bcl.HashCode.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Data.SqlClient.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Logging.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Options.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Primitives.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Identity.Client.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.IdentityModel.Logging.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.IdentityModel.Protocols.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.IdentityModel.Tokens.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\RBush.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\SixLabors.Fonts.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Buffers.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Collections.Immutable.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.ComponentModel.Annotations.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Memory.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\ClosedXML.pdb
+C:\Users\user\Desktop\Pos_System\bin\Debug\ClosedXML.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\ClosedXML.Parser.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\DocumentFormat.OpenXml.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\DocumentFormat.OpenXml.Framework.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\ExcelNumberFormat.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Bcl.HashCode.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Data.SqlClient.pdb
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Data.SqlClient.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Abstractions.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Design.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Relational.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.SqlServer.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Caching.Abstractions.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Caching.Memory.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.Binder.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.DependencyInjection.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Logging.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Logging.Abstractions.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Options.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Extensions.Primitives.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.Identity.Client.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.IdentityModel.Logging.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.IdentityModel.Protocols.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.IdentityModel.Protocols.OpenIdConnect.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Microsoft.IdentityModel.Tokens.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\RBush.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\SixLabors.Fonts.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Buffers.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Collections.Immutable.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.IdentityModel.Tokens.Jwt.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Memory.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\user\Desktop\Pos_System\bin\Debug\de\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\es\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\fr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\it\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\ja\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\ko\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\pt-BR\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\ru\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pos_System\bin\Debug\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.csproj.ResolveComReference.cache
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.AddCustomers.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.AddProducts.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.addsalesform.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.AddUsers.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.CategoryForm.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.Customers.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.Dashboard.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.EarningReports.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.LoginForm.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.PosSystemDashboard.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.Products.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.ReportsForm.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.Sales.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.Settings.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.SupplierForm.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Forms.WarhouseReports.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.Properties.Resources.resources
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.csproj.GenerateResource.cache
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.csproj.Up2Date
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.exe
+C:\Users\user\Desktop\Pos_System\obj\Debug\Pos_System.pdb
+C:\Users\user\Desktop\Pos_System\bin\Debug\System.Data.Common.dll
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.csproj.AssemblyReference.cache
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.exe
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.pdb
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.csproj.ResolveComReference.cache
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.AddCustomers.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.AddProducts.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.addsalesform.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.AddUsers.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.CategoryForm.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.Customers.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.Dashboard.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.EarningReports.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.LoginForm.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.PosSystemDashboard.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.Products.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.ReportsForm.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.Sales.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.Settings.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.SupplierForm.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Forms.WarhouseReports.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.Properties.Resources.resources
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.csproj.GenerateResource.cache
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.csproj.CoreCompileInputs.cache
+C:\Users\user\Documents\Pos_System\bin\Debug\Pos_System.exe.config
+C:\Users\user\Documents\Pos_System\bin\Debug\Pos_System.exe
+C:\Users\user\Documents\Pos_System\bin\Debug\Pos_System.pdb
+C:\Users\user\Documents\Pos_System\bin\Debug\ClosedXML.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\ClosedXML.Parser.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\DocumentFormat.OpenXml.Framework.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\ExcelNumberFormat.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Bcl.HashCode.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Data.SqlClient.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Logging.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Options.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Primitives.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Identity.Client.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.IdentityModel.Logging.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.IdentityModel.Protocols.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.IdentityModel.Tokens.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\RBush.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\SixLabors.Fonts.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Buffers.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Collections.Immutable.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\System.ComponentModel.Annotations.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Data.Common.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Memory.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\ClosedXML.pdb
+C:\Users\user\Documents\Pos_System\bin\Debug\ClosedXML.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\ClosedXML.Parser.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\DocumentFormat.OpenXml.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\DocumentFormat.OpenXml.Framework.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\ExcelNumberFormat.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Bcl.HashCode.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Data.SqlClient.pdb
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Data.SqlClient.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Abstractions.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Design.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.Relational.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.EntityFrameworkCore.SqlServer.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Caching.Abstractions.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Caching.Memory.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Configuration.Binder.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.DependencyInjection.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Logging.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Logging.Abstractions.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Options.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Extensions.Primitives.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.Identity.Client.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.IdentityModel.Logging.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.IdentityModel.Protocols.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.IdentityModel.Protocols.OpenIdConnect.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Microsoft.IdentityModel.Tokens.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\RBush.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\SixLabors.Fonts.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Buffers.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Collections.Immutable.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\System.IdentityModel.Tokens.Jwt.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Memory.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\user\Documents\Pos_System\bin\Debug\de\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\es\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\fr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\it\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\ja\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\ko\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\pt-BR\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\ru\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\Debug\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\obj\Debug\Pos_System.csproj.Up2Date
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Pos_System.exe.config
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Pos_System.exe
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Pos_System.pdb
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\ClosedXML.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\ClosedXML.Parser.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\DocumentFormat.OpenXml.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\DocumentFormat.OpenXml.Framework.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\ExcelNumberFormat.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Bcl.HashCode.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Data.SqlClient.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.EntityFrameworkCore.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Configuration.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Logging.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Options.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Primitives.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Identity.Client.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.IdentityModel.Logging.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.IdentityModel.Protocols.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.IdentityModel.Tokens.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Newtonsoft.Json.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\RBush.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\SixLabors.Fonts.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Buffers.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Collections.Immutable.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.ComponentModel.Annotations.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Data.Common.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Diagnostics.DiagnosticSource.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Memory.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Numerics.Vectors.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Threading.Tasks.Extensions.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\ClosedXML.pdb
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\ClosedXML.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\ClosedXML.Parser.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\DocumentFormat.OpenXml.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\DocumentFormat.OpenXml.Framework.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\ExcelNumberFormat.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Bcl.HashCode.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Data.SqlClient.pdb
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Data.SqlClient.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.EntityFrameworkCore.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.EntityFrameworkCore.Abstractions.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.EntityFrameworkCore.Design.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.EntityFrameworkCore.Relational.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.EntityFrameworkCore.SqlServer.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Caching.Abstractions.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Caching.Memory.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Configuration.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Configuration.Abstractions.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Configuration.Binder.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.DependencyInjection.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Logging.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Logging.Abstractions.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Options.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Extensions.Primitives.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.Identity.Client.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.IdentityModel.JsonWebTokens.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.IdentityModel.Logging.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.IdentityModel.Protocols.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.IdentityModel.Protocols.OpenIdConnect.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Microsoft.IdentityModel.Tokens.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\Newtonsoft.Json.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\RBush.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\SixLabors.Fonts.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Buffers.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Collections.Immutable.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Diagnostics.DiagnosticSource.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.IdentityModel.Tokens.Jwt.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Memory.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Numerics.Vectors.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\System.Threading.Tasks.Extensions.xml
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\de\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\es\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\fr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\it\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\ja\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\ko\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\pt-BR\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\ru\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\Pos_System\bin\CodexBuild\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Pos_System.exe.config
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Pos_System.exe
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Pos_System.pdb
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\ClosedXML.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\ClosedXML.Parser.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\DocumentFormat.OpenXml.Framework.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\ExcelNumberFormat.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Bcl.HashCode.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Data.SqlClient.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.EntityFrameworkCore.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Configuration.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Logging.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Options.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Primitives.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Identity.Client.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.IdentityModel.Logging.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.IdentityModel.Protocols.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.IdentityModel.Tokens.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\RBush.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\SixLabors.Fonts.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Buffers.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Collections.Immutable.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.ComponentModel.Annotations.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Data.Common.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Memory.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\ClosedXML.pdb
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\ClosedXML.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\ClosedXML.Parser.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\DocumentFormat.OpenXml.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\DocumentFormat.OpenXml.Framework.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\ExcelNumberFormat.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Bcl.HashCode.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Data.SqlClient.pdb
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Data.SqlClient.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.EntityFrameworkCore.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.EntityFrameworkCore.Abstractions.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.EntityFrameworkCore.Design.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.EntityFrameworkCore.Relational.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.EntityFrameworkCore.SqlServer.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Caching.Abstractions.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Caching.Memory.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Configuration.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Configuration.Binder.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.DependencyInjection.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Logging.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Logging.Abstractions.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Options.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Extensions.Primitives.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.Identity.Client.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.IdentityModel.Logging.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.IdentityModel.Protocols.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.IdentityModel.Protocols.OpenIdConnect.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Microsoft.IdentityModel.Tokens.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\RBush.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\SixLabors.Fonts.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Buffers.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Collections.Immutable.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.IdentityModel.Tokens.Jwt.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Memory.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\de\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\es\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\fr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\it\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\ja\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\ko\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\pt-BR\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\ru\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\bin\Debug\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.csproj.AssemblyReference.cache
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.csproj.ResolveComReference.cache
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.AddCustomers.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.AddProducts.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.addsalesform.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.AddUsers.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.CategoryForm.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.Customers.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.Dashboard.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.EarningReports.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.LoginForm.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.PosSystemDashboard.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.Products.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.ReportsForm.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.Sales.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.Settings.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.SupplierForm.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Forms.WarhouseReports.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.Properties.Resources.resources
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.csproj.GenerateResource.cache
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.csproj.CoreCompileInputs.cache
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.csproj.Up2Date
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.exe
+C:\Users\user\Documents\New folder\last-version-pos_system\obj\Debug\Pos_System.pdb

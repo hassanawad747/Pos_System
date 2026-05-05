@@ -1,13 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using Pos_System.Services;
 using static POS_System.Program;
 
 namespace Pos_System.Forms
 {
     public partial class Settings : Form
     {
+        private TextBox txtExchangeRate;
+        private Label lblExchangeRate;
+
         public Settings()
         {
             InitializeComponent();
@@ -19,6 +25,7 @@ namespace Pos_System.Forms
         {
             labeldate.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             LoadSettingsIntoControls();
+            ApplySelectedLanguagePreview();
         }
 
         private void ConfigureSettingsControls()
@@ -43,6 +50,7 @@ namespace Pos_System.Forms
 
             comboBuckup.Items.Clear();
             comboBuckup.Items.AddRange(new object[] { "Daily", "Weekly", "Monthly", "Manual" });
+            comboLanguage.SelectedIndexChanged += ComboLanguage_SelectedIndexChanged;
 
             txtpercentage.MaxLength = 5;
             txtDixcount.MaxLength = 5;
@@ -56,6 +64,38 @@ namespace Pos_System.Forms
             txtsession.KeyPress += IntegerTextBox_KeyPress;
             textBox1.KeyPress += IntegerTextBox_KeyPress;
             checkBox_Lock.CheckedChanged += CheckBox_Lock_CheckedChanged;
+            AddExchangeRateControls();
+        }
+
+        private void AddExchangeRateControls()
+        {
+            if (txtExchangeRate == null)
+            {
+                txtExchangeRate = new TextBox
+                {
+                    Name = "txtExchangeRate",
+                    Location = new Point(334, 185),
+                    Size = new Size(160, 32),
+                    Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                    TextAlign = HorizontalAlignment.Center
+                };
+                txtExchangeRate.KeyPress += NumericTextBox_KeyPress;
+                grpSale_Transactions.Controls.Add(txtExchangeRate);
+            }
+
+            if (lblExchangeRate == null)
+            {
+                lblExchangeRate = new Label
+                {
+                    Name = "lblExchangeRate",
+                    Text = "سعر صرف الدولار",
+                    AutoSize = true,
+                    Location = new Point(51, 190),
+                    Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(30, 41, 59)
+                };
+                grpSale_Transactions.Controls.Add(lblExchangeRate);
+            }
         }
 
         private void LoadSettingsIntoControls()
@@ -85,6 +125,7 @@ namespace Pos_System.Forms
                 .ToString("0.##", CultureInfo.InvariantCulture);
             txtstock.Text = SettingsManager.GetIntSetting("low_stock_threshold", 5).ToString();
             textBox1.Text = SettingsManager.GetIntSetting("login_lock_attempts", 3).ToString();
+            txtExchangeRate.Text = SettingsManager.GetExchangeRate().ToString("0.####", CultureInfo.InvariantCulture);
 
             checkBox_Audit.Checked = SettingsManager.GetBoolSetting("audit_logs_enabled", true);
             checkBoxManager.Checked = SettingsManager.GetBoolSetting("refund_approval_required", true);
@@ -108,6 +149,7 @@ namespace Pos_System.Forms
             txtpercentage.Text = "10";
             txtDixcount.Text = "20";
             txtstock.Text = "5";
+            txtExchangeRate.Text = "89000";
             checkBox_Audit.Checked = true;
             checkBoxManager.Checked = true;
             checkBox_Lock.Checked = true;
@@ -130,6 +172,7 @@ namespace Pos_System.Forms
                 { "low_stock_threshold", txtstock.Text.Trim() },
                 { "report_format", comboReport.SelectedItem?.ToString() ?? "PDF" },
                 { "backup_schedule", comboBuckup.SelectedItem?.ToString() ?? "Daily" },
+                { "exchange_rate", txtExchangeRate.Text.Trim() },
                 { "audit_logs_enabled", checkBox_Audit.Checked ? "true" : "false" },
                 { "refund_approval_required", checkBoxManager.Checked ? "true" : "false" },
                 { "lock_system_after_failed_logins", checkBox_Lock.Checked ? "true" : "false" },
@@ -209,6 +252,19 @@ namespace Pos_System.Forms
                 return false;
             }
 
+            if (!decimal.TryParse(txtExchangeRate.Text.Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal exchangeRate) &&
+                !decimal.TryParse(txtExchangeRate.Text.Trim(), out exchangeRate))
+            {
+                validationMessage = "Dollar exchange rate must be a valid number.";
+                return false;
+            }
+
+            if (exchangeRate <= 0m)
+            {
+                validationMessage = "Dollar exchange rate must be greater than zero.";
+                return false;
+            }
+
             if (checkBox_Lock.Checked)
             {
                 if (!int.TryParse(textBox1.Text.Trim(), out int loginAttempts) || loginAttempts < 1 || loginAttempts > 10)
@@ -248,6 +304,38 @@ namespace Pos_System.Forms
         private void CheckBox_Lock_CheckedChanged(object sender, EventArgs e)
         {
             ToggleLockAttemptsField();
+        }
+
+        private void ComboLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplySelectedLanguagePreview();
+        }
+
+        private void ApplySelectedLanguagePreview()
+        {
+            bool isArabic = comboLanguage.SelectedItem != null &&
+                comboLanguage.SelectedItem.ToString().Equals("Arabic", StringComparison.OrdinalIgnoreCase);
+
+            RightToLeft direction = isArabic ? RightToLeft.Yes : RightToLeft.No;
+            RightToLeft = direction;
+            RightToLeftLayout = isArabic;
+
+            foreach (Control control in Controls.Cast<Control>().ToList())
+            {
+                ApplyDirectionPreview(control, direction);
+            }
+
+            RuntimeLanguageService.Apply(this, isArabic);
+        }
+
+        private void ApplyDirectionPreview(Control control, RightToLeft direction)
+        {
+            control.RightToLeft = direction;
+
+            foreach (Control child in control.Controls.Cast<Control>().ToList())
+            {
+                ApplyDirectionPreview(child, direction);
+            }
         }
 
         private void ToggleLockAttemptsField()

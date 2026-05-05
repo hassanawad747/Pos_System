@@ -69,7 +69,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
+            this.labelprofit = new System.Windows.Forms.Label();
             this.lbmbe3atlyoum = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -472,7 +472,7 @@
             this.panel2.Controls.Add(this.label14);
             this.panel2.Controls.Add(this.label13);
             this.panel2.Controls.Add(this.label9);
-            this.panel2.Controls.Add(this.label12);
+            this.panel2.Controls.Add(this.labelprofit);
             this.panel2.Controls.Add(this.lbmbe3atlyoum);
             this.panel2.Controls.Add(this.textBox4);
             this.panel2.Controls.Add(this.textBox3);
@@ -572,14 +572,14 @@
             this.label9.TabIndex = 7;
             this.label9.Text = "عدد الفواتير";
             // 
-            // label12
+            // labelprofit
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(124, 68);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(51, 16);
-            this.label12.TabIndex = 6;
-            this.label12.Text = "label12";
+            this.labelprofit.AutoSize = true;
+            this.labelprofit.Location = new System.Drawing.Point(124, 68);
+            this.labelprofit.Name = "labelprofit";
+            this.labelprofit.Size = new System.Drawing.Size(63, 16);
+            this.labelprofit.TabIndex = 6;
+            this.labelprofit.Text = "labelprofit";
             // 
             // lbmbe3atlyoum
             // 
@@ -800,7 +800,7 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label labelprofit;
         private System.Windows.Forms.Label lbmbe3atlyoum;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox3;

@@ -27,10 +27,10 @@ namespace Pos_System
         public LoginForm()
         {
             InitializeComponent();
+            ConfigureLoginShortcuts();
             POS_System.Program.SettingsManager.RegisterForm(this);
             var optionsBuilder = new DbContextOptionsBuilder<POSDbContext>();
-            optionsBuilder.UseSqlServer("Server=HASSAN-AWWAD;Database=pos_system;Trusted_Connection=True;");
-            // غيّر الـ Connection String حسب إعداداتك
+            optionsBuilder.UseSqlServer(POS_System.Program.SettingsManager.ConnectionString);
 
             // إنشاء الـ DbContext وتمريره للـ UserController
             POSDbContext dbContext = new POSDbContext(optionsBuilder.Options);
@@ -50,6 +50,7 @@ namespace Pos_System
             _context = context;
             _userController = new UserController(_context);
             InitializeComponent();
+            ConfigureLoginShortcuts();
             POS_System.Program.SettingsManager.RegisterForm(this);
             this.FormClosing += LoginForm_FormClosing;
         }
@@ -58,6 +59,35 @@ namespace Pos_System
 
         public static int LoggedInUserId; // متغير عام لتخزين الـ ID
         private static int failedLoginAttempts;
+        private bool isPasswordVisible;
+
+        private void ConfigureLoginShortcuts()
+        {
+            AcceptButton = btnlogin;
+            KeyPreview = true;
+
+            txtusername.KeyDown += LoginTextBox_KeyDown;
+            txtpassword.KeyDown += LoginTextBox_KeyDown;
+            KeyDown += LoginTextBox_KeyDown;
+        }
+
+        private void LoginTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter)
+            {
+                return;
+            }
+
+            e.SuppressKeyPress = true;
+
+            if (sender == txtusername && string.IsNullOrWhiteSpace(txtpassword.Text))
+            {
+                txtpassword.Focus();
+                return;
+            }
+
+            btnlogin.PerformClick();
+        }
 
         private void btnlogin_Click(object sender, EventArgs e)
         {
@@ -100,6 +130,37 @@ namespace Pos_System
                 int remainingAttempts = Math.Max(maxAttempts - failedLoginAttempts, 0);
                 MessageBox.Show("اسم المستخدم أو كلمة المرور غير صحيحة!" +
                     (lockEnabled ? $"\nRemaining attempts: {remainingAttempts}" : string.Empty));
+            }
+        }
+
+        private void btnTogglePassword_Click(object sender, EventArgs e)
+        {
+            isPasswordVisible = !isPasswordVisible;
+            txtpassword.PasswordChar = isPasswordVisible ? '\0' : '*';
+            btnTogglePassword.Invalidate();
+            txtpassword.Focus();
+            txtpassword.SelectionStart = txtpassword.Text.Length;
+        }
+
+        private void btnTogglePassword_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            using (Pen pen = new Pen(Color.White, 2F))
+            using (SolidBrush brush = new SolidBrush(Color.White))
+            {
+                Rectangle eyeBounds = new Rectangle(7, 9, 18, 11);
+                e.Graphics.DrawArc(pen, eyeBounds, 20, 140);
+                e.Graphics.DrawArc(pen, eyeBounds, 200, 140);
+
+                if (isPasswordVisible)
+                {
+                    e.Graphics.FillEllipse(brush, 14, 12, 4, 4);
+                }
+                else
+                {
+                    e.Graphics.DrawLine(pen, 7, 23, 26, 6);
+                }
             }
         }
 

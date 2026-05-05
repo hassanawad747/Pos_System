@@ -1,0 +1,50 @@
+تعليمات تثبيت برنامج Bike Zone POS على كمبيوتر ثاني
+
+المتطلبات قبل التشغيل:
+1. يجب أن يكون SQL Server Express مثبت على الكمبيوتر الثاني.
+2. يجب أن يكون اسم السيرفر/النسخة SQLEXPRESS.
+3. يجب أن تكون أداة sqlcmd.exe موجودة على الكمبيوتر.
+4. يجب تشغيل ملف التثبيت كمسؤول Administrator.
+
+طريقة التثبيت الأسهل:
+1. انسخ فولدر BikeZone_POS_Installer كامل إلى الكمبيوتر الثاني.
+2. ضع الفولدر على سطح المكتب Desktop.
+3. افتح الفولدر BikeZone_POS_Installer.
+4. اضغط كليك يمين على الملف:
+   install_pos_system.bat
+5. اختر:
+   Run as administrator
+6. انتظر حتى ينتهي التثبيت.
+
+طريقة التثبيت من Command Prompt:
+1. افتح قائمة Start.
+2. اكتب:
+   cmd
+3. اضغط كليك يمين على Command Prompt.
+4. اختر:
+   Run as administrator
+5. اكتب الأمر التالي واضغط Enter:
+   cd /d "%USERPROFILE%\Desktop\BikeZone_POS_Installer"
+6. اكتب الأمر التالي واضغط Enter:
+   install_pos_system.bat
+
+ماذا يفعل ملف التثبيت؟
+1. يشغل خدمة SQL Server Express.
+2. ينسخ ملفات البرنامج إلى:
+   C:\BikeZonePOS\App
+3. ينسخ ملف قاعدة البيانات الاحتياطي إلى:
+   C:\BikeZonePOS\Database
+4. يسترجع قاعدة البيانات باسم:
+   pos_system
+5. ينشئ اختصار على سطح المكتب باسم:
+   Bike Zone POS
+6. يفتح البرنامج بعد انتهاء التثبيت.
+
+إذا ظهر خطأ أن SQL Server Express غير موجود:
+ثبت SQL Server Express على الكمبيوتر الثاني، ويجب أن يكون اسم النسخة SQLEXPRESS، ثم شغل التثبيت مرة ثانية.
+
+إذا ظهر خطأ أن sqlcmd.exe غير موجود:
+ثبت Microsoft SQL Server Command Line Utilities، ثم شغل التثبيت مرة ثانية.
+
+ملاحظة مهمة:
+انسخ الفولدر كامل كما هو، ولا تحذف فولدر App أو Database لأن ملف التثبيت يحتاجهما.

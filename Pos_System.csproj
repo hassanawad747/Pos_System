@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Pos_System</RootNamespace>
     <AssemblyName>Pos_System</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -150,6 +150,7 @@
     <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -265,6 +266,9 @@
     <Compile Include="Forms\ReportsForm.Designer.cs">
       <DependentUpon>ReportsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SalesStartForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\Sales.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -304,6 +308,11 @@
     <Compile Include="Models\Setting.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Services\AuditLogger.cs" />
+    <Compile Include="Services\ArabicToolTipService.cs" />
+    <Compile Include="Services\ResponsiveLayoutService.cs" />
+    <Compile Include="Services\RuntimeLanguageService.cs" />
+    <Compile Include="Services\WorkHistoryService.cs" />
     <Compile Include="pos_systemDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

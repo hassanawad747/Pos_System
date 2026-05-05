@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
@@ -51,6 +52,7 @@ namespace Pos_System.Forms
             }
 
             MessageBox.Show("✅ تم إضافة الصنف بنجاح");
+            AuditLogger.Log("ADD", "Categories", null, "Added category: " + categoryName);
             RefreshCategories();
 
             if (openNextAfterSave)
@@ -194,6 +196,7 @@ namespace Pos_System.Forms
                 }
 
                 MessageBox.Show("✅ تم تعديل الصنف بنجاح");
+                AuditLogger.Log("EDIT", "Categories", categoryId, "Updated category: " + categoryName);
                 RefreshCategories();
                 return;
             }
@@ -215,6 +218,7 @@ namespace Pos_System.Forms
                 }
 
                 MessageBox.Show("✅ تم حذف الصنف بنجاح");
+                AuditLogger.Log("DELETE", "Categories", categoryId, "Deleted category");
                 RefreshCategories();
             }
         }

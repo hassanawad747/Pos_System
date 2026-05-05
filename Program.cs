@@ -2,11 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Pos_System;
 using Pos_System.Data;
 using Pos_System.Forms;
+using Pos_System.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace POS_System
@@ -22,6 +25,9 @@ namespace POS_System
 
             var context = new POSDbContext(options);
 
+            AuditLogger.EnsureAuditTable();
+            WorkHistoryService.EnsureHistoryTable();
+            AuditLogger.EnsureCustomerBalanceColumns();
             InitializeDefaultSettings();
             SettingsManager.LoadSettings();
 
@@ -37,6 +43,9 @@ namespace POS_System
 
         public static class SettingsManager
         {
+            private const string ConnectionStringName =
+                "Pos_System.Properties.Settings.pos_systemConnectionString";
+
             private static readonly Dictionary<string, string> settingsCache =
                 new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
@@ -58,6 +67,7 @@ namespace POS_System
                     { "refund_approval_required", "true" },
                     { "lock_system_after_failed_logins", "true" },
                     { "login_lock_attempts", "3" },
+                    { "exchange_rate", "89000" },
                     { "default_price", "89000" }
                 };
 
@@ -65,8 +75,22 @@ namespace POS_System
             private static readonly Dictionary<Control, ControlColorSnapshot> originalColors =
                 new Dictionary<Control, ControlColorSnapshot>();
 
-            public static string ConnectionString =>
-                Pos_System.Properties.Settings.Default.pos_systemConnectionString;
+            public static string ConnectionString
+            {
+                get
+                {
+                    ConnectionStringSettings configuredConnection =
+                        ConfigurationManager.ConnectionStrings[ConnectionStringName];
+
+                    if (configuredConnection != null &&
+                        !string.IsNullOrWhiteSpace(configuredConnection.ConnectionString))
+                    {
+                        return configuredConnection.ConnectionString;
+                    }
+
+                    return Pos_System.Properties.Settings.Default.pos_systemConnectionString;
+                }
+            }
 
             public static IReadOnlyDictionary<string, string> DefaultSettings => defaultSettings;
 
@@ -162,8 +186,24 @@ namespace POS_System
                 return decimal.TryParse(raw, out decimal currentValue) ? currentValue : defaultValue;
             }
 
+            public static decimal GetExchangeRate()
+            {
+                decimal exchangeRate = GetDecimalSetting("exchange_rate", 0m);
+                if (exchangeRate <= 0m)
+                {
+                    exchangeRate = GetDecimalSetting("default_price", 89000m);
+                }
+
+                return exchangeRate > 0m ? exchangeRate : 89000m;
+            }
+
             public static void SaveSettings(IDictionary<string, string> settings)
             {
+                if (settings != null && settings.TryGetValue("exchange_rate", out string exchangeRate))
+                {
+                    settings["default_price"] = exchangeRate;
+                }
+
                 using (SqlConnection conn = new SqlConnection(ConnectionString))
                 {
                     conn.Open();
@@ -205,6 +245,8 @@ namespace POS_System
                 }
 
                 CaptureOriginalColors(form);
+                ResponsiveLayoutService.Register(form);
+                ArabicToolTipService.Register(form);
                 registeredForms.Add(form);
                 form.Shown += RegisteredFormShown;
                 form.Disposed += RegisteredFormDisposed;
@@ -213,7 +255,9 @@ namespace POS_System
 
             private static void RegisteredFormShown(object sender, EventArgs e)
             {
-                ApplySettingsToForm(sender as Form);
+                Form form = sender as Form;
+                ArabicToolTipService.Register(form);
+                ApplySettingsToForm(form);
             }
 
             private static void RegisteredFormDisposed(object sender, EventArgs e)
@@ -231,17 +275,63 @@ namespace POS_System
 
             public static void ApplySettingsToOpenForms()
             {
-                foreach (Form form in Application.OpenForms)
+                List<Form> openForms = GetOpenFormsSnapshot();
+                List<Form> registeredSnapshot = GetRegisteredFormsSnapshot();
+
+                foreach (Form form in openForms)
+                {
+                    TryApplySettingsToForm(form);
+                }
+
+                foreach (Form form in registeredSnapshot)
+                {
+                    if (!openForms.Contains(form))
+                    {
+                        TryApplySettingsToForm(form);
+                    }
+                }
+            }
+
+            private static List<Form> GetOpenFormsSnapshot()
+            {
+                List<Form> forms = new List<Form>();
+
+                for (int index = 0; index < Application.OpenForms.Count; index++)
+                {
+                    Form form = Application.OpenForms[index];
+                    if (form != null && !form.IsDisposed && !forms.Contains(form))
+                    {
+                        forms.Add(form);
+                    }
+                }
+
+                return forms;
+            }
+
+            private static List<Form> GetRegisteredFormsSnapshot()
+            {
+                try
+                {
+                    return registeredForms
+                        .Where(form => form != null && !form.IsDisposed)
+                        .ToList();
+                }
+                catch (InvalidOperationException)
+                {
+                    return new List<Form>();
+                }
+            }
+
+            private static void TryApplySettingsToForm(Form form)
+            {
+                try
                 {
                     ApplySettingsToForm(form);
                 }
-
-                foreach (Form form in new List<Form>(registeredForms))
+                catch (InvalidOperationException)
                 {
-                    if (!form.IsDisposed)
-                    {
-                        ApplySettingsToForm(form);
-                    }
+                    // A form/control collection changed while applying UI settings.
+                    // The next open/register event will apply the same settings again.
                 }
             }
 
@@ -255,11 +345,10 @@ namespace POS_System
                 bool isArabic = GetSetting("language", "English")
                     .Equals("Arabic", StringComparison.OrdinalIgnoreCase);
                 string theme = GetSetting("theme", "default").Trim().ToLowerInvariant();
-                form.RightToLeft = isArabic ? RightToLeft.Yes : RightToLeft.No;
-                form.RightToLeftLayout = isArabic;
 
-                ApplyRightToLeft(form.Controls, isArabic);
+                ApplyDirection(form, isArabic);
                 ApplyTheme(form, theme);
+                RuntimeLanguageService.Apply(form, isArabic);
                 form.Refresh();
             }
 
@@ -332,7 +421,7 @@ namespace POS_System
                     control.ForeColor = foreColor;
                 }
 
-                foreach (Control child in control.Controls)
+                foreach (Control child in control.Controls.Cast<Control>().ToList())
                 {
                     ApplyColorTheme(child, backColor, foreColor);
                 }
@@ -356,7 +445,7 @@ namespace POS_System
                     button.UseVisualStyleBackColor = false;
                 }
 
-                foreach (Control child in control.Controls)
+                foreach (Control child in control.Controls.Cast<Control>().ToList())
                 {
                     RestoreOriginalTheme(child);
                 }
@@ -371,7 +460,7 @@ namespace POS_System
 
                 originalColors[control] = new ControlColorSnapshot(control.BackColor, control.ForeColor);
 
-                foreach (Control child in control.Controls)
+                foreach (Control child in control.Controls.Cast<Control>().ToList())
                 {
                     CaptureOriginalColors(child);
                 }
@@ -379,15 +468,35 @@ namespace POS_System
 
             private static void ApplyRightToLeft(Control.ControlCollection controls, bool isArabic)
             {
-                foreach (Control control in controls)
+                List<Control> snapshot = controls.Cast<Control>().ToList();
+
+                foreach (Control control in snapshot)
                 {
                     control.RightToLeft = isArabic ? RightToLeft.Yes : RightToLeft.No;
+
+                    if (control is DataGridView grid)
+                    {
+                        grid.RightToLeft = isArabic ? RightToLeft.Yes : RightToLeft.No;
+                    }
+
+                    if (control is ToolStrip toolStrip)
+                    {
+                        toolStrip.RightToLeft = isArabic ? RightToLeft.Yes : RightToLeft.No;
+                    }
 
                     if (control.HasChildren)
                     {
                         ApplyRightToLeft(control.Controls, isArabic);
                     }
                 }
+            }
+
+            private static void ApplyDirection(Form form, bool isArabic)
+            {
+                RightToLeft direction = isArabic ? RightToLeft.Yes : RightToLeft.No;
+                form.RightToLeft = direction;
+                form.RightToLeftLayout = isArabic;
+                ApplyRightToLeft(form.Controls, isArabic);
             }
 
             private sealed class ControlColorSnapshot

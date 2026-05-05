@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
@@ -52,6 +53,7 @@ namespace Pos_System.Forms
             }
 
             MessageBox.Show("✅ تم إضافة المورد بنجاح");
+            AuditLogger.Log("ADD", "Suppliers", null, "Added supplier: " + supplierName);
             RefreshSuppliers();
 
             if (openNextAfterSave)
@@ -200,6 +202,7 @@ namespace Pos_System.Forms
                 }
 
                 MessageBox.Show("✅ تم تعديل المورد بنجاح");
+                AuditLogger.Log("EDIT", "Suppliers", supplierId, "Updated supplier: " + supplierName);
                 RefreshSuppliers();
                 return;
             }
@@ -221,6 +224,7 @@ namespace Pos_System.Forms
                 }
 
                 MessageBox.Show("✅ تم حذف المورد بنجاح");
+                AuditLogger.Log("DELETE", "Suppliers", supplierId, "Deleted supplier");
                 RefreshSuppliers();
             }
         }
