@@ -3,6 +3,7 @@ using Pos_System.Controllers;
 using Pos_System.Data;
 using Pos_System.Forms;
 using Pos_System.Models;
+using Pos_System.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,9 +32,13 @@ namespace Pos_System
             POS_System.Program.SettingsManager.RegisterForm(this);
             var optionsBuilder = new DbContextOptionsBuilder<POSDbContext>();
             optionsBuilder.UseSqlServer(POS_System.Program.SettingsManager.ConnectionString);
+<<<<<<< HEAD
 
             // إنشاء الـ DbContext وتمريره للـ UserController
+=======
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
             POSDbContext dbContext = new POSDbContext(optionsBuilder.Options);
+            _context = dbContext;
             _userController = new UserController(dbContext);
         }
 
@@ -105,10 +110,9 @@ namespace Pos_System
             if (user != null)
             {
                 failedLoginAttempts = 0;
-                // خزّن الـ user_id
-                LoggedInUserId = user.User_Id;   // تأكد أن خاصية اسمها User_Id أو user_id في الموديل
-
-                LoggedInUsername = user.Username; // خزّن اسم المستخدم لو محتاجه
+                LoggedInUserId = user.User_Id;
+                LoggedInUsername = user.Username;
+                AppSession.Set(user);
 
                 this.Hide();
                 string username = user.Username;

@@ -1552,7 +1552,11 @@ namespace Pos_System.Forms
                 }
             }
 
+<<<<<<< HEAD
             AuditLogger.Log("ADD", "Sales", saleId, "Created sale for " + customerName + " / total: " + selectedTotalAmount.ToString("N2"));
+=======
+            AuditService.Log("Sales", "Create", saleId.ToString(), "Created sale invoice " + saleId);
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
             MessageBox.Show("تمت العملية بنجاح - رقم الفاتورة: " + saleId);
 
             if (printReceipt)
@@ -1701,7 +1705,11 @@ namespace Pos_System.Forms
 
                         if (rowsAffected > 0)
                         {
+<<<<<<< HEAD
                             AuditLogger.Log("DELETE", "Sales", saleId, "Deleted invoice and sale items");
+=======
+                            AuditService.Log("Sales", "Delete", saleId.ToString(), "Deleted sale invoice " + saleId);
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                             MessageBox.Show("تم حذف الفاتورة بنجاح");
                         }
                         else
@@ -1992,11 +2000,16 @@ namespace Pos_System.Forms
                 return;
             }
 
+<<<<<<< HEAD
             if (!hasSaleId)
             {
                 MessageBox.Show("أدخل رقم الفاتورة أو باركود المنتج في خانة البحث");
                 return;
             }
+=======
+            AuditService.Log("Sales", "Edit", saleId.ToString(), "Registered return for sale invoice " + saleId);
+            MessageBox.Show("تم تسجيل المرتجع وإضافة المنتجات مرة أخرى للمخزون");
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 
             if (ReturnWholeInvoice(saleId))
             {

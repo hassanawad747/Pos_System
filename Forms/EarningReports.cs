@@ -12,11 +12,14 @@ namespace Pos_System.Forms
     public partial class EarningReports : Form
     {
         private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
+<<<<<<< HEAD
         private DataTable currentReportTable;
         private ComboBox comboReportMode;
         private TextBox txtSearch;
         private Label lblReportMode;
         private Label lblSearch;
+=======
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 
         public EarningReports()
         {

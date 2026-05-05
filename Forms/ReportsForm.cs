@@ -16,6 +16,7 @@ namespace Pos_System.Forms
     public partial class ReportsForm : Form
     {
         private static readonly string ConnectionString = POS_System.Program.SettingsManager.ConnectionString;
+<<<<<<< HEAD
 
         private readonly Dictionary<string, ReportDefinition> reportDefinitions =
             new Dictionary<string, ReportDefinition>(StringComparer.OrdinalIgnoreCase);
@@ -27,6 +28,8 @@ namespace Pos_System.Forms
         private Label lblUserFilter;
         private Label lblMainGridTitle;
         private Label lblHistoryTitle;
+=======
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 
         private DataTable currentSummaryTable = new DataTable();
         private string currentReportKey = "sales_by_user";

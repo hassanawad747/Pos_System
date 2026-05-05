@@ -373,6 +373,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditService.Log("Products", "Delete", selectedProductId.ToString(), "Deleted product ID " + selectedProductId);
                 MessageBox.Show("✅ تم حذف المنتج بنجاح");
                 RefreshProductsGrid(txtsearch.Text.Trim());
             }
@@ -411,6 +412,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditService.Log("Categories", "Edit", categoryId.ToString(), "Updated category " + categoryName);
                 MessageBox.Show("✅ تم تعديل الصنف بنجاح");
                 AuditLogger.Log("EDIT", "Categories", categoryId, "Updated category: " + categoryName);
                 RefreshCategoriesGrid();
@@ -433,6 +435,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditService.Log("Categories", "Delete", categoryId.ToString(), "Deleted category ID " + categoryId);
                 MessageBox.Show("✅ تم حذف الصنف بنجاح");
                 AuditLogger.Log("DELETE", "Categories", categoryId, "Deleted category");
                 RefreshCategoriesGrid();
@@ -474,6 +477,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditService.Log("Suppliers", "Edit", supplierId.ToString(), "Updated supplier " + supplierName);
                 MessageBox.Show("✅ تم تعديل المورد بنجاح");
                 AuditLogger.Log("EDIT", "Suppliers", supplierId, "Updated supplier: " + supplierName);
                 RefreshSuppliersGrid();
@@ -496,6 +500,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditService.Log("Suppliers", "Delete", supplierId.ToString(), "Deleted supplier ID " + supplierId);
                 MessageBox.Show("✅ تم حذف المورد بنجاح");
                 AuditLogger.Log("DELETE", "Suppliers", supplierId, "Deleted supplier");
                 RefreshSuppliersGrid();

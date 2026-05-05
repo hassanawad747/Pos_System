@@ -113,11 +113,19 @@ namespace Pos_System.Forms
                 }
             }
 
+<<<<<<< HEAD
             AuditLogger.Log(
                 productId.HasValue ? "EDIT" : "ADD",
                 "Products",
                 productId,
                 (productId.HasValue ? "Updated product: " : "Added product: ") + values.Name);
+=======
+            AuditService.Log(
+                "Products",
+                productId.HasValue ? "Edit" : "Create",
+                productId.HasValue ? productId.Value.ToString() : values.Barcode,
+                (productId.HasValue ? "Updated product " : "Created product ") + values.Name);
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
             MessageBox.Show(productId.HasValue ? "✅ تم تعديل المنتج بنجاح" : "✅ تم إضافة المنتج بنجاح");
             RefreshProductsGrid();
 
@@ -128,6 +136,13 @@ namespace Pos_System.Forms
             //}
 
             if (productId.HasValue)
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+                return;
+            }
+
+            if (!openProductsAfterSave)
             {
                 DialogResult = DialogResult.OK;
                 Close();
@@ -488,7 +503,11 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+<<<<<<< HEAD
                 AuditLogger.Log("DELETE", "Products", selectedProductId, "Deleted product");
+=======
+                AuditService.Log("Products", "Delete", selectedProductId.ToString(), "Deleted product ID " + selectedProductId);
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                 MessageBox.Show("✅ تم حذف المنتج بنجاح");
                 RefreshProductsGrid();
             }

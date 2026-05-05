@@ -11,10 +11,13 @@ namespace Pos_System.Forms
     public partial class Customers : Form
     {
         private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
+<<<<<<< HEAD
         private TextBox txtBalanceAmount;
         private ComboBox cmbBalanceCurrency;
         private Button btnBalancePlus;
         private Button btnBalanceMinus;
+=======
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 
         public Customers()
         {
@@ -341,7 +344,11 @@ namespace Pos_System.Forms
                         cmd.ExecuteNonQuery();
                     }
 
+<<<<<<< HEAD
                     AuditLogger.Log("EDIT", "Customers", customerId, "Updated customer: " + newName);
+=======
+                    AuditService.Log("Customers", "Edit", customerId.ToString(), "Updated customer " + newName);
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                     MessageBox.Show("✅ تم تعديل العميل بنجاح");
                     LoadCustomers(txtsearch.Text);
                 }
@@ -362,7 +369,11 @@ namespace Pos_System.Forms
                             cmd.ExecuteNonQuery();
                         }
 
+<<<<<<< HEAD
                         AuditLogger.Log("DELETE", "Customers", customerId, "Deleted customer");
+=======
+                        AuditService.Log("Customers", "Delete", customerId.ToString(), "Deleted customer ID " + customerId);
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                         MessageBox.Show("✅ تم حذف العميل بنجاح");
                         LoadCustomers(txtsearch.Text);
                     }

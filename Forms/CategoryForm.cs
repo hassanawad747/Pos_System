@@ -61,7 +61,8 @@ namespace Pos_System.Forms
                 return;
             }
 
-            ClearInputs();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private bool TryValidateInput(out string categoryName, out string description)

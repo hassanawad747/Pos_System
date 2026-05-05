@@ -52,6 +52,7 @@ namespace Pos_System.Forms
                 cmd.ExecuteNonQuery();
             }
 
+            AuditService.Log("Suppliers", "Create", supplierName, "Created supplier " + supplierName);
             MessageBox.Show("✅ تم إضافة المورد بنجاح");
             AuditLogger.Log("ADD", "Suppliers", null, "Added supplier: " + supplierName);
             RefreshSuppliers();
@@ -62,7 +63,8 @@ namespace Pos_System.Forms
                 return;
             }
 
-            ClearInputs();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private bool TryValidateInput(out string supplierName, out string contactInfo, out string address)
@@ -201,6 +203,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditService.Log("Suppliers", "Edit", supplierId.ToString(), "Updated supplier " + supplierName);
                 MessageBox.Show("✅ تم تعديل المورد بنجاح");
                 AuditLogger.Log("EDIT", "Suppliers", supplierId, "Updated supplier: " + supplierName);
                 RefreshSuppliers();
@@ -223,6 +226,7 @@ namespace Pos_System.Forms
                     cmd.ExecuteNonQuery();
                 }
 
+                AuditService.Log("Suppliers", "Delete", supplierId.ToString(), "Deleted supplier ID " + supplierId);
                 MessageBox.Show("✅ تم حذف المورد بنجاح");
                 AuditLogger.Log("DELETE", "Suppliers", supplierId, "Deleted supplier");
                 RefreshSuppliers();

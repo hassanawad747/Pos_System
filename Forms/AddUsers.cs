@@ -137,7 +137,11 @@ namespace Pos_System.Forms
                     try
                     {
                         cmd.ExecuteNonQuery();
+<<<<<<< HEAD
                         AuditLogger.Log("ADD", "Users", null, "Created user: " + username + " / role: " + role);
+=======
+                        AuditService.Log("Users", "Create", username, "Created user " + username + " with role " + role);
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                         MessageBox.Show("User created successfully!");
                         LoadUsers(); // refresh DataGridView
                     }
@@ -173,7 +177,11 @@ namespace Pos_System.Forms
                         cmd.Parameters.AddWithValue("@id", userId);
                         cmd.ExecuteNonQuery();
 
+<<<<<<< HEAD
                         AuditLogger.Log("DELETE", "Users", userId, "Deleted user id: " + userId);
+=======
+                        AuditService.Log("Users", "Delete", userId.ToString(), "Deleted user ID " + userId);
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                         MessageBox.Show("User deleted successfully!", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         LoadUsers();   // refresh DataGridView
@@ -266,7 +274,11 @@ namespace Pos_System.Forms
                     try
                     {
                         cmd.ExecuteNonQuery();
+<<<<<<< HEAD
                         AuditLogger.Log("EDIT", "Users", userId, "Updated user: " + username + " / role: " + role);
+=======
+                        AuditService.Log("Users", "Edit", userId.ToString(), "Updated user " + username + " with role " + role);
+>>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                         MessageBox.Show("User updated successfully!");
                         LoadUsers(); // refresh grid
                     }

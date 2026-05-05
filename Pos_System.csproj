@@ -152,6 +152,7 @@
     </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Data.Common.4.3.0\lib\net451\System.Data.Common.dll</HintPath>
@@ -193,6 +194,12 @@
   <ItemGroup>
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Data\POSDbContext.cs" />
+    <Compile Include="Forms\AdminDashboardHomeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ActivityLogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\AddCustomers.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +230,9 @@
     <Compile Include="Forms\CategoryForm.Designer.cs">
       <DependentUpon>CategoryForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CustomersPageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\Customers.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -251,8 +261,14 @@
     <Compile Include="Forms\PosSystemDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\InventoryPageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\PosSystemDashboard.Designer.cs">
       <DependentUpon>PosSystemDashboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProductsPageForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Products.cs">
       <SubType>Form</SubType>
@@ -261,6 +277,9 @@
       <DependentUpon>Products.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ReportsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReportsOverviewPageForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ReportsForm.Designer.cs">
@@ -278,8 +297,17 @@
     <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\SettingsPageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SimpleTablePageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SuppliersPageForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\SupplierForm.cs">
       <SubType>Form</SubType>
@@ -430,6 +458,13 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Forms\UsersPageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Services\AppSession.cs" />
+    <Compile Include="Services\AuditService.cs" />
+    <Compile Include="Services\DbHelper.cs" />
+    <Compile Include="Services\ModernUi.cs" />
     <EmbeddedResource Include="Forms\AddCustomers.resx">
       <DependentUpon>AddCustomers.cs</DependentUpon>
     </EmbeddedResource>
