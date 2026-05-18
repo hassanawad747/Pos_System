@@ -79,7 +79,6 @@
             this.exchange_rate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sale_price_usd = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sale_price_lb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnskip = new System.Windows.Forms.Button();
             this.panelheader.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.suppliersBindingSource)).BeginInit();
@@ -151,7 +150,6 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.btnskip);
             this.panel1.Controls.Add(this.btnexit);
             this.panel1.Controls.Add(this.btnadd);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -309,7 +307,7 @@
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(77, 23);
             this.label10.TabIndex = 43;
-            this.label10.Text = "بدون باركود";
+            this.label10.Text = "Barcode required";
             // 
             // label9
             // 
@@ -570,24 +568,12 @@
             this.sale_price_lb.MinimumWidth = 6;
             this.sale_price_lb.Name = "sale_price_lb";
             // 
-            // btnskip
-            // 
-            this.btnskip.BackColor = System.Drawing.Color.Green;
-            this.btnskip.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnskip.ForeColor = System.Drawing.Color.White;
-            this.btnskip.Location = new System.Drawing.Point(12, 8);
-            this.btnskip.Name = "btnskip";
-            this.btnskip.Size = new System.Drawing.Size(99, 49);
-            this.btnskip.TabIndex = 2;
-            this.btnskip.Text = "تخطي -->";
-            this.btnskip.UseVisualStyleBackColor = false;
-            this.btnskip.Click += new System.EventHandler(this.btnskip_Click);
-            // 
             // AddProducts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1491, 666);
+            this.MinimumSize = new System.Drawing.Size(1050, 650);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -660,6 +646,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn exchange_rate;
         private System.Windows.Forms.DataGridViewTextBoxColumn sale_price_usd;
         private System.Windows.Forms.DataGridViewTextBoxColumn sale_price_lb;
-        private System.Windows.Forms.Button btnskip;
     }
 }

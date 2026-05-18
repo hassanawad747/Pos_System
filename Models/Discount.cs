@@ -13,6 +13,10 @@ namespace Pos_System.Models
         public string Description { get; set; }
         public string DiscountType { get; set; } // percentage, fixed
         public decimal Value { get; set; }
+        public string TargetType { get; set; }
+        public int? ProductId { get; set; }
+        public int? CategoryId { get; set; }
+        public string Barcode { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool Active { get; set; }

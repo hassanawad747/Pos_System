@@ -1,0 +1,1 @@
+<SSISConfigurationPublic xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.microsoft.com/sql/configuration/SSIS/Public/2007/04"><StartMode>Automatic</StartMode><UserName>NT AUTHORITY\Network Service</UserName></SSISConfigurationPublic>

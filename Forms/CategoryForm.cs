@@ -210,12 +210,20 @@ namespace Pos_System.Forms
                     return;
                 }
 
-                using (SqlConnection conn = new SqlConnection(connStr))
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM Categories WHERE category_id = @id", conn))
+                try
                 {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@id", categoryId);
-                    cmd.ExecuteNonQuery();
+                    using (SqlConnection conn = new SqlConnection(connStr))
+                    using (SqlCommand cmd = new SqlCommand("DELETE FROM Categories WHERE category_id = @id", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.AddWithValue("@id", categoryId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException)
+                {
+                    MessageBox.Show("Cannot delete this category because products are using it. Move or edit those products first.", "Delete Category");
+                    return;
                 }
 
                 MessageBox.Show("✅ تم حذف الصنف بنجاح");

@@ -16,8 +16,6 @@ namespace Pos_System.Forms
     public partial class ReportsForm : Form
     {
         private static readonly string ConnectionString = POS_System.Program.SettingsManager.ConnectionString;
-<<<<<<< HEAD
-
         private readonly Dictionary<string, ReportDefinition> reportDefinitions =
             new Dictionary<string, ReportDefinition>(StringComparer.OrdinalIgnoreCase);
 
@@ -28,8 +26,6 @@ namespace Pos_System.Forms
         private Label lblUserFilter;
         private Label lblMainGridTitle;
         private Label lblHistoryTitle;
-=======
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 
         private DataTable currentSummaryTable = new DataTable();
         private string currentReportKey = "sales_by_user";
@@ -51,6 +47,7 @@ namespace Pos_System.Forms
             {
                 ConfigureReportControls();
                 EnsureReportsTable();
+                EnsureSaleItemsDiscountColumns();
                 WorkHistoryService.EnsureHistoryTable();
                 LoadReportsHistory();
                 LoadSelectedReport("all");
@@ -58,6 +55,29 @@ namespace Pos_System.Forms
             catch (Exception ex)
             {
                 ShowReportStartupError(ex);
+            }
+        }
+
+        private void EnsureSaleItemsDiscountColumns()
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            using (SqlCommand command = new SqlCommand(@"
+IF OBJECT_ID(N'dbo.Sale_Items', N'U') IS NOT NULL
+BEGIN
+    IF COL_LENGTH('dbo.Sale_Items', 'original_unit_price') IS NULL
+        ALTER TABLE dbo.Sale_Items ADD original_unit_price DECIMAL(24,8) NULL;
+    IF COL_LENGTH('dbo.Sale_Items', 'discount_amount') IS NULL
+        ALTER TABLE dbo.Sale_Items ADD discount_amount DECIMAL(24,8) NULL;
+    IF COL_LENGTH('dbo.Sale_Items', 'discount_type') IS NULL
+        ALTER TABLE dbo.Sale_Items ADD discount_type NVARCHAR(30) NULL;
+    IF COL_LENGTH('dbo.Sale_Items', 'discount_value') IS NULL
+        ALTER TABLE dbo.Sale_Items ADD discount_value DECIMAL(18,4) NULL;
+    IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
+        ALTER TABLE dbo.Sale_Items ADD discount_by NVARCHAR(100) NULL;
+END", connection))
+            {
+                connection.Open();
+                command.ExecuteNonQuery();
             }
         }
 
@@ -617,6 +637,18 @@ namespace Pos_System.Forms
             foreach (DataGridViewColumn column in dataGridViewSummary.Columns)
             {
                 string name = column.Name.ToLowerInvariant();
+                if (name == "work date")
+                {
+                    column.DefaultCellStyle.Format = "dd/MM/yyyy";
+                    continue;
+                }
+
+                if (name == "start time" || name == "end time")
+                {
+                    column.DefaultCellStyle.Format = "HH:mm";
+                    continue;
+                }
+
                 if (name.Contains("sales") || name.Contains("profit") || name.Contains("price") ||
                     name.Contains("amount") || name.Contains("balance") || name.Contains("total"))
                 {
@@ -1124,6 +1156,7 @@ namespace Pos_System.Forms
                     COUNT(DISTINCT s.sale_id) AS [Invoices],
                     SUM(ISNULL(TRY_CONVERT(INT, si.quantity), 0)) AS [Items Sold],
                     CAST(SUM(ISNULL(TRY_CONVERT(DECIMAL(38,4), s.total_amount), 0)) AS DECIMAL(38,2)) AS [Total Sales],
+                    CAST(SUM(ISNULL(TRY_CONVERT(DECIMAL(38,4), si.discount_amount), 0)) AS DECIMAL(38,2)) AS [Total Discount],
                     CAST(SUM(
                         (ISNULL(TRY_CONVERT(DECIMAL(19,4), si.unit_price), 0) -
                          ISNULL(TRY_CONVERT(DECIMAL(19,4), p.price_usd), 0)) *
@@ -1151,6 +1184,7 @@ namespace Pos_System.Forms
                     CAST(AVG(ISNULL(TRY_CONVERT(DECIMAL(38,4), si.unit_price), 0)) AS DECIMAL(38,2)) AS [Avg Price],
                     CAST(SUM(ISNULL(TRY_CONVERT(DECIMAL(38,4), si.unit_price), 0) *
                              ISNULL(TRY_CONVERT(DECIMAL(18,4), si.quantity), 0)) AS DECIMAL(38,2)) AS [Total Sales],
+                    CAST(SUM(ISNULL(TRY_CONVERT(DECIMAL(38,4), si.discount_amount), 0)) AS DECIMAL(38,2)) AS [Total Discount],
                     CAST(SUM(
                         (ISNULL(TRY_CONVERT(DECIMAL(19,4), si.unit_price), 0) -
                          ISNULL(TRY_CONVERT(DECIMAL(19,4), p.price_usd), 0)) *
@@ -1176,6 +1210,7 @@ namespace Pos_System.Forms
                     COUNT(DISTINCT s.sale_id) AS [Invoices],
                     SUM(ISNULL(TRY_CONVERT(INT, si.quantity), 0)) AS [Items Sold],
                     CAST(SUM(ISNULL(TRY_CONVERT(DECIMAL(38,4), s.total_amount), 0)) AS DECIMAL(38,2)) AS [Total Sales],
+                    CAST(SUM(ISNULL(TRY_CONVERT(DECIMAL(38,4), si.discount_amount), 0)) AS DECIMAL(38,2)) AS [Total Discount],
                     CAST(SUM(
                         (ISNULL(TRY_CONVERT(DECIMAL(19,4), si.unit_price), 0) -
                          ISNULL(TRY_CONVERT(DECIMAL(19,4), p.price_usd), 0)) *
@@ -1205,12 +1240,21 @@ namespace Pos_System.Forms
                     TRY_CONVERT(NVARCHAR(50), s.payment_method) AS [Payment],
                     ISNULL(TRY_CONVERT(INT, s.quantity), 0) AS [Items Sold],
                     CAST(ISNULL(TRY_CONVERT(DECIMAL(38,4), s.total_amount), 0) AS DECIMAL(38,2)) AS [Total Sales],
+                    CAST(ISNULL(d.total_discount, 0) AS DECIMAL(38,2)) AS [Total Discount],
+                    ISNULL(d.discount_by, N'') AS [Discount By],
                     CAST(ISNULL(TRY_CONVERT(DECIMAL(38,4), s.balance_usd), 0) AS DECIMAL(38,2)) AS [Balance USD],
                     CAST(ISNULL(TRY_CONVERT(DECIMAL(38,4), s.balance_lb), 0) AS DECIMAL(38,2)) AS [Balance LB],
                     CASE WHEN ISNULL(TRY_CONVERT(BIT, s.is_returned), 0) = 1 THEN N'Returned' ELSE ISNULL(s.status, N'Active') END AS [Status]
                 FROM Sales s
                 LEFT JOIN Users u ON TRY_CONVERT(INT, s.user_id) = u.user_id
                 LEFT JOIN Customers c ON TRY_CONVERT(INT, s.customer_id) = c.customer_id
+                OUTER APPLY (
+                    SELECT
+                        SUM(ISNULL(TRY_CONVERT(DECIMAL(38,4), si.discount_amount), 0)) AS total_discount,
+                        MAX(NULLIF(si.discount_by, N'')) AS discount_by
+                    FROM Sale_Items si
+                    WHERE si.sale_id = s.sale_id
+                ) d
                 WHERE (@StartDate IS NULL OR TRY_CONVERT(DATETIME2, s.sale_date) >= @StartDate)
                   AND (@EndDateExclusive IS NULL OR TRY_CONVERT(DATETIME2, s.sale_date) < @EndDateExclusive)
                   AND (@UserFilter = N'' OR COALESCE(u.username, s.created_by, N'Unknown') = @UserFilter)
@@ -1271,8 +1315,8 @@ namespace Pos_System.Forms
                     h.history_id AS [ID],
                     ISNULL(u.username, h.username) AS [User Name],
                     TRY_CONVERT(DATE, h.work_date) AS [Work Date],
-                    TRY_CONVERT(DATETIME2, h.start_time) AS [Start Time],
-                    TRY_CONVERT(DATETIME2, h.end_time) AS [End Time],
+                    CONVERT(VARCHAR(5), TRY_CONVERT(TIME(0), h.start_time), 108) AS [Start Time],
+                    CONVERT(VARCHAR(5), TRY_CONVERT(TIME(0), h.end_time), 108) AS [End Time],
                     ISNULL(TRY_CONVERT(INT, h.worked_hours), 0) AS [Hours],
                     ISNULL(TRY_CONVERT(INT, h.worked_minutes), 0) AS [Minutes],
                     ISNULL(TRY_CONVERT(INT, h.worked_duration_minutes), 0) AS [Total Minutes],

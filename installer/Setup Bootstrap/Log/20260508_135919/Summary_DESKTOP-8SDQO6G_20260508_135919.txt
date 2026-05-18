@@ -1,0 +1,166 @@
+Overall summary:
+  Final result:                  Passed
+  Exit code (Decimal):           0
+  Start time:                    2026-05-08 13:59:19
+  End time:                      2026-05-08 14:03:21
+  Requested action:              Install
+
+Machine Properties:
+  Machine name:                  DESKTOP-8SDQO6G
+  Machine processor count:       8
+  OS version:                    Microsoft Windows 11 Pro (10.0.26200)
+  OS service pack:               
+  OS region:                     United States
+  OS language:                   English (United States)
+  OS architecture:               x64
+  Process architecture:          64 Bit
+  OS clustered:                  No
+
+Product features discovered:
+  Product              Instance             Instance ID                    Feature                                  Language             Edition              Version         Clustered  Configured
+
+Package properties:
+  Description:                   Microsoft SQL Server 2022 
+  ProductName:                   SQL Server 2022
+  Type:                          RTM
+  Version:                       16
+  SPLevel:                       0
+  Installation location:         C:\SQL2022\Express_ENU\x64\setup\
+  Installation edition:          Express
+
+Product Update Status:
+  User selected not to include product updates.
+
+Notice: Please read Microsoft SQL Server Software License Terms at aka.ms/useterms.
+
+User Input Settings:
+  ACTION:                        Install
+  ADDCURRENTUSERASSQLADMIN:      true
+  AGTSVCACCOUNT:                 NT AUTHORITY\NETWORK SERVICE
+  AGTSVCPASSWORD:                *****
+  AGTSVCSTARTUPTYPE:             Disabled
+  ASBACKUPDIR:                   Backup
+  ASCOLLATION:                   Latin1_General_CI_AS
+  ASCONFIGDIR:                   Config
+  ASDATADIR:                     Data
+  ASLOGDIR:                      Log
+  ASPROVIDERMSOLAP:              1
+  ASSERVERMODE:                  TABULAR
+  ASSVCACCOUNT:                  <empty>
+  ASSVCPASSWORD:                 <empty>
+  ASSVCSTARTUPTYPE:              Automatic
+  ASSYSADMINACCOUNTS:            <empty>
+  ASTELSVCACCT:                  <empty>
+  ASTELSVCPASSWORD:              <empty>
+  ASTELSVCSTARTUPTYPE:           0
+  ASTEMPDIR:                     Temp
+  AZUREARCPROXYSERVER:           <empty>
+  AZUREBILLEDEDITION:            
+  AZUREREGION:                   <empty>
+  AZURERESOURCEGROUP:            <empty>
+  AZURESERVICEPRINCIPAL:         <empty>
+  AZURESERVICEPRINCIPALSECRET:   <empty>
+  AZURESUBSCRIPTIONID:           <empty>
+  AZURETENANTID:                 <empty>
+  BROWSERSVCSTARTUPTYPE:         Disabled
+  CONFIGURATIONFILE:             C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135919\ConfigurationFile.ini
+  ENABLERANU:                    true
+  ENU:                           true
+  EXTSVCACCOUNT:                 <empty>
+  EXTSVCPASSWORD:                <empty>
+  FEATURES:                      SQLENGINE
+  FILESTREAMLEVEL:               0
+  FILESTREAMSHARENAME:           <empty>
+  FTSVCACCOUNT:                  <empty>
+  FTSVCPASSWORD:                 <empty>
+  HELP:                          false
+  IACCEPTSQLSERVERLICENSETERMS:  true
+  IACKNOWLEDGEENTCALLIMITS:      false
+  INDICATEPROGRESS:              true
+  INSTALLSHAREDDIR:              C:\Program Files\Microsoft SQL Server\
+  INSTALLSHAREDWOWDIR:           C:\Program Files (x86)\Microsoft SQL Server\
+  INSTALLSQLDATADIR:             <empty>
+  INSTANCEDIR:                   C:\Program Files\Microsoft SQL Server
+  INSTANCEID:                    SQLEXPRESS01
+  INSTANCENAME:                  SQLEXPRESS01
+  ISMASTERSVCACCOUNT:            NT AUTHORITY\Network Service
+  ISMASTERSVCPASSWORD:           <empty>
+  ISMASTERSVCPORT:               8391
+  ISMASTERSVCSSLCERTCN:          <empty>
+  ISMASTERSVCSTARTUPTYPE:        Automatic
+  ISMASTERSVCTHUMBPRINT:         <empty>
+  ISSVCACCOUNT:                  NT AUTHORITY\Network Service
+  ISSVCPASSWORD:                 <empty>
+  ISSVCSTARTUPTYPE:              Automatic
+  ISTELSVCACCT:                  <empty>
+  ISTELSVCPASSWORD:              <empty>
+  ISTELSVCSTARTUPTYPE:           0
+  ISWORKERSVCACCOUNT:            NT AUTHORITY\Network Service
+  ISWORKERSVCCERT:               <empty>
+  ISWORKERSVCMASTER:             <empty>
+  ISWORKERSVCPASSWORD:           <empty>
+  ISWORKERSVCSTARTUPTYPE:        Automatic
+  NPENABLED:                     0
+  PBDMSSVCACCOUNT:               <empty>
+  PBDMSSVCPASSWORD:              <empty>
+  PBDMSSVCSTARTUPTYPE:           0
+  PBENGSVCACCOUNT:               <empty>
+  PBENGSVCPASSWORD:              <empty>
+  PBENGSVCSTARTUPTYPE:           0
+  PBPORTRANGE:                   <empty>
+  PID:                           *****
+  PRODUCTCOVEREDBYSA:            false
+  QUIET:                         true
+  QUIETSIMPLE:                   false
+  ROLE:                          AllFeatures_WithDefaults
+  SAPWD:                         <empty>
+  SECURITYMODE:                  <empty>
+  SQLBACKUPDIR:                  <empty>
+  SQLCOLLATION:                  SQL_Latin1_General_CP1_CI_AS
+  SQLMAXDOP:                     0
+  SQLMAXMEMORY:                  2147483647
+  SQLMINMEMORY:                  0
+  SQLSVCACCOUNT:                 NT Service\MSSQL$SQLEXPRESS01
+  SQLSVCINSTANTFILEINIT:         true
+  SQLSVCPASSWORD:                <empty>
+  SQLSVCSTARTUPTYPE:             Automatic
+  SQLSYSADMINACCOUNTS:           DESKTOP-8SDQO6G\HassanAwwad
+  SQLTELSVCACCT:                 NT Service\SQLTELEMETRY$SQLEXPRESS01
+  SQLTELSVCPASSWORD:             <empty>
+  SQLTELSVCSTARTUPTYPE:          Automatic
+  SQLTEMPDBDIR:                  <empty>
+  SQLTEMPDBFILECOUNT:            1
+  SQLTEMPDBFILEGROWTH:           64
+  SQLTEMPDBFILESIZE:             8
+  SQLTEMPDBLOGDIR:               <empty>
+  SQLTEMPDBLOGFILEGROWTH:        64
+  SQLTEMPDBLOGFILESIZE:          8
+  SQLUSERDBDIR:                  <empty>
+  SQLUSERDBLOGDIR:               <empty>
+  SUPPRESSPAIDEDITIONNOTICE:     false
+  SUPPRESSPRIVACYSTATEMENTNOTICE: false
+  TCPENABLED:                    0
+  UIMODE:                        AutoAdvance
+  UpdateEnabled:                 false
+  UpdateSource:                  MU
+  USEMICROSOFTUPDATE:            false
+  USESQLRECOMMENDEDMEMORYLIMITS: false
+
+  Configuration file:            C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135919\ConfigurationFile.ini
+
+Detailed results:
+  Feature:                       Database Engine Services
+  Status:                        Passed
+
+  Feature:                       Setup Support Files
+  Status:                        Passed
+
+  Feature:                       SQL Writer
+  Status:                        Passed
+
+Rules with failures or warnings:
+
+Global rules:
+Warning    IsFirewallEnabled                The Windows Firewall is enabled. Make sure the appropriate ports are open to enable remote access. See the rules documentation at https://go.microsoft.com/fwlink/?linkid=2162127 for information about ports to open for each feature.
+
+Rules report file:               C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135919\SystemConfigurationCheck_Report.htm

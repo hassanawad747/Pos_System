@@ -7,8 +7,8 @@ $InstallRoot = "C:\BikeZonePOS"
 $AppTarget = Join-Path $InstallRoot "App"
 $DataTarget = Join-Path $InstallRoot "Database"
 $DatabaseName = "pos_system"
-$SqlInstance = ".\SQLEXPRESS"
-$SqlServiceName = "MSSQL`$SQLEXPRESS"
+$SqlInstance = "."
+$SqlServiceName = "MSSQLSERVER"
 
 function Write-Step($message) {
     Write-Host ""
@@ -56,10 +56,18 @@ if (-not (Test-Path $BackupFile)) {
     throw "Missing database backup: $BackupFile"
 }
 
-Write-Step "Checking SQL Server Express service"
-$service = Get-Service -Name $SqlServiceName -ErrorAction SilentlyContinue
+Write-Step "Checking SQL Server service"
+$service = Get-Service -Name "MSSQLSERVER" -ErrorAction SilentlyContinue
 if (-not $service) {
-    throw "SQL Server Express service was not found. Install SQL Server Express with instance name SQLEXPRESS, then run this installer again."
+    $service = Get-Service -Name "MSSQL`$SQLEXPRESS" -ErrorAction SilentlyContinue
+    if ($service) {
+        $SqlServiceName = "MSSQL`$SQLEXPRESS"
+        $SqlInstance = ".\SQLEXPRESS"
+    }
+}
+
+if (-not $service) {
+    throw "SQL Server service was not found. Install SQL Server Express or SQL Server Database Engine, then run this installer again."
 }
 
 if ($service.Status -ne "Running") {
@@ -77,6 +85,14 @@ New-Item -ItemType Directory -Force -Path $AppTarget | Out-Null
 New-Item -ItemType Directory -Force -Path $DataTarget | Out-Null
 Copy-Item -Path (Join-Path $AppSource "*") -Destination $AppTarget -Recurse -Force
 Copy-Item -Path $BackupFile -Destination (Join-Path $DataTarget "pos_system.bak") -Force
+
+$databaseConfigPath = Join-Path $AppTarget "Database.config"
+$databaseConfig = @"
+<connectionStrings>
+  <add name="Pos_System.Properties.Settings.pos_systemConnectionString" connectionString="Data Source=$SqlInstance;Initial Catalog=pos_system;Integrated Security=True;TrustServerCertificate=True" providerName="System.Data.SqlClient" />
+</connectionStrings>
+"@
+Set-Content -Path $databaseConfigPath -Value $databaseConfig -Encoding UTF8
 
 Write-Step "Restoring database"
 $targetBackup = Join-Path $DataTarget "pos_system.bak"

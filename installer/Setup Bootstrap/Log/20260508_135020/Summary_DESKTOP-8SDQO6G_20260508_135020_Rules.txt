@@ -1,0 +1,56 @@
+Overall summary:
+  Final result:                  Passed
+  Exit code (Decimal):           0
+  Start time:                    2026-05-08 13:51:19
+  End time:                      2026-05-08 13:51:23
+  Requested action:              RunRules
+
+Machine Properties:
+  Machine name:                  DESKTOP-8SDQO6G
+  Machine processor count:       8
+  OS version:                    Microsoft Windows 11 Pro (10.0.26200)
+  OS service pack:               
+  OS region:                     United States
+  OS language:                   English (United States)
+  OS architecture:               x64
+  Process architecture:          64 Bit
+  OS clustered:                  No
+
+Product features discovered:
+  Product              Instance             Instance ID                    Feature                                  Language             Edition              Version         Clustered  Configured
+
+Package properties:
+  Description:                   Microsoft SQL Server 2022 
+  ProductName:                   SQL Server 2022
+  Type:                          RTM
+  Version:                       16
+  SPLevel:                       0
+  Installation location:         C:\SQL2022\RulesEng\x64\setup\
+  Installation edition:          Evaluation
+
+Notice: Please read Microsoft SQL Server Software License Terms at aka.ms/useterms.
+
+User Input Settings:
+  ACTION:                        RunRules
+  AZUREBILLEDEDITION:            
+  CONFIGURATIONFILE:             
+  ENU:                           true
+  FEATURES:                      
+  HELP:                          false
+  IACKNOWLEDGEENTCALLIMITS:      false
+  INDICATEPROGRESS:              false
+  INSTANCENAME:                  <empty>
+  PID:                           *****
+  PRODUCTCOVEREDBYSA:            false
+  QUIET:                         true
+  QUIETSIMPLE:                   false
+  RULES:                         PreInstallRules
+  SUPPRESSPAIDEDITIONNOTICE:     false
+  SUPPRESSPRIVACYSTATEMENTNOTICE: false
+  UIMODE:                        Normal
+
+  Configuration file:            C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135020\ConfigurationFile.ini
+
+Rules with failures or warnings:
+
+Rules report file:               C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135020\SystemConfigurationCheck_Report.htm

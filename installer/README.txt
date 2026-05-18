@@ -1,17 +1,32 @@
-Bike Zone POS installer package
+POS System installer package
 
-How to install on another PC:
+Files in this folder:
+- App = application files
+- Database = SQL backup file
+- install_pos_system.bat = easiest installer to run
+- install_pos_system.ps1 = installer script
+- INSTALL_STEPS.txt = full manual steps
+- restore_database.sql = manual SQL restore script
+
+Client database connection:
+- The installer updates App\Database.config automatically for MSSQLSERVER or SQLEXPRESS.
+- Change only App\Database.config manually when the SQL Server name is different.
+- Do not edit Pos_System.exe.config for the database connection.
+
+Quick install on another PC:
 
 1. Copy this whole folder to the other PC.
-2. Make sure SQL Server Express is installed with instance name SQLEXPRESS.
-3. Right click install_pos_system.bat.
-4. Choose Run as administrator.
+2. Install SQL Server Database Engine or SQL Server Express.
+3. Make sure SQL Server service exists: MSSQLSERVER or SQLEXPRESS.
+4. Install sqlcmd if it is not already installed.
+5. Right click install_pos_system.bat.
+6. Choose Run as administrator.
 
 The installer will:
-- Start SQL Server Express service.
-- Copy the POS application to C:\BikeZonePOS\App.
-- Restore pos_system.bak as database pos_system.
-- Create a desktop shortcut named Bike Zone POS.
-- Open the POS application.
+- Copy the app to C:\BikeZonePOS\App
+- Copy the backup to C:\BikeZonePOS\Database
+- Restore database pos_system
+- Create a desktop shortcut
+- Open the application
 
-If the installer says sqlcmd.exe is missing, install Microsoft SQL Server Command Line Utilities and run it again.
+If automatic install fails, open INSTALL_STEPS.txt and follow the manual steps.

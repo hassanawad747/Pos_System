@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Data.SqlClient;
+using System.Globalization;
 using Pos_System.Services;
 
 namespace Pos_System.Forms
@@ -31,46 +32,53 @@ namespace Pos_System.Forms
 
         private void btnadd_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanCreate(AppSession.UserId, AppSession.Role, PermissionService.ScreenCustomers))
+            {
+                MessageBox.Show("You do not have permission to create customers.");
+                return;
+            }
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
+                    AuditLogger.EnsureCustomerBalanceColumns();
+
                     SqlCommand cmd = new SqlCommand(@"
-                        INSERT INTO Customers (name, phone, email,balance,created_by) 
-                        VALUES (@name, @phone, @email,@balance,@created_by)", conn);
+                        INSERT INTO Customers (name, phone, email, balance, balance_usd, balance_lb, balance_updated_at, created_by) 
+                        VALUES (@name, @phone, @email, @balance, @balanceUsd, 0, CASE WHEN @balanceUsd = 0 THEN NULL ELSE GETDATE() END, @created_by)", conn);
+
+                    decimal openingBalance = 0m;
+                    if (!string.IsNullOrWhiteSpace(txtprice.Text) &&
+                        !decimal.TryParse(txtprice.Text.Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out openingBalance) &&
+                        !decimal.TryParse(txtprice.Text.Trim(), out openingBalance))
+                    {
+                        MessageBox.Show("Balance must be a valid number.");
+                        txtprice.Focus();
+                        return;
+                    }
 
                     cmd.Parameters.AddWithValue("@name", txtname.Text);
                     cmd.Parameters.AddWithValue("@phone", txtnumber.Text);
                     cmd.Parameters.AddWithValue("@email", txtemail.Text);
-                    cmd.Parameters.AddWithValue("@balance",txtprice.Text);
+                    cmd.Parameters.Add("@balance", SqlDbType.Decimal).Value = openingBalance;
+                    cmd.Parameters.Add("@balanceUsd", SqlDbType.Decimal).Value = openingBalance;
                     cmd.Parameters.AddWithValue("@created_by", AppSession.Username);
                     cmd.ExecuteNonQuery();
                 }
 
-<<<<<<< HEAD
-                AuditLogger.Log("ADD", "Customers", null, "Added customer: " + txtname.Text);
-                MessageBox.Show("✅ تم إضافة العميل بنجاح بواسطة " + LoginForm.LoggedInUsername);
-                //this.Close(); // إغلاق الفورم بعد الإضافة
-=======
                 AuditService.Log("Customers", "Create", txtnumber.Text.Trim(), "Created customer " + txtname.Text.Trim());
                 MessageBox.Show("✅ تم إضافة العميل بنجاح بواسطة " + AppSession.Username);
                 DialogResult = DialogResult.OK;
                 Close();
                 return;
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
             }
             catch (Exception ex)
             {
                 MessageBox.Show("حدث خطأ: " + ex.Message);
             }
             clearinput();
-<<<<<<< HEAD
-            //Customers customers = new Customers();
-            //customers.ShowDialog();
-            //this.Close();
-=======
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
         }
 
         private void btncancle_Click(object sender, EventArgs e)

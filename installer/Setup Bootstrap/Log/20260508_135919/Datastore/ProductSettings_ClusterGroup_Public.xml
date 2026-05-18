@@ -1,0 +1,1 @@
+<ClusterGroupPublicConfigObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.microsoft.com/sql/configuration/ClusterGroup/Public/2007/08"><ClusterGroup /><IsExistingClusterGroup>false</IsExistingClusterGroup></ClusterGroupPublicConfigObject>

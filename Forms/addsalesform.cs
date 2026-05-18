@@ -89,7 +89,6 @@ namespace Pos_System.Forms
         private void addsalesform_Load(object sender, EventArgs e)
         {
             LoginForm loginForm = new LoginForm();
-            // TODO: This line of code loads data into the 'pos_systemDataSet16.Suppliers' table. You can move, or remove it, as needed.
             this.suppliersTableAdapter.Fill(this.pos_systemDataSet16.Suppliers);
             lbDate.Text = DateTime.Now.ToString("dd-MMM-yyyy");
             lbusername.Text = LoginForm.LoggedInUsername; // from login form

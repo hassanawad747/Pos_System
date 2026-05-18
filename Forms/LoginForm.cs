@@ -32,21 +32,9 @@ namespace Pos_System
             POS_System.Program.SettingsManager.RegisterForm(this);
             var optionsBuilder = new DbContextOptionsBuilder<POSDbContext>();
             optionsBuilder.UseSqlServer(POS_System.Program.SettingsManager.ConnectionString);
-<<<<<<< HEAD
-
-            // إنشاء الـ DbContext وتمريره للـ UserController
-=======
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
             POSDbContext dbContext = new POSDbContext(optionsBuilder.Options);
             _context = dbContext;
             _userController = new UserController(dbContext);
-        }
-
-
-        public User Login(string username, string password)
-        {
-            return _context.Users
-                .FirstOrDefault(u => u.Username == username && u.Password_Hash == password);
         }
 
 
@@ -110,6 +98,11 @@ namespace Pos_System
             if (user != null)
             {
                 failedLoginAttempts = 0;
+                if (string.Equals(user.Username, "admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    user.Role = "admin";
+                }
+
                 LoggedInUserId = user.User_Id;
                 LoggedInUsername = user.Username;
                 AppSession.Set(user);

@@ -10,10 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-<<<<<<< HEAD
 using System.Windows.Forms.DataVisualization.Charting;
-=======
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 using Pos_System.Services;
 using static POS_System.Program;
 
@@ -22,15 +19,12 @@ namespace Pos_System.Forms
     public partial class PosSystemDashboard : Form
     {
         private const string WorkDayClosedAtSettingKey = "dashboard_work_day_closed_at";
-        private const string AuditSeenUntilSettingKey = "audit_seen_until_log_id";
-
         private string _username;
         private string _role;
         private Timer sessionTimer;
         private Timer clockTimer;
         private UserActivityMessageFilter activityFilter;
         private bool isLoggingOut;
-<<<<<<< HEAD
         private List<Control> dashboardHomeControls;
         private Button endWorkDayButton;
         private Button auditNotificationButton;
@@ -50,7 +44,7 @@ namespace Pos_System.Forms
         private ToolStripButton menuDashboard;
         private ToolStripButton menuSales;
         private ToolStripButton menuProducts;
-        private ToolStripButton menuAddSales;
+        private ToolStripButton menuSupplier;
         private ToolStripButton menuCustomers;
         private ToolStripButton menuEarningReports;
         private ToolStripButton menuWarhouseReports;
@@ -63,11 +57,7 @@ namespace Pos_System.Forms
         private ToolStripButton menuDelete;
         private ToolStripButton menuPrint;
         private ToolStripButton menuLogout;
-=======
-        private Button notificationButton;
-        private Label notificationBadge;
         private Button activeMenuButton;
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 
 
 
@@ -83,12 +73,11 @@ namespace Pos_System.Forms
                                     // label8.Text = DateTime.Now.ToString("yyyy-MM-dd");
             lbdatetime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            _role = role;
-            lbrole.Text = role; // هنا نعرض الدور
-            BuildNotificationControl();
+            _role = string.Equals(username, "admin", StringComparison.OrdinalIgnoreCase) ? "admin" : role;
+            lbrole.Text = _role; // هنا نعرض الدور
             ApplyDashboardVisualStyle();
             ApplyRoleAccess();
-            UpdateNotificationBadge();
+            RefreshAuditNotification();
 
             // Assign icons to PictureBoxes
             ////////////////////////
@@ -109,7 +98,7 @@ namespace Pos_System.Forms
         }
         private void btnsales_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
+            ActivateMenuButton(btnsales);
             LoadForm(new SalesStartForm(_username, StartSalesWork_Click));
         }
 
@@ -124,45 +113,74 @@ namespace Pos_System.Forms
             {
                 MessageBox.Show("Could not start sales work: " + ex.Message, "Start Work");
             }
-=======
-            ActivateMenuButton(btnsales);
-            LoadForm(new Sales(lbusername.Text, _role));
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
         }
 
         private void btnProducts_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenProducts))
+            {
+                MessageBox.Show("You do not have permission to open products.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             ActivateMenuButton(btnProducts);
             LoadForm(new InventoryPageForm());
         }
 
         private void btnAddSales_Click(object sender, EventArgs e)
         {
-            ActivateMenuButton(btnAddSales);
-            LoadForm(new ProductsPageForm());
+            MessageBox.Show("Add Sales form is disabled.", "Disabled", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnCustomers_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenCustomers))
+            {
+                MessageBox.Show("You do not have permission to open customers.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             ActivateMenuButton(btnCustomers);
             LoadForm(new CustomersPageForm());
         }
 
+        private void menuSupplier_Click(object sender, EventArgs e)
+        {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenSuppliers))
+            {
+                MessageBox.Show("You do not have permission to open suppliers.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            LoadForm(new SupplierBalanceForm());
+        }
+
         private void btnEarningReports_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenEarningReports))
+            {
+                MessageBox.Show("You do not have permission to open earning reports.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             ActivateMenuButton(btnEarningReports);
-            LoadForm(new ActivityLogForm());
+            LoadForm(new EarningReports());
         }
 
         private void btnWarhouseReports_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenWarehouse))
+            {
+                MessageBox.Show("You do not have permission to open warehouse.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             ActivateMenuButton(btnWarhouseReports);
-            LoadForm(new SuppliersPageForm());
+            LoadForm(new WarhouseReports());
         }
 
         private void LoadForm(Form form)
         {
-<<<<<<< HEAD
             activeChildForm = form;
             panelContent.SuspendLayout();
             panelContent.Controls.Clear();
@@ -179,32 +197,16 @@ namespace Pos_System.Forms
             LayoutDashboardHeaderAndMenu();
             LayoutActiveChildForm();
             activeFormHostPanel.Resize += ActiveFormHostPanel_Resize;
-=======
-            for (int i = panelContent.Controls.Count - 1; i >= 0; i--)
-            {
-                Control control = panelContent.Controls[i];
-                if (control != panelheader)
-                {
-                    panelContent.Controls.RemoveAt(i);
-                    control.Dispose();
-                }
-            }
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 
+            form.TopLevel = false;
             POS_System.Program.SettingsManager.RegisterForm(form);
             form.FormClosed += LoadedForm_FormClosed;
-            form.TopLevel = false;
             form.FormBorderStyle = FormBorderStyle.None;
             form.WindowState = FormWindowState.Normal;
             form.Dock = DockStyle.Fill;
-<<<<<<< HEAD
             activeFormHostPanel.Controls.Add(form);
             HideChildFormHeaders(form);
             form.Bounds = activeFormHostPanel.ClientRectangle;
-=======
-            panelContent.Controls.Add(form);
-            panelContent.Controls.SetChildIndex(panelheader, 0);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
             form.Show();
             BringDashboardHeaderToFront();
             panelContent.ResumeLayout();
@@ -231,21 +233,17 @@ namespace Pos_System.Forms
 
         private void LoadedForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            UpdateNotificationBadge();
+            RefreshAuditNotification();
         }
 
         private void btnpossystemdashboard_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
-=======
             ActivateMenuButton(btnpossystemdashboard);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
             ShowDashboardHome();
         }
 
         private void ShowDashboardHome()
         {
-<<<<<<< HEAD
             activeChildForm = null;
             activeFormHostPanel = null;
             panelContent.Controls.Clear();
@@ -269,16 +267,19 @@ namespace Pos_System.Forms
                 auditPanel.BringToFront();
             }
 
+            if (customerBalancePanel != null && !panelContent.Controls.Contains(customerBalancePanel))
+            {
+                panelContent.Controls.Add(customerBalancePanel);
+            }
+
             if (endWorkDayButton != null && !panelContent.Controls.Contains(endWorkDayButton))
             {
                 panelContent.Controls.Add(endWorkDayButton);
                 endWorkDayButton.BringToFront();
             }
 
+            ApplyRolePermissions();
             LoadDashboardData();
-=======
-            LoadForm(new AdminDashboardHomeForm());
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -288,34 +289,43 @@ namespace Pos_System.Forms
 
         private void button8_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenReports))
+            {
+                MessageBox.Show("You do not have permission to open reports.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             ActivateMenuButton(button8);
             LoadForm(new ReportsOverviewPageForm());
         }
 
         private void btnAddUsers_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenUsers))
+            {
+                MessageBox.Show("You do not have permission to open users.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             ActivateMenuButton(btnAddUsers);
             LoadForm(new AddUsers());
         }
 
         private void PosSystemDashboard_Load(object sender, EventArgs e)
         {
-<<<<<<< HEAD
+            RefreshAuditNotification();
             LoadDashboardData();
-        }
-=======
-            UpdateNotificationBadge();
             if (AppSession.IsCashier)
             {
                 ActivateMenuButton(btnsales);
-                LoadForm(new Sales(lbusername.Text, _role));
+                LoadForm(new SalesStartForm(_username, StartSalesWork_Click));
             }
             else
             {
                 ActivateMenuButton(btnpossystemdashboard);
                 ShowDashboardHome();
             }
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
+        }
 
         private void ConfigureDashboardShell()
         {
@@ -334,6 +344,8 @@ namespace Pos_System.Forms
             button11.Visible = false;
             button12.Visible = false;
             panel1.Visible = false;
+            btnAddSales.Visible = false;
+            btnAddSales.Enabled = false;
 
             StyleMenuButton(btnpossystemdashboard);
             StyleMenuButton(btnsales);
@@ -362,6 +374,8 @@ namespace Pos_System.Forms
             AddDashboardMenuStrip();
             AddEndWorkDayButton();
             AddAuditNotificationControls();
+            AddCustomerBalanceControls();
+            ApplyRolePermissions();
             StartClock();
             panelContent.Resize += DashboardContent_Resize;
             Resize += DashboardContent_Resize;
@@ -386,6 +400,7 @@ namespace Pos_System.Forms
 
             LayoutMetricCards();
             LayoutCharts();
+            LayoutCustomerBalancePanel();
             LayoutFloatingDashboardControls();
             LayoutActiveChildForm();
         }
@@ -479,7 +494,9 @@ namespace Pos_System.Forms
 
             int margin = 10;
             int top = panel2.Bottom + margin;
-            int bottomReserve = 72;
+            bool showBalancePanel = customerBalancePanel != null && customerBalancePanel.Visible;
+            int balanceReserve = showBalancePanel ? 220 : 0;
+            int bottomReserve = 72 + balanceReserve;
             int height = Math.Max(240, panelContent.ClientSize.Height - top - bottomReserve);
 
             panel3.SetBounds(margin, top, Math.Max(300, panelContent.ClientSize.Width - (margin * 2)), height);
@@ -488,6 +505,52 @@ namespace Pos_System.Forms
             int chartWidth = Math.Max(220, (panel3.ClientSize.Width - chartGap) / 2);
             chart1.SetBounds(0, 0, chartWidth, panel3.ClientSize.Height);
             chart2.SetBounds(chartWidth + chartGap, 0, Math.Max(220, panel3.ClientSize.Width - chartWidth - chartGap), panel3.ClientSize.Height);
+        }
+
+        private void LayoutCustomerBalancePanel()
+        {
+            if (customerBalancePanel == null || !customerBalancePanel.Visible)
+            {
+                return;
+            }
+
+            int margin = 10;
+            int top = panel3.Bottom + margin;
+            int bottomReserve = endWorkDayButton != null ? endWorkDayButton.Height + 28 : 72;
+            int height = Math.Max(180, panelContent.ClientSize.Height - top - bottomReserve);
+
+            customerBalancePanel.SetBounds(
+                margin,
+                top,
+                Math.Max(300, panelContent.ClientSize.Width - (margin * 2)),
+                height);
+
+            int summaryWidth = Math.Max(220, (customerBalancePanel.ClientSize.Width / 2) - 220);
+
+            if (customerBalanceSummaryLabel != null)
+            {
+                customerBalanceSummaryLabel.SetBounds(190, 10, summaryWidth, 22);
+            }
+
+            if (supplierBalanceSummaryLabel != null)
+            {
+                supplierBalanceSummaryLabel.SetBounds(196, 10, summaryWidth, 22);
+            }
+
+            int gridTop = 36;
+            int gridGap = 12;
+            int gridWidth = Math.Max(120, (customerBalancePanel.ClientSize.Width - gridGap) / 2);
+            int gridHeight = Math.Max(60, customerBalancePanel.ClientSize.Height - gridTop - 8);
+
+            if (dataGridView1 != null)
+            {
+                dataGridView1.SetBounds(8, gridTop, gridWidth - 8, gridHeight);
+            }
+
+            if (dataGridView2 != null)
+            {
+                dataGridView2.SetBounds(gridWidth + gridGap, gridTop, Math.Max(120, customerBalancePanel.ClientSize.Width - gridWidth - gridGap - 8), gridHeight);
+            }
         }
 
         private void LayoutFloatingDashboardControls()
@@ -737,7 +800,153 @@ namespace Pos_System.Forms
             panelContent.Controls.Add(auditPanel);
             auditPanel.BringToFront();
 
+            ApplyRolePermissions();
             RefreshAuditNotification();
+        }
+
+        private void AddCustomerBalanceControls()
+        {
+            if (customerBalancePanel != null)
+            {
+                StyleDashboardBalanceGrid(dataGridView1);
+                StyleDashboardBalanceGrid(dataGridView2);
+                return;
+            }
+
+            customerBalancePanel = new Panel
+            {
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Name = "customerBalancePanel",
+                Visible = false
+            };
+
+            TableLayoutPanel balanceLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 1,
+                Padding = new Padding(8)
+            };
+            balanceLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            balanceLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            balanceLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+
+            Panel customerPanel = new Panel
+            {
+                BackColor = Color.White,
+                Dock = DockStyle.Fill,
+                Padding = new Padding(0, 36, 6, 0)
+            };
+
+            Panel supplierPanel = new Panel
+            {
+                BackColor = Color.White,
+                Dock = DockStyle.Fill,
+                Padding = new Padding(6, 36, 0, 0)
+            };
+
+            customerBalanceTitleLabel = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(15, 23, 42),
+                Location = new Point(0, 8),
+                Text = "Customer Balances"
+            };
+
+            customerBalanceSummaryLabel = new Label
+            {
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(71, 85, 105),
+                Location = new Point(190, 10),
+                Size = new Size(420, 22),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            supplierBalanceTitleLabel = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(15, 23, 42),
+                Location = new Point(6, 8),
+                Text = "Supplier Balances"
+            };
+
+            supplierBalanceSummaryLabel = new Label
+            {
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(71, 85, 105),
+                Location = new Point(196, 10),
+                Size = new Size(420, 22),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            dataGridView1 = CreateDashboardBalanceGrid("dataGridView1");
+            dataGridView2 = CreateDashboardBalanceGrid("dataGridView2");
+
+            customerPanel.Controls.Add(dataGridView1);
+            customerPanel.Controls.Add(customerBalanceTitleLabel);
+            customerPanel.Controls.Add(customerBalanceSummaryLabel);
+            supplierPanel.Controls.Add(dataGridView2);
+            supplierPanel.Controls.Add(supplierBalanceTitleLabel);
+            supplierPanel.Controls.Add(supplierBalanceSummaryLabel);
+            balanceLayout.Controls.Add(customerPanel, 0, 0);
+            balanceLayout.Controls.Add(supplierPanel, 1, 0);
+            customerBalancePanel.Controls.Add(balanceLayout);
+            panelContent.Controls.Add(customerBalancePanel);
+        }
+
+        private DataGridView CreateDashboardBalanceGrid(string name)
+        {
+            DataGridView grid = new DataGridView
+            {
+                AllowUserToAddRows = false,
+                AllowUserToDeleteRows = false,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Dock = DockStyle.Fill,
+                MultiSelect = false,
+                Name = name,
+                ReadOnly = true,
+                RowHeadersVisible = false,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect
+            };
+
+            grid.EnableHeadersVisualStyles = false;
+            grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 41, 59);
+            grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            grid.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
+            grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(219, 234, 254);
+            grid.DefaultCellStyle.SelectionForeColor = Color.FromArgb(15, 23, 42);
+            return grid;
+        }
+
+        private void StyleDashboardBalanceGrid(DataGridView grid)
+        {
+            if (grid == null)
+            {
+                return;
+            }
+
+            grid.AllowUserToAddRows = false;
+            grid.AllowUserToDeleteRows = false;
+            grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            grid.BackgroundColor = Color.White;
+            grid.ReadOnly = true;
+            grid.RowHeadersVisible = false;
+            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            grid.EnableHeadersVisualStyles = false;
+            grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 41, 59);
+            grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            grid.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
+            grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(219, 234, 254);
+            grid.DefaultCellStyle.SelectionForeColor = Color.FromArgb(15, 23, 42);
         }
 
         private void StyleMenuButton(Button button)
@@ -790,7 +999,7 @@ namespace Pos_System.Forms
             menuDashboard = CreateDashboardMenuButton("Dashboard", btnpossystemdashboard_Click);
             menuSales = CreateDashboardMenuButton("Sales", btnsales_Click);
             menuProducts = CreateDashboardMenuButton("Inventory", btnProducts_Click);
-            menuAddSales = CreateDashboardMenuButton("Add Sales", btnAddSales_Click);
+            menuSupplier = CreateDashboardMenuButton("Supplier", menuSupplier_Click);
             menuCustomers = CreateDashboardMenuButton("Customers", btnCustomers_Click);
             menuEarningReports = CreateDashboardMenuButton("Earning Report", btnEarningReports_Click);
             menuWarhouseReports = CreateDashboardMenuButton("Warehouse Reports", btnWarhouseReports_Click);
@@ -812,7 +1021,7 @@ namespace Pos_System.Forms
                 menuDashboard,
                 menuSales,
                 menuProducts,
-                menuAddSales,
+                menuSupplier,
                 menuCustomers,
                 menuEarningReports,
                 menuWarhouseReports,
@@ -858,7 +1067,7 @@ namespace Pos_System.Forms
                 menuDashboard,
                 menuSales,
                 menuProducts,
-                menuAddSales,
+                menuSupplier,
                 menuCustomers,
                 menuEarningReports,
                 menuWarhouseReports,
@@ -1077,29 +1286,45 @@ namespace Pos_System.Forms
             string role = (_role ?? string.Empty).Trim().ToLowerInvariant();
             bool isAdmin = role == "admin";
             bool isManager = role == "manager" || role == "manger";
+            bool canViewDashboard = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenDashboard);
+            bool canViewSales = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenSales);
+            bool canViewUsers = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenUsers);
+            bool canViewSettings = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenSettings) ||
+                PermissionService.CanManagePermissions(AppSession.UserId, _role);
+            bool canViewReports = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenReports);
+            bool canViewEarningReports = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenEarningReports);
+            bool canViewWarehouse = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenWarehouse);
+            bool canViewProducts = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenProducts);
+            bool canViewSuppliers = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenSuppliers);
+            bool canViewCustomers = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenCustomers);
 
-            btnAddUsers.Visible = isAdmin;
-            btnsettings.Visible = isAdmin || isManager;
-            button8.Visible = isAdmin || isManager;
-            btnEarningReports.Visible = isAdmin || isManager;
-            btnWarhouseReports.Visible = isAdmin || isManager;
-            btnProducts.Visible = isAdmin || isManager;
-            btnAddSales.Visible = isAdmin || isManager;
-            btnCustomers.Visible = isAdmin || isManager;
+            btnAddUsers.Visible = canViewUsers;
+            btnsettings.Visible = canViewSettings;
+            button8.Visible = canViewReports;
+            btnEarningReports.Visible = canViewEarningReports;
+            btnWarhouseReports.Visible = canViewWarehouse;
+            btnProducts.Visible = canViewProducts;
+            btnAddSales.Visible = false;
+            btnCustomers.Visible = canViewCustomers;
+            btnpossystemdashboard.Visible = canViewDashboard;
+            btnsales.Visible = canViewSales;
 
             if (menuAddUsers != null)
             {
-                menuAddUsers.Visible = isAdmin;
-                menuSettings.Visible = isAdmin || isManager;
-                menuReports.Visible = isAdmin || isManager;
-                menuEarningReports.Visible = isAdmin || isManager;
-                menuWarhouseReports.Visible = isAdmin || isManager;
-                menuProducts.Visible = isAdmin || isManager;
-                menuAddSales.Visible = isAdmin || isManager;
-                menuCustomers.Visible = isAdmin || isManager;
+                menuDashboard.Visible = canViewDashboard;
+                menuSales.Visible = canViewSales;
+                menuAddUsers.Visible = canViewUsers;
+                menuSettings.Visible = canViewSettings;
+                menuReports.Visible = canViewReports;
+                menuEarningReports.Visible = canViewEarningReports;
+                menuWarhouseReports.Visible = canViewWarehouse;
+                menuProducts.Visible = canViewProducts;
+                menuSupplier.Visible = canViewSuppliers;
+                menuCustomers.Visible = canViewCustomers;
             }
 
-            bool canSeeAudit = isAdmin || isManager;
+            bool canSeeAudit = PermissionService.CanViewNotifications(AppSession.UserId, _role);
+            bool canDeleteAudit = PermissionService.CanDeleteNotifications(AppSession.UserId, _role);
             if (auditNotificationButton != null)
             {
                 auditNotificationButton.Visible = canSeeAudit;
@@ -1108,6 +1333,11 @@ namespace Pos_System.Forms
             if (auditBadgeLabel != null)
             {
                 auditBadgeLabel.Visible = canSeeAudit;
+            }
+
+            if (deleteAuditButton != null)
+            {
+                deleteAuditButton.Visible = canSeeAudit && canDeleteAudit;
             }
 
             bool canSeeInventoryMetrics = isAdmin || isManager;
@@ -1119,6 +1349,7 @@ namespace Pos_System.Forms
             lbr2slmal.Visible = canSeeInventoryMetrics;
             label19.Visible = canSeeInventoryMetrics;
             label20.Visible = canSeeInventoryMetrics;
+            SetCustomerBalancePanelVisible(true);
             LayoutDashboardHome();
         }
 
@@ -1140,6 +1371,7 @@ namespace Pos_System.Forms
 
                 LoadSalesTrendChart();
                 LoadInventoryChart();
+                LoadCustomerBalanceData();
                 RefreshAuditNotification();
             }
             catch (Exception ex)
@@ -1153,6 +1385,213 @@ namespace Pos_System.Forms
                 label19.Text = string.Empty;
                 label20.Text = string.Empty;
             }
+        }
+
+        private void SetCustomerBalancePanelVisible(bool visible)
+        {
+            if (customerBalancePanel == null)
+            {
+                return;
+            }
+
+            customerBalancePanel.Visible = visible;
+
+            if (!visible && dataGridView1 != null)
+            {
+                dataGridView1.DataSource = null;
+            }
+
+            if (!visible && dataGridView2 != null)
+            {
+                dataGridView2.DataSource = null;
+            }
+        }
+
+        private void LoadCustomerBalanceData()
+        {
+            if (customerBalancePanel == null || dataGridView1 == null || dataGridView2 == null || !customerBalancePanel.Visible)
+            {
+                return;
+            }
+
+            AuditLogger.EnsureCustomerBalanceColumns();
+            AuditLogger.EnsureSupplierBalanceColumns();
+
+            DataTable table = ExecuteDataTable(@"
+                WITH CustomerBalances AS
+                (
+                    SELECT
+                        name,
+                        phone,
+                        balance_updated_at,
+                        EffectiveUsd = CASE
+                            WHEN ISNULL(balance_usd, 0) = 0
+                             AND ISNULL(balance_lb, 0) = 0
+                             AND ISNULL(balance, 0) <> 0 THEN ISNULL(balance, 0)
+                            ELSE ISNULL(balance_usd, 0)
+                        END,
+                        EffectiveLb = ISNULL(balance_lb, 0)
+                    FROM Customers
+                )
+                SELECT TOP 50
+                       name AS [Customer],
+                       phone AS [Phone],
+                       CASE
+                           WHEN EffectiveUsd > 0 OR EffectiveLb > 0 THEN N'Customer owes you'
+                           WHEN EffectiveUsd < 0 OR EffectiveLb < 0 THEN N'You owe customer'
+                           ELSE N'No balance'
+                       END AS [Balance Type],
+                       CASE
+                           WHEN EffectiveUsd = 0 THEN N'$ 0.00'
+                           ELSE CONCAT(CASE WHEN EffectiveUsd < 0 THEN N'-' ELSE N'' END, N'$ ', FORMAT(ABS(EffectiveUsd), 'N2'))
+                       END AS [USD Balance],
+                       CASE
+                           WHEN EffectiveLb = 0 THEN N'0 L.L'
+                           ELSE CONCAT(CASE WHEN EffectiveLb < 0 THEN N'-' ELSE N'' END, FORMAT(ABS(EffectiveLb), 'N0'), N' L.L')
+                       END AS [L.L Balance],
+                       CASE
+                           WHEN balance_updated_at IS NULL THEN N'-'
+                           ELSE FORMAT(balance_updated_at, 'yyyy-MM-dd HH:mm')
+                       END AS [Updated]
+                FROM CustomerBalances
+                WHERE EffectiveUsd <> 0
+                   OR EffectiveLb <> 0
+                ORDER BY
+                    CASE WHEN balance_updated_at IS NULL THEN 1 ELSE 0 END,
+                    balance_updated_at DESC,
+                    name ASC;");
+
+            dataGridView1.DataSource = table;
+            customerBalanceSummaryLabel.Text = BuildCustomerBalanceSummary();
+
+            if (dataGridView1.Columns.Contains("Phone"))
+            {
+                dataGridView1.Columns["Phone"].FillWeight = 90;
+            }
+
+            if (dataGridView1.Columns.Contains("Balance Type"))
+            {
+                dataGridView1.Columns["Balance Type"].FillWeight = 130;
+            }
+
+            LoadSupplierBalanceData();
+        }
+
+        private void LoadSupplierBalanceData()
+        {
+            DataTable table = ExecuteDataTable(@"
+                SELECT TOP 50
+                       name AS [Supplier],
+                       contact_info AS [Phone],
+                       CASE
+                           WHEN ISNULL(balance_usd, 0) > 0 OR ISNULL(balance_lb, 0) > 0 THEN N'You owe supplier'
+                           WHEN ISNULL(balance_usd, 0) < 0 OR ISNULL(balance_lb, 0) < 0 THEN N'Supplier owes you'
+                           ELSE N'No balance'
+                       END AS [Balance Type],
+                       CASE
+                           WHEN ISNULL(balance_usd, 0) = 0 THEN N'$ 0.00'
+                           ELSE CONCAT(CASE WHEN balance_usd < 0 THEN N'-' ELSE N'' END, N'$ ', FORMAT(ABS(balance_usd), 'N2'))
+                       END AS [USD Balance],
+                       CASE
+                           WHEN ISNULL(balance_lb, 0) = 0 THEN N'0 L.L'
+                           ELSE CONCAT(CASE WHEN balance_lb < 0 THEN N'-' ELSE N'' END, FORMAT(ABS(balance_lb), 'N0'), N' L.L')
+                       END AS [L.L Balance],
+                       CASE
+                           WHEN balance_updated_at IS NULL THEN N'-'
+                           ELSE FORMAT(balance_updated_at, 'yyyy-MM-dd HH:mm')
+                       END AS [Balance DateTime]
+                FROM Suppliers
+                WHERE ISNULL(balance_usd, 0) <> 0
+                   OR ISNULL(balance_lb, 0) <> 0
+                ORDER BY
+                    CASE WHEN balance_updated_at IS NULL THEN 1 ELSE 0 END,
+                    balance_updated_at DESC,
+                    name ASC;");
+
+            dataGridView2.DataSource = table;
+            supplierBalanceSummaryLabel.Text = BuildSupplierBalanceSummary();
+
+            if (dataGridView2.Columns.Contains("Phone"))
+            {
+                dataGridView2.Columns["Phone"].FillWeight = 90;
+            }
+
+            if (dataGridView2.Columns.Contains("Balance Type"))
+            {
+                dataGridView2.Columns["Balance Type"].FillWeight = 130;
+            }
+        }
+
+        private string BuildCustomerBalanceSummary()
+        {
+            DataTable table = ExecuteDataTable(@"
+                WITH CustomerBalances AS
+                (
+                    SELECT
+                        EffectiveUsd = CASE
+                            WHEN ISNULL(balance_usd, 0) = 0
+                             AND ISNULL(balance_lb, 0) = 0
+                             AND ISNULL(balance, 0) <> 0 THEN ISNULL(balance, 0)
+                            ELSE ISNULL(balance_usd, 0)
+                        END,
+                        EffectiveLb = ISNULL(balance_lb, 0)
+                    FROM Customers
+                )
+                SELECT
+                    CustomerOwesUsd = ISNULL(SUM(CASE WHEN EffectiveUsd > 0 THEN EffectiveUsd ELSE 0 END), 0),
+                    YouOweUsd = ISNULL(SUM(CASE WHEN EffectiveUsd < 0 THEN ABS(EffectiveUsd) ELSE 0 END), 0),
+                    CustomerOwesLb = ISNULL(SUM(CASE WHEN EffectiveLb > 0 THEN EffectiveLb ELSE 0 END), 0),
+                    YouOweLb = ISNULL(SUM(CASE WHEN EffectiveLb < 0 THEN ABS(EffectiveLb) ELSE 0 END), 0)
+                FROM CustomerBalances;");
+
+            if (table.Rows.Count == 0)
+            {
+                return "No open balances";
+            }
+
+            DataRow row = table.Rows[0];
+            decimal customerOwesUsd = Convert.ToDecimal(row["CustomerOwesUsd"]);
+            decimal youOweUsd = Convert.ToDecimal(row["YouOweUsd"]);
+            decimal customerOwesLb = Convert.ToDecimal(row["CustomerOwesLb"]);
+            decimal youOweLb = Convert.ToDecimal(row["YouOweLb"]);
+
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "Customers owe: ${0:N2} / {1:N0} L.L  You owe: ${2:N2} / {3:N0} L.L",
+                customerOwesUsd,
+                customerOwesLb,
+                youOweUsd,
+                youOweLb);
+        }
+
+        private string BuildSupplierBalanceSummary()
+        {
+            DataTable table = ExecuteDataTable(@"
+                SELECT
+                    YouOweUsd = ISNULL(SUM(CASE WHEN ISNULL(balance_usd, 0) > 0 THEN balance_usd ELSE 0 END), 0),
+                    SupplierOwesUsd = ISNULL(SUM(CASE WHEN ISNULL(balance_usd, 0) < 0 THEN ABS(balance_usd) ELSE 0 END), 0),
+                    YouOweLb = ISNULL(SUM(CASE WHEN ISNULL(balance_lb, 0) > 0 THEN balance_lb ELSE 0 END), 0),
+                    SupplierOwesLb = ISNULL(SUM(CASE WHEN ISNULL(balance_lb, 0) < 0 THEN ABS(balance_lb) ELSE 0 END), 0)
+                FROM Suppliers;");
+
+            if (table.Rows.Count == 0)
+            {
+                return "No open balances";
+            }
+
+            DataRow row = table.Rows[0];
+            decimal youOweUsd = Convert.ToDecimal(row["YouOweUsd"]);
+            decimal supplierOwesUsd = Convert.ToDecimal(row["SupplierOwesUsd"]);
+            decimal youOweLb = Convert.ToDecimal(row["YouOweLb"]);
+            decimal supplierOwesLb = Convert.ToDecimal(row["SupplierOwesLb"]);
+
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "You owe: ${0:N2} / {1:N0} L.L  Supplier owes: ${2:N2} / {3:N0} L.L",
+                youOweUsd,
+                youOweLb,
+                supplierOwesUsd,
+                supplierOwesLb);
         }
 
         private DashboardStats GetDashboardStats()
@@ -1169,6 +1608,7 @@ namespace Pos_System.Forms
                 FROM Sales s
                 WHERE s.sale_date >= @WorkDayStart
                   AND s.sale_date < DATEADD(day, 1, CONVERT(date, GETDATE()))
+                  AND TRY_CONVERT(INT, s.user_id) = @CurrentUserId
                   AND ISNULL(s.is_returned, 0) = 0;
 
                 SELECT
@@ -1203,16 +1643,23 @@ namespace Pos_System.Forms
                 LEFT JOIN Products p ON si.product_id = p.product_id
                 WHERE s.sale_date >= @WorkDayStart
                   AND s.sale_date < DATEADD(day, 1, CONVERT(date, GETDATE()))
+                  AND TRY_CONVERT(INT, s.user_id) = @CurrentUserId
                   AND ISNULL(s.is_returned, 0) = 0;
 
                 SELECT TOP 1 TopProductName = ISNULL(si.name_product, p.name)
                 FROM Sale_Items si
+                INNER JOIN Sales s ON si.sale_id = s.sale_id
                 LEFT JOIN Products p ON si.product_id = p.product_id
+                WHERE s.sale_date >= @WorkDayStart
+                  AND s.sale_date < DATEADD(day, 1, CONVERT(date, GETDATE()))
+                  AND TRY_CONVERT(INT, s.user_id) = @CurrentUserId
+                  AND ISNULL(s.is_returned, 0) = 0
                 GROUP BY ISNULL(si.name_product, p.name)
                 ORDER BY SUM(ISNULL(si.quantity, 0)) DESC;", connection))
             {
                 command.Parameters.AddWithValue("@LowStockThreshold", lowStockThreshold);
                 command.Parameters.Add("@WorkDayStart", SqlDbType.DateTime2).Value = workDayStart;
+                command.Parameters.Add("@CurrentUserId", SqlDbType.Int).Value = AppSession.UserId;
                 connection.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -1432,37 +1879,7 @@ namespace Pos_System.Forms
 
         private void LoadAuditLogs(string usernameFilter, string actionFilter, DateTime? dateFilter)
         {
-            using (SqlConnection connection = new SqlConnection(POS_System.Program.SettingsManager.ConnectionString))
-            using (SqlCommand command = new SqlCommand(@"
-                SELECT TOP 100
-                    audit_log_id AS [ID],
-                    created_at AS [Time],
-                    username AS [User],
-                    action_type AS [Action],
-                    entity_name AS [Screen/Table],
-                    entity_id AS [Record],
-                    details AS [Details]
-                FROM dbo.AuditLogs
-                WHERE (@username = N'' OR username LIKE N'%' + @username + N'%')
-                  AND action_type IN (N'EDIT', N'DELETE')
-                  AND (@action = N'' OR action_type LIKE N'%' + @action + N'%' OR details LIKE N'%' + @action + N'%')
-                  AND (@dateFrom IS NULL OR created_at >= @dateFrom)
-                  AND (@dateTo IS NULL OR created_at < @dateTo)
-                ORDER BY audit_log_id DESC;", connection))
-            using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-            {
-                string safeUsername = string.IsNullOrWhiteSpace(usernameFilter) ? string.Empty : usernameFilter.Trim();
-                string safeAction = NormalizeAuditActionFilter(actionFilter);
-                command.Parameters.Add("@username", SqlDbType.NVarChar, 100).Value = safeUsername;
-                command.Parameters.Add("@action", SqlDbType.NVarChar, 100).Value = safeAction;
-                command.Parameters.Add("@dateFrom", SqlDbType.DateTime2).Value = dateFilter.HasValue ? (object)dateFilter.Value : DBNull.Value;
-                command.Parameters.Add("@dateTo", SqlDbType.DateTime2).Value = dateFilter.HasValue ? (object)dateFilter.Value.AddDays(1) : DBNull.Value;
-
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-
-                auditGrid.DataSource = table;
-            }
+            auditGrid.DataSource = AuditService.GetNotifications(usernameFilter, actionFilter, dateFilter);
 
             if (auditGrid.Columns.Contains("ID"))
             {
@@ -1484,6 +1901,11 @@ namespace Pos_System.Forms
                 value.Equals("created", StringComparison.OrdinalIgnoreCase))
             {
                 return "ADD";
+            }
+
+            if (value.Equals("all", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Empty;
             }
 
             if (value.Equals("delete", StringComparison.OrdinalIgnoreCase) ||
@@ -1529,47 +1951,31 @@ namespace Pos_System.Forms
 
             try
             {
-                int seenUntilId = GetSeenAuditLogId();
-                object count = ExecuteScalar("SELECT COUNT(1) FROM dbo.AuditLogs WHERE audit_log_id > " + seenUntilId + " AND action_type IN (N'EDIT', N'DELETE');");
-                auditBadgeLabel.Text = Convert.ToInt32(count).ToString("N0");
+                int count = AuditService.GetTodayActivityCount();
+                auditBadgeLabel.Text = count > 99 ? "99+" : count.ToString("N0");
+                auditBadgeLabel.Visible = count > 0 && auditNotificationButton.Visible;
             }
             catch
             {
                 auditBadgeLabel.Text = "0";
+                auditBadgeLabel.Visible = false;
             }
-        }
-
-        private object ExecuteScalar(string query)
-        {
-            using (SqlConnection connection = new SqlConnection(POS_System.Program.SettingsManager.ConnectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                connection.Open();
-                return command.ExecuteScalar();
-            }
-        }
-
-        private int GetSeenAuditLogId()
-        {
-            string raw = POS_System.Program.SettingsManager.GetSetting(AuditSeenUntilSettingKey, "0");
-            return int.TryParse(raw, out int seenUntilId) ? seenUntilId : 0;
         }
 
         private void MarkAuditNotificationsSeen()
         {
-            object maxIdValue = ExecuteScalar("SELECT ISNULL(MAX(audit_log_id), 0) FROM dbo.AuditLogs;");
-            int maxId = Convert.ToInt32(maxIdValue);
-
-            POS_System.Program.SettingsManager.SaveSettings(new Dictionary<string, string>
-            {
-                { AuditSeenUntilSettingKey, maxId.ToString() }
-            });
-
+            AuditService.MarkAllNotificationsAsRead();
             RefreshAuditNotification();
         }
 
         private void DeleteAuditButton_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanDeleteNotifications(AppSession.UserId, _role))
+            {
+                MessageBox.Show("You do not have permission to delete notifications.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (auditGrid.CurrentRow == null || auditGrid.CurrentRow.Cells["ID"].Value == null)
             {
                 MessageBox.Show("Select an audit log row first.", "Audit Log");
@@ -1588,14 +1994,7 @@ namespace Pos_System.Forms
             }
 
             int auditLogId = Convert.ToInt32(auditGrid.CurrentRow.Cells["ID"].Value);
-            using (SqlConnection connection = new SqlConnection(POS_System.Program.SettingsManager.ConnectionString))
-            using (SqlCommand command = new SqlCommand("DELETE FROM dbo.AuditLogs WHERE audit_log_id = @id;", connection))
-            {
-                command.Parameters.Add("@id", SqlDbType.Int).Value = auditLogId;
-                connection.Open();
-                command.ExecuteNonQuery();
-            }
-
+            AuditService.DeleteNotification(auditLogId);
             LoadAuditLogs();
             RefreshAuditNotification();
         }
@@ -1619,34 +2018,7 @@ namespace Pos_System.Forms
 
         private void ApplyRoleAccess()
         {
-            bool isCashier = string.Equals(_role, "cashier", StringComparison.OrdinalIgnoreCase);
-
-            Button[] restrictedButtons =
-            {
-                btnEarningReports,
-                btnProducts,
-                btnCustomers,
-                btnWarhouseReports,
-                button11,
-                button12,
-                button8,
-                btnAddUsers,
-                btnsettings
-            };
-
-            foreach (Button button in restrictedButtons)
-            {
-                button.Enabled = !isCashier;
-                button.Visible = !isCashier;
-                
-            }
-
-            btnpossystemdashboard.Enabled = true;
-            btnsales.Enabled = true;
-            btnAddSales.Enabled = !isCashier;
-            btnAddSales.Visible = !isCashier;
-            btnpossystemdashboard.Enabled = !isCashier;
-            btnpossystemdashboard.Visible = !isCashier;
+            ApplyRolePermissions();
         }
 
         private void ApplyDashboardVisualStyle()
@@ -1670,17 +2042,17 @@ namespace Pos_System.Forms
             btnpossystemdashboard.Text = "Dashboard";
             btnsales.Text = "Sales";
             btnCustomers.Text = "Customers";
-            btnAddSales.Text = "Products";
+            btnAddSales.Text = "Disabled";
             btnProducts.Text = "Inventory";
-            btnWarhouseReports.Text = "Suppliers";
+            btnWarhouseReports.Text = "Warehouse";
             button11.Text = "Purchases";
             button12.Text = "Expenses";
             button8.Text = "Reports";
             btnAddUsers.Text = "Add Users";
-            btnEarningReports.Text = "Activity Log";
+            btnEarningReports.Text = "Earning Reports";
             btnsettings.Text = "Settings";
-            panel3.Visible = false;
-            panel2.Visible = false;
+            panel3.Visible = true;
+            panel2.Visible = true;
             panelheader.Height = 74;
 
             foreach (Control control in panel1.Controls)
@@ -1716,82 +2088,17 @@ namespace Pos_System.Forms
             activeMenuButton.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
         }
 
-        private void BuildNotificationControl()
-        {
-            if (notificationButton != null)
-            {
-                return;
-            }
-
-            notificationButton = new Button
-            {
-                Size = new Size(44, 44),
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Color.FromArgb(239, 246, 255),
-                ForeColor = Color.FromArgb(30, 64, 175),
-                Font = new Font("Segoe UI Symbol", 16F, FontStyle.Bold),
-                Text = "\uD83D\uDD14",
-                Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                Location = new Point(panelheader.Width - 180, 14),
-                Cursor = Cursors.Hand
-            };
-
-            notificationButton.FlatAppearance.BorderSize = 0;
-            notificationButton.Click += NotificationButton_Click;
-
-            notificationBadge = new Label
-            {
-                AutoSize = false,
-                Size = new Size(24, 24),
-                BackColor = Color.FromArgb(239, 68, 68),
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                Location = new Point(notificationButton.Right - 12, notificationButton.Top - 6)
-            };
-
-            panelheader.Controls.Add(notificationButton);
-            panelheader.Controls.Add(notificationBadge);
-            panelheader.Resize += Panelheader_Resize;
-            Panelheader_Resize(panelheader, EventArgs.Empty);
-        }
-
-        private void Panelheader_Resize(object sender, EventArgs e)
-        {
-            if (notificationButton == null || notificationBadge == null)
-            {
-                return;
-            }
-
-            notificationButton.Location = new Point(panelheader.Width - 170, 14);
-            notificationBadge.Location = new Point(notificationButton.Right - 10, notificationButton.Top - 5);
-        }
-
-        private void NotificationButton_Click(object sender, EventArgs e)
-        {
-            using (ActivityLogForm form = new ActivityLogForm())
-            {
-                form.ShowDialog(this);
-            }
-
-            UpdateNotificationBadge();
-        }
-
-        private void UpdateNotificationBadge()
-        {
-            if (notificationBadge == null)
-            {
-                return;
-            }
-
-            int activityCount = AuditService.GetTodayActivityCount();
-            notificationBadge.Text = activityCount > 99 ? "99+" : activityCount.ToString();
-            notificationBadge.Visible = activityCount > 0;
-        }
-
         private void button10_Click(object sender, EventArgs e)
         {
+            bool canViewSettings = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenSettings);
+            bool canManageOptions = PermissionService.CanManagePermissions(AppSession.UserId, _role);
+
+            if (!canViewSettings && !canManageOptions)
+            {
+                MessageBox.Show("You do not have permission to open settings.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             ActivateMenuButton(btnsettings);
             LoadForm(new Settings());
         }
@@ -1965,6 +2272,11 @@ namespace Pos_System.Forms
                 "Expense management screen",
                 "Expenses",
                 "The Expenses table does not exist yet. Create it when you are ready to save operating expenses."));
+        }
+
+        private void customerBalanceTitleLabel_Click(object sender, EventArgs e)
+        {
+
         }
     }
     }

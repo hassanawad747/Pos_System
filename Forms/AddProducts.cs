@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using Pos_System.Services;
@@ -15,6 +16,9 @@ namespace Pos_System.Forms
         private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
         private readonly int? productId;
         private readonly bool openProductsAfterSave;
+        private int? editingProductId;
+        private bool loadingProduct;
+        private bool allowGridSelectionLoad;
 
         public AddProducts() : this(null, false)
         {
@@ -35,37 +39,67 @@ namespace Pos_System.Forms
 
             this.productId = productId;
             this.openProductsAfterSave = openProductsAfterSave;
+            editingProductId = productId;
 
             dataGridView1.CellClick += dataGridView1_CellClick;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             txtpricedollar.TextChanged += PriceInput_TextChanged;
             txtdollar.TextChanged += PriceInput_TextChanged;
             txtsaledollar.TextChanged += PriceInput_TextChanged;
+            txtname.TextChanged += txtname_TextChanged;
+            panel1.Resize += (s, e) => LayoutBottomButtons();
+            Resize += (s, e) => LayoutBottomButtons();
         }
 
         private void AddProducts_Load(object sender, EventArgs e)
         {
+            if (!PermissionService.EnsureScreenAccess(this, PermissionService.ScreenProducts))
+            {
+                return;
+            }
+
             EnsureActionColumns();
             LoadCategories();
             LoadSuppliers();
             RefreshProductsGrid();
             UseSettingsExchangeRate();
             HideLocalExchangeRateInput();
+            SetupBarcodeMode();
+            LayoutBottomButtons();
 
-            if (productId.HasValue)
+            if (editingProductId.HasValue)
             {
-                LoadProductData(productId.Value);
+                LoadProductData(editingProductId.Value);
                 btnadd.Text = "Update Product";
             }
 
             UpdateConvertedPrices();
+            PermissionService.ApplyActionPermissions(this, PermissionService.ScreenProducts);
+            allowGridSelectionLoad = true;
         }
 
         private void btnadd_Click(object sender, EventArgs e)
         {
+            if (editingProductId.HasValue)
+            {
+                if (!PermissionService.CanEdit(AppSession.UserId, AppSession.Role, PermissionService.ScreenProducts))
+                {
+                    MessageBox.Show("You do not have permission to update products.");
+                    return;
+                }
+            }
+            else if (!PermissionService.CanCreate(AppSession.UserId, AppSession.Role, PermissionService.ScreenProducts))
+            {
+                MessageBox.Show("You do not have permission to create products.");
+                return;
+            }
+
             if (!TryBuildProductValues(out ProductValues values))
             {
                 return;
             }
+
+            bool wasEditing = editingProductId.HasValue;
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -73,7 +107,7 @@ namespace Pos_System.Forms
 
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    if (productId.HasValue)
+                    if (editingProductId.HasValue)
                     {
                         cmd.CommandText = @"
                             UPDATE Products
@@ -88,7 +122,7 @@ namespace Pos_System.Forms
                                 barcode = @barcode,
                                 supplier_id = @supplierId
                             WHERE product_id = @id";
-                        cmd.Parameters.AddWithValue("@id", productId.Value);
+                        cmd.Parameters.AddWithValue("@id", editingProductId.Value);
                     }
                     else
                     {
@@ -107,33 +141,30 @@ namespace Pos_System.Forms
                     cmd.Parameters.AddWithValue("@salePriceUsd", values.SalePriceUsd);
                     cmd.Parameters.AddWithValue("@salePriceLb", values.SalePriceLb);
                     cmd.Parameters.AddWithValue("@stockQuantity", values.StockQuantity);
-                    cmd.Parameters.AddWithValue("@barcode", values.Barcode);
+                    cmd.Parameters.AddWithValue("@barcode", (object)values.Barcode ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@supplierId", values.SupplierId);
                     cmd.ExecuteNonQuery();
                 }
             }
 
-<<<<<<< HEAD
-            AuditLogger.Log(
-                productId.HasValue ? "EDIT" : "ADD",
-                "Products",
-                productId,
-                (productId.HasValue ? "Updated product: " : "Added product: ") + values.Name);
-=======
             AuditService.Log(
                 "Products",
-                productId.HasValue ? "Edit" : "Create",
-                productId.HasValue ? productId.Value.ToString() : values.Barcode,
-                (productId.HasValue ? "Updated product " : "Created product ") + values.Name);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
+                editingProductId.HasValue ? "Edit" : "Create",
+                editingProductId.HasValue ? editingProductId.Value.ToString() : (values.Barcode ?? values.Name),
+                (editingProductId.HasValue ? "Updated product " : "Created product ") + values.Name);
+            if (wasEditing && !productId.HasValue)
+            {
+                MessageBox.Show("Product updated successfully.");
+                RefreshProductsGrid();
+                return;
+            }
             MessageBox.Show(productId.HasValue ? "✅ تم تعديل المنتج بنجاح" : "✅ تم إضافة المنتج بنجاح");
             RefreshProductsGrid();
 
-            //if (openProductsAfterSave)
-            //{
-            //    OpenProductsFormAndClose();
-            //    return;
-            //}
+            if (wasEditing && !productId.HasValue)
+            {
+                return;
+            }
 
             if (productId.HasValue)
             {
@@ -158,6 +189,7 @@ namespace Pos_System.Forms
 
             string productName = txtname.Text.Trim();
             string barcode = txtbarcode.Text.Trim();
+            bool requireBarcode = BarcodeIsRequired();
 
             if (string.IsNullOrWhiteSpace(productName))
             {
@@ -177,6 +209,13 @@ namespace Pos_System.Forms
             {
                 MessageBox.Show("يرجى اختيار المورد.");
                 comboSupplier.Focus();
+                return false;
+            }
+
+            if (requireBarcode && string.IsNullOrWhiteSpace(barcode))
+            {
+                MessageBox.Show("Please enter barcode, or choose No if this product has no barcode.");
+                txtbarcode.Focus();
                 return false;
             }
 
@@ -215,7 +254,7 @@ namespace Pos_System.Forms
                 SalePriceUsd = salePriceUsd,
                 SalePriceLb = salePriceUsd * exchangeRate,
                 StockQuantity = stockQuantity,
-                Barcode = barcode,
+                Barcode = string.IsNullOrWhiteSpace(barcode) ? null : barcode,
                 SupplierId = supplierId
             };
 
@@ -302,23 +341,14 @@ namespace Pos_System.Forms
                         return;
                     }
 
-                    txtname.Text = Convert.ToString(reader["name"]);
-                    comboitem.SelectedValue = Convert.ToInt32(reader["category_id"]);
-                    txtpricedollar.Text = Convert.ToString(reader["price_usd"]);
-                    txtpriceLebanon.Text = Convert.ToString(reader["price_lb"]);
-                    UseSettingsExchangeRate();
-                    txtsaledollar.Text = Convert.ToString(reader["sale_price_usd"]);
-                    txtsalelebanon.Text = Convert.ToString(reader["sale_price_lb"]);
-                    txtquentity.Text = Convert.ToString(reader["stock_quantity"]);
-                    txtbarcode.Text = Convert.ToString(reader["barcode"]);
-                    comboSupplier.SelectedValue = Convert.ToInt32(reader["supplier_id"]);
+                    FillProductInputs(reader);
                 }
             }
         }
 
         private void LoadProductDataByBarcode(string barcode)
         {
-            if (productId.HasValue || string.IsNullOrWhiteSpace(barcode))
+            if (loadingProduct || string.IsNullOrWhiteSpace(barcode))
             {
                 return;
             }
@@ -336,16 +366,56 @@ namespace Pos_System.Forms
                         return;
                     }
 
-                    txtname.Text = Convert.ToString(reader["name"]);
-                    comboitem.SelectedValue = Convert.ToInt32(reader["category_id"]);
-                    txtpricedollar.Text = Convert.ToString(reader["price_usd"]);
-                    txtpriceLebanon.Text = Convert.ToString(reader["price_lb"]);
-                    UseSettingsExchangeRate();
-                    txtsaledollar.Text = Convert.ToString(reader["sale_price_usd"]);
-                    txtsalelebanon.Text = Convert.ToString(reader["sale_price_lb"]);
-                    txtquentity.Text = Convert.ToString(reader["stock_quantity"]);
-                    comboSupplier.SelectedValue = Convert.ToInt32(reader["supplier_id"]);
+                    FillProductInputs(reader);
                 }
+            }
+        }
+
+        private void LoadProductDataByName(string productName)
+        {
+            if (loadingProduct || string.IsNullOrWhiteSpace(productName))
+            {
+                return;
+            }
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand("SELECT TOP 1 * FROM Products WHERE name = @name ORDER BY product_id DESC", conn))
+            {
+                conn.Open();
+                cmd.Parameters.AddWithValue("@name", productName.Trim());
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        FillProductInputs(reader);
+                    }
+                }
+            }
+        }
+
+        private void FillProductInputs(SqlDataReader reader)
+        {
+            loadingProduct = true;
+            try
+            {
+                editingProductId = Convert.ToInt32(reader["product_id"]);
+                txtname.Text = Convert.ToString(reader["name"]);
+                comboitem.SelectedValue = Convert.ToInt32(reader["category_id"]);
+                txtpricedollar.Text = Convert.ToString(reader["price_usd"]);
+                txtpriceLebanon.Text = Convert.ToString(reader["price_lb"]);
+                UseSettingsExchangeRate();
+                txtsaledollar.Text = Convert.ToString(reader["sale_price_usd"]);
+                txtsalelebanon.Text = Convert.ToString(reader["sale_price_lb"]);
+                txtquentity.Text = Convert.ToString(reader["stock_quantity"]);
+                txtbarcode.Text = Convert.ToString(reader["barcode"]);
+                combobarcode.SelectedIndex = string.IsNullOrWhiteSpace(txtbarcode.Text) ? 1 : 0;
+                comboSupplier.SelectedValue = Convert.ToInt32(reader["supplier_id"]);
+                btnadd.Text = "Update Product";
+            }
+            finally
+            {
+                loadingProduct = false;
             }
         }
 
@@ -384,9 +454,11 @@ namespace Pos_System.Forms
             txtsalelebanon.Clear();
             txtquentity.Clear();
             txtbarcode.Clear();
-            combobarcode.SelectedIndex = -1;
+            combobarcode.SelectedIndex = 0;
             comboitem.SelectedIndex = -1;
             comboSupplier.SelectedIndex = -1;
+            editingProductId = null;
+            btnadd.Text = "اضافة المنتج";
             txtname.Focus();
         }
 
@@ -440,24 +512,51 @@ namespace Pos_System.Forms
             LoadProductDataByBarcode(txtbarcode.Text);
         }
 
-        private void btnexit_Click(object sender, EventArgs e)
+        private void txtname_TextChanged(object sender, EventArgs e)
         {
-            Close();
+            LoadProductDataByName(txtname.Text);
         }
 
-        private void btnskip_Click(object sender, EventArgs e)
+        private void SetupBarcodeMode()
         {
-            OpenProductsFormAndClose();
-        }
-
-        private void OpenProductsFormAndClose()
-        {
-            using (Products productsForm = new Products())
+            combobarcode.DropDownStyle = ComboBoxStyle.DropDownList;
+            if (combobarcode.Items.Count == 0)
             {
-                Hide();
-                productsForm.ShowDialog(GetDialogOwner());
+                combobarcode.Items.Add("Yes");
+                combobarcode.Items.Add("No");
             }
 
+            if (combobarcode.SelectedIndex < 0)
+            {
+                combobarcode.SelectedIndex = 0;
+            }
+        }
+
+        private bool BarcodeIsRequired()
+        {
+            string selected = Convert.ToString(combobarcode.SelectedItem).Trim();
+            return selected.Equals("yes", StringComparison.OrdinalIgnoreCase)
+                || selected.Equals("نعم", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void LayoutBottomButtons()
+        {
+            if (panel1 == null || btnadd == null || btnexit == null)
+            {
+                return;
+            }
+
+            const int margin = 12;
+            int top = Math.Max(8, (panel1.ClientSize.Height - btnadd.Height) / 2);
+
+            btnadd.Location = new Point(Math.Max(margin, panel1.ClientSize.Width - btnadd.Width - margin), top);
+            btnexit.Location = new Point(Math.Max(margin, btnadd.Left - btnexit.Width - 8), top);
+            btnadd.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+            btnexit.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+        }
+
+        private void btnexit_Click(object sender, EventArgs e)
+        {
             Close();
         }
 
@@ -489,6 +588,11 @@ namespace Pos_System.Forms
 
             if (columnName == DeleteColumnName)
             {
+                if (!PermissionService.CanDelete(AppSession.UserId, AppSession.Role, PermissionService.ScreenProducts))
+                {
+                    MessageBox.Show("You do not have permission to delete products.");
+                    return;
+                }
                 DialogResult confirm = MessageBox.Show("هل تريد حذف المنتج؟", "تأكيد الحذف", MessageBoxButtons.YesNo);
                 if (confirm != DialogResult.Yes)
                 {
@@ -496,20 +600,59 @@ namespace Pos_System.Forms
                 }
 
                 using (SqlConnection conn = new SqlConnection(connStr))
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM Products WHERE product_id = @id", conn))
+                using (SqlCommand cmd = new SqlCommand(@"
+                    SET XACT_ABORT ON;
+                    BEGIN TRANSACTION;
+
+                    IF OBJECT_ID(N'dbo.Returns', N'U') IS NOT NULL
+                        DELETE FROM dbo.Returns WHERE product_id = @id;
+
+                    IF OBJECT_ID(N'dbo.Sale_Items', N'U') IS NOT NULL
+                        DELETE FROM dbo.Sale_Items WHERE product_id = @id;
+
+                    IF OBJECT_ID(N'dbo.InventoryLogs', N'U') IS NOT NULL
+                       AND COL_LENGTH('dbo.InventoryLogs', 'product_id') IS NOT NULL
+                        DELETE FROM dbo.InventoryLogs WHERE product_id = @id;
+
+                    DELETE FROM dbo.Products WHERE product_id = @id;
+
+                    COMMIT TRANSACTION;", conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@id", selectedProductId);
                     cmd.ExecuteNonQuery();
                 }
 
-<<<<<<< HEAD
-                AuditLogger.Log("DELETE", "Products", selectedProductId, "Deleted product");
-=======
                 AuditService.Log("Products", "Delete", selectedProductId.ToString(), "Deleted product ID " + selectedProductId);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                 MessageBox.Show("✅ تم حذف المنتج بنجاح");
                 RefreshProductsGrid();
+                return;
+            }
+
+            LoadProductData(selectedProductId);
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (!allowGridSelectionLoad || loadingProduct || dataGridView1.CurrentRow == null || dataGridView1.CurrentRow.IsNewRow)
+            {
+                return;
+            }
+
+            if (!dataGridView1.Columns.Contains("product_id"))
+            {
+                return;
+            }
+
+            object value = dataGridView1.CurrentRow.Cells["product_id"].Value;
+            if (value == null || value == DBNull.Value)
+            {
+                return;
+            }
+
+            if (int.TryParse(Convert.ToString(value), out int selectedProductId))
+            {
+                LoadProductData(selectedProductId);
             }
         }
 

@@ -1,10 +1,7 @@
 ﻿using Pos_System.Data;
 using Pos_System.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Pos_System.Services;
 
 namespace Pos_System.Controllers
 {
@@ -19,8 +16,27 @@ namespace Pos_System.Controllers
 
         public User Login(string username, string password)
         {
-            return _context.Users
-                .FirstOrDefault(u => u.Username == username && u.Password_Hash == password);
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrEmpty(password))
+            {
+                return null;
+            }
+
+            string normalizedUsername = username.Trim();
+            User user = _context.Users
+                .FirstOrDefault(u => u.Username == normalizedUsername);
+
+            if (user == null || !PasswordHasher.Verify(password, user.Password_Hash))
+            {
+                return null;
+            }
+
+            if (PasswordHasher.NeedsRehash(user.Password_Hash))
+            {
+                user.Password_Hash = PasswordHasher.Hash(password);
+                _context.SaveChanges();
+            }
+
+            return user;
         }
     }
 

@@ -31,8 +31,31 @@ namespace Pos_System.Services
             }
 
             snapshots[form] = CaptureForm(form);
+            ApplyFormResizeDefaults(form);
             form.Resize += Form_Resize;
             ApplyLayout(form);
+        }
+
+        private static void ApplyFormResizeDefaults(Form form)
+        {
+            if (form == null || form.IsDisposed)
+            {
+                return;
+            }
+
+            form.AutoScroll = true;
+
+            if (form.MinimumSize.Width <= 0 || form.MinimumSize.Height <= 0)
+            {
+                bool isSmallDialog = form.Width < 700 || form.Height < 450;
+                int minimumWidth = isSmallDialog
+                    ? Math.Max(300, (int)Math.Round(form.Width * 0.95))
+                    : Math.Max(800, (int)Math.Round(form.Width * 0.75));
+                int minimumHeight = isSmallDialog
+                    ? Math.Max(200, (int)Math.Round(form.Height * 0.95))
+                    : Math.Max(500, (int)Math.Round(form.Height * 0.75));
+                form.MinimumSize = new Size(minimumWidth, minimumHeight);
+            }
         }
 
         private static void Form_Resize(object sender, EventArgs e)
@@ -91,6 +114,8 @@ namespace Pos_System.Services
             }
 
             form.SuspendLayout();
+            form.AutoScroll = true;
+            form.AutoScrollMinSize = snapshot.ClientSize;
 
             foreach (KeyValuePair<Control, ControlLayoutSnapshot> item in snapshot.Controls.ToList())
             {

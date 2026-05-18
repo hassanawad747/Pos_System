@@ -6,12 +6,13 @@ using Pos_System.Services;
 using System;
 using System.Configuration;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace POS_System
 {
@@ -27,10 +28,13 @@ namespace POS_System
             var context = new POSDbContext(options);
 
             AuditLogger.EnsureAuditTable();
+            AuditService.EnsureNotificationTable();
+            PermissionService.EnsurePermissionsTable();
             WorkHistoryService.EnsureHistoryTable();
             AuditLogger.EnsureCustomerBalanceColumns();
+            AuditLogger.EnsureSupplierBalanceColumns();
+            AuditLogger.EnsureSalesColumns();
             InitializeDefaultSettings();
-            EnsureAuditLogTable();
             SettingsManager.LoadSettings();
 
             Application.EnableVisualStyles();
@@ -43,33 +47,11 @@ namespace POS_System
             SettingsManager.EnsureDefaultSettings();
         }
 
-        private static void EnsureAuditLogTable()
-        {
-            using (SqlConnection conn = new SqlConnection(SettingsManager.ConnectionString))
-            using (SqlCommand cmd = new SqlCommand(@"
-                IF OBJECT_ID('dbo.AuditLogs', 'U') IS NULL
-                BEGIN
-                    CREATE TABLE dbo.AuditLogs
-                    (
-                        audit_log_id INT IDENTITY(1,1) PRIMARY KEY,
-                        entity_name NVARCHAR(100) NOT NULL,
-                        action_type NVARCHAR(30) NOT NULL,
-                        record_key NVARCHAR(100) NULL,
-                        description NVARCHAR(500) NULL,
-                        changed_by NVARCHAR(100) NULL,
-                        created_at DATETIME NOT NULL CONSTRAINT DF_AuditLogs_created_at DEFAULT(GETDATE())
-                    )
-                END", conn))
-            {
-                conn.Open();
-                cmd.ExecuteNonQuery();
-            }
-        }
-
         public static class SettingsManager
         {
             private const string ConnectionStringName =
                 "Pos_System.Properties.Settings.pos_systemConnectionString";
+            private const string ExternalConnectionConfigFile = "Database.config";
 
             private static readonly Dictionary<string, string> settingsCache =
                 new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -100,11 +82,16 @@ namespace POS_System
             private static readonly Dictionary<Control, ControlColorSnapshot> originalColors =
                 new Dictionary<Control, ControlColorSnapshot>();
 
-<<<<<<< HEAD
             public static string ConnectionString
             {
                 get
                 {
+                    string externalConnectionString = ReadExternalConnectionString();
+                    if (!string.IsNullOrWhiteSpace(externalConnectionString))
+                    {
+                        return externalConnectionString;
+                    }
+
                     ConnectionStringSettings configuredConnection =
                         ConfigurationManager.ConnectionStrings[ConnectionStringName];
 
@@ -114,34 +101,110 @@ namespace POS_System
                         return configuredConnection.ConnectionString;
                     }
 
-                    return Pos_System.Properties.Settings.Default.pos_systemConnectionString;
+                    string fallbackConnectionString =
+                        Pos_System.Properties.Settings.Default.pos_systemConnectionString;
+
+                    if (!string.IsNullOrWhiteSpace(fallbackConnectionString))
+                    {
+                        return fallbackConnectionString;
+                    }
+
+                    throw new ConfigurationErrorsException(
+                        "Database connection string was not found. Edit Database.config beside Pos_System.exe.");
                 }
-=======
-            public static string ConnectionString =>
-                ConfigurationManager.ConnectionStrings["Pos_System.Properties.Settings.pos_systemConnectionString"]?.ConnectionString
-                ?? Pos_System.Properties.Settings.Default.pos_systemConnectionString;
+            }
 
             public static void SetConnectionString(string connectionString)
             {
-                Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                ConnectionStringSettings settings = configuration.ConnectionStrings.ConnectionStrings["Pos_System.Properties.Settings.pos_systemConnectionString"];
-
-                if (settings == null)
+                if (string.IsNullOrWhiteSpace(connectionString))
                 {
-                    configuration.ConnectionStrings.ConnectionStrings.Add(
-                        new ConnectionStringSettings(
-                            "Pos_System.Properties.Settings.pos_systemConnectionString",
-                            connectionString,
-                            "System.Data.SqlClient"));
+                    throw new ArgumentException("Connection string cannot be empty.", nameof(connectionString));
+                }
+
+                SaveExternalConnectionString(connectionString);
+                ConfigurationManager.RefreshSection("connectionStrings");
+            }
+
+            private static string ReadExternalConnectionString()
+            {
+                string path = GetExternalConnectionConfigPath();
+                if (!File.Exists(path))
+                {
+                    return null;
+                }
+
+                XDocument document = XDocument.Load(path);
+                XElement setting = document
+                    .Root?
+                    .Elements("add")
+                    .FirstOrDefault(element =>
+                        string.Equals(
+                            (string)element.Attribute("name"),
+                            ConnectionStringName,
+                            StringComparison.OrdinalIgnoreCase));
+
+                return (string)setting?.Attribute("connectionString");
+            }
+
+            private static void SaveExternalConnectionString(string connectionString)
+            {
+                string path = GetExternalConnectionConfigPath();
+                XDocument document;
+
+                if (File.Exists(path))
+                {
+                    document = XDocument.Load(path);
+                    if (document.Root == null || document.Root.Name != "connectionStrings")
+                    {
+                        document = CreateExternalConnectionDocument(connectionString);
+                    }
+                    else
+                    {
+                        XElement setting = document.Root.Elements("add")
+                            .FirstOrDefault(element =>
+                                string.Equals(
+                                    (string)element.Attribute("name"),
+                                    ConnectionStringName,
+                                    StringComparison.OrdinalIgnoreCase));
+
+                        if (setting == null)
+                        {
+                            document.Root.Add(CreateConnectionElement(connectionString));
+                        }
+                        else
+                        {
+                            setting.SetAttributeValue("connectionString", connectionString);
+                            setting.SetAttributeValue("providerName", "System.Data.SqlClient");
+                        }
+                    }
                 }
                 else
                 {
-                    settings.ConnectionString = connectionString;
+                    document = CreateExternalConnectionDocument(connectionString);
                 }
 
-                configuration.Save(ConfigurationSaveMode.Modified);
-                ConfigurationManager.RefreshSection("connectionStrings");
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
+                document.Save(path);
+            }
+
+            private static XDocument CreateExternalConnectionDocument(string connectionString)
+            {
+                return new XDocument(
+                    new XElement("connectionStrings",
+                        CreateConnectionElement(connectionString)));
+            }
+
+            private static XElement CreateConnectionElement(string connectionString)
+            {
+                return new XElement(
+                    "add",
+                    new XAttribute("name", ConnectionStringName),
+                    new XAttribute("connectionString", connectionString),
+                    new XAttribute("providerName", "System.Data.SqlClient"));
+            }
+
+            private static string GetExternalConnectionConfigPath()
+            {
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ExternalConnectionConfigFile);
             }
 
             public static IReadOnlyDictionary<string, string> DefaultSettings => defaultSettings;
@@ -294,6 +357,11 @@ namespace POS_System
                 if (form == null || registeredForms.Contains(form))
                 {
                     return;
+                }
+
+                if (form.TopLevel && form.StartPosition == FormStartPosition.WindowsDefaultLocation)
+                {
+                    form.StartPosition = FormStartPosition.CenterScreen;
                 }
 
                 CaptureOriginalColors(form);

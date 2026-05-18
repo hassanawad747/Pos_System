@@ -14,6 +14,11 @@ namespace Pos_System.Models
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }
+        public decimal? OriginalUnitPrice { get; set; }
+        public decimal? DiscountAmount { get; set; }
+        public string DiscountType { get; set; }
+        public decimal? DiscountValue { get; set; }
+        public string DiscountBy { get; set; }
 
         // Navigation
         public Sale Sale { get; set; }

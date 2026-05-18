@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <Setting Id="RESUMESETUP" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="OOBPACKAGES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="SKIPINSTALLERRUNCHECK" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="KEEPSERVICINGPATH" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="AZUREBILLEDEDITIONS" Value="[*****-*****-*****-*****-*****, Standard], [*****-*****-*****-*****-*****, Enterprise]" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="ACTION" Value="RunRules" Source="CommandLine" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="ENU" Value="true" Source="CommandLine" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="INSTALLMEDIAPATH" Value="C:\SQL2022\RulesEng\x64\setup\" Source="CommandLine" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="AZUREBILLEDEDITION" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="IACCEPTPYTHONLICENSETERMS" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="PID" Value="*****" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="LICENSEPATH" Value="C:\SQL2022\RulesEng\1033_ENU_LP\x64\1033\license.rtf" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="ROLE" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="PRODUCTCOVEREDBYSA" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="SHAREDINSTALLID" Value="57d74209-ce88-4bae-8eed-bcf3aceb1ef8" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="IACCEPTROPENLICENSETERMS" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="SUPPRESSPRIVACYSTATEMENTNOTICE" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="MRCACHEDIRECTORY" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="SESSIONID" Value="7c3a2699-4519-43b5-8429-a5ae09a7f7b7" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="CORRELATIONID" Value="0" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="SETUPARCHITECTUREMODE" Value="Native" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="CLUSTEREDUPGRADEFEATURES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="FAILPOINTINVOCATIONLIMIT" Value="0" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="FAILPOINTASNORMALERROR" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="FAILPOINT" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="QUIET" Value="true" Source="CommandLine" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="QUIETSIMPLE" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="WORKFLOW" Value="None" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="LICENSETYPE" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="UIMODE" Value="Normal" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="FREEEDITIONS" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="EXTERNALCOMPONENTS" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="BASELINEVERSION" Value="16.0.1000.6" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="SETUPLANGUAGE" Value="1033" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="COMPONENTUPDATEPROGRESSMSGFORMATTER" Value="SQL Server Setup files are being installed on the system." Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="COMPONENTUPDATESTATEPROPERTY" Value="Pending" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="PROGRESSMESSAGE" Value="SQL Server Setup files are being installed on the system." Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="INSTALLSETUPFILESSTATUSPROPERTY" Value="[COMPONENTUPDATESTATEPROPERTY, Pending]" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="MEDIASOURCE" Value="C:\SQL2022\RulesEng\" Source="CommandLine" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="MsiPatchMediaPathSecond" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="MsiPatchMediaPath" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="MsiInstallMediaPath" Value="C:\SQL2022\RulesEng\x64\setup\" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="SKIPMANAGEDSERVICEACCOUNTVALIDATION" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="STOPPATCHEDSERVICETIMEOUT" Value="1800" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="NOREMOTEREGCACHE" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="SUPPRESSPAIDEDITIONNOTICE" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="SQLSTARTUPFLAGS" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="ALLOWSTANDALONEONSHAREDDISK" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="ProductUpdatesFolder" Value="C:\Users\user\AppData\Local\Temp\SQL Server 2022" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="UpdateCategory" Value="3FE7E625-9647-48F4-B0C8-AC9D23DB1625" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="MUUPDATES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="INSTALLCUSOURCE" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="INSTALLPCUSOURCE" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="MuTimeout" Value="1800000" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="MuSearchTimeout" Value="1200000" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="SEARCHTYPE" Value="Initial" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="CONFIGURATIONFILE" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="DEBUG" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="FEATURES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="CLUSTEREDREPAIRFEATURES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="HELP" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="INDICATEPROGRESS" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="LOGMARKER" Value="_Rules" Source="CommandLine" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="NOMUTEX" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="RULES" Value="PreInstallRules" Source="CommandLine" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="TIMESTAMP" Value="20260508_135020" Source="CommandLine" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="SKIPRULES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="MEDIALAYOUT" Value="None" Source="CommandLine" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="CUPIDDISPLAYED" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="MSIRETRYCOUNT" Value="3" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="MSIRETRYINTERVAL" Value="120" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="MSIRETRYRETURNCODE" Value="2, 30, 110, 1314, 1305, 1310, 1316, 1601, 1618, 1619, 1620, 1622, 1631, 1632, 1635, 1636, 1935" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="HIDECONSOLE" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="PATCHSQLSUPPORT" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="IGNORESERVICERESTARTSTATE" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="CLUSTERPASSIVE" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="ENABLERESOLVESOURCEUI" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="CUREBOOTREQUIRED" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="PARENTHWND" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="IGNOREFAILEDPATCH" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="SLIPSTREAMPATH" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="SKU" Value="EVAL" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="PRODUCTID" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="DIGITALPRODUCTID" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="EDITIONCHANNEL" Value="FPP" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="INSTANCEINSTALLID" Value="00000000-0000-0000-0000-000000000000" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="INSTALLSHAREDDIR" Value="C:\Program Files\Microsoft SQL Server\" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="INSTALLSQLSHAREDDIR64" Value="C:\Program Files\Microsoft SQL Server\" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="INSTALLSHAREDWOWDIR" Value="C:\Program Files (x86)\Microsoft SQL Server\" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="INSTALLSQLSHAREDDIR32" Value="C:\Program Files (x86)\Microsoft SQL Server\" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="INSTANCENAMELIST" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="AZURESUBSCRIPTIONID" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="AZURETENANTID" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="AZUREREGION" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="AZURERESOURCEGROUP" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="AZURESERVICEPRINCIPALSECRET" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="AZURESERVICEPRINCIPAL" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="AZUREARCPROXYSERVER" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="AZUREACCESSTOKEN" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="AZUREEXTENSIONENABLED" Value="true" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="AZUREEXTENSIONPRESENT" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="MACHINEMANUFACTURER" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="ALLINSTANCES" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="COPYUPGRADESCRIPTS" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="INSTANCEDIR" Value="C:\Program Files\Microsoft SQL Server\" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="INSTANCEDIRSPACE" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="INSTALLSHAREDDIRSPACE" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="INSTALLSHAREDWOWDIRSPACE" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="SYSTEMDIRSPACE" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="CLUSTERNODESSTATUS" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="FAILOVERCLUSTERDISKS" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="FAILOVERCLUSTERGROUP" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="CLUSTERPUBLICIPADDRESSES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="CLUSTERPUBLICNETWORKSUBNETSPERNODE" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="CONFIRMIPDEPENDENCYCHANGE" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="FAILOVERCLUSTERIPADDRESSES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="false" />
+  <Setting Id="FAILOVERCLUSTERNODES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="FAILOVERCLUSTERROLLOWNERSHIP" Value="2" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="ISLOCALNODEACTIVE" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="ISACTIVENODEUPGRADED" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="ISLOCALNODEUPGRADED" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="LEGACYNODECOUNT" Value="0" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="ISPASSIVENODEUPGRADED" Value="false" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="LEGACYNODES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="UPGRADEDNODES" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+  <Setting Id="FAILOVERCLUSTERNETWORKNAME" Value="" Source="Default" IsApplicable="true" IsChangeableByUser="true" />
+</Settings>

@@ -13,6 +13,8 @@ namespace Pos_System.Forms
     {
         private TextBox txtExchangeRate;
         private Label lblExchangeRate;
+        private Button btnOptions;
+        private Button btnDiscountSettings;
 
         public Settings()
         {
@@ -23,9 +25,24 @@ namespace Pos_System.Forms
 
         private void Settings_Load(object sender, EventArgs e)
         {
+            bool canOpenSettings = PermissionService.CanViewScreen(AppSession.UserId, AppSession.Role, PermissionService.ScreenSettings);
+            bool canOpenOptions = PermissionService.CanManagePermissions(AppSession.UserId, AppSession.Role);
+
+            if (!canOpenSettings && !canOpenOptions)
+            {
+                MessageBox.Show("You do not have permission to open this form.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                BeginInvoke(new Action(Close));
+                return;
+            }
+
             labeldate.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             LoadSettingsIntoControls();
             ApplySelectedLanguagePreview();
+            if (canOpenSettings)
+            {
+                PermissionService.ApplyActionPermissions(this, PermissionService.ScreenSettings);
+            }
+            UpdateOptionsButtonVisibility();
         }
 
         private void ConfigureSettingsControls()
@@ -65,6 +82,100 @@ namespace Pos_System.Forms
             textBox1.KeyPress += IntegerTextBox_KeyPress;
             checkBox_Lock.CheckedChanged += CheckBox_Lock_CheckedChanged;
             AddExchangeRateControls();
+            AddOptionsButton();
+            AddDiscountSettingsButton();
+        }
+
+        private void AddDiscountSettingsButton()
+        {
+            if (btnDiscountSettings != null)
+            {
+                return;
+            }
+
+            btnDiscountSettings = new Button
+            {
+                Name = "btnDiscountSettings",
+                Text = "Discount Settings",
+                BackColor = Color.FromArgb(37, 99, 235),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold),
+                Size = new Size(210, 48),
+                Location = new Point(760, 3),
+                Anchor = AnchorStyles.Top | AnchorStyles.Left
+            };
+            btnDiscountSettings.FlatAppearance.BorderSize = 0;
+            btnDiscountSettings.Click += BtnDiscountSettings_Click;
+            panel10.Controls.Add(btnDiscountSettings);
+            btnDiscountSettings.BringToFront();
+        }
+
+        private void BtnDiscountSettings_Click(object sender, EventArgs e)
+        {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, AppSession.Role, PermissionService.ScreenDiscountSettings))
+            {
+                MessageBox.Show("You do not have permission to open discount settings.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (DiscountSettingsForm form = new DiscountSettingsForm())
+            {
+                form.ShowDialog(this);
+            }
+        }
+
+        private void AddOptionsButton()
+        {
+            if (btnOptions != null)
+            {
+                return;
+            }
+
+            btnOptions = new Button
+            {
+                Name = "btnOptions",
+                Text = "Options",
+                BackColor = Color.FromArgb(15, 118, 110),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold),
+                Size = new Size(241, 48),
+                Location = new Point(506, 3),
+                Anchor = AnchorStyles.Top | AnchorStyles.Left
+            };
+            btnOptions.FlatAppearance.BorderSize = 0;
+            btnOptions.Click += BtnOptions_Click;
+            panel10.Controls.Add(btnOptions);
+            btnOptions.BringToFront();
+        }
+
+        private void UpdateOptionsButtonVisibility()
+        {
+            if (btnOptions == null)
+            {
+                return;
+            }
+
+            btnOptions.Visible = PermissionService.CanManagePermissions(AppSession.UserId, AppSession.Role);
+            if (btnDiscountSettings != null)
+            {
+                btnDiscountSettings.Visible = PermissionService.CanViewScreen(AppSession.UserId, AppSession.Role, PermissionService.ScreenDiscountSettings);
+            }
+        }
+
+        private void BtnOptions_Click(object sender, EventArgs e)
+        {
+            if (!PermissionService.CanManagePermissions(AppSession.UserId, AppSession.Role))
+            {
+                MessageBox.Show("You do not have permission to open options.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (UserPermissionsForm form = new UserPermissionsForm())
+            {
+                form.ShowDialog(this);
+            }
         }
 
         private void AddExchangeRateControls()
@@ -390,9 +501,12 @@ namespace Pos_System.Forms
 
             try
             {
-                SettingsManager.SaveSettings(CollectSettingsFromControls());
-                SettingsManager.LoadSettings();
-                SettingsManager.ApplySettingsToOpenForms();
+                using (LoadingOverlayService.Show(this, "Applying settings..."))
+                {
+                    SettingsManager.SaveSettings(CollectSettingsFromControls());
+                    SettingsManager.LoadSettings();
+                    SettingsManager.ApplySettingsToOpenForms();
+                }
 
                 MessageBox.Show(
                     "Settings were saved and applied successfully across the application.",

@@ -25,6 +25,9 @@ namespace Pos_System.Forms
 
         private string _role;
         private string _username;
+        private CheckBox chkUseDiscount;
+        private TextBox txtDiscountAmount;
+        private Label lblDiscountAmount;
         public static int LoggedInUserId; // متغير عام يخزن الـ user_id
 
 
@@ -137,6 +140,288 @@ namespace Pos_System.Forms
             txtdollar.Visible = false;
             btndollar.Visible = false;
             label4.Visible = false;
+
+            AddDiscountControls();
+            ConfigureSalesResponsiveLayout();
+        }
+
+        private void AddDiscountControls()
+        {
+            if (chkUseDiscount == null)
+            {
+                chkUseDiscount = new CheckBox
+                {
+                    Name = "chkUseDiscount",
+                    Text = "Use Discount",
+                    AutoSize = false,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(30, 41, 59)
+                };
+                chkUseDiscount.CheckedChanged += (s, e) => ReapplyDiscountsToRows();
+                panel1.Controls.Add(chkUseDiscount);
+            }
+
+            if (lblDiscountAmount == null)
+            {
+                lblDiscountAmount = new Label
+                {
+                    Name = "lblDiscountAmount",
+                    Text = "Discount %:",
+                    AutoSize = false,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(30, 41, 59),
+                    TextAlign = ContentAlignment.MiddleRight
+                };
+                panel1.Controls.Add(lblDiscountAmount);
+            }
+
+            if (txtDiscountAmount == null)
+            {
+                txtDiscountAmount = new TextBox
+                {
+                    Name = "txtDiscountAmount",
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Regular),
+                    TextAlign = HorizontalAlignment.Center
+                };
+                txtDiscountAmount.TextChanged += (s, e) => ReapplyDiscountsToRows();
+                txtDiscountAmount.KeyPress += (s, e) =>
+                {
+                    if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+                        e.Handled = true;
+                    if (e.KeyChar == '.' && txtDiscountAmount.Text.Contains("."))
+                        e.Handled = true;
+                };
+                panel1.Controls.Add(txtDiscountAmount);
+            }
+
+            ApplyDiscountPermission();
+        }
+
+        private void ApplyDiscountPermission()
+        {
+            bool canUseDiscount = PermissionService.CanViewScreen(AppSession.UserId, AppSession.Role, PermissionService.ScreenUseDiscount);
+            bool canUseManualDiscount = PermissionService.CanViewScreen(AppSession.UserId, AppSession.Role, PermissionService.ScreenManualDiscount);
+
+            if (chkUseDiscount != null)
+            {
+                chkUseDiscount.Enabled = canUseDiscount;
+                chkUseDiscount.Visible = canUseDiscount;
+                if (!canUseDiscount)
+                    chkUseDiscount.Checked = false;
+            }
+
+            if (lblDiscountAmount != null)
+            {
+                lblDiscountAmount.Visible = canUseDiscount && canUseManualDiscount;
+            }
+
+            if (txtDiscountAmount != null)
+            {
+                txtDiscountAmount.Enabled = canUseDiscount && canUseManualDiscount;
+                txtDiscountAmount.Visible = canUseDiscount && canUseManualDiscount;
+                if (!canUseDiscount || !canUseManualDiscount)
+                    txtDiscountAmount.Clear();
+            }
+        }
+
+        private void ConfigureSalesResponsiveLayout()
+        {
+            MinimumSize = new Size(760, 560);
+            AutoScroll = false;
+            panel1.MinimumSize = new Size(240, 0);
+            panel1.AutoScroll = true;
+            pnlProducts.AutoScroll = true;
+            panelheader.Dock = DockStyle.None;
+            panel1.Dock = DockStyle.None;
+            panel2.Dock = DockStyle.None;
+            pnlProducts.Dock = DockStyle.None;
+            panel4.Dock = DockStyle.None;
+
+            Resize -= Sales_Resize;
+            Resize += Sales_Resize;
+            panel2.Resize -= SalesTopPanel_Resize;
+            panel2.Resize += SalesTopPanel_Resize;
+            pnlProducts.Resize -= ProductsPanel_Resize;
+            pnlProducts.Resize += ProductsPanel_Resize;
+
+            ApplySalesResponsiveLayout();
+        }
+
+        private void Sales_Resize(object sender, EventArgs e)
+        {
+            ApplySalesResponsiveLayout();
+        }
+
+        private void SalesTopPanel_Resize(object sender, EventArgs e)
+        {
+            LayoutSalesTopPanel();
+        }
+
+        private void ProductsPanel_Resize(object sender, EventArgs e)
+        {
+            LayoutProductButtons();
+        }
+
+        private void ApplySalesResponsiveLayout()
+        {
+            int formWidth = Math.Max(1, ClientSize.Width);
+            int formHeight = Math.Max(1, ClientSize.Height);
+            int headerHeight = panelheader.Visible ? 60 : 0;
+            int rightPanelWidth = formWidth < 1150 ? 250 : formWidth < 1320 ? 280 : 300;
+            rightPanelWidth = Math.Min(rightPanelWidth, Math.Max(220, formWidth - 420));
+            int leftWidth = formWidth - rightPanelWidth;
+            int bodyHeight = Math.Max(1, formHeight - headerHeight);
+            int productsHeight = Math.Max(86, Math.Min(175, bodyHeight / 4));
+
+            panelheader.SetBounds(0, 0, formWidth, headerHeight);
+            panel1.SetBounds(leftWidth, headerHeight, rightPanelWidth, bodyHeight);
+            panel2.SetBounds(0, headerHeight, leftWidth, 58);
+            pnlProducts.SetBounds(0, panel2.Bottom, leftWidth, productsHeight);
+            panel4.SetBounds(0, pnlProducts.Bottom, leftWidth, Math.Max(1, formHeight - pnlProducts.Bottom));
+
+            LayoutSalesTopPanel();
+            LayoutRightSalesPanel();
+            LayoutProductButtons();
+            panel1.BringToFront();
+        }
+
+        private void LayoutSalesTopPanel()
+        {
+            int padding = 12;
+            int right = panel2.ClientSize.Width - padding;
+            if (right <= padding)
+                return;
+
+            int categoryWidth = Math.Min(190, Math.Max(125, panel2.ClientSize.Width / 6));
+            cmbCategory.SetBounds(right - categoryWidth, 17, categoryWidth, cmbCategory.Height);
+
+            label8.Location = new Point(cmbCategory.Left - label8.Width - 18, 15);
+            txtquantity.SetBounds(label8.Left - 105, 13, 92, 32);
+
+            int addWidth = 84;
+            button5.SetBounds(Math.Max(padding + 160, txtquantity.Left - addWidth - 14), 13, addWidth, 32);
+
+            int searchRight = button5.Left - 8;
+            txtsearch.SetBounds(padding, 13, Math.Max(180, searchRight - padding), 33);
+        }
+
+        private void LayoutRightSalesPanel()
+        {
+            int margin = 14;
+            int width = Math.Max(0, panel1.ClientSize.Width - (margin * 2));
+            int bottom = panel1.ClientSize.Height - 14;
+            int labelHeight = 22;
+            int inputHeight = 32;
+            int buttonHeight = 39;
+            int gap = 6;
+
+            txtPaidAmount.Width = width;
+            cmbCustomer.Width = width;
+            comboPaymentMethod.Width = width;
+            txtSaleId.Width = width;
+            lblTotal.Width = width;
+            lbtotal_lebanon.Width = width;
+            label9.Width = width;
+            label11.Width = width;
+            btnSaveSale.Width = width;
+            btnsare3.Width = width;
+            btnmortaja3.Width = width;
+            btndelete.Width = width;
+
+            label5.AutoSize = false;
+            label6.AutoSize = false;
+            label7.AutoSize = false;
+            label10.AutoSize = false;
+            label5.TextAlign = ContentAlignment.MiddleRight;
+            label6.TextAlign = ContentAlignment.MiddleRight;
+            label7.TextAlign = ContentAlignment.MiddleRight;
+            label10.TextAlign = ContentAlignment.MiddleRight;
+
+            int y = 14;
+            label5.SetBounds(margin, y, width, labelHeight);
+            y += labelHeight + 3;
+            cmbCustomer.SetBounds(margin, y, width, inputHeight);
+            y += inputHeight + gap;
+
+            label6.SetBounds(margin, y, width, labelHeight);
+            y += labelHeight + 3;
+            txtPaidAmount.SetBounds(margin, y, width, inputHeight);
+            y += inputHeight + gap;
+
+            rbDollar.SetBounds(margin, y, 74, 25);
+            rbLebanon.SetBounds(margin + 80, y, 105, 25);
+            y += 28;
+
+            if (chkUseDiscount != null && lblDiscountAmount != null && txtDiscountAmount != null)
+            {
+                chkUseDiscount.SetBounds(margin, y, width, 25);
+                y += 28;
+                int discountBoxWidth = Math.Min(88, Math.Max(64, width / 3));
+                lblDiscountAmount.SetBounds(margin + discountBoxWidth + 8, y, Math.Max(80, width - discountBoxWidth - 8), 28);
+                txtDiscountAmount.SetBounds(margin, y, discountBoxWidth, 28);
+                y += 34;
+            }
+
+            label7.SetBounds(margin, y, width, labelHeight);
+            y += labelHeight + 3;
+            comboPaymentMethod.SetBounds(margin, y, width, inputHeight);
+            y += inputHeight + gap;
+
+            label10.SetBounds(margin, y, width, labelHeight);
+            y += labelHeight + 3;
+            txtSaleId.SetBounds(margin, y, width, inputHeight);
+            y += inputHeight + 8;
+
+            label9.SetBounds(margin, y, width, labelHeight);
+            y += labelHeight + 2;
+            lblTotal.SetBounds(margin, y, width, 27);
+            y += 27 + 3;
+            label11.SetBounds(margin, y, width, labelHeight);
+            y += labelHeight + 2;
+            lbtotal_lebanon.SetBounds(margin, y, width, 27);
+            y += 27 + 10;
+
+            int halfButtonWidth = Math.Max(120, (width - 6) / 2);
+            int actionHeight = (buttonHeight * 4) + (gap * 3);
+            int actionTop = Math.Max(y, bottom - actionHeight);
+
+            btnSaveSale.SetBounds(margin, actionTop, width, buttonHeight);
+            btnsare3.SetBounds(margin, btnSaveSale.Bottom + gap, width, buttonHeight);
+            btnexcel.SetBounds(margin, btnSaveSale.Bottom + gap, halfButtonWidth, buttonHeight);
+            btn3rdfetora.SetBounds(margin + halfButtonWidth + 6, btnexcel.Top, halfButtonWidth, buttonHeight);
+            btnmortaja3.SetBounds(margin, btnexcel.Bottom + gap, width, buttonHeight);
+            btndelete.SetBounds(margin, btnmortaja3.Bottom + gap, width, buttonHeight);
+
+            panel1.AutoScrollMinSize = new Size(0, btndelete.Bottom + margin);
+        }
+
+        private void LayoutProductButtons()
+        {
+            if (pnlProducts.Controls.Count == 0)
+                return;
+
+            int margin = 10;
+            int x = 10;
+            int y = 10;
+            int availableWidth = Math.Max(140, pnlProducts.ClientSize.Width - 20);
+            int buttonWidth = Math.Max(110, Math.Min(170, availableWidth / Math.Max(1, availableWidth / 135)));
+
+            foreach (Control control in pnlProducts.Controls)
+            {
+                if (!(control is Button button))
+                    continue;
+
+                button.Size = new Size(buttonWidth, 50);
+                if (x + button.Width > availableWidth + 10)
+                {
+                    x = 10;
+                    y += button.Height + margin;
+                }
+
+                button.Location = new Point(x, y);
+                x += button.Width + margin;
+            }
         }
 
         private void StyleTextBox(TextBox textBox, float fontSize, bool centered)
@@ -195,6 +480,57 @@ namespace Pos_System.Forms
             datagridsales.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             datagridsales.ColumnHeadersHeight = 38;
             datagridsales.RowTemplate.Height = 30;
+            datagridsales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            datagridsales.ScrollBars = ScrollBars.Vertical;
+        }
+
+        private void EnsureDiscountRulesTable()
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(@"
+IF OBJECT_ID('dbo.Discount_Rules', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Discount_Rules
+    (
+        discount_rule_id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        rule_name NVARCHAR(120) NOT NULL,
+        target_type NVARCHAR(20) NOT NULL,
+        product_id INT NULL,
+        category_id INT NULL,
+        barcode NVARCHAR(100) NULL,
+        allowed_user_id INT NULL,
+        discount_type NVARCHAR(20) NOT NULL,
+        discount_value DECIMAL(18,4) NOT NULL,
+        active BIT NOT NULL CONSTRAINT DF_Discount_Rules_Active DEFAULT(1),
+        created_at DATETIME NOT NULL CONSTRAINT DF_Discount_Rules_CreatedAt DEFAULT(GETDATE())
+    );
+END
+IF COL_LENGTH('dbo.Discount_Rules', 'allowed_user_id') IS NULL
+    ALTER TABLE dbo.Discount_Rules ADD allowed_user_id INT NULL;", conn))
+            {
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void EnsureSaleItemsDiscountColumns()
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(@"
+IF COL_LENGTH('dbo.Sale_Items', 'original_unit_price') IS NULL
+    ALTER TABLE dbo.Sale_Items ADD original_unit_price DECIMAL(24,8) NULL;
+IF COL_LENGTH('dbo.Sale_Items', 'discount_amount') IS NULL
+    ALTER TABLE dbo.Sale_Items ADD discount_amount DECIMAL(24,8) NULL;
+IF COL_LENGTH('dbo.Sale_Items', 'discount_type') IS NULL
+    ALTER TABLE dbo.Sale_Items ADD discount_type NVARCHAR(30) NULL;
+IF COL_LENGTH('dbo.Sale_Items', 'discount_value') IS NULL
+    ALTER TABLE dbo.Sale_Items ADD discount_value DECIMAL(18,4) NULL;
+IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
+    ALTER TABLE dbo.Sale_Items ADD discount_by NVARCHAR(100) NULL;", conn))
+            {
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
         }
 
         private string FormatMoney(object value, string suffix = "")
@@ -261,6 +597,7 @@ namespace Pos_System.Forms
             saleRow = null;
             itemsTable = new DataTable();
             DataTable saleTable = new DataTable();
+            EnsureSaleItemsDiscountColumns();
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -286,7 +623,12 @@ namespace Pos_System.Forms
                         product_id,
                         name_product AS product_name,
                         quantity,
+                        original_unit_price,
                         unit_price,
+                        ISNULL(discount_amount, 0) AS discount_amount,
+                        ISNULL(discount_type, N'None') AS discount_type,
+                        ISNULL(discount_value, 0) AS discount_value,
+                        discount_by,
                         CAST(quantity * unit_price AS DECIMAL(24,8)) AS line_total,
                         created_by,
                         sale_date
@@ -378,12 +720,14 @@ namespace Pos_System.Forms
             int headerRow = 10;
             worksheet.Cells[headerRow, 1] = "الصنف";
             worksheet.Cells[headerRow, 2] = "الكمية";
-            worksheet.Cells[headerRow, 3] = "سعر الوحدة";
-            worksheet.Cells[headerRow, 4] = "الإجمالي";
-            worksheet.Cells[headerRow, 5] = "أضيف بواسطة";
-            worksheet.Cells[headerRow, 6] = "وقت الإضافة";
+            worksheet.Cells[headerRow, 3] = "السعر قبل الخصم";
+            worksheet.Cells[headerRow, 4] = "السعر بعد الخصم";
+            worksheet.Cells[headerRow, 5] = "قيمة الخصم";
+            worksheet.Cells[headerRow, 6] = "الإجمالي";
+            worksheet.Cells[headerRow, 7] = "الخصم بواسطة";
+            worksheet.Cells[headerRow, 8] = "وقت الإضافة";
 
-            Excel.Range tableHeaderRange = worksheet.Range["A10", "F10"];
+            Excel.Range tableHeaderRange = worksheet.Range["A10", "H10"];
             tableHeaderRange.Font.Bold = true;
             tableHeaderRange.Font.Name = "Segoe UI";
             tableHeaderRange.Font.Size = 11;
@@ -397,17 +741,19 @@ namespace Pos_System.Forms
             {
                 worksheet.Cells[rowIndex, 1] = item["product_name"]?.ToString();
                 worksheet.Cells[rowIndex, 2] = item["quantity"] != DBNull.Value ? Convert.ToInt32(item["quantity"]) : 0;
-                worksheet.Cells[rowIndex, 3] = item["unit_price"] != DBNull.Value ? Convert.ToDecimal(item["unit_price"]) : 0m;
-                worksheet.Cells[rowIndex, 4] = item["line_total"] != DBNull.Value ? Convert.ToDecimal(item["line_total"]) : 0m;
-                worksheet.Cells[rowIndex, 5] = item["created_by"]?.ToString();
-                worksheet.Cells[rowIndex, 6] = item["sale_date"] != DBNull.Value
+                worksheet.Cells[rowIndex, 3] = item["original_unit_price"] != DBNull.Value ? Convert.ToDecimal(item["original_unit_price"]) : 0m;
+                worksheet.Cells[rowIndex, 4] = item["unit_price"] != DBNull.Value ? Convert.ToDecimal(item["unit_price"]) : 0m;
+                worksheet.Cells[rowIndex, 5] = item["discount_amount"] != DBNull.Value ? Convert.ToDecimal(item["discount_amount"]) : 0m;
+                worksheet.Cells[rowIndex, 6] = item["line_total"] != DBNull.Value ? Convert.ToDecimal(item["line_total"]) : 0m;
+                worksheet.Cells[rowIndex, 7] = item["discount_by"]?.ToString();
+                worksheet.Cells[rowIndex, 8] = item["sale_date"] != DBNull.Value
                     ? Convert.ToDateTime(item["sale_date"]).ToString("yyyy/MM/dd HH:mm")
                     : "";
                 rowIndex++;
             }
 
             int lastItemRow = Math.Max(headerRow + 1, rowIndex - 1);
-            Excel.Range itemsRange = worksheet.Range[$"A{headerRow}", $"F{lastItemRow}"];
+            Excel.Range itemsRange = worksheet.Range[$"A{headerRow}", $"H{lastItemRow}"];
             itemsRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
             itemsRange.Font.Name = "Segoe UI";
             itemsRange.Font.Size = 10;
@@ -415,27 +761,27 @@ namespace Pos_System.Forms
 
             if (lastItemRow >= headerRow + 1)
             {
-                Excel.Range moneyRange = worksheet.Range[$"C{headerRow + 1}", $"D{lastItemRow}"];
+                Excel.Range moneyRange = worksheet.Range[$"C{headerRow + 1}", $"F{lastItemRow}"];
                 moneyRange.NumberFormat = "#,##0.00000000";
 
-                Excel.Range alternatingRange = worksheet.Range[$"A{headerRow + 1}", $"F{lastItemRow}"];
+                Excel.Range alternatingRange = worksheet.Range[$"A{headerRow + 1}", $"H{lastItemRow}"];
                 alternatingRange.FormatConditions.Add(Type: Excel.XlFormatConditionType.xlExpression, Formula1: "=MOD(ROW(),2)=0");
                 alternatingRange.FormatConditions[1].Interior.Color = ColorTranslator.ToOle(Color.FromArgb(247, 249, 252));
             }
 
             int totalsRow = lastItemRow + 2;
-            worksheet.Cells[totalsRow, 3] = "الإجمالي النهائي";
-            worksheet.Cells[totalsRow, 4] = totalAmount;
-            Excel.Range totalsRange = worksheet.Range[$"C{totalsRow}", $"D{totalsRow}"];
+            worksheet.Cells[totalsRow, 5] = "الإجمالي النهائي";
+            worksheet.Cells[totalsRow, 6] = totalAmount;
+            Excel.Range totalsRange = worksheet.Range[$"E{totalsRow}", $"F{totalsRow}"];
             totalsRange.Font.Bold = true;
             totalsRange.Font.Name = "Segoe UI";
             totalsRange.Font.Size = 12;
             totalsRange.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(232, 242, 255));
             totalsRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-            worksheet.Range[$"D{totalsRow}"].NumberFormat = "#,##0.00000000";
+            worksheet.Range[$"F{totalsRow}"].NumberFormat = "#,##0.00000000";
 
             int noteRow = totalsRow + 2;
-            Excel.Range thanksRange = worksheet.Range[$"A{noteRow}", $"F{noteRow}"];
+            Excel.Range thanksRange = worksheet.Range[$"A{noteRow}", $"H{noteRow}"];
             thanksRange.Merge();
             thanksRange.Value2 = "شكراً لثقتكم";
             thanksRange.Font.Bold = true;
@@ -563,9 +909,25 @@ namespace Pos_System.Forms
 
             if (detailsGrid.Columns.Contains("unit_price"))
             {
-                detailsGrid.Columns["unit_price"].HeaderText = "سعر الوحدة";
+                detailsGrid.Columns["unit_price"].HeaderText = "السعر بعد الخصم";
                 detailsGrid.Columns["unit_price"].DefaultCellStyle.Format = "N8";
             }
+            if (detailsGrid.Columns.Contains("original_unit_price"))
+            {
+                detailsGrid.Columns["original_unit_price"].HeaderText = "السعر قبل الخصم";
+                detailsGrid.Columns["original_unit_price"].DefaultCellStyle.Format = "N8";
+            }
+            if (detailsGrid.Columns.Contains("discount_amount"))
+            {
+                detailsGrid.Columns["discount_amount"].HeaderText = "قيمة الخصم";
+                detailsGrid.Columns["discount_amount"].DefaultCellStyle.Format = "N8";
+            }
+            if (detailsGrid.Columns.Contains("discount_type"))
+                detailsGrid.Columns["discount_type"].HeaderText = "نوع الخصم";
+            if (detailsGrid.Columns.Contains("discount_value"))
+                detailsGrid.Columns["discount_value"].HeaderText = "نسبة/قيمة الخصم";
+            if (detailsGrid.Columns.Contains("discount_by"))
+                detailsGrid.Columns["discount_by"].HeaderText = "الخصم بواسطة";
 
             if (detailsGrid.Columns.Contains("line_total"))
             {
@@ -627,16 +989,132 @@ namespace Pos_System.Forms
             closeButton.Click += (s, e) => invoiceForm.Close();
             summaryPanel.Controls.Add(closeButton);
 
+            Button printButton = new Button
+            {
+                Text = "طباعة",
+                Size = new Size(120, 36),
+                Location = new Point(148, 95),
+                BackColor = Color.FromArgb(71, 85, 105),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold)
+            };
+            printButton.FlatAppearance.BorderSize = 0;
+            printButton.Click += (s, e) => PrintViewedInvoice(saleId, customerName, paymentMethod, totalAmount, balanceUsd, balanceLb, saleDate, itemsTable, invoiceForm);
+            summaryPanel.Controls.Add(printButton);
+
             invoiceForm.Controls.Add(bodyPanel);
             invoiceForm.Controls.Add(summaryPanel);
             invoiceForm.Controls.Add(headerPanel);
             invoiceForm.ShowDialog();
         }
 
+        private void PrintViewedInvoice(int saleId, string customerName, string paymentMethod, decimal totalAmount,
+            decimal? balanceUsd, decimal? balanceLb, DateTime saleDate, DataTable itemsTable, IWin32Window owner)
+        {
+            if (itemsTable == null || itemsTable.Rows.Count == 0)
+            {
+                MessageBox.Show("لا توجد أصناف في هذه الفاتورة.");
+                return;
+            }
+
+            int printRowIndex = 0;
+            PrintDocument printDocument = new PrintDocument();
+            printDocument.BeginPrint += (sender, args) => printRowIndex = 0;
+            printDocument.PrintPage += (sender, args) =>
+            {
+                PrintViewedInvoicePage(
+                    args,
+                    saleId,
+                    customerName,
+                    paymentMethod,
+                    totalAmount,
+                    balanceUsd,
+                    balanceLb,
+                    saleDate,
+                    itemsTable,
+                    ref printRowIndex);
+            };
+
+            using (PrintPreviewDialog preview = new PrintPreviewDialog())
+            {
+                preview.Document = printDocument;
+                preview.Width = 1000;
+                preview.Height = 700;
+                preview.ShowDialog(owner);
+            }
+        }
+
+        private void PrintViewedInvoicePage(PrintPageEventArgs e, int saleId, string customerName, string paymentMethod,
+            decimal totalAmount, decimal? balanceUsd, decimal? balanceLb, DateTime saleDate, DataTable itemsTable,
+            ref int printRowIndex)
+        {
+            using (Font titleFont = new Font("Segoe UI", 16F, FontStyle.Bold))
+            using (Font textFont = new Font("Segoe UI", 10F))
+            using (Font headerFont = new Font("Segoe UI", 9F, FontStyle.Bold))
+            {
+                int y = 40;
+                int left = 40;
+                int bottom = e.MarginBounds.Bottom;
+
+                e.Graphics.DrawString("فاتورة المبيعات", titleFont, Brushes.Black, left, y);
+                y += 34;
+                e.Graphics.DrawString("رقم الفاتورة: " + saleId + "   التاريخ: " + saleDate.ToString("yyyy/MM/dd HH:mm"), textFont, Brushes.Black, left, y);
+                y += 24;
+                e.Graphics.DrawString("الزبون: " + customerName + "   طريقة الدفع: " + paymentMethod, textFont, Brushes.Black, left, y);
+                y += 34;
+
+                    e.Graphics.DrawString("الصنف", headerFont, Brushes.Black, left, y);
+                    e.Graphics.DrawString("الكمية", headerFont, Brushes.Black, left + 260, y);
+                    e.Graphics.DrawString("بعد الخصم", headerFont, Brushes.Black, left + 350, y);
+                    e.Graphics.DrawString("الخصم", headerFont, Brushes.Black, left + 455, y);
+                    e.Graphics.DrawString("الإجمالي", headerFont, Brushes.Black, left + 540, y);
+                y += 24;
+
+                while (printRowIndex < itemsTable.Rows.Count)
+                {
+                    if (y > bottom - 90)
+                    {
+                        e.HasMorePages = true;
+                        return;
+                    }
+
+                    DataRow row = itemsTable.Rows[printRowIndex];
+                    string productName = Convert.ToString(row["product_name"]);
+                    if (productName.Length > 34)
+                        productName = productName.Substring(0, 34);
+
+                    int quantity = row["quantity"] != DBNull.Value ? Convert.ToInt32(row["quantity"]) : 0;
+                    decimal unitPrice = row["unit_price"] != DBNull.Value ? Convert.ToDecimal(row["unit_price"]) : 0m;
+                    decimal discountAmount = row["discount_amount"] != DBNull.Value ? Convert.ToDecimal(row["discount_amount"]) : 0m;
+                    decimal lineTotal = row["line_total"] != DBNull.Value ? Convert.ToDecimal(row["line_total"]) : 0m;
+
+                    e.Graphics.DrawString(productName, textFont, Brushes.Black, left, y);
+                    e.Graphics.DrawString(quantity.ToString(), textFont, Brushes.Black, left + 260, y);
+                    e.Graphics.DrawString(unitPrice.ToString("N2"), textFont, Brushes.Black, left + 350, y);
+                    e.Graphics.DrawString(discountAmount.ToString("N2"), textFont, Brushes.Black, left + 455, y);
+                    e.Graphics.DrawString(lineTotal.ToString("N2"), textFont, Brushes.Black, left + 540, y);
+                    y += 22;
+                    printRowIndex++;
+                }
+
+                y += 22;
+                e.Graphics.DrawString("الإجمالي النهائي: " + FormatMoney(totalAmount), headerFont, Brushes.Black, left, y);
+                y += 22;
+                e.Graphics.DrawString("الرصيد بالدولار: " + (balanceUsd.HasValue ? FormatMoney(balanceUsd.Value, "$") : "-"), textFont, Brushes.Black, left, y);
+                y += 22;
+                e.Graphics.DrawString("الرصيد بالليرة: " + (balanceLb.HasValue ? FormatMoney(balanceLb.Value, "ل.ل") : "-"), textFont, Brushes.Black, left, y);
+            }
+
+            e.HasMorePages = false;
+        }
+
         private void Sales_Load(object sender, EventArgs e)
         {
             StyleSalesForm();
             txtquantity.Text = "1"; // القيمة الافتراضية
+            EnsureDiscountRulesTable();
+            EnsureSaleItemsDiscountColumns();
             LoadCustomers();
 
             // ممكن تستدعي هنا أيضاً لو تحب
@@ -677,6 +1155,14 @@ namespace Pos_System.Forms
             datagridsales.Columns.Add("exchange_dollar", "Exchange Dollar");
             datagridsales.Columns.Add("date_time", "Date/Time");
             datagridsales.Columns.Add("balance", "Balance");
+            datagridsales.Columns.Add("original_price_usd", "Original Price USD");
+            datagridsales.Columns["original_price_usd"].Visible = false;
+            datagridsales.Columns.Add("original_price_lb", "Original Price LB");
+            datagridsales.Columns["original_price_lb"].Visible = false;
+            datagridsales.Columns.Add("category_id", "Category ID");
+            datagridsales.Columns["category_id"].Visible = false;
+            datagridsales.Columns.Add("barcode", "Barcode");
+            datagridsales.Columns["barcode"].Visible = false;
 
             // زر Edit
             DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
@@ -693,7 +1179,34 @@ namespace Pos_System.Forms
             btnDelete.Text = "Delete";
             btnDelete.UseColumnTextForButtonValue = true;
             datagridsales.Columns.Add(btnDelete);
+            ConfigureSalesGridColumns();
 
+            BeginInvoke(new Action(ApplySalesResponsiveLayout));
+
+        }
+
+        private void ConfigureSalesGridColumns()
+        {
+            SetColumnFill("product_name", 155, 120);
+            SetColumnFill("price_usd", 82, 68);
+            SetColumnFill("price_lb", 82, 68);
+            SetColumnFill("quantity", 72, 58);
+            SetColumnFill("total", 82, 68);
+            SetColumnFill("exchange_dollar", 82, 68);
+            SetColumnFill("date_time", 98, 78);
+            SetColumnFill("balance", 78, 65);
+            SetColumnFill("Edit", 58, 50);
+            SetColumnFill("Delete", 62, 55);
+
+            void SetColumnFill(string columnName, float fillWeight, int minimumWidth)
+            {
+                if (!datagridsales.Columns.Contains(columnName))
+                    return;
+
+                DataGridViewColumn column = datagridsales.Columns[columnName];
+                column.FillWeight = fillWeight;
+                column.MinimumWidth = minimumWidth;
+            }
         }
 
 
@@ -723,6 +1236,7 @@ namespace Pos_System.Forms
                c.category_name + ' (' + CAST(COUNT(p.product_id) AS NVARCHAR) + ')' AS display_name
         FROM Categories c
         LEFT JOIN Products p ON c.category_id = p.category_id
+            AND (p.barcode IS NULL OR LTRIM(RTRIM(p.barcode)) = '')
         GROUP BY c.category_id, c.category_name";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conn);
@@ -746,27 +1260,24 @@ namespace Pos_System.Forms
         }
 
 
-        private void cmbCategory_SelectedIndexChanged_1(object sender, EventArgs e)
+        private void LoadProducts(int? categoryId = null)
         {
-            // نتأكد إن القيمة ID صحيحة
-            if (cmbCategory.SelectedValue == null || cmbCategory.SelectedValue is DataRowView)
-                return;
-
-            int categoryId = Convert.ToInt32(cmbCategory.SelectedValue);
-
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 SqlDataAdapter da = new SqlDataAdapter(
                     @"SELECT p.product_id,
                              p.name,
+                             p.category_id,
+                             p.barcode,
                              COALESCE(NULLIF(p.sale_price_usd, 0), p.price_usd, 0) AS price_usd,
                              COALESCE(NULLIF(p.sale_price_lb, 0), p.price_lb, 0) AS price_lb,
                              p.exchange_rate 
               FROM Products p
-              WHERE p.category_id = @catId", conn);
+              WHERE (@catId IS NULL OR p.category_id = @catId)
+                AND (p.barcode IS NULL OR LTRIM(RTRIM(p.barcode)) = '')", conn);
 
                 // ✅ أفضل من AddWithValue
-                da.SelectCommand.Parameters.Add("@catId", SqlDbType.Int).Value = categoryId;
+                da.SelectCommand.Parameters.Add("@catId", SqlDbType.Int).Value = categoryId.HasValue ? (object)categoryId.Value : DBNull.Value;
 
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -776,7 +1287,8 @@ namespace Pos_System.Forms
                 // ✅ إذا ما في منتجات
                 if (dt.Rows.Count == 0)
                 {
-                    MessageBox.Show("لا يوجد منتجات في هذه الفئة");
+                    if (categoryId.HasValue)
+                        MessageBox.Show("لا يوجد منتجات في هذه الفئة");
                     return;
                 }
 
@@ -832,16 +1344,19 @@ namespace Pos_System.Forms
 
                         int productId = Convert.ToInt32(productRow["product_id"]);
                         string productName = productRow["name"].ToString();
+                        int productCategoryId = productRow["category_id"] == DBNull.Value ? 0 : Convert.ToInt32(productRow["category_id"]);
+                        string barcode = productRow["barcode"] == DBNull.Value ? "" : productRow["barcode"].ToString();
 
                         decimal priceUsd = productRow["price_usd"] == DBNull.Value ? 0 : Convert.ToDecimal(productRow["price_usd"]);
                         decimal exchangeRate = POS_System.Program.SettingsManager.GetExchangeRate();
+                        priceUsd = ApplyDiscountToUsdPrice(productId, productCategoryId, productName, barcode, priceUsd, exchangeRate);
                         decimal priceLb = priceUsd * exchangeRate;
 
                         DateTime now = DateTime.Now;
 
                         decimal totalUsd = priceUsd * qty;
 
-                        datagridsales.Rows.Add(
+                        int rowIndex = datagridsales.Rows.Add(
                             productId,
                             productName,
                             priceUsd,
@@ -852,13 +1367,30 @@ namespace Pos_System.Forms
                             now,
                             ""
                         );
+                        DataGridViewRow addedRow = datagridsales.Rows[rowIndex];
+                        addedRow.Cells["original_price_usd"].Value = productRow["price_usd"];
+                        addedRow.Cells["original_price_lb"].Value = Convert.ToDecimal(productRow["price_usd"]) * exchangeRate;
+                        addedRow.Cells["category_id"].Value = productCategoryId;
+                        addedRow.Cells["barcode"].Value = barcode;
 
                         UpdateTotals();
                     };
 
                     pnlProducts.Controls.Add(btn);
                 }
+
+                LayoutProductButtons();
             }
+        }
+
+        private void cmbCategory_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            // نتأكد إن القيمة ID صحيحة
+            if (cmbCategory.SelectedValue == null || cmbCategory.SelectedValue is DataRowView)
+                return;
+
+            int categoryId = Convert.ToInt32(cmbCategory.SelectedValue);
+            LoadProducts(categoryId);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -888,6 +1420,8 @@ namespace Pos_System.Forms
             {
                 string query = @"SELECT product_id,
                                         name,
+                                        category_id,
+                                        barcode,
                                         COALESCE(NULLIF(sale_price_usd, 0), price_usd, 0) AS price_usd,
                                         COALESCE(NULLIF(sale_price_lb, 0), price_lb, 0) AS price_lb,
                                         exchange_rate
@@ -904,15 +1438,23 @@ namespace Pos_System.Forms
                 {
                     int productId = Convert.ToInt32(reader["product_id"]);
                     string productName = reader["name"].ToString();
+                    int categoryId = reader["category_id"] == DBNull.Value ? 0 : Convert.ToInt32(reader["category_id"]);
+                    string barcode = reader["barcode"] == DBNull.Value ? "" : reader["barcode"].ToString();
                     decimal priceUsd = reader["price_usd"] == DBNull.Value ? 0 : Convert.ToDecimal(reader["price_usd"]);
                     decimal exchangeRate = POS_System.Program.SettingsManager.GetExchangeRate();
+                    priceUsd = ApplyDiscountToUsdPrice(productId, categoryId, productName, barcode, priceUsd, exchangeRate);
                     decimal priceLb = priceUsd * exchangeRate;
                     DateTime now = DateTime.Now;
 
                     decimal totalUsd = priceUsd * qty;
 
                     // ✅ إضافة الصف مع العمود product_id أولاً
-                    datagridsales.Rows.Add(productId, productName, priceUsd, priceLb, qty, totalUsd, exchangeRate, now, "");
+                    int rowIndex = datagridsales.Rows.Add(productId, productName, priceUsd, priceLb, qty, totalUsd, exchangeRate, now, "");
+                    DataGridViewRow addedRow = datagridsales.Rows[rowIndex];
+                    addedRow.Cells["original_price_usd"].Value = reader["price_usd"];
+                    addedRow.Cells["original_price_lb"].Value = Convert.ToDecimal(reader["price_usd"]) * exchangeRate;
+                    addedRow.Cells["category_id"].Value = categoryId;
+                    addedRow.Cells["barcode"].Value = barcode;
 
                     UpdateTotals();
                 }
@@ -926,6 +1468,105 @@ namespace Pos_System.Forms
 
             clearinput();
 
+        }
+
+        private decimal ApplyDiscountToUsdPrice(int productId, int categoryId, string productName, string barcode, decimal priceUsd, decimal exchangeRate)
+        {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, AppSession.Role, PermissionService.ScreenUseDiscount) ||
+                chkUseDiscount == null || !chkUseDiscount.Checked || priceUsd <= 0)
+                return priceUsd;
+
+            decimal maxDiscount = POS_System.Program.SettingsManager.GetDecimalSetting("max_discount", 20m);
+            decimal discountValue;
+            bool canUseManualDiscount = PermissionService.CanViewScreen(AppSession.UserId, AppSession.Role, PermissionService.ScreenManualDiscount);
+            if (canUseManualDiscount &&
+                (decimal.TryParse(txtDiscountAmount?.Text?.Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out discountValue) ||
+                 decimal.TryParse(txtDiscountAmount?.Text?.Trim(), out discountValue)))
+            {
+                if (discountValue > 0)
+                {
+                    decimal safePercent = Math.Min(discountValue, maxDiscount);
+                    return Math.Max(0m, Math.Round(priceUsd - (priceUsd * safePercent / 100m), SqlMoneyScale));
+                }
+            }
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(@"
+SELECT TOP 1 discount_type, discount_value
+FROM Discount_Rules
+WHERE active = 1
+  AND (allowed_user_id IS NULL OR allowed_user_id = @currentUserId)
+  AND (
+        (target_type = 'Product' AND (product_id = @productId OR barcode = @barcode OR rule_name = @productName))
+        OR (target_type = 'Category' AND category_id = @categoryId)
+      )
+ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id DESC;", conn))
+            {
+                cmd.Parameters.Add("@productId", SqlDbType.Int).Value = productId;
+                cmd.Parameters.Add("@categoryId", SqlDbType.Int).Value = categoryId;
+                cmd.Parameters.Add("@barcode", SqlDbType.NVarChar, 100).Value = string.IsNullOrWhiteSpace(barcode) ? (object)DBNull.Value : barcode;
+                cmd.Parameters.Add("@productName", SqlDbType.NVarChar, 120).Value = string.IsNullOrWhiteSpace(productName) ? (object)DBNull.Value : productName;
+                cmd.Parameters.Add("@currentUserId", SqlDbType.Int).Value = AppSession.UserId;
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (!reader.Read())
+                        return priceUsd;
+
+                    string discountType = reader["discount_type"].ToString();
+                    discountValue = Convert.ToDecimal(reader["discount_value"]);
+                    if (discountType.Equals("Fixed", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return Math.Max(0m, Math.Round(priceUsd - discountValue, SqlMoneyScale));
+                    }
+
+                    decimal safePercent = Math.Min(discountValue, maxDiscount);
+                    return Math.Max(0m, Math.Round(priceUsd - (priceUsd * safePercent / 100m), SqlMoneyScale));
+                }
+            }
+        }
+
+        private void ReapplyDiscountsToRows()
+        {
+            if (datagridsales == null || datagridsales.Columns.Count == 0 || !datagridsales.Columns.Contains("original_price_usd"))
+                return;
+
+            foreach (DataGridViewRow row in datagridsales.Rows)
+            {
+                if (row.IsNewRow)
+                    continue;
+
+                decimal originalUsd = GetDecimalCellValue(row, "original_price_usd");
+                if (originalUsd <= 0)
+                    originalUsd = GetDecimalCellValue(row, "price_usd");
+
+                decimal exchangeRate = GetDecimalCellValue(row, "exchange_dollar");
+                if (exchangeRate <= 0)
+                    exchangeRate = POS_System.Program.SettingsManager.GetExchangeRate();
+
+                int productId = GetIntCellValue(row, "product_id");
+                int categoryId = GetIntCellValue(row, "category_id");
+                string productName = row.Cells["product_name"].Value?.ToString() ?? "";
+                string barcode = row.Cells["barcode"].Value?.ToString() ?? "";
+                int qty = GetIntCellValue(row, "quantity");
+
+                decimal discountedUsd = ApplyDiscountToUsdPrice(productId, categoryId, productName, barcode, originalUsd, exchangeRate);
+                decimal discountedLb = discountedUsd * exchangeRate;
+                row.Cells["price_usd"].Value = discountedUsd;
+                row.Cells["price_lb"].Value = discountedLb;
+                row.Cells["total"].Value = discountedUsd * qty;
+            }
+
+            UpdateTotals();
+        }
+
+        private decimal GetRowDiscountAmount(DataGridViewRow row, bool usd)
+        {
+            decimal original = GetDecimalCellValue(row, usd ? "original_price_usd" : "original_price_lb");
+            decimal current = GetDecimalCellValue(row, usd ? "price_usd" : "price_lb");
+            int qty = GetIntCellValue(row, "quantity");
+            return Math.Round(Math.Max(0m, original - current) * qty, SqlMoneyScale);
         }
 
         private void datagridsales_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -1044,8 +1685,12 @@ namespace Pos_System.Forms
                 string price = rbDollar.Checked
                     ? row.Cells["price_usd"].Value?.ToString() + " $"
                     : row.Cells["price_lb"].Value?.ToString() + " ل.ل";
+                decimal discountAmount = GetRowDiscountAmount(row, rbDollar.Checked);
+                string discountText = discountAmount > 0
+                    ? (rbDollar.Checked ? $" - الخصم: {discountAmount:N2} $" : $" - الخصم: {discountAmount:N2} ل.ل")
+                    : "";
 
-                e.Graphics.DrawString($"{product} - الكمية: {qty} - السعر: {price}", font, Brushes.Black, 20, y);
+                e.Graphics.DrawString($"{product} - الكمية: {qty} - السعر بعد الخصم: {price}{discountText}", font, Brushes.Black, 20, y);
                 y += 20;
             }
 
@@ -1060,7 +1705,7 @@ namespace Pos_System.Forms
         private void btnSaveSale_Click_1(object sender, EventArgs e)
         {
             DialogResult saleType = MessageBox.Show(
-                "هل تريد البيع مع فاتورة؟\n\nYes = مع فاتورة وطباعة\nNo = بدون فاتورة مع مراجعة قبل البيع",
+                "هل تريد البيع مع فاتورة؟",
                 "نوع البيع",
                 MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
@@ -1068,15 +1713,10 @@ namespace Pos_System.Forms
             if (saleType == DialogResult.Cancel)
                 return;
 
-            if (saleType == DialogResult.Yes)
+            bool printReceipt = saleType == DialogResult.Yes;
+            if (ShowSaleReview(printReceipt))
             {
-                ProcessSale(true);
-                return;
-            }
-
-            if (ShowSaleWithoutInvoiceReview())
-            {
-                ProcessSale(false);
+                ProcessSale(printReceipt);
             }
         }
 
@@ -1102,7 +1742,7 @@ namespace Pos_System.Forms
             return false;
         }
 
-        private bool ShowSaleWithoutInvoiceReview()
+        private bool ShowSaleReview(bool withInvoice)
         {
             if (!HasSaleItems())
             {
@@ -1119,27 +1759,55 @@ namespace Pos_System.Forms
                 return false;
             }
 
+            if (!int.TryParse(cmbCustomer.SelectedValue?.ToString(), out int customerId))
+            {
+                MessageBox.Show("اختر زبون صحيح");
+                return false;
+            }
+
             decimal exchangeRate = POS_System.Program.SettingsManager.GetExchangeRate();
+            GetCustomerBalance(customerId, out decimal currentBalanceUsd, out decimal currentBalanceLb);
 
             Form reviewForm = new Form
             {
-                Text = "مراجعة البيع بدون فاتورة",
+                Text = withInvoice ? "مراجعة البيع مع فاتورة" : "مراجعة البيع بدون فاتورة",
                 StartPosition = FormStartPosition.CenterParent,
-                Size = new Size(980, 640),
-                MinimumSize = new Size(780, 520),
+                Size = new Size(1120, 760),
+                MinimumSize = new Size(940, 640),
                 RightToLeft = RightToLeft.Yes,
                 RightToLeftLayout = true,
-                BackColor = Color.White
+                BackColor = Color.FromArgb(244, 247, 252),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false
+            };
+
+            Panel headerPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 92,
+                BackColor = Color.FromArgb(15, 23, 42),
+                Padding = new Padding(24, 14, 24, 12)
             };
 
             Label titleLabel = new Label
             {
-                Text = "مراجعة المنتجات قبل البيع",
+                Text = "مراجعة البيع قبل الحفظ",
                 Dock = DockStyle.Top,
-                Height = 48,
-                Font = new Font("Segoe UI", 14F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(15, 23, 42),
-                TextAlign = ContentAlignment.MiddleCenter
+                Height = 36,
+                Font = new Font("Segoe UI", 18F, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            Label subtitleLabel = new Label
+            {
+                Text = (withInvoice ? "مع فاتورة" : "بدون فاتورة") + "   |   " + cmbCustomer.Text + "   |   " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                Dock = DockStyle.Top,
+                Height = 28,
+                Font = new Font("Segoe UI", 10.5F, FontStyle.Regular),
+                ForeColor = Color.FromArgb(203, 213, 225),
+                TextAlign = ContentAlignment.MiddleRight
             };
 
             DataGridView reviewGrid = new DataGridView
@@ -1149,19 +1817,34 @@ namespace Pos_System.Forms
                 AllowUserToResizeRows = false,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 BackgroundColor = Color.White,
-                BorderStyle = BorderStyle.FixedSingle,
+                BorderStyle = BorderStyle.None,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 MultiSelect = false,
                 RowHeadersVisible = false,
-                Font = new Font("Segoe UI", 10F)
+                Font = new Font("Segoe UI", 10.5F),
+                EnableHeadersVisualStyles = false,
+                GridColor = Color.FromArgb(226, 232, 240),
+                AllowUserToDeleteRows = false
             };
+            reviewGrid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 41, 59);
+            reviewGrid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            reviewGrid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            reviewGrid.ColumnHeadersHeight = 42;
+            reviewGrid.DefaultCellStyle.BackColor = Color.White;
+            reviewGrid.DefaultCellStyle.ForeColor = Color.FromArgb(30, 41, 59);
+            reviewGrid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(219, 234, 254);
+            reviewGrid.DefaultCellStyle.SelectionForeColor = Color.FromArgb(15, 23, 42);
+            reviewGrid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
+            reviewGrid.RowTemplate.Height = 34;
 
             reviewGrid.Columns.Add("product_id", "Product ID");
             reviewGrid.Columns["product_id"].Visible = false;
             reviewGrid.Columns.Add("product_name", "المنتج");
+            reviewGrid.Columns.Add("original_price", "قبل الخصم");
             reviewGrid.Columns.Add("price_usd", "السعر $");
             reviewGrid.Columns.Add("price_lb", "السعر ل.ل");
             reviewGrid.Columns.Add("quantity", "الكمية");
+            reviewGrid.Columns.Add("discount_amount", "قيمة الخصم");
             reviewGrid.Columns.Add("total", "المجموع $");
             reviewGrid.Columns.Add("exchange_dollar", "Exchange");
             reviewGrid.Columns["exchange_dollar"].Visible = false;
@@ -1173,6 +1856,7 @@ namespace Pos_System.Forms
                 HeaderText = "حذف",
                 Text = "حذف",
                 UseColumnTextForButtonValue = true,
+                FlatStyle = FlatStyle.Flat,
                 Width = 70
             };
             reviewGrid.Columns.Add(deleteColumn);
@@ -1184,60 +1868,100 @@ namespace Pos_System.Forms
                 reviewGrid.Rows.Add(
                     row.Cells["product_id"].Value,
                     row.Cells["product_name"].Value,
+                    row.Cells["original_price_usd"].Value,
                     row.Cells["price_usd"].Value,
                     row.Cells["price_lb"].Value,
                     row.Cells["quantity"].Value,
+                    GetRowDiscountAmount(row, true),
                     row.Cells["total"].Value,
                     row.Cells["exchange_dollar"].Value,
                     row.Cells["date_time"].Value);
             }
 
             reviewGrid.Columns["product_name"].ReadOnly = true;
+            reviewGrid.Columns["original_price"].ReadOnly = true;
+            reviewGrid.Columns["discount_amount"].ReadOnly = true;
             reviewGrid.Columns["total"].ReadOnly = true;
             reviewGrid.Columns["date_time"].ReadOnly = true;
+
+            Panel bodyPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.White,
+                Padding = new Padding(18)
+            };
 
             Panel summaryPanel = new Panel
             {
                 Dock = DockStyle.Bottom,
-                Height = 150,
-                BackColor = Color.FromArgb(248, 250, 252),
-                Padding = new Padding(12)
+                Height = 226,
+                BackColor = Color.FromArgb(244, 247, 252),
+                Padding = new Padding(18, 14, 18, 14)
             };
 
-            Label totalsLabel = new Label
+            Label totalValueLabel = CreateSummaryValueLabel();
+            Label paidValueLabel = CreateSummaryValueLabel();
+            Label changeValueLabel = CreateSummaryColoredValueLabel(Color.FromArgb(22, 101, 52));
+            Label invoiceBalanceValueLabel = CreateSummaryColoredValueLabel(Color.FromArgb(180, 83, 9));
+            Label currentBalanceValueLabel = CreateSummaryValueLabel();
+            Label afterBalanceValueLabel = CreateSummaryColoredValueLabel(Color.FromArgb(37, 99, 235));
+
+            TableLayoutPanel summaryCards = new TableLayoutPanel
             {
                 Dock = DockStyle.Top,
-                Height = 86,
-                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(30, 41, 59),
-                TextAlign = ContentAlignment.MiddleRight
+                Height = 138,
+                ColumnCount = 3,
+                RowCount = 2,
+                BackColor = Color.Transparent
+            };
+            summaryCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            summaryCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            summaryCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.34F));
+            summaryCards.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            summaryCards.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            summaryCards.Controls.Add(CreateSummaryCard("المجموع", totalValueLabel, Color.FromArgb(37, 99, 235)), 0, 0);
+            summaryCards.Controls.Add(CreateSummaryCard("المدفوع", paidValueLabel, Color.FromArgb(15, 118, 110)), 1, 0);
+            summaryCards.Controls.Add(CreateSummaryCard("ارد له", changeValueLabel, Color.FromArgb(22, 163, 74)), 2, 0);
+            summaryCards.Controls.Add(CreateSummaryCard("باقي هذه الفاتورة", invoiceBalanceValueLabel, Color.FromArgb(245, 158, 11)), 0, 1);
+            summaryCards.Controls.Add(CreateSummaryCard("رصيد الزبون الحالي", currentBalanceValueLabel, Color.FromArgb(100, 116, 139)), 1, 1);
+            summaryCards.Controls.Add(CreateSummaryCard("الرصيد بعد البيع", afterBalanceValueLabel, Color.FromArgb(79, 70, 229)), 2, 1);
+
+            Panel actionPanel = new Panel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 58,
+                BackColor = Color.Transparent
             };
 
             Button okButton = new Button
             {
-                Text = "OK",
+                Text = "بيع",
                 DialogResult = DialogResult.OK,
-                Width = 130,
-                Height = 38,
-                Left = 170,
-                Top = 98,
+                Width = 168,
+                Height = 44,
+                Left = 188,
+                Top = 7,
                 BackColor = Color.FromArgb(22, 163, 74),
                 ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold)
             };
+            okButton.FlatAppearance.BorderSize = 0;
 
             Button noButton = new Button
             {
-                Text = "NO",
+                Text = "عدم البيع",
                 DialogResult = DialogResult.Cancel,
-                Width = 130,
-                Height = 38,
-                Left = 25,
-                Top = 98,
+                Width = 168,
+                Height = 44,
+                Left = 10,
+                Top = 7,
                 BackColor = Color.FromArgb(220, 38, 38),
                 ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold)
             };
+            noButton.FlatAppearance.BorderSize = 0;
 
             void RefreshReviewTotals()
             {
@@ -1251,7 +1975,9 @@ namespace Pos_System.Forms
                     int qty = GetReviewIntCellValue(row, "quantity");
                     decimal priceUsd = GetReviewDecimalCellValue(row, "price_usd");
                     decimal priceLb = GetReviewDecimalCellValue(row, "price_lb");
+                    decimal originalPrice = GetReviewDecimalCellValue(row, "original_price");
 
+                    row.Cells["discount_amount"].Value = Math.Round(Math.Max(0m, originalPrice - priceUsd) * qty, 2);
                     row.Cells["total"].Value = Math.Round(priceUsd * qty, 2);
                     totalUsd += priceUsd * qty;
                     totalLb += priceLb * qty;
@@ -1261,6 +1987,14 @@ namespace Pos_System.Forms
                 decimal balance = selectedTotal - customerPaid;
                 decimal customerOwes = balance > 0 ? balance : 0m;
                 decimal change = balance < 0 ? Math.Abs(balance) : 0m;
+                decimal saleBalanceUsd = rbDollar.Checked
+                    ? balance
+                    : exchangeRate > 0 ? balance / exchangeRate : 0m;
+                decimal saleBalanceLb = rbDollar.Checked
+                    ? balance * exchangeRate
+                    : balance;
+                decimal afterBalanceUsd = currentBalanceUsd + saleBalanceUsd;
+                decimal afterBalanceLb = currentBalanceLb + saleBalanceLb;
 
                 decimal customerOwesUsd = rbDollar.Checked
                     ? customerOwes
@@ -1275,10 +2009,12 @@ namespace Pos_System.Forms
                     ? change * exchangeRate
                     : change;
 
-                totalsLabel.Text =
-                    $"المجموع: {totalUsd:N2} $   |   {totalLb:N2} ل.ل\n" +
-                    $"المدفوع: {customerPaid:N2} {(rbDollar.Checked ? "$" : "ل.ل")}   |   الباقي عليه لنا: {customerOwesUsd:N2} $ / {customerOwesLb:N2} ل.ل\n" +
-                    $"كم اريد ان ارد له من المال: {changeUsd:N2} $ / {changeLb:N2} ل.ل";
+                totalValueLabel.Text = $"{totalUsd:N2} $ / {totalLb:N2} ل.ل";
+                paidValueLabel.Text = $"{customerPaid:N2} {(rbDollar.Checked ? "$" : "ل.ل")}";
+                changeValueLabel.Text = $"{changeUsd:N2} $ / {changeLb:N2} ل.ل";
+                invoiceBalanceValueLabel.Text = $"{customerOwesUsd:N2} $ / {customerOwesLb:N2} ل.ل";
+                currentBalanceValueLabel.Text = $"{currentBalanceUsd:N2} $ / {currentBalanceLb:N2} ل.ل";
+                afterBalanceValueLabel.Text = $"{afterBalanceUsd:N2} $ / {afterBalanceLb:N2} ل.ل";
             }
 
             reviewGrid.CellContentClick += (s, e) =>
@@ -1293,12 +2029,16 @@ namespace Pos_System.Forms
             reviewGrid.CellEndEdit += (s, e) => RefreshReviewTotals();
             reviewGrid.RowsRemoved += (s, e) => RefreshReviewTotals();
 
-            summaryPanel.Controls.Add(totalsLabel);
-            summaryPanel.Controls.Add(okButton);
-            summaryPanel.Controls.Add(noButton);
-            reviewForm.Controls.Add(reviewGrid);
+            actionPanel.Controls.Add(okButton);
+            actionPanel.Controls.Add(noButton);
+            summaryPanel.Controls.Add(summaryCards);
+            summaryPanel.Controls.Add(actionPanel);
+            bodyPanel.Controls.Add(reviewGrid);
+            headerPanel.Controls.Add(subtitleLabel);
+            headerPanel.Controls.Add(titleLabel);
+            reviewForm.Controls.Add(bodyPanel);
             reviewForm.Controls.Add(summaryPanel);
-            reviewForm.Controls.Add(titleLabel);
+            reviewForm.Controls.Add(headerPanel);
             reviewForm.AcceptButton = okButton;
             reviewForm.CancelButton = noButton;
 
@@ -1328,9 +2068,11 @@ namespace Pos_System.Forms
 
                 decimal priceUsd = GetReviewDecimalCellValue(row, "price_usd");
                 decimal priceLb = GetReviewDecimalCellValue(row, "price_lb");
+                decimal originalUsd = GetReviewDecimalCellValue(row, "original_price");
+                decimal rowExchangeRate = GetReviewDecimalCellValue(row, "exchange_dollar");
                 decimal total = priceUsd * qty;
 
-                datagridsales.Rows.Add(
+                int copiedRowIndex = datagridsales.Rows.Add(
                     row.Cells["product_id"].Value,
                     row.Cells["product_name"].Value,
                     priceUsd,
@@ -1339,11 +2081,93 @@ namespace Pos_System.Forms
                     total,
                     row.Cells["exchange_dollar"].Value,
                     row.Cells["date_time"].Value,
+                    "",
+                    originalUsd,
+                    originalUsd * rowExchangeRate,
+                    0,
                     "");
+                DataGridViewRow copiedRow = datagridsales.Rows[copiedRowIndex];
+                copiedRow.Cells["original_price_usd"].Value = originalUsd;
+                copiedRow.Cells["original_price_lb"].Value = originalUsd * rowExchangeRate;
+                copiedRow.Cells["category_id"].Value = 0;
+                copiedRow.Cells["barcode"].Value = "";
             }
 
             UpdateTotals();
             return true;
+
+            Label CreateSummaryValueLabel()
+            {
+                return CreateSummaryColoredValueLabel(Color.FromArgb(15, 23, 42));
+            }
+
+            Label CreateSummaryColoredValueLabel(Color color)
+            {
+                return new Label
+                {
+                    Dock = DockStyle.Fill,
+                    Font = new Font("Segoe UI", 11.5F, FontStyle.Bold),
+                    ForeColor = color,
+                    TextAlign = ContentAlignment.MiddleRight
+                };
+            }
+
+            Panel CreateSummaryCard(string title, Label valueLabel, Color accentColor)
+            {
+                Panel card = new Panel
+                {
+                    Dock = DockStyle.Fill,
+                    BackColor = Color.White,
+                    Margin = new Padding(6),
+                    Padding = new Padding(12, 8, 12, 8)
+                };
+
+                Panel accent = new Panel
+                {
+                    Dock = DockStyle.Right,
+                    Width = 5,
+                    BackColor = accentColor
+                };
+
+                Label titleLabelInner = new Label
+                {
+                    Dock = DockStyle.Top,
+                    Height = 22,
+                    Text = title,
+                    Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(100, 116, 139),
+                    TextAlign = ContentAlignment.MiddleRight
+                };
+
+                card.Controls.Add(valueLabel);
+                card.Controls.Add(titleLabelInner);
+                card.Controls.Add(accent);
+                return card;
+            }
+        }
+
+        private void GetCustomerBalance(int customerId, out decimal balanceUsd, out decimal balanceLb)
+        {
+            balanceUsd = 0m;
+            balanceLb = 0m;
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(
+                "SELECT ISNULL(balance_usd, 0) AS balance_usd, ISNULL(balance_lb, 0) AS balance_lb FROM Customers WHERE customer_id = @customer_id",
+                conn))
+            {
+                cmd.Parameters.Add("@customer_id", SqlDbType.Int).Value = customerId;
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        balanceUsd = Convert.ToDecimal(reader["balance_usd"]);
+                        balanceLb = Convert.ToDecimal(reader["balance_lb"]);
+                    }
+                }
+            }
         }
 
         private decimal GetReviewDecimalCellValue(DataGridViewRow row, string columnName)
@@ -1429,11 +2253,14 @@ namespace Pos_System.Forms
                 return false;
             }
 
+
+
             int saleId;
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
+                EnsureSaleItemsDiscountColumns();
                 SqlTransaction transaction = conn.BeginTransaction();
 
                 try
@@ -1487,6 +2314,18 @@ namespace Pos_System.Forms
                         decimal unitPrice = rbDollar.Checked
                             ? GetDecimalCellValue(row, "price_usd")
                             : GetDecimalCellValue(row, "price_lb");
+                        decimal originalUnitPrice = rbDollar.Checked
+                            ? GetDecimalCellValue(row, "original_price_usd")
+                            : GetDecimalCellValue(row, "original_price_lb");
+                        if (originalUnitPrice <= 0)
+                            originalUnitPrice = unitPrice;
+                        decimal discountAmount = Math.Max(0m, (originalUnitPrice - unitPrice) * qty);
+                        decimal discountValue = originalUnitPrice > 0 ? (discountAmount / Math.Max(1, qty)) * 100m / originalUnitPrice : 0m;
+                        string discountType = discountAmount > 0m
+                            ? (PermissionService.CanViewScreen(AppSession.UserId, AppSession.Role, PermissionService.ScreenManualDiscount) &&
+                               decimal.TryParse(txtDiscountAmount?.Text?.Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal manualDiscount) &&
+                               manualDiscount > 0m ? "Manual" : "Rule")
+                            : "None";
                         int productId = GetIntCellValue(row, "product_id");
                         string productName = row.Cells["product_name"].Value?.ToString() ?? "";
 
@@ -1510,8 +2349,8 @@ namespace Pos_System.Forms
 
                         // Insert item
                         SqlCommand cmdItem = new SqlCommand(@"INSERT INTO Sale_Items 
-                            (sale_id, product_id, quantity, unit_price, name_product, customer_name, created_by)
-                            VALUES (@sale_id, @product_id, @quantity, @unit_price, @name_product, @customer_name, @created_by)", conn, transaction);
+                            (sale_id, product_id, quantity, unit_price, original_unit_price, discount_amount, discount_type, discount_value, discount_by, name_product, customer_name, created_by)
+                            VALUES (@sale_id, @product_id, @quantity, @unit_price, @original_unit_price, @discount_amount, @discount_type, @discount_value, @discount_by, @name_product, @customer_name, @created_by)", conn, transaction);
 
                         cmdItem.Parameters.Add("@sale_id", SqlDbType.Int).Value = saleId;
                         cmdItem.Parameters.Add("@product_id", SqlDbType.Int).Value = productId;
@@ -1523,6 +2362,26 @@ namespace Pos_System.Forms
                             Scale = SqlMoneyScale,
                             Value = Math.Round(unitPrice, SqlMoneyScale)
                         });
+                        cmdItem.Parameters.Add(new SqlParameter("@original_unit_price", SqlDbType.Decimal)
+                        {
+                            Precision = SqlMoneyPrecision,
+                            Scale = SqlMoneyScale,
+                            Value = Math.Round(originalUnitPrice, SqlMoneyScale)
+                        });
+                        cmdItem.Parameters.Add(new SqlParameter("@discount_amount", SqlDbType.Decimal)
+                        {
+                            Precision = SqlMoneyPrecision,
+                            Scale = SqlMoneyScale,
+                            Value = Math.Round(discountAmount, SqlMoneyScale)
+                        });
+                        cmdItem.Parameters.Add("@discount_type", SqlDbType.NVarChar, 30).Value = discountType;
+                        cmdItem.Parameters.Add(new SqlParameter("@discount_value", SqlDbType.Decimal)
+                        {
+                            Precision = 18,
+                            Scale = 4,
+                            Value = Math.Round(discountValue, 4)
+                        });
+                        cmdItem.Parameters.Add("@discount_by", SqlDbType.NVarChar, 100).Value = discountAmount > 0m ? LoginForm.LoggedInUsername : (object)DBNull.Value;
 
                         cmdItem.Parameters.Add("@name_product", SqlDbType.NVarChar, 100).Value = productName;
                         cmdItem.Parameters.Add("@customer_name", SqlDbType.NVarChar, 100).Value = customerName;
@@ -1552,11 +2411,7 @@ namespace Pos_System.Forms
                 }
             }
 
-<<<<<<< HEAD
-            AuditLogger.Log("ADD", "Sales", saleId, "Created sale for " + customerName + " / total: " + selectedTotalAmount.ToString("N2"));
-=======
             AuditService.Log("Sales", "Create", saleId.ToString(), "Created sale invoice " + saleId);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
             MessageBox.Show("تمت العملية بنجاح - رقم الفاتورة: " + saleId);
 
             if (printReceipt)
@@ -1618,7 +2473,7 @@ namespace Pos_System.Forms
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (ShowSaleWithoutInvoiceReview())
+            if (ShowSaleReview(false))
             {
                 ProcessSale(false);
             }
@@ -1705,11 +2560,7 @@ namespace Pos_System.Forms
 
                         if (rowsAffected > 0)
                         {
-<<<<<<< HEAD
-                            AuditLogger.Log("DELETE", "Sales", saleId, "Deleted invoice and sale items");
-=======
                             AuditService.Log("Sales", "Delete", saleId.ToString(), "Deleted sale invoice " + saleId);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                             MessageBox.Show("تم حذف الفاتورة بنجاح");
                         }
                         else
@@ -2000,16 +2851,11 @@ namespace Pos_System.Forms
                 return;
             }
 
-<<<<<<< HEAD
             if (!hasSaleId)
             {
                 MessageBox.Show("أدخل رقم الفاتورة أو باركود المنتج في خانة البحث");
                 return;
             }
-=======
-            AuditService.Log("Sales", "Edit", saleId.ToString(), "Registered return for sale invoice " + saleId);
-            MessageBox.Show("تم تسجيل المرتجع وإضافة المنتجات مرة أخرى للمخزون");
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 
             if (ReturnWholeInvoice(saleId))
             {

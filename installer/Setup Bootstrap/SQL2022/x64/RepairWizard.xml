@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UIHost xmlns="http://schemas.microsoft.com/sqlserver/setup/uihost.xsd" ResourceManager="Microsoft.SqlServer.Configuration.InstallWizard.SR, Microsoft.SqlServer.Configuration.InstallWizard">
+  <Pages>
+
+    <Page
+    ID="RunRules">
+      <Title ResourceID="SystemConfigurationCheckTitle"></Title>
+      <Subtitle ResourceID="SystemConfigurationCheckSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+        <Button ID="Next" Enabled="false"/>
+        <Button ID="Cancel" Enabled="false"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.RunStandaloneRuleProgressController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+      <LoadDataOnForwardNavigationOnly>true</LoadDataOnForwardNavigationOnly>
+    </Page>
+    <Page
+      ID="InstallSetupFiles" PageType="Progress">
+      <Title ResourceID="InstallSetupTitle"></Title>
+      <Subtitle ResourceID="InstallSetupSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+        <Button ID="Next" Visible="true" Enabled="false"/>
+        <Button ID="Back" Enabled="false"/>
+        <Button ID="Cancel" Enabled="false"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.InstallSetupProgressController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+    </Page>
+    <Page
+    ID="RunGlobalRules">
+      <Title ResourceID="RepairScenarioGlobalRulesTitle"></Title>
+      <Subtitle ResourceID="ScenarioGlobalRulesSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+        <Button ID="Back" Enabled="false"/>
+        <Button ID="Next" Enabled="false"/>
+        <Button ID="Cancel" Enabled="false"/>  
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.RunScenarioGlobalRuleDisableBackProgressController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+      <LoadDataOnForwardNavigationOnly>true</LoadDataOnForwardNavigationOnly>
+    </Page>
+
+    <Page
+      ID="InstanceSelection">
+      <Title ResourceID="InstanceSelectionTitle"></Title>
+      <Subtitle ResourceID="InstanceSelectionSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.InstanceSelectionController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+      <PageLeftEmbeddedAction>CALCULATESCENARIO</PageLeftEmbeddedAction>
+    </Page>
+
+    <Page
+      ID="RunRepairRules">
+      <Title ResourceID="FeatureRulesTitle"></Title>
+      <Subtitle ResourceID="RunRepairRulesSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+        <Button ID="Next" Enabled="false"/>
+        <Button ID="Cancel" Enabled="false"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.RunFeatureSpecificRuleProgressController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+      <LoadDataOnForwardNavigationOnly>true</LoadDataOnForwardNavigationOnly>
+    </Page>
+
+    <Page
+      ID="Summary" PageType="Summary">
+      <Title ResourceID="RepairSummaryTitle"></Title>
+      <Subtitle ResourceID="RepairSummarySubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Next">
+          <Text ResourceID="RepairButton"></Text>
+        </Button>
+        <Button ID="Finish" Visible="false"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.SummaryController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+    </Page>
+
+    <Page
+      ID="RepairProgressPage"  PageType="Progress">
+      <Title ResourceID="RepairProgressPageTitle"></Title>
+      <Subtitle ResourceID="RepairProgressPageSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+        <Button ID="Back" Visible ="false "/>
+        <Button ID="Next" Visible ="true" Enabled="false"/>
+        <Button ID="Cancel" Visible="true" Enabled="true"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.ExecutionProgressController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+    </Page>
+
+    <Page
+      ID="RepairCompletionPage" PageType="Finish" >
+      <Title ResourceID="PostRepairTitle"></Title>
+      <Subtitle ResourceID="PostRepairSubTitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+        <Button ID="Back" Visible ="false"/>
+        <Button ID="Next" Visible ="false"/>
+        <Button ID="Cancel">
+          <Text ResourceID="CloseButton"></Text>
+        </Button>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.PostInstallController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+    </Page>
+  </Pages>
+
+  <Appearance>
+    <Title ResourceID="RepairWizardTitle"></Title>
+    <Icon>
+      <Name>MaintenanceRepair</Name>
+      <ResourceType>Microsoft.SqlServer.Configuration.InstallWizard.Resources, Microsoft.SqlServer.Configuration.InstallWizard</ResourceType>
+    </Icon>
+    <ButtonDefaults>
+      <Button ID="Help" Enabled="false" Visible="false"/>
+    </ButtonDefaults>
+  </Appearance>
+</UIHost>

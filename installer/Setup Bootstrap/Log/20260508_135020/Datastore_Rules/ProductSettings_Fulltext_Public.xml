@@ -1,0 +1,1 @@
+<FulltextConfigurationPublic xmlns="http://www.microsoft.com/sql/configuration/Fulltext/Public/2007/04"><StartMode>Manual</StartMode><FTUpgradeOption>Import</FTUpgradeOption></FulltextConfigurationPublic>

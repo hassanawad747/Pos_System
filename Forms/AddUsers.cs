@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Security.Cryptography;
 using System.Data.SqlClient;
 using Pos_System.Services;
 
@@ -56,11 +55,28 @@ namespace Pos_System.Forms
             return POS_System.Program.SettingsManager.GetSetting("default_role", "cashier").Trim().ToLowerInvariant();
         }
 
-        private bool ValidatePasswordPolicy(string password)
+        private bool ValidatePasswordPolicy(string password, bool requirePassword)
         {
             int maxLength = POS_System.Program.SettingsManager.GetIntSetting("password_max_length", 12);
 
-            if (!string.IsNullOrEmpty(password) && password.Length > maxLength)
+            if (string.IsNullOrEmpty(password))
+            {
+                if (requirePassword)
+                {
+                    MessageBox.Show("Password is required.");
+                    return false;
+                }
+
+                return true;
+            }
+
+            if (password.Length < 8)
+            {
+                MessageBox.Show("Password must be at least 8 characters.");
+                return false;
+            }
+
+            if (password.Length > maxLength)
             {
                 MessageBox.Show($"Password cannot be longer than {maxLength} characters.");
                 return false;
@@ -69,38 +85,35 @@ namespace Pos_System.Forms
             return true;
         }
 
-        private string HashPassword(string password)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder builder = new StringBuilder();
-                foreach (byte b in bytes)
-                {
-                    builder.Append(b.ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }
-
         private void LoadUsers()
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                SqlDataAdapter da = new SqlDataAdapter("SELECT user_id, username, role, created_at, created_by, password_hash FROM Users", conn);
+                SqlDataAdapter da = new SqlDataAdapter("SELECT user_id, username, role, created_at, created_by FROM Users", conn);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 dataGridView1.DataSource = dt;
+
+                if (dataGridView1.Columns.Contains("password_hash"))
+                {
+                    dataGridView1.Columns["password_hash"].Visible = false;
+                }
             }
         }
 
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanCreate(AppSession.UserId, AppSession.Role, PermissionService.ScreenUsers))
+            {
+                MessageBox.Show("You do not have permission to create users.");
+                return;
+            }
+
             string username = txtusername.Text.Trim();
-            string password = txtpassword.Text.Trim();
-            string confirmPassword = txtConfirmPassword.Text.Trim();
+            string password = txtpassword.Text;
+            string confirmPassword = txtConfirmPassword.Text;
 
             if (password != confirmPassword)
             {
@@ -108,7 +121,7 @@ namespace Pos_System.Forms
                 return;
             }
 
-            if (!ValidatePasswordPolicy(password))
+            if (!ValidatePasswordPolicy(password, true))
             {
                 return;
             }
@@ -121,8 +134,6 @@ namespace Pos_System.Forms
                 return;
             }
 
-            //string hashedPassword = HashPassword(password);
-
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
@@ -130,18 +141,14 @@ namespace Pos_System.Forms
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@password", PasswordHasher.Hash(password));
                     cmd.Parameters.AddWithValue("@role", role);
-                    cmd.Parameters.AddWithValue("@createdBy", LoginForm.LoggedInUsername); // track who created the account
+                    cmd.Parameters.AddWithValue("@createdBy", LoginForm.LoggedInUsername);
 
                     try
                     {
                         cmd.ExecuteNonQuery();
-<<<<<<< HEAD
-                        AuditLogger.Log("ADD", "Users", null, "Created user: " + username + " / role: " + role);
-=======
                         AuditService.Log("Users", "Create", username, "Created user " + username + " with role " + role);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                         MessageBox.Show("User created successfully!");
                         LoadUsers(); // refresh DataGridView
                     }
@@ -156,6 +163,12 @@ namespace Pos_System.Forms
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanDelete(AppSession.UserId, AppSession.Role, PermissionService.ScreenUsers))
+            {
+                MessageBox.Show("You do not have permission to delete users.");
+                return;
+            }
+
             if (dataGridView1.SelectedRows.Count > 0)
             {
                 int userId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["user_id"].Value);
@@ -177,11 +190,7 @@ namespace Pos_System.Forms
                         cmd.Parameters.AddWithValue("@id", userId);
                         cmd.ExecuteNonQuery();
 
-<<<<<<< HEAD
-                        AuditLogger.Log("DELETE", "Users", userId, "Deleted user id: " + userId);
-=======
                         AuditService.Log("Users", "Delete", userId.ToString(), "Deleted user ID " + userId);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                         MessageBox.Show("User deleted successfully!", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         LoadUsers();   // refresh DataGridView
@@ -215,6 +224,12 @@ namespace Pos_System.Forms
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanEdit(AppSession.UserId, AppSession.Role, PermissionService.ScreenUsers))
+            {
+                MessageBox.Show("You do not have permission to update users.");
+                return;
+            }
+
             if (dataGridView1.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Please select a user to edit.");
@@ -223,8 +238,8 @@ namespace Pos_System.Forms
 
             int userId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["user_id"].Value);
             string username = txtusername.Text.Trim();
-            string password = txtpassword.Text.Trim();
-            string confirmPassword = txtConfirmPassword.Text.Trim();
+            string password = txtpassword.Text;
+            string confirmPassword = txtConfirmPassword.Text;
 
             if (!string.IsNullOrEmpty(password) && password != confirmPassword)
             {
@@ -232,7 +247,7 @@ namespace Pos_System.Forms
                 return;
             }
 
-            if (!ValidatePasswordPolicy(password))
+            if (!ValidatePasswordPolicy(password, false))
             {
                 return;
             }
@@ -252,7 +267,6 @@ namespace Pos_System.Forms
                 string query;
                 if (!string.IsNullOrEmpty(password))
                 {
-                    string hashedPassword = HashPassword(password);
                     query = "UPDATE Users SET username=@username, password_hash=@password, role=@role WHERE user_id=@id";
                 }
                 else
@@ -268,17 +282,13 @@ namespace Pos_System.Forms
 
                     if (!string.IsNullOrEmpty(password))
                     {
-                        cmd.Parameters.AddWithValue("@password",password);
+                        cmd.Parameters.AddWithValue("@password", PasswordHasher.Hash(password));
                     }
 
                     try
                     {
                         cmd.ExecuteNonQuery();
-<<<<<<< HEAD
-                        AuditLogger.Log("EDIT", "Users", userId, "Updated user: " + username + " / role: " + role);
-=======
                         AuditService.Log("Users", "Edit", userId.ToString(), "Updated user " + username + " with role " + role);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                         MessageBox.Show("User updated successfully!");
                         LoadUsers(); // refresh grid
                     }
@@ -293,11 +303,17 @@ namespace Pos_System.Forms
 
         private void AddUsers_Load(object sender, EventArgs e)
         {
+            if (!PermissionService.EnsureScreenAccess(this, PermissionService.ScreenUsers))
+            {
+                return;
+            }
+
             int maxLength = POS_System.Program.SettingsManager.GetIntSetting("password_max_length", 12);
             txtpassword.MaxLength = maxLength;
             txtConfirmPassword.MaxLength = maxLength;
             ApplyDefaultRole();
             LoadUsers();
+            PermissionService.ApplyActionPermissions(this, PermissionService.ScreenUsers);
         }
     }
 }

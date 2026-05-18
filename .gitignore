@@ -1,1 +1,6 @@
 last-version-pos_system/
+.vs/
+bin/
+obj/
+.dotnet/
+.dotnet_home/

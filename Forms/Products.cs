@@ -20,9 +20,15 @@ namespace Pos_System.Forms
 
         private void Products_Load(object sender, EventArgs e)
         {
+            if (!PermissionService.EnsureScreenAccess(this, PermissionService.ScreenProducts))
+            {
+                return;
+            }
+
             EnsureProductLookupColumns();
             RefreshAllGrids();
             LayoutInventoryControls();
+            PermissionService.ApplyActionPermissions(this, PermissionService.ScreenProducts);
         }
 
         private void ConfigureResponsiveLayout()
@@ -314,6 +320,12 @@ namespace Pos_System.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanCreate(AppSession.UserId, AppSession.Role, PermissionService.ScreenProducts))
+            {
+                MessageBox.Show("You do not have permission to create categories.");
+                return;
+            }
+
             using (CategoryForm categoryForm = new CategoryForm(true))
             {
                 categoryForm.ShowDialog(GetDialogOwner());
@@ -347,30 +359,65 @@ namespace Pos_System.Forms
 
             if (columnName == "Edit")
             {
+                if (!PermissionService.CanEdit(AppSession.UserId, AppSession.Role, PermissionService.ScreenProducts))
+                {
+                    MessageBox.Show("You do not have permission to edit products.");
+                    return;
+                }
+
                 using (AddProducts editForm = new AddProducts(selectedProductId))
                 {
                     editForm.ShowDialog(GetDialogOwner());
                 }
 
-                AuditLogger.Log("DELETE", "Products", selectedProductId, "Deleted product");
+                AuditLogger.Log("EDIT", "Products", selectedProductId, "Opened product edit form");
                 RefreshProductsGrid(txtsearch.Text.Trim());
                 return;
             }
 
             if (columnName == "Delete")
             {
+                if (!PermissionService.CanDelete(AppSession.UserId, AppSession.Role, PermissionService.ScreenProducts))
+                {
+                    MessageBox.Show("You do not have permission to delete products.");
+                    return;
+                }
                 DialogResult confirm = MessageBox.Show("هل تريد حذف المنتج؟", "تأكيد الحذف", MessageBoxButtons.YesNo);
                 if (confirm != DialogResult.Yes)
                 {
                     return;
                 }
 
-                using (SqlConnection conn = new SqlConnection(connStr))
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM Products WHERE product_id = @id", conn))
+                try
                 {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@id", selectedProductId);
-                    cmd.ExecuteNonQuery();
+                    using (SqlConnection conn = new SqlConnection(connStr))
+                    using (SqlCommand cmd = new SqlCommand(@"
+                        SET XACT_ABORT ON;
+                        BEGIN TRANSACTION;
+
+                        IF OBJECT_ID(N'dbo.Returns', N'U') IS NOT NULL
+                            DELETE FROM dbo.Returns WHERE product_id = @id;
+
+                        IF OBJECT_ID(N'dbo.Sale_Items', N'U') IS NOT NULL
+                            DELETE FROM dbo.Sale_Items WHERE product_id = @id;
+
+                        IF OBJECT_ID(N'dbo.InventoryLogs', N'U') IS NOT NULL
+                           AND COL_LENGTH('dbo.InventoryLogs', 'product_id') IS NOT NULL
+                            DELETE FROM dbo.InventoryLogs WHERE product_id = @id;
+
+                        DELETE FROM dbo.Products WHERE product_id = @id;
+
+                        COMMIT TRANSACTION;", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.AddWithValue("@id", selectedProductId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException)
+                {
+                    MessageBox.Show("Cannot delete this product because it is already used in sales. Keep it in the system or edit its stock/name instead.", "Delete Product");
+                    return;
                 }
 
                 AuditService.Log("Products", "Delete", selectedProductId.ToString(), "Deleted product ID " + selectedProductId);
@@ -387,12 +434,17 @@ namespace Pos_System.Forms
             }
 
             string columnName = datagridCategories.Columns[e.ColumnIndex].Name;
-            int categoryId = Convert.ToInt32(datagridCategories.Rows[e.RowIndex].Cells["category_id1"].Value);
+            int categoryId = Convert.ToInt32(GetCellValue(datagridCategories.Rows[e.RowIndex], "category_id1", "category_id"));
 
             if (columnName == "Edit1")
             {
-                string categoryName = Convert.ToString(datagridCategories.Rows[e.RowIndex].Cells["category_name"].Value)?.Trim() ?? string.Empty;
-                string description = Convert.ToString(datagridCategories.Rows[e.RowIndex].Cells["description"].Value)?.Trim() ?? string.Empty;
+                if (!PermissionService.CanEdit(AppSession.UserId, AppSession.Role, PermissionService.ScreenProducts))
+                {
+                    MessageBox.Show("You do not have permission to edit categories.");
+                    return;
+                }
+                string categoryName = Convert.ToString(GetCellValue(datagridCategories.Rows[e.RowIndex], "category_name"))?.Trim() ?? string.Empty;
+                string description = Convert.ToString(GetCellValue(datagridCategories.Rows[e.RowIndex], "description"))?.Trim() ?? string.Empty;
 
                 if (string.IsNullOrWhiteSpace(categoryName))
                 {
@@ -421,18 +473,31 @@ namespace Pos_System.Forms
 
             if (columnName == "Delete1")
             {
+                if (!PermissionService.CanDelete(AppSession.UserId, AppSession.Role, PermissionService.ScreenProducts))
+                {
+                    MessageBox.Show("You do not have permission to delete categories.");
+                    return;
+                }
                 DialogResult confirm = MessageBox.Show("هل تريد حذف الصنف؟", "تأكيد الحذف", MessageBoxButtons.YesNo);
                 if (confirm != DialogResult.Yes)
                 {
                     return;
                 }
 
-                using (SqlConnection conn = new SqlConnection(connStr))
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM Categories WHERE category_id = @id", conn))
+                try
                 {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@id", categoryId);
-                    cmd.ExecuteNonQuery();
+                    using (SqlConnection conn = new SqlConnection(connStr))
+                    using (SqlCommand cmd = new SqlCommand("DELETE FROM Categories WHERE category_id = @id", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.AddWithValue("@id", categoryId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException)
+                {
+                    MessageBox.Show("Cannot delete this category because products are using it. Move or edit those products first.", "Delete Category");
+                    return;
                 }
 
                 AuditService.Log("Categories", "Delete", categoryId.ToString(), "Deleted category ID " + categoryId);
@@ -450,13 +515,19 @@ namespace Pos_System.Forms
             }
 
             string columnName = datagridSuppliers.Columns[e.ColumnIndex].Name;
-            int supplierId = Convert.ToInt32(datagridSuppliers.Rows[e.RowIndex].Cells["supplier_id1"].Value);
+            int supplierId = Convert.ToInt32(GetCellValue(datagridSuppliers.Rows[e.RowIndex], "supplier_id1", "supplier_id"));
 
             if (columnName == "Edit2")
             {
-                string supplierName = Convert.ToString(datagridSuppliers.Rows[e.RowIndex].Cells["name1"].Value)?.Trim() ?? string.Empty;
-                string contactInfo = Convert.ToString(datagridSuppliers.Rows[e.RowIndex].Cells["contact_info"].Value)?.Trim() ?? string.Empty;
-                string address = Convert.ToString(datagridSuppliers.Rows[e.RowIndex].Cells["address"].Value)?.Trim() ?? string.Empty;
+                if (!PermissionService.CanEdit(AppSession.UserId, AppSession.Role, PermissionService.ScreenProducts))
+                {
+                    MessageBox.Show("You do not have permission to edit suppliers.");
+                    return;
+                }
+
+                string supplierName = Convert.ToString(GetCellValue(datagridSuppliers.Rows[e.RowIndex], "name1", "name"))?.Trim() ?? string.Empty;
+                string contactInfo = Convert.ToString(GetCellValue(datagridSuppliers.Rows[e.RowIndex], "contact_info"))?.Trim() ?? string.Empty;
+                string address = Convert.ToString(GetCellValue(datagridSuppliers.Rows[e.RowIndex], "address"))?.Trim() ?? string.Empty;
 
                 if (string.IsNullOrWhiteSpace(supplierName))
                 {
@@ -486,18 +557,31 @@ namespace Pos_System.Forms
 
             if (columnName == "Delete2")
             {
+                if (!PermissionService.CanDelete(AppSession.UserId, AppSession.Role, PermissionService.ScreenProducts))
+                {
+                    MessageBox.Show("You do not have permission to delete suppliers.");
+                    return;
+                }
                 DialogResult confirm = MessageBox.Show("هل تريد حذف المورد؟", "تأكيد الحذف", MessageBoxButtons.YesNo);
                 if (confirm != DialogResult.Yes)
                 {
                     return;
                 }
 
-                using (SqlConnection conn = new SqlConnection(connStr))
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM Suppliers WHERE supplier_id = @id", conn))
+                try
                 {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@id", supplierId);
-                    cmd.ExecuteNonQuery();
+                    using (SqlConnection conn = new SqlConnection(connStr))
+                    using (SqlCommand cmd = new SqlCommand("DELETE FROM Suppliers WHERE supplier_id = @id", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.AddWithValue("@id", supplierId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException)
+                {
+                    MessageBox.Show("Cannot delete this supplier because products or sales are using it. Keep it in the system or edit its details instead.", "Delete Supplier");
+                    return;
                 }
 
                 AuditService.Log("Suppliers", "Delete", supplierId.ToString(), "Deleted supplier ID " + supplierId);
@@ -509,6 +593,19 @@ namespace Pos_System.Forms
 
         private void datagridCategories_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+        }
+
+        private static object GetCellValue(DataGridViewRow row, params string[] columnNames)
+        {
+            foreach (string columnName in columnNames)
+            {
+                if (row.DataGridView.Columns.Contains(columnName))
+                {
+                    return row.Cells[columnName].Value;
+                }
+            }
+
+            throw new InvalidOperationException("Expected grid column was not found: " + string.Join(", ", columnNames));
         }
 
         private void datagridSuppliers_CellContentClick(object sender, DataGridViewCellEventArgs e)

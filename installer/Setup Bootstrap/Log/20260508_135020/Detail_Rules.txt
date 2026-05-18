@@ -1,0 +1,1055 @@
+(01) 2026-05-08 13:51:19 Slp: Log provider 'Microsoft.SqlServer.Chainer.Infrastructure.LogProviderFile' has been registered
+(01) 2026-05-08 13:51:19 Slp: Log provider 'Microsoft.SqlServer.Chainer.Infrastructure.LogProviderStatus' has been registered
+(01) 2026-05-08 13:51:19 Slp: Reading XML resource 'Microsoft.SQL.Chainer.PackageData.Package.xml'
+(01) 2026-05-08 13:51:19 Slp: Reading schema resource 'Microsoft.SQL.Chainer.Package.Package.xsd'
+(01) 2026-05-08 13:51:19 Slp: Document 'Microsoft.SQL.Chainer.PackageData.Package.xml' validated with schema 'Microsoft.SQL.Chainer.Package.Package.xsd' has been successfuly loaded into datastore path '/Datastore/Package'
+(01) 2026-05-08 13:51:20 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:20 Slp: Running Action: ReadProductXML
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SQL.Chainer.Product.Product.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SQL.Chainer.Product.Product.xml' validated with schema 'Microsoft.SQL.Chainer.Product.Product.xsd' has been successfuly loaded into datastore path '/Datastore/Product'
+(01) 2026-05-08 13:51:20 Slp: Completed Action: ReadProductXML, returned True
+(01) 2026-05-08 13:51:20 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:20 Slp: Running Action: LoadExtensions
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'MSI' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.MsiExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'MSI' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'Config' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.ConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'Config' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'Common' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Chainer.ExtensionCommon.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'Common' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'SqlConfigBase' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.SqlConfigBase.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'SqlConfigBase' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'Slp' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.SetupExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'Slp' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'RulesEngine' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.RulesEngineExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'RulesEngine' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'WorkflowData' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Chainer.WorkflowData.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'WorkflowData' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'SlpConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.SlpExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'SlpConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'Clst' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.Cluster.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'Clst' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'AgentConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.AgentExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'AgentConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'SqlPowershellConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.PowershellExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'SqlPowershellConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'SSISConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.SSISExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'SSISConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ISMasterConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.ISMasterExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ISMasterConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ISWorkerConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.ISWorkerExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ISWorkerConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ASConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.ASExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ASConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ReplConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.Repl_ConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ReplConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ManagementToolsConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.ManagementToolsExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ManagementToolsConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ManagementToolsAdvancedConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.ManagementToolsExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ManagementToolsAdvancedConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'UI' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.UIExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'UI' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ConfigurationResources' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ConfigurationResources' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'SqlEngineConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'SqlEngineConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'XTPConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.XTP.ConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'XTPConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'SniServerConfigExt' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.SniServerConfigExt.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'SniServerConfigExt' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'SqlBrowserConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.SqlBrowserExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'SqlBrowserConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'SqlRSConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.RSExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'SqlRSConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'PolybaseConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.PolybaseConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'PolybaseConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'SqlArcOnboardPublicConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.ArcOnboard.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'SqlArcOnboardPublicConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ExtensibilityConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ExtensibilityConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'sql_inst_mrConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.IMR_ConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'sql_inst_mrConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'sql_inst_mpyConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.IMPY_ConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'sql_inst_mpyConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'FulltextConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'FulltextConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ScoExtension' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.ScoExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ScoExtension' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'Infrastructure' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Chainer.Infrastructure.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'Infrastructure' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'UtilityConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.UtilityExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'UtilityConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'SmartSetup' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.SmartSetupExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'SmartSetup' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'TelemetryConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.TelemetryConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'TelemetryConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ASTelemetryConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.ASTelemetryExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ASTelemetryConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Loading extension 'ISTelemetryConfig' from file 'C:\SQL2022\RulesEng\x64\.\Microsoft.SqlServer.Configuration.ISTelemetryConfigExtension.dll'
+(01) 2026-05-08 13:51:20 Slp: Extension 'ISTelemetryConfig' version '16.0.1000.6' loaded
+(01) 2026-05-08 13:51:20 Slp: Completed Action: LoadExtensions, returned True
+(01) 2026-05-08 13:51:20 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:20 Slp: Running Action: ExecuteBootstrapAfterExtensionsLoaded
+(01) 2026-05-08 13:51:20 Slp: Workflow to execute: 'BOOTSTRAPAFTEREXTENSIONSLOADED'
+(01) 2026-05-08 13:51:20 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:20 Slp: Running Action: SetGlobalPackageFlags
+(01) 2026-05-08 13:51:20 Slp: Setting /Package/ProductName to SQLv16
+(01) 2026-05-08 13:51:20 Slp: Setting /Package/SupportedLanguages to 1028;1031;1033;1036;1040;1041;1042;1046;1049;2052;3082;1053
+(01) 2026-05-08 13:51:20 Slp: Setting /Package/LogPath to %ProgramFiles%\Microsoft SQL Server\160\Setup Bootstrap\Log
+(01) 2026-05-08 13:51:20 Slp: Setting /Package/GlobalProperties/StopActionRequireMode to ShowProgressOnly
+(01) 2026-05-08 13:51:20 Slp: Completed Action: SetGlobalPackageFlags, returned True
+(01) 2026-05-08 13:51:20 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:20 Slp: Running Action: LoadPackageDatastoreObjects
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SlpChainerInputSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.SlpChainerInputSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SlpChainerInputSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.SlpChainerInputSettingsDefaults.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SlpChainerInputSettingsDefaults.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.SlpChainerInputSettingsDefaults.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.SlpChainerInputSettings.xsd' loaded into datastore path '/Datastore/InputSettings/ChainerSettings/SlpSettings'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SlpFeatureInputSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.SlpFeatureInputSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SlpFeatureInputSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.SlpFeatureInputSettingDefaults.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SlpFeatureInputSettingDefaults.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.SlpFeatureInputSettingDefaults.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.SlpFeatureInputSettings.xsd' loaded into datastore path '/Datastore/InputSettings/FeatureSpecific/SlpInputSettings'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SqlInstanceIdPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.SqlInstanceIdPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SqlInstanceIdPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.SqlInstanceIdPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SqlInstanceIdPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.SqlInstanceIdPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.SqlInstanceIdPrivateConfigObject.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlInstanceId/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'AsInstanceIdPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.AsInstanceIdPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.AsInstanceIdPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.AsInstanceIdPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.AsInstanceIdPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.AsInstanceIdPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.AsInstanceIdPrivateConfigObject.xsd' loaded into datastore path '/Datastore/ProductSettings/AsInstanceId/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'RsInstanceIdPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.RsInstanceIdPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.RsInstanceIdPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.RsInstanceIdPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.RsInstanceIdPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.RsInstanceIdPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.RsInstanceIdPrivateConfigObject.xsd' loaded into datastore path '/Datastore/ProductSettings/RsInstanceId/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SlpConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SlpExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SlpPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Slp/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SlpConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SlpExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SlpPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SlpExtension.SlpPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Slp/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SlpConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SlpExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SqlLegacyDiscoveryPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPublicSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPublicSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPublicSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlLegacyDiscovery/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SlpConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SlpExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SqlLegacyDiscoveryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPrivateSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPrivateSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPrivateSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SlpExtension.SqlLegacyDiscoveryPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlLegacyDiscovery/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SlpDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.SlpDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SlpDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.SlpDumperPrivateConfigDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SlpDumperPrivateConfigDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.SlpDumperPrivateConfigDefault.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.SlpDumperPrivateConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/SlpDumper/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SqlDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.SqlDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SqlDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.SqlDumperPrivateConfigDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SqlDumperPrivateConfigDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.SqlDumperPrivateConfigDefault.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.SqlDumperPrivateConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlEngineDumper/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'AsDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.AsDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.AsDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.AsDumperPrivateConfigDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.AsDumperPrivateConfigDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.AsDumperPrivateConfigDefault.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.AsDumperPrivateConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/AsDumper/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'RsDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.RsDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.RsDumperPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.RsDumperPrivateConfigDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.RsDumperPrivateConfigDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.RsDumperPrivateConfigDefault.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.RsDumperPrivateConfig.xsd' loaded into datastore path '/Datastore/InputSettings/RsDumper/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'AgentConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.AgentExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'AgentPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Agent/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'AgentConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.AgentExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'AgentPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Agent/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'AgentConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.AgentExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'AgentPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.AgentExtension.AgentScriptPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.AgentExtension.AgentScriptPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.AgentExtension.AgentScriptPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.AgentExtension.AgentPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/AgentScript/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SSISConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SSISExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SSISPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SSIS/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SSISConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SSISExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SSISPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SSISExtension.SSISPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SSIS/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ISMasterConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ISMaster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ISMasterPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ISMaster/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ISMasterConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ISMaster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ISMasterPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ISMaster.ISMasterPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ISMaster/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ISWorkerConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ISWorker'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ISWorkerPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ISWorker/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ISWorkerConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ISWorker'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ISWorkerPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ISWorker.ISWorkerPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ISWorker/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SSISConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SSISExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'VSTAPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SSISExtension.VSTAPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SSISExtension.VSTAPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SSISExtension.VSTAPrivateSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SSISExtension.VSTAPrivateSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SSISExtension.VSTAPrivateSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SSISExtension.VSTAPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SSIS/VSTA/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlPowershellConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.PowershellExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'PowershellPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlPowershell/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlPowershellConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.PowershellExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'PowershellPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.PowershellExtension.PowershellPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlPowershell/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ASConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ASExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ASPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ASExtension.ASPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ASExtension.ASPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ASExtension.ASPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ASExtension.ASPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ASExtension.ASPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ASExtension.ASPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/AS/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ASConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ASExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ASPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ASExtension.ASPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ASExtension.ASPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ASExtension.ASPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ASExtension.ASPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ASExtension.ASPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ASExtension.ASPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/AS/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlEngineConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SqlEnginePublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlEngine/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ReplConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ReplPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Repl/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlEngineConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SqlEnginePrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SqlServer_ConfigExtension.SqlEnginePrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlEngine/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'XTPConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.XTP.ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'HkPerfCtrPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.XTP.ConfigExtension.HkPerfCtrPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.XTP.ConfigExtension.HkPerfCtrPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.XTP.ConfigExtension.HkPerfCtrPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.XTP.ConfigExtension.HkPerfCtrPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.XTP.ConfigExtension.HkPerfCtrPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.XTP.ConfigExtension.HkPerfCtrPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/XTP/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'PolybaseConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'PolybasePrivateDefaultSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybasePrivateDefaultSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybasePrivateDefaultSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybasePrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybasePrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybasePrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybasePrivateDefaultSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Polybase/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'PolybaseConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'PolybaseDatabaseConfigSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybaseDatabaseConfigSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybaseDatabaseConfigSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybaseDatabaseConfigSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybaseDatabaseConfigSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybaseDatabaseConfigSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.PolybaseConfigExtension.PolybaseDatabaseConfigSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Polybase/ConfigDB'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlArcOnboardPublicConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ArcOnboard'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SqlArcOnboardingPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcOnboardingPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcOnboardingPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcOnboardingPrivateSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcOnboardingPrivateSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcOnboardingPrivateSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcOnboardingPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ArcOnboard/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlArcOnboardPublicConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ArcOnboard'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SqlIaaSOnboardingPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ArcOnboard.SqlIaaSOnboardingPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ArcOnboard.SqlIaaSOnboardingPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ArcOnboard.SqlIaaSOnboardingPrivateSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ArcOnboard.SqlIaaSOnboardingPrivateSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ExtensibilityConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ExtensibilityPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Extensibility/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ExtensibilityConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ExtensibilityPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.Extensibility_ConfigExtension.ExtensibilityPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Extensibility/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'sql_inst_mrConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.IMR_ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'sql_inst_mrPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.IMR_ConfigExtension.sql_inst_mrPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.IMR_ConfigExtension.sql_inst_mrPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.IMR_ConfigExtension.sql_inst_mrPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.IMR_ConfigExtension.sql_inst_mrPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.IMR_ConfigExtension.sql_inst_mrPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.IMR_ConfigExtension.sql_inst_mrPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/IMR/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'sql_inst_mpyConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.IMPY_ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'sql_inst_mpyPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.IMPY_ConfigExtension.sql_inst_mpyPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.IMPY_ConfigExtension.sql_inst_mpyPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.IMPY_ConfigExtension.sql_inst_mpyPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.IMPY_ConfigExtension.sql_inst_mpyPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.IMPY_ConfigExtension.sql_inst_mpyPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.IMPY_ConfigExtension.sql_inst_mpyPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/IMPY/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'FulltextConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'FulltextPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Fulltext/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'FulltextConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'FulltextPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.Fulltext_ConfigExtension.FulltextPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Fulltext/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'TelemetryConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'TelemetryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Telemetry/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'TelemetryConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'TelemetryScriptConfigSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryScriptConfigSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryScriptConfigSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryScriptConfigSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryScriptConfigSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryScriptConfigSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.TelemetryConfigExtension.TelemetryScriptConfigSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Telemetry/TelemetryScriptConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ASTelemetryConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ASTelemetryExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ASTelemetryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ASTelemetryExtension.ASTelemetryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ASTelemetryExtension.ASTelemetryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ASTelemetryExtension.ASTelemetryPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ASTelemetryExtension.ASTelemetryPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ASTelemetryExtension.ASTelemetryPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ASTelemetryExtension.ASTelemetryPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ASTelemetry/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ISTelemetryConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ISTelemetryConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ISTelemetryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ISTelemetryConfigExtension.ISTelemetryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ISTelemetryConfigExtension.ISTelemetryPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ISTelemetryConfigExtension.ISTelemetryPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ISTelemetryConfigExtension.ISTelemetryPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ISTelemetryConfigExtension.ISTelemetryPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ISTelemetryConfigExtension.ISTelemetryPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ISTelemetry/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SniServerConfigExt'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SniServer'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SniServerConfigExt_PrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SniServer/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SniServerConfigExt'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SniServer'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SniServerConfigExt_PublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SniServer.SniServerConfigExt_PublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SniServer/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlBrowserConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SqlBrowserExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'sqlBrowserPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPublicConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPublicConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlBrowser/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlBrowserConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SqlBrowserExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'sqlBrowserPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPrivateConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserPrivateConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlBrowser/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlBrowserConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SqlBrowserExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'sqlBrowserStopServicePrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserStopServicePrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserStopServicePrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserStopServicePrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserStopServicePrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserStopServicePrivateConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.SqlBrowserExtension.sqlBrowserStopServicePrivateConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlBrowserStopService/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SkuPublicConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPublicConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPublicConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPublicConfigObjectDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPublicConfigObjectDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPublicConfigObjectDefault.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPublicConfigObject.xsd' loaded into datastore path '/Datastore/ProductSettings/Sku/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Slp'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SetupExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SkuPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPrivateConfigObject.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPrivateConfigObjectDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPrivateConfigObjectDefault.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPrivateConfigObjectDefault.xml' validated with schema 'Microsoft.SqlServer.Configuration.SetupExtension.SkuPrivateConfigObject.xsd' loaded into datastore path '/Datastore/ProductSettings/Sku/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ReplConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ReplPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.Repl_ConfigExtension.ReplPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/Repl/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlRSConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.RSExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SqlRSConfigPublicDefaultSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPublicDefaultSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPublicDefaultSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPublicDefaultSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlRS/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SqlRSConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.RSExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SqlRSConfigPrivateDefaultSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPrivateDefaultSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPrivateDefaultSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.RSExtension.SqlRSConfigPrivateDefaultSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SqlRS/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ManagementToolsConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ManagementToolsPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ManagementTools/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ManagementToolsConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ManagementToolsPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ManagementTools/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ManagementToolsAdvancedConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ManagementToolsAdvancedPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPublicSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPublicDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPublicDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPublicSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ManagementToolsAdvanced/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'ManagementToolsAdvancedConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ManagementToolsAdvancedPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPrivateDefaultSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPrivateDefaultSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.ManagementToolsExtension.ManagementToolsAdvancedPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/ManagementToolsAdvanced/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ClusterDiskPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPrivateConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPrivateConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/ClusterDisk/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ClusterDiskPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPublicConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.Cluster.ClusterDiskPublicConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/ClusterDisk/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ClusterGroupPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPrivateConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPrivateConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/ClusterGroup/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ClusterGroupPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPublicConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.Cluster.ClusterGroupPublicConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/ClusterGroup/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ClusterIPAddressPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPrivateConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPrivateConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/ClusterIPAddresses/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ClusterIPAddressPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPublicConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.Cluster.ClusterIPAddressPublicConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/ClusterIPAddresses/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'FailoverInstanceNamePrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePrivateConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePrivateConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/FailOverClusterName/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'FailoverInstanceNamePublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePublicConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.Cluster.FailoverInstanceNamePublicConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/FailoverClusterName/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ClusterNodePrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePrivateConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePrivateConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePrivateConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePrivateConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/ClusterNode/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'ClusterNodePublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePublicConfig.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePublicConfig.xml' validated with schema 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodePublicConfig.xsd' loaded into datastore path '/Datastore/ProductSettings/ClusterNode/Public'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'SlpConfig'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.SlpExtension'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = 'SQLServerSCPPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading schema resource 'Microsoft.SqlServer.Configuration.SlpExtension.SQLServerSCPPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SlpExtension.SQLServerSCPPrivateSettings.xsd'
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.SlpExtension.SQLServerSCPPrivateSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.SlpExtension.SQLServerSCPPrivateSettings.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.SlpExtension.SQLServerSCPPrivateSettings.xml' validated with schema 'Microsoft.SqlServer.Configuration.SlpExtension.SQLServerSCPPrivateSettings.xsd' loaded into datastore path '/Datastore/ProductSettings/SQLServerSCP/Private'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction actionId = 'LoadPackageDatastoreObjects'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.ExecuteAction extensionId = 'Clst'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() resourceNamespace = 'Microsoft.SqlServer.Configuration.Cluster'
+(01) 2026-05-08 13:51:20 Slp: Calling LoadPackageDatastoreObjectsAction.LoadExtensionDocument() schemaFilename = ''
+(01) 2026-05-08 13:51:20 Slp: Reading XML resource 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodesStatusPublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: DONE DONE DONE READING = 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodesStatusPublicConfig.xml'
+(01) 2026-05-08 13:51:20 Slp: Document 'Microsoft.SqlServer.Configuration.Cluster.ClusterNodesStatusPublicConfig.xml' loaded into datastore path '/Datastore/ProductSettings/ClusterNodesStatus/Public'
+(01) 2026-05-08 13:51:20 Slp: Completed Action: LoadPackageDatastoreObjects, returned True
+(01) 2026-05-08 13:51:20 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:20 Slp: Running Action: InitializeInputSettingStore
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBENGSVCACCOUNT: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybasePdwUserName, id = PBENGSVCACCOUNT, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBENGSVCPASSWORD: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybasePdwPassword, id = PBENGSVCPASSWORD, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Common.SqlSecureString
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBENGSVCSTARTUPTYPE: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybasePdwStartMode, id = PBENGSVCSTARTUPTYPE, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Configuration.Sco.ServiceStartMode
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBENGSVCNAME: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybasePdwName, id = PBENGSVCNAME, category = NonCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBENGSVCDISPLAYNAME: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybasePdwDisplayName, id = PBENGSVCDISPLAYNAME, category = NonCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBDMSSVCACCOUNT: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybaseDmsUserName, id = PBDMSSVCACCOUNT, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBDMSSVCPASSWORD: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybaseDmsPassword, id = PBDMSSVCPASSWORD, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Common.SqlSecureString
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBDMSSVCSTARTUPTYPE: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybaseDmsStartMode, id = PBDMSSVCSTARTUPTYPE, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Configuration.Sco.ServiceStartMode
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBDMSSVCNAME: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybaseDmsName, id = PBDMSSVCNAME, category = NonCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBDMSSVCDISPLAYNAME: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybaseDmsDisplayName, id = PBDMSSVCDISPLAYNAME, category = NonCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLPolyBase: Setting PBPORTRANGE: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Polybase.PolybasePortRange, id = PBPORTRANGE, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting AZURESUBSCRIPTIONID: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcSubscriptionId, id = AZURESUBSCRIPTIONID, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting AZURETENANTID: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcTenantId, id = AZURETENANTID, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting AZUREREGION: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcRegion, id = AZUREREGION, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting AZURERESOURCEGROUP: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcResourceGroupName, id = AZURERESOURCEGROUP, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting AZURESERVICEPRINCIPALSECRET: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcServicePrincipalSecret, id = AZURESERVICEPRINCIPALSECRET, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Common.SqlSecureString
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting AZURESERVICEPRINCIPAL: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcServicePrincipal, id = AZURESERVICEPRINCIPAL, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting AZUREARCPROXYSERVER: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcProxy, id = AZUREARCPROXYSERVER, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting AZUREACCESSTOKEN: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcToken, id = AZUREACCESSTOKEN, category = NonCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting AZUREEXTENSIONENABLED: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcEnabled, id = AZUREEXTENSIONENABLED, category = NonCommandLineSetting, type = System.Boolean
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting AZUREEXTENSIONPRESENT: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcPresent, id = AZUREEXTENSIONPRESENT, category = NonCommandLineSetting, type = System.Boolean
+(01) 2026-05-08 13:51:20 SQLArcOnboard: Setting MACHINEMANUFACTURER: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ArcOnboard.SqlArcMachineManufacturer, id = MACHINEMANUFACTURER, category = NonCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:21 SQLTelemetry: Setting SQLTELSVCACCT: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Telemetry.TelemetryServiceUserName, id = SQLTELSVCACCT, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:21 SQLTelemetry: Setting SQLTELSVCPASSWORD: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Telemetry.TelemetryServicePassword, id = SQLTELSVCPASSWORD, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Common.SqlSecureString
+(01) 2026-05-08 13:51:21 SQLTelemetry: Setting SQLTELSVCSTARTUPTYPE: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.Telemetry.SqlTelemetryStartMode, id = SQLTELSVCSTARTUPTYPE, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Configuration.Sco.ServiceStartMode
+(01) 2026-05-08 13:51:21 ASTelemetry: Setting ASTELSVCACCT: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ASTelemetry.TelemetryServiceUserName, id = ASTELSVCACCT, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:21 ASTelemetry: Setting ASTELSVCPASSWORD: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ASTelemetry.ASTelemetryServicePassword, id = ASTELSVCPASSWORD, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Common.SqlSecureString
+(01) 2026-05-08 13:51:21 ASTelemetry: Setting ASTELSVCSTARTUPTYPE: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ASTelemetry.ASTelemetryStartMode, id = ASTELSVCSTARTUPTYPE, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Configuration.Sco.ServiceStartMode
+(01) 2026-05-08 13:51:21 ISTelemetry: Setting ISTELSVCACCT: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ISTelemetry.TelemetryServiceUserName, id = ISTELSVCACCT, category = PublicCommandLineSetting, type = System.String
+(01) 2026-05-08 13:51:21 ISTelemetry: Setting ISTELSVCPASSWORD: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ISTelemetry.TelemetryServicePassword, id = ISTELSVCPASSWORD, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Common.SqlSecureString
+(01) 2026-05-08 13:51:21 ISTelemetry: Setting ISTELSVCSTARTUPTYPE: source = NotSpecified, message = Creating setting: Microsoft.SqlServer.Configuration.ISTelemetry.TelemetryStartMode, id = ISTELSVCSTARTUPTYPE, category = PublicCommandLineSetting, type = Microsoft.SqlServer.Configuration.Sco.ServiceStartMode
+(01) 2026-05-08 13:51:21 Slp: Completed Action: InitializeInputSettingStore, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: InitializeRoleService
+(01) 2026-05-08 13:51:21 Slp: Loading role: AllFeatures_WithDefaults
+(01) 2026-05-08 13:51:21 Slp: Completed Action: InitializeRoleService, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: ProcessChainerCommandLineArguments
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Setting: TIMESTAMP
+(01) 2026-05-08 13:51:21 Slp: Value specified: 20260508_135020
+(01) 2026-05-08 13:51:21 Slp: New setting source: CommandLine; previous setting source: Default
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Setting: LOGMARKER
+(01) 2026-05-08 13:51:21 Slp: Value specified: _Rules
+(01) 2026-05-08 13:51:21 Slp: New setting source: CommandLine; previous setting source: Default
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Setting: MEDIASOURCE
+(01) 2026-05-08 13:51:21 Slp: Value specified: C:\SQL2022\RulesEng\
+(01) 2026-05-08 13:51:21 Slp: New setting source: CommandLine; previous setting source: NotSpecified
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Setting: INSTALLMEDIAPATH
+(01) 2026-05-08 13:51:21 Slp: Value specified: C:\SQL2022\RulesEng\x64\setup\
+(01) 2026-05-08 13:51:21 Slp: New setting source: CommandLine; previous setting source: NotSpecified
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Setting: ENU
+(01) 2026-05-08 13:51:21 Slp: Value specified: True
+(01) 2026-05-08 13:51:21 Slp: New setting source: CommandLine; previous setting source: Default
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Setting: MEDIALAYOUT
+(01) 2026-05-08 13:51:21 Slp: Value specified: None
+(01) 2026-05-08 13:51:21 Slp: New setting source: CommandLine; previous setting source: Default
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Setting: Q
+(01) 2026-05-08 13:51:21 Slp: Value specified: True
+(01) 2026-05-08 13:51:21 Slp: New setting source: CommandLine; previous setting source: Default
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Setting: ACTION
+(01) 2026-05-08 13:51:21 Slp: Value specified: RUNRULES
+(01) 2026-05-08 13:51:21 Slp: New setting source: CommandLine; previous setting source: NotSpecified
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Setting: RULES
+(01) 2026-05-08 13:51:21 Slp: Value specified: PreInstallRules
+(01) 2026-05-08 13:51:21 Slp: New setting source: CommandLine; previous setting source: Default
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ProcessChainerCommandLineArguments, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: ProcessMediaChainerConfigFileArguments
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ProcessMediaChainerConfigFileArguments, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: ProcessChainerConfigFileArguments
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ProcessChainerConfigFileArguments, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: ProcessSlipstreamParameters
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ProcessSlipstreamParameters, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Skipping Action: SetRoleAndUIModeForExpressMedia
+(01) 2026-05-08 13:51:21 Slp: Action is being skipped due to the following restrictions: 
+(01) 2026-05-08 13:51:21 Slp: Condition "IsMediaExpress" did not pass as it returned false and true was expected.
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: InitializeRetryHandler
+(01) 2026-05-08 13:51:21 Slp: Completed Action: InitializeRetryHandler, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: ExecuteBootstrapProcessInputSettings
+(01) 2026-05-08 13:51:21 Slp: Workflow to execute: 'BOOTSTRAPPROCESSINPUTSETTINGS'
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: StartSqmSession
+(01) 2026-05-08 13:51:21 Slp: SetupTelemetry: Starting Telemetry Session
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create base registry key HKEY_LOCAL_MACHINE, machine 
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to open registry subkey Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create base registry key HKEY_LOCAL_MACHINE, machine 
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create registry subkey Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: CreateSubkey: HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to get registry value CustomerFeedback
+(01) 2026-05-08 13:51:21 Slp: SetupTelemetry: SetDefaultUserPreference : CustomerFeedback preference doesn't exist. Setting default = 'True'
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to set value CustomerFeedback
+(01) 2026-05-08 13:51:21 Slp: SetValue: HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft SQL Server\160, Name = CustomerFeedback
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create base registry key HKEY_LOCAL_MACHINE, machine 
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to open registry subkey 
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create registry subkey Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: CreateSubkey: HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to get registry value CustomerFeedback
+(01) 2026-05-08 13:51:21 Slp: SetupTelemetry: SetDefaultUserPreference : CustomerFeedback wow preference doesn't exist. Setting default = 'True'
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to set value CustomerFeedback
+(01) 2026-05-08 13:51:21 Slp: SetValue: HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft SQL Server\160, Name = CustomerFeedback
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create base registry key HKEY_LOCAL_MACHINE, machine 
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create registry subkey Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: CreateSubkey: HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to get registry value EnableErrorReporting
+(01) 2026-05-08 13:51:21 Slp: SetupTelemetry: SetDefaultUserPreference : EnableErrorReporting preference doesn't exist. Setting default = 'True'
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to set value EnableErrorReporting
+(01) 2026-05-08 13:51:21 Slp: SetValue: HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft SQL Server\160, Name = EnableErrorReporting
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create base registry key HKEY_LOCAL_MACHINE, machine 
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to open registry subkey 
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create registry subkey Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: CreateSubkey: HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to get registry value EnableErrorReporting
+(01) 2026-05-08 13:51:21 Slp: SetupTelemetry: SetDefaultUserPreference : EnableErrorReporting wow preference doesn't exist. Setting default = 'True'
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to set value EnableErrorReporting
+(01) 2026-05-08 13:51:21 Slp: SetValue: HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft SQL Server\160, Name = EnableErrorReporting
+(01) 2026-05-08 13:51:21 Slp: CollectDatapointsForAllInputSettings-Started
+(01) 2026-05-08 13:51:21 Slp: Telemetry collected from setting 'ACTION'
+(01) 2026-05-08 13:51:21 Slp: Telemetry collected from setting 'ENU'
+(01) 2026-05-08 13:51:21 Slp: CollectDatapointsForAllInputSettings-Completed
+(01) 2026-05-08 13:51:21 Slp: A new Telemetry session is created successfully
+(01) 2026-05-08 13:51:21 Slp: Completed Action: StartSqmSession, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: ValidateChainerSetting
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Compute new PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: Begin calculate SharedInstallID
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create base registry key HKEY_LOCAL_MACHINE, machine 
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to open registry subkey Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to get registry value InstallID
+(01) 2026-05-08 13:51:21 Slp: Final InstallID = '4b624b23-1c30-4296-a1a3-12f3d183c5c4'
+(01) 2026-05-08 13:51:21 Slp: End calculate SharedInstallID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ValidateChainerSetting, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: ProcessFeatureCommandLineArguments
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ProcessFeatureCommandLineArguments, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: ProcessMediaFeatureConfigFileArguments
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ProcessMediaFeatureConfigFileArguments, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: ProcessFeatureConfigFileArguments
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ProcessFeatureConfigFileArguments, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: ValidateSettingsAgainstScenario
+(01) 2026-05-08 13:51:21 Slp: Scenario: RunRules
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ValidateSettingsAgainstScenario, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: FinalCalculateSettings
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting AZURESUBSCRIPTIONID: source = Default, message = Validate called ->  
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting AZURETENANTID: source = Default, message = Validate called ->  
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting AZUREREGION: source = Default, message = Validate called ->  
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting AZURERESOURCEGROUP: source = Default, message = Validate called ->  
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting AZURESERVICEPRINCIPALSECRET: source = Default, message = Validate called for AZURESERVICEPRINCIPALSECRET
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting AZURESERVICEPRINCIPAL: source = Default, message = Validate called ->  
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting AZUREARCPROXYSERVER: source = Default, message = Validate called for AZUREARCPROXYSERVER
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting AZUREACCESSTOKEN: source = Default, message = Validate called for AZUREACCESSTOKEN
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting AZUREEXTENSIONENABLED: source = Default, message = Validate called for AZUREEXTENSIONENABLED
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting AZUREEXTENSIONPRESENT: source = Default, message = Validate called for AZUREEXTENSIONPRESENT
+(01) 2026-05-08 13:51:21 SQLArcOnboard: Setting MACHINEMANUFACTURER: source = Default, message = Validate called for MACHINEMANUFACTURER
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: Begin calculate SharedInstallID
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to create base registry key HKEY_LOCAL_MACHINE, machine 
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to open registry subkey Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:21 Slp: Sco: Attempting to get registry value InstallID
+(01) 2026-05-08 13:51:21 Slp: Final InstallID = '57d74209-ce88-4bae-8eed-bcf3aceb1ef8'
+(01) 2026-05-08 13:51:21 Slp: End calculate SharedInstallID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid is normalizing input pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : NormalizePid found a pid containing dashes, assuming pid is normalized, output pid
+(01) 2026-05-08 13:51:21 Slp: -- PidInfoProvider : Use cached PID
+(01) 2026-05-08 13:51:21 Slp: Completed Action: FinalCalculateSettings, returned True
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ExecuteBootstrapProcessInputSettings, returned True
+(01) 2026-05-08 13:51:21 Slp: Completed Action: ExecuteBootstrapAfterExtensionsLoaded, returned True
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Skipping Action: RunRemoteDiscoveryAction
+(01) 2026-05-08 13:51:21 Slp: Action is being skipped due to the following restrictions: 
+(01) 2026-05-08 13:51:21 Slp: Condition "Is the user's scenario set to RunRules" did not pass as it returned false and true was expected.
+(01) 2026-05-08 13:51:21 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:21 Slp: Running Action: RunLocalDiscoveryAction
+(01) 2026-05-08 13:51:22 Slp: Registry cache is True
+(01) 2026-05-08 13:51:22 Slp: Running discovery on local machine
+(01) 2026-05-08 13:51:22 Slp: Discovery on local machine is complete
+(01) 2026-05-08 13:51:22 Slp: Completed Action: RunLocalDiscoveryAction, returned True
+(01) 2026-05-08 13:51:22 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:22 Slp: Running Action: RunStandaloneRules
+(01) 2026-05-08 13:51:22 Slp: Rules to be executed from Execute action: HasSecurityBackupAndDebugPrivilegesCheck;RebootRequiredCheck;WmiServiceStateCheck
+(01) 2026-05-08 13:51:22 Slp: Loading rule: HasSecurityBackupAndDebugPrivilegesCheck
+(01) 2026-05-08 13:51:22 Slp: Creating rule target object: Microsoft.SqlServer.Configuration.SetupExtension.FacetPrivilegeCheck
+(01) 2026-05-08 13:51:22 Slp: Rule applied features  : ALL
+(01) 2026-05-08 13:51:22 Slp: Loading rule: RebootRequiredCheck
+(01) 2026-05-08 13:51:22 Slp: Creating rule target object: Microsoft.SqlServer.Configuration.SetupExtension.FacetRebootRequired
+(01) 2026-05-08 13:51:22 Slp: Rule applied features  : ALL
+(01) 2026-05-08 13:51:22 Slp: Loading rule: WmiServiceStateCheck
+(01) 2026-05-08 13:51:22 Slp: Creating rule target object: Microsoft.SqlServer.Configuration.SetupExtension.WmiServiceInfo
+(01) 2026-05-08 13:51:22 Slp: Rule applied features  : ALL
+(01) 2026-05-08 13:51:22 Slp: Start rule execution, total number of rules loaded: 3
+(01) 2026-05-08 13:51:22 Slp: Initializing rule      : Setup account privileges
+(01) 2026-05-08 13:51:22 Slp: Rule is will be executed  : True
+(01) 2026-05-08 13:51:22 Slp: Init rule target object: Microsoft.SqlServer.Configuration.SetupExtension.FacetPrivilegeCheck
+(01) 2026-05-08 13:51:22 Slp: Rule 'HasSecurityBackupAndDebugPrivilegesCheck' Result: Running process has SeSecurity privilege, has SeBackup privilege and has SeDebug privilege.
+(01) 2026-05-08 13:51:22 Slp: Evaluating rule        : HasSecurityBackupAndDebugPrivilegesCheck
+(01) 2026-05-08 13:51:22 Slp: Rule running on machine: DESKTOP-8SDQO6G
+(01) 2026-05-08 13:51:23 Slp: Rule evaluation done   : Succeeded
+(01) 2026-05-08 13:51:23 Slp: Rule evaluation message: The account that is running SQL Server Setup has the right to back up files and directories, the right to manage auditing and security log and the right to debug programs.
+(01) 2026-05-08 13:51:23 Slp: Initializing rule      : Restart computer
+(01) 2026-05-08 13:51:23 Slp: Rule is will be executed  : True
+(01) 2026-05-08 13:51:23 Slp: Init rule target object: Microsoft.SqlServer.Configuration.SetupExtension.FacetRebootRequired
+(01) 2026-05-08 13:51:23 Slp: Rule 'RebootRequiredCheck' results: IsRebootNotRequired=True
+(01) 2026-05-08 13:51:23 Slp: Evaluating rule        : RebootRequiredCheck
+(01) 2026-05-08 13:51:23 Slp: Rule running on machine: DESKTOP-8SDQO6G
+(01) 2026-05-08 13:51:23 Slp: Rule evaluation done   : Succeeded
+(01) 2026-05-08 13:51:23 Slp: Rule evaluation message: The computer does not require a restart.
+(01) 2026-05-08 13:51:23 Slp: Initializing rule      : Windows Management Instrumentation (WMI) service
+(01) 2026-05-08 13:51:23 Slp: Rule is will be executed  : True
+(01) 2026-05-08 13:51:23 Slp: Init rule target object: Microsoft.SqlServer.Configuration.SetupExtension.WmiServiceInfo
+(01) 2026-05-08 13:51:23 Slp: Rule 'WmiServiceStateCheck' detection result: WMI Service is running
+(01) 2026-05-08 13:51:23 Slp: Evaluating rule        : WmiServiceStateCheck
+(01) 2026-05-08 13:51:23 Slp: Rule running on machine: DESKTOP-8SDQO6G
+(01) 2026-05-08 13:51:23 Slp: Rule evaluation done   : Succeeded
+(01) 2026-05-08 13:51:23 Slp: Rule evaluation message: The Windows Management Instrumentation (WMI) service is running.
+(01) 2026-05-08 13:51:23 Slp: Saved to directory.......C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135020\SystemConfigurationCheck_Report.htm
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to create directory C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135020\resources
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to create directory C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135020\resources, security descriptor 
+(01) 2026-05-08 13:51:23 Slp: Sco: Directory 'C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135020\resources' already exists, skipping creation, moving to set security descriptor.
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to set security descriptor for directory C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135020\resources, security descriptor 
+(01) 2026-05-08 13:51:23 Slp: Sco: SDDL is NULL/empty and overwriteSecurityDescriptor is false, so nothing to do, return.
+(01) 2026-05-08 13:51:23 Slp: Rules evaluation report is available now at C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135020\SystemConfigurationCheck_Report.htm
+(01) 2026-05-08 13:51:23 Slp: Completed Action: RunStandaloneRules, returned True
+(01) 2026-05-08 13:51:23 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:23 Slp: Running Action: RunRulesUI
+(01) 2026-05-08 13:51:23 Slp: Start Action: RunRulesUI
+(01) 2026-05-08 13:51:23 Slp: Completed Action: RunRulesUI, returned True
+(01) 2026-05-08 13:51:23 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:23 Slp: Running Action: GatherUserSettings
+(01) 2026-05-08 13:51:23 Slp: Completed Action: GatherUserSettings, returned True
+(01) 2026-05-08 13:51:23 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:23 Slp: Running Action: Progress
+(01) 2026-05-08 13:51:23 Slp: Completed Action: Progress, returned True
+(01) 2026-05-08 13:51:23 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:23 Slp: Running Action: Close
+(01) 2026-05-08 13:51:23 Slp: Stop Action
+(01) 2026-05-08 13:51:23 Slp: Completed Action: Close, returned True
+(01) 2026-05-08 13:51:23 Slp: SetupTelemetry: Writing Telemetry to Datastore
+(01) 2026-05-08 13:51:23 Slp: 
+(01) 2026-05-08 13:51:23 Slp: 
+(01) 2026-05-08 13:51:23 Slp: ----------------------------------------------------------------------
+(01) 2026-05-08 13:51:23 Slp: 
+(01) 2026-05-08 13:51:23 Slp: Setup result: 0
+(01) 2026-05-08 13:51:23 Slp: SetupTelemetry: Closing Telemetry Session
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to create base registry key HKEY_LOCAL_MACHINE, machine 
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to open registry subkey SOFTWARE\Microsoft\SQMClient
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to get registry value MachineId
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to create base registry key HKEY_LOCAL_MACHINE, machine 
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to open registry subkey Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:23 Slp: SetupTelemetry: Not creating telemetry audit log. Value 'UserRequestedLocalAuditDirectory' doesn't exist in 'HKLM\Software\Microsoft\Microsoft SQL Server\160'
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to create base registry key HKEY_LOCAL_MACHINE, machine 
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to open registry subkey Software\Microsoft\Microsoft SQL Server\160
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to get registry value CustomerFeedback
+(01) 2026-05-08 13:51:23 Slp: Sco: Attempting to get registry value EnableErrorReporting
+(01) 2026-05-08 13:51:23 Slp: SetupTelemetry: Telemetry has an active session with 5 events.

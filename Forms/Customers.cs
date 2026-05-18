@@ -11,13 +11,10 @@ namespace Pos_System.Forms
     public partial class Customers : Form
     {
         private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
-<<<<<<< HEAD
         private TextBox txtBalanceAmount;
         private ComboBox cmbBalanceCurrency;
         private Button btnBalancePlus;
         private Button btnBalanceMinus;
-=======
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 
         public Customers()
         {
@@ -29,28 +26,26 @@ namespace Pos_System.Forms
 
         private void Customers_Load(object sender, EventArgs e)
         {
+            if (!PermissionService.EnsureScreenAccess(this, PermissionService.ScreenCustomers))
+            {
+                return;
+            }
+
             AuditLogger.EnsureCustomerBalanceColumns();
-            // TODO: This line of code loads data into the 'pos_systemDataSet15.Customers' table. You can move, or remove it, as needed.
             this.customersTableAdapter1.Fill(this.pos_systemDataSet15.Customers);
             LoadCustomers("");
+            PermissionService.ApplyActionPermissions(this, PermissionService.ScreenCustomers);
 
-            //// إضافة زر Edit
-            //DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
-            //btnEdit.HeaderText = "Edit";
-            //btnEdit.Text = "Edit";
-            //btnEdit.UseColumnTextForButtonValue = true;
-            //dataGridView1.Columns.Add(btnEdit);
-
-            //// إضافة زر Delete
-            //DataGridViewButtonColumn btnDelete = new DataGridViewButtonColumn();
-            //btnDelete.HeaderText = "Delete";
-            //btnDelete.Text = "Delete";
-            //btnDelete.UseColumnTextForButtonValue = true;
-            //dataGridView1.Columns.Add(btnDelete);
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.CanCreate(AppSession.UserId, AppSession.Role, PermissionService.ScreenCustomers))
+            {
+                MessageBox.Show("You do not have permission to create customers.");
+                return;
+            }
+
             AddCustomers addForm = new AddCustomers();
             addForm.ShowDialog();
             LoadCustomers(""); // إعادة تحميل العملاء بعد الإضافة
@@ -239,69 +234,91 @@ namespace Pos_System.Forms
 
         private void AdjustSelectedCustomerBalance(decimal direction)
         {
-            if (dataGridView1.CurrentRow == null || dataGridView1.CurrentRow.IsNewRow)
+            if (!PermissionService.CanSave(AppSession.UserId, AppSession.Role, PermissionService.ScreenCustomers))
             {
-                MessageBox.Show("اختر العميل من الجدول اولا");
+                MessageBox.Show("You do not have permission to change customer balance.");
                 return;
             }
 
-            if (!TryParseDecimal(txtBalanceAmount.Text, out decimal amount) || amount <= 0)
+            try
             {
-                MessageBox.Show("اكتب رقم صحيح في خانة الرصيد");
-                txtBalanceAmount.Focus();
-                return;
-            }
-
-            int customerId = Convert.ToInt32(dataGridView1.CurrentRow.Cells["customer_id"].Value);
-            string customerName = Convert.ToString(dataGridView1.CurrentRow.Cells["name"].Value);
-            string currency = cmbBalanceCurrency.SelectedItem != null ? cmbBalanceCurrency.SelectedItem.ToString() : "USD";
-            decimal delta = amount * direction;
-            string selectedColumn = currency == "USD" ? "balance_usd" : "balance_lb";
-
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                conn.Open();
-                string query = @"
-                    UPDATE Customers
-                    SET balance_usd = CASE WHEN @currency = 'USD' THEN ISNULL(balance_usd, 0) + @delta ELSE ISNULL(balance_usd, 0) END,
-                        balance_lb = CASE WHEN @currency = 'LBP' THEN ISNULL(balance_lb, 0) + @delta ELSE ISNULL(balance_lb, 0) END,
-                        balance = CASE
-                            WHEN @currency = 'USD' THEN ISNULL(balance_usd, 0) + @delta
-                            ELSE ISNULL(balance_lb, 0) + @delta
-                        END,
-                        balance_updated_at = GETDATE()
-                    WHERE customer_id = @id";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                if (dataGridView1.CurrentRow == null || dataGridView1.CurrentRow.IsNewRow)
                 {
-                    cmd.Parameters.AddWithValue("@id", customerId);
-                    cmd.Parameters.AddWithValue("@currency", currency == "USD" ? "USD" : "LBP");
-                    SqlParameter deltaParameter = cmd.Parameters.Add("@delta", SqlDbType.Decimal);
-                    deltaParameter.Precision = 24;
-                    deltaParameter.Scale = 8;
-                    deltaParameter.Value = delta;
-                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("اختر العميل من الجدول اولا");
+                    return;
                 }
-            }
 
-            string actionWord = direction > 0 ? "Added" : "Reduced";
-            string amountText = currency == "USD" ? "$ " + amount.ToString("N2") : amount.ToString("N0") + " L.L";
-            AuditLogger.Log("EDIT", "Customers", customerId, actionWord + " customer balance " + amountText + " for " + customerName);
-
-            txtBalanceAmount.Clear();
-            LoadCustomers(txtsearch.Text);
-
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                if (row.Cells["customer_id"].Value != null && Convert.ToInt32(row.Cells["customer_id"].Value) == customerId)
+                if (!dataGridView1.Columns.Contains("customer_id") || dataGridView1.CurrentRow.Cells["customer_id"].Value == null)
                 {
-                    row.Selected = true;
-                    dataGridView1.CurrentCell = row.Cells[selectedColumn];
-                    break;
+                    MessageBox.Show("لا يمكن قراءة رقم العميل من الجدول.");
+                    return;
                 }
-            }
 
-            MessageBox.Show("تم تحديث رصيد العميل بنجاح");
+                if (!TryParseDecimal(txtBalanceAmount.Text, out decimal amount) || amount <= 0)
+                {
+                    MessageBox.Show("اكتب رقم صحيح في خانة الرصيد");
+                    txtBalanceAmount.Focus();
+                    return;
+                }
+
+                int customerId = Convert.ToInt32(dataGridView1.CurrentRow.Cells["customer_id"].Value);
+                string customerName = Convert.ToString(dataGridView1.CurrentRow.Cells["name"].Value);
+                string currency = cmbBalanceCurrency.SelectedItem != null ? cmbBalanceCurrency.SelectedItem.ToString() : "USD";
+                decimal delta = amount * direction;
+                string selectedColumn = currency == "USD" ? "balance_usd" : "balance_lb";
+
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    string query = @"
+                        UPDATE Customers
+                        SET balance_usd = CASE WHEN @currency = 'USD' THEN ISNULL(balance_usd, 0) + @delta ELSE ISNULL(balance_usd, 0) END,
+                            balance_lb = CASE WHEN @currency = 'LBP' THEN ISNULL(balance_lb, 0) + @delta ELSE ISNULL(balance_lb, 0) END,
+                            balance = CASE
+                                WHEN @currency = 'USD' THEN ISNULL(balance_usd, 0) + @delta
+                                ELSE ISNULL(balance_lb, 0) + @delta
+                            END,
+                            balance_updated_at = GETDATE()
+                        WHERE customer_id = @id";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", customerId);
+                        cmd.Parameters.AddWithValue("@currency", currency == "USD" ? "USD" : "LBP");
+                        SqlParameter deltaParameter = cmd.Parameters.Add("@delta", SqlDbType.Decimal);
+                        deltaParameter.Precision = 24;
+                        deltaParameter.Scale = 8;
+                        deltaParameter.Value = delta;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                string actionWord = direction > 0 ? "Added" : "Reduced";
+                string amountText = currency == "USD" ? "$ " + amount.ToString("N2") : amount.ToString("N0") + " L.L";
+                AuditLogger.Log("EDIT", "Customers", customerId, actionWord + " customer balance " + amountText + " for " + customerName);
+
+                txtBalanceAmount.Clear();
+                LoadCustomers(txtsearch.Text);
+
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Cells["customer_id"].Value != null && Convert.ToInt32(row.Cells["customer_id"].Value) == customerId)
+                    {
+                        row.Selected = true;
+                        if (dataGridView1.Columns.Contains(selectedColumn))
+                        {
+                            dataGridView1.CurrentCell = row.Cells[selectedColumn];
+                        }
+                        break;
+                    }
+                }
+
+                MessageBox.Show("تم تحديث رصيد العميل بنجاح");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("حدث خطأ أثناء تعديل الرصيد: " + ex.Message);
+            }
         }
 
         private void datagridCustomers_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -344,11 +361,7 @@ namespace Pos_System.Forms
                         cmd.ExecuteNonQuery();
                     }
 
-<<<<<<< HEAD
-                    AuditLogger.Log("EDIT", "Customers", customerId, "Updated customer: " + newName);
-=======
                     AuditService.Log("Customers", "Edit", customerId.ToString(), "Updated customer " + newName);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                     MessageBox.Show("✅ تم تعديل العميل بنجاح");
                     LoadCustomers(txtsearch.Text);
                 }
@@ -369,11 +382,7 @@ namespace Pos_System.Forms
                             cmd.ExecuteNonQuery();
                         }
 
-<<<<<<< HEAD
-                        AuditLogger.Log("DELETE", "Customers", customerId, "Deleted customer");
-=======
                         AuditService.Log("Customers", "Delete", customerId.ToString(), "Deleted customer ID " + customerId);
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
                         MessageBox.Show("✅ تم حذف العميل بنجاح");
                         LoadCustomers(txtsearch.Text);
                     }

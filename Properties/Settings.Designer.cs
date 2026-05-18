@@ -26,8 +26,7 @@ namespace Pos_System.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=pos_system;Integrated Security=True;TrustServerCertificate=True"
-            )]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string pos_systemConnectionString {
             get {
                 return ((string)(this["pos_systemConnectionString"]));

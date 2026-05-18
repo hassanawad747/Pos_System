@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIHost xmlns="http://schemas.microsoft.com/sqlserver/setup/uihost.xsd" ResourceManager="Microsoft.SqlServer.Configuration.InstallWizard.SR, Microsoft.SqlServer.Configuration.InstallWizard">
+  <Pages>
+    <Page
+      ID="RunRules">
+      <Title ResourceID="SystemConfigurationCheckTitle"></Title>
+      <Subtitle ResourceID="SystemConfigurationCheckSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+        <Button ID="Next" Enabled="false"/>
+        <Button ID="Cancel" Enabled="false"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.RunStandaloneRuleProgressController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+      <LoadDataOnForwardNavigationOnly>true</LoadDataOnForwardNavigationOnly>
+    </Page>
+    <Page
+      ID="RunGlobalRules">
+      <Title ResourceID="RemoveNodeScenarioGlobalRulesTitle"></Title>
+      <Subtitle ResourceID="ScenarioGlobalRulesSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+        <Button ID="Back" Enabled="false"/>
+        <Button ID="Next" Enabled="false"/>
+        <Button ID="Cancel" Enabled="false"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.RunScenarioGlobalRuleProgressController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+      <LoadDataOnForwardNavigationOnly>true</LoadDataOnForwardNavigationOnly>
+    </Page>
+
+    <Page
+      ID="SelectInstanceForAdd">
+      <Title ResourceID="ClusterNodeConfiguration"></Title>
+      <Subtitle ResourceID="ClusterNodeConfigurationRemoveNodeSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.ClusterSelectInstanceController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+      <PageLeftEmbeddedAction>CalculateCurrentClusterSupportedIPAddresses</PageLeftEmbeddedAction>
+    </Page>
+
+    <Page
+      ID="NetworkSelection" PageType="Page" >
+      <Title ResourceID="ClusterNetworkSelectionTitle"></Title>
+      <Subtitle ResourceID="ClusterRemoveNodeNetworkSelectionSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+      </Buttons>
+      <ConfirmNavigationOnValidationWarning>true</ConfirmNavigationOnValidationWarning>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.ClusterNetworkSelectionController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+      <PageLeftEmbeddedAction>CalculateClusterSelectedIPAddressResources</PageLeftEmbeddedAction>
+    </Page>
+  
+    <Page
+      ID="Summary" PageType="Summary">
+      <Title ResourceID="RemoveClusterNodeSummaryTitle"></Title>
+      <Subtitle ResourceID="RemoveClusterNodeSummarySubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Next">
+          <Text ResourceID="UninstallButton"></Text>
+        </Button>
+        <Button ID="Finish" Visible="false"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.SummaryController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+    </Page>
+
+    <Page
+      ID="InstallationProgressPage"  PageType="Progress">
+      <Title ResourceID="RemoveClusterNodeProgressTitle"></Title>
+      <Subtitle></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+        <Button ID="Back" Visible ="false "/>
+        <Button ID="Next" Visible ="true" Enabled="false"/>
+        <Button ID="Cancel" Visible="true" Enabled="false"/>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.ExecutionProgressController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+    </Page>
+
+    <Page
+      ID="PostInstall" PageType="Finish" >
+      <Title ResourceID="PostInstallTitle"></Title>
+      <Subtitle ResourceID="RemoveClusterNodeFinishSubtitle"></Subtitle>
+      <Buttons>
+        <Button ID="Finish" Visible="false"/>
+        <Button ID="Back" Visible ="false"/>
+        <Button ID="Next" Visible ="false"/>
+        <Button ID="Cancel">
+          <Text ResourceID="CloseButton"></Text>
+        </Button>
+      </Buttons>
+      <ControllerType>Microsoft.SqlServer.Configuration.InstallWizard.PostInstallController, Microsoft.SqlServer.Configuration.InstallWizard</ControllerType>
+    </Page>
+  </Pages>
+
+  <Appearance>
+    <Title ResourceID="RemoveClusterNodeWizardTitle"></Title>
+    <Icon>
+      <Name>RemoveNode</Name>
+      <ResourceType>Microsoft.SqlServer.Configuration.InstallWizard.Resources, Microsoft.SqlServer.Configuration.InstallWizard</ResourceType>
+    </Icon>
+    <ButtonDefaults>
+      <Button ID="Help" Enabled="false" Visible="false"/>
+    </ButtonDefaults>
+  </Appearance>
+</UIHost>

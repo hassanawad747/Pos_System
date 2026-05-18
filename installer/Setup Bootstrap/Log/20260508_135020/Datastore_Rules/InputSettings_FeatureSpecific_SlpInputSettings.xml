@@ -1,0 +1,1 @@
+<SlpInputSettings xmlns="http://www.microsoft.com/sql/configuration/SlpInputSettings/Public/2007/04"><!----><AllInstances>false</AllInstances><InstanceNameList /><CopyUpgradeScripts>false</CopyUpgradeScripts><InstanceDir>%ProgramFiles%\Microsoft SQL Server\</InstanceDir><InstanceDirSpace /><InstallSharedDirSpace /><InstallSharedWowDirSpace /><SystemDirSpace /></SlpInputSettings>

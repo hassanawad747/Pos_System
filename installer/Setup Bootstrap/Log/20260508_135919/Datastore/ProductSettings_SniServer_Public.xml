@@ -1,0 +1,1 @@
+<SniServerConfigurationPublic xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.microsoft.com/sql/configuration/SniServer/Public/2007/04"><TcpEnabled>0</TcpEnabled><NpEnabled>0</NpEnabled></SniServerConfigurationPublic>

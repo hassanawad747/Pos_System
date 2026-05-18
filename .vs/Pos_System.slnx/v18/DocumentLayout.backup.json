@@ -1,130 +1,74 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\",
+  "WorkspaceRootPath": "D:\\New folder\\Pos_System\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|c:\\users\\user\\documents\\new folder\\last-version-pos_system\\forms\\products.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\products.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\salesstartform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\salesstartform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\salesstartform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\salesstartform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\warhousereports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\warhousereports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\supplierform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\supplierform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\sales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\sales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\reportsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\reportsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\possystemdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\possystemdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\earningreports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\earningreports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\dashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\dashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\customers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\customers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\categoryform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\categoryform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\addusers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addusers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\addsalesform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addsalesform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\addproducts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addproducts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\addcustomers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|d:\\new folder\\pos_system\\forms\\addcustomers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addcustomers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\addcustomers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addcustomers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|d:\\new folder\\pos_system\\forms\\customers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\customers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\earningreports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\earningreports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\addproducts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addproducts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\addsalesform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addsalesform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\addusers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addusers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\categoryform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\categoryform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\customers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|d:\\new folder\\pos_system\\forms\\customers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\customers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\possystemdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\possystemdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|d:\\new folder\\pos_system\\forms\\addcustomers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addcustomers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\sales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|d:\\new folder\\pos_system\\forms\\customerspageform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\customerspageform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\sales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\sales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\forms\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\sales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\sales.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|d:\\new folder\\pos_system\\forms\\possystemdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\possystemdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Properties\\Settings.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:Properties\\Settings.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\possystemdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\possystemdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\warhousereports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\warhousereports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\warhousereports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\warhousereports.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\userpermissionsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\userpermissionsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\userpermissionsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\userpermissionsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\addproducts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addproducts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\addproducts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\addproducts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\categoryform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\categoryform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|D:\\New folder\\Pos_System\\forms\\categoryform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F8165525-B424-4588-B77D-E58D9013CAC5}|Pos_System.csproj|solutionrelative:forms\\categoryform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -138,364 +82,206 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SupplierForm.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\SupplierForm.cs",
-              "RelativeDocumentMoniker": "Forms\\SupplierForm.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\SupplierForm.cs",
-              "RelativeToolTip": "Forms\\SupplierForm.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Customers.cs",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\Customers.cs",
+              "RelativeDocumentMoniker": "Forms\\Customers.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\Customers.cs*",
+              "RelativeToolTip": "Forms\\Customers.cs*",
+              "ViewState": "AgIAADABAAAAAAAAAAAIwF8BAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T08:11:46.531Z"
+              "WhenOpened": "2026-05-18T06:34:31.87Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Products.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Products.cs",
-              "RelativeDocumentMoniker": "Forms\\Products.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Products.cs",
-              "RelativeToolTip": "Forms\\Products.cs",
-              "ViewState": "AgIAAG0BAAAAAAAAAAASwHQBAAAUAAAAAAAAAA==",
+              "Title": "AddCustomers.cs",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\AddCustomers.cs",
+              "RelativeDocumentMoniker": "Forms\\AddCustomers.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\AddCustomers.cs*",
+              "RelativeToolTip": "Forms\\AddCustomers.cs*",
+              "ViewState": "AgIAACkAAAAAAAAAAAAwwDwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T08:11:24.03Z",
+              "WhenOpened": "2026-05-18T06:30:19.417Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AddCustomers.cs [Design]",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\AddCustomers.cs",
+              "RelativeDocumentMoniker": "Forms\\AddCustomers.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\AddCustomers.cs [Design]*",
+              "RelativeToolTip": "Forms\\AddCustomers.cs [Design]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-18T06:30:17.541Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CustomersPageForm.cs [Design]",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\CustomersPageForm.cs",
+              "RelativeDocumentMoniker": "Forms\\CustomersPageForm.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\CustomersPageForm.cs [Design]",
+              "RelativeToolTip": "Forms\\CustomersPageForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-18T06:29:59.888Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Customers.cs [Design]",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\Customers.cs",
+              "RelativeDocumentMoniker": "Forms\\Customers.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\Customers.cs [Design]*",
+              "RelativeToolTip": "Forms\\Customers.cs [Design]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-18T06:29:55.671Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PosSystemDashboard.cs",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\PosSystemDashboard.cs",
+              "RelativeDocumentMoniker": "Forms\\PosSystemDashboard.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\PosSystemDashboard.cs*",
+              "RelativeToolTip": "Forms\\PosSystemDashboard.cs*",
+              "ViewState": "AgIAAPAFAAAAAAAAAAAQwE4GAABVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T07:38:10.436Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "LoginForm.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\LoginForm.cs",
-              "RelativeDocumentMoniker": "Forms\\LoginForm.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\LoginForm.cs",
-              "RelativeToolTip": "Forms\\LoginForm.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T08:11:13.143Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ReportsForm.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\ReportsForm.cs",
-              "RelativeDocumentMoniker": "Forms\\ReportsForm.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\ReportsForm.cs",
-              "RelativeToolTip": "Forms\\ReportsForm.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAA4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T06:41:55.669Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "SalesStartForm.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\SalesStartForm.cs",
-              "RelativeDocumentMoniker": "Forms\\SalesStartForm.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\SalesStartForm.cs",
-              "RelativeToolTip": "Forms\\SalesStartForm.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T07:47:31.652Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "WarhouseReports.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\WarhouseReports.cs",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\WarhouseReports.cs",
               "RelativeDocumentMoniker": "Forms\\WarhouseReports.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\WarhouseReports.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\WarhouseReports.cs",
               "RelativeToolTip": "Forms\\WarhouseReports.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAALUAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T08:11:52.781Z"
+              "WhenOpened": "2026-05-14T08:56:14.335Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SalesStartForm.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\SalesStartForm.cs",
-              "RelativeDocumentMoniker": "Forms\\SalesStartForm.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\SalesStartForm.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\SalesStartForm.cs [Design]",
+              "DocumentIndex": 8,
+              "Title": "PosSystemDashboard.cs [Design]",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\PosSystemDashboard.cs",
+              "RelativeDocumentMoniker": "Forms\\PosSystemDashboard.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\PosSystemDashboard.cs [Design]",
+              "RelativeToolTip": "Forms\\PosSystemDashboard.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T07:47:25.916Z"
+              "WhenOpened": "2026-05-14T07:38:10.463Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Dashboard.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Dashboard.cs",
-              "RelativeDocumentMoniker": "Forms\\Dashboard.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Dashboard.cs",
-              "RelativeToolTip": "Forms\\Dashboard.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 12,
+              "Title": "UserPermissionsForm.cs [Design]",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\UserPermissionsForm.cs",
+              "RelativeDocumentMoniker": "Forms\\UserPermissionsForm.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\UserPermissionsForm.cs [Design]",
+              "RelativeToolTip": "Forms\\UserPermissionsForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T08:11:07.464Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "CategoryForm.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\CategoryForm.cs",
-              "RelativeDocumentMoniker": "Forms\\CategoryForm.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\CategoryForm.cs",
-              "RelativeToolTip": "Forms\\CategoryForm.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T08:11:00.184Z"
+              "WhenOpened": "2026-05-14T08:41:19.898Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
               "Title": "Sales.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Sales.cs",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\Sales.cs",
               "RelativeDocumentMoniker": "Forms\\Sales.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Sales.cs",
-              "RelativeToolTip": "Forms\\Sales.cs",
-              "ViewState": "AgIAAPICAAAAAAAAAAAQwAsDAAAbAAAAAAAAAA==",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\Sales.cs*",
+              "RelativeToolTip": "Forms\\Sales.cs*",
+              "ViewState": "AgIAACkHAAAAAAAAAAAAADUHAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T09:35:12.59Z"
+              "WhenOpened": "2026-05-14T08:10:51.667Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Settings.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Settings.cs",
-              "RelativeDocumentMoniker": "Forms\\Settings.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Settings.cs",
-              "RelativeToolTip": "Forms\\Settings.cs",
-              "ViewState": "AgIAALwAAAAAAAAAAAAAwAcAAAAgAAAAAAAAAA==",
+              "Title": "Sales.cs [Design]",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\Sales.cs",
+              "RelativeDocumentMoniker": "Forms\\Sales.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\Sales.cs [Design]*",
+              "RelativeToolTip": "Forms\\Sales.cs [Design]*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T07:44:49.179Z"
+              "WhenOpened": "2026-05-14T08:10:48.706Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
               "DocumentIndex": 14,
-              "Title": "AddUsers.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\AddUsers.cs",
-              "RelativeDocumentMoniker": "Forms\\AddUsers.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\AddUsers.cs",
-              "RelativeToolTip": "Forms\\AddUsers.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T08:10:54.368Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "addsalesform.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\addsalesform.cs",
-              "RelativeDocumentMoniker": "Forms\\addsalesform.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\addsalesform.cs",
-              "RelativeToolTip": "Forms\\addsalesform.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T08:10:48.666Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "AddProducts.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\AddProducts.cs",
+              "Title": "AddProducts.cs [Design]",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\AddProducts.cs",
               "RelativeDocumentMoniker": "Forms\\AddProducts.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\AddProducts.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\AddProducts.cs [Design]",
+              "RelativeToolTip": "Forms\\AddProducts.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T08:12:11.098Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AddProducts.cs",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\AddProducts.cs",
+              "RelativeDocumentMoniker": "Forms\\AddProducts.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\AddProducts.cs",
               "RelativeToolTip": "Forms\\AddProducts.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T08:10:46.224Z"
+              "WhenOpened": "2026-05-14T08:12:14.959Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "PosSystemDashboard.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\PosSystemDashboard.cs",
-              "RelativeDocumentMoniker": "Forms\\PosSystemDashboard.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\PosSystemDashboard.cs",
-              "RelativeToolTip": "Forms\\PosSystemDashboard.cs",
-              "ViewState": "AgIAALIEAAAAAAAAAAASwMUEAAAVAAAAAAAAAA==",
+              "DocumentIndex": 11,
+              "Title": "UserPermissionsForm.cs",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\UserPermissionsForm.cs",
+              "RelativeDocumentMoniker": "Forms\\UserPermissionsForm.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\UserPermissionsForm.cs",
+              "RelativeToolTip": "Forms\\UserPermissionsForm.cs",
+              "ViewState": "AgIAACcBAAAAAAAAAAA0wCkBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T08:16:03.331Z"
+              "WhenOpened": "2026-05-14T08:41:24.092Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 10,
-              "Title": "EarningReports.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\EarningReports.cs",
-              "RelativeDocumentMoniker": "Forms\\EarningReports.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\EarningReports.cs",
-              "RelativeToolTip": "Forms\\EarningReports.cs",
-              "ViewState": "AgIAAGMBAAAAAAAAAAAQwDAAAAAnAAAAAAAAAA==",
+              "Title": "WarhouseReports.cs [Design]",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\WarhouseReports.cs",
+              "RelativeDocumentMoniker": "Forms\\WarhouseReports.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\WarhouseReports.cs [Design]",
+              "RelativeToolTip": "Forms\\WarhouseReports.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T07:43:50.106Z"
+              "WhenOpened": "2026-05-14T08:56:12.575Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Customers.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Customers.cs",
-              "RelativeDocumentMoniker": "Forms\\Customers.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Customers.cs",
-              "RelativeToolTip": "Forms\\Customers.cs",
-              "ViewState": "AgIAAD0AAAAAAAAAAAAcwEEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T09:09:12.33Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "AddCustomers.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\AddCustomers.cs",
-              "RelativeDocumentMoniker": "Forms\\AddCustomers.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\AddCustomers.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\AddCustomers.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T08:22:17.028Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "AddCustomers.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\AddCustomers.cs",
-              "RelativeDocumentMoniker": "Forms\\AddCustomers.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\AddCustomers.cs",
-              "RelativeToolTip": "Forms\\AddCustomers.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAAADYAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T08:22:19.792Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "Settings.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Settings.cs",
-              "RelativeDocumentMoniker": "Forms\\Settings.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\Settings.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\Settings.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T07:44:46.761Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "EarningReports.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\EarningReports.cs",
-              "RelativeDocumentMoniker": "Forms\\EarningReports.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\EarningReports.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\EarningReports.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T07:43:47.893Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "AddProducts.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\AddProducts.cs",
-              "RelativeDocumentMoniker": "Forms\\AddProducts.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\AddProducts.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\AddProducts.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T07:43:47.907Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "addsalesform.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\addsalesform.cs",
-              "RelativeDocumentMoniker": "Forms\\addsalesform.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\addsalesform.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\addsalesform.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T07:43:47.909Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "AddUsers.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\AddUsers.cs",
-              "RelativeDocumentMoniker": "Forms\\AddUsers.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\AddUsers.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\AddUsers.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T07:43:47.909Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "CategoryForm.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\CategoryForm.cs",
+              "DocumentIndex": 15,
+              "Title": "CategoryForm.cs",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\CategoryForm.cs",
               "RelativeDocumentMoniker": "Forms\\CategoryForm.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\CategoryForm.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\CategoryForm.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T07:43:47.909Z"
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\CategoryForm.cs*",
+              "RelativeToolTip": "Forms\\CategoryForm.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003525|",
+              "WhenOpened": "2026-05-14T07:38:10.476Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "LoginForm.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\LoginForm.cs",
-              "RelativeDocumentMoniker": "Forms\\LoginForm.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\LoginForm.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\LoginForm.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T07:43:46.89Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAACwAAAAAAAAAAAAiwDwAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T08:38:03.298Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
-              "Title": "Settings.Designer.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Properties\\Settings.Designer.cs",
-              "RelativeDocumentMoniker": "Properties\\Settings.Designer.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Properties\\Settings.Designer.cs",
-              "RelativeToolTip": "Properties\\Settings.Designer.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAiwBMAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T05:52:34.071Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "PosSystemDashboard.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\PosSystemDashboard.cs",
-              "RelativeDocumentMoniker": "Forms\\PosSystemDashboard.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\PosSystemDashboard.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\PosSystemDashboard.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T05:50:18.335Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "Customers.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Customers.cs",
-              "RelativeDocumentMoniker": "Forms\\Customers.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\Customers.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\Customers.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T09:09:09.706Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "Sales.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\user\\Documents\\New folder\\last-version-pos_system\\Forms\\Sales.cs",
-              "RelativeDocumentMoniker": "Forms\\Sales.cs",
-              "ToolTip": "C:\\Users\\user\\Documents\\Pos_System\\Forms\\Sales.cs [Design]",
-              "RelativeToolTip": "..\\..\\Pos_System\\Forms\\Sales.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T05:50:33.343Z"
+              "DocumentIndex": 16,
+              "Title": "CategoryForm.cs [Design]",
+              "DocumentMoniker": "D:\\New folder\\Pos_System\\Forms\\CategoryForm.cs",
+              "RelativeDocumentMoniker": "Forms\\CategoryForm.cs",
+              "ToolTip": "D:\\New folder\\Pos_System\\Forms\\CategoryForm.cs [Design]*",
+              "RelativeToolTip": "Forms\\CategoryForm.cs [Design]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003525|",
+              "WhenOpened": "2026-05-14T07:38:10.478Z"
             }
           ]
         }

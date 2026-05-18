@@ -1,0 +1,42 @@
+POS System manual installation steps
+
+Target install folders used by this package:
+- Application: C:\BikeZonePOS\App
+- Database backup: C:\BikeZonePOS\Database\pos_system.bak
+- Database name inside SQL Server: pos_system
+
+Recommended automatic method:
+1. Copy this whole installer folder to the other PC.
+2. Install SQL Server Database Engine or SQL Server Express.
+3. Install sqlcmd if needed.
+4. Right click install_pos_system.bat.
+5. Choose Run as administrator.
+6. Wait until the script finishes and opens the application.
+
+Manual method:
+1. Create these folders:
+   C:\BikeZonePOS\App
+   C:\BikeZonePOS\Database
+2. Copy all files from the App folder into C:\BikeZonePOS\App
+3. Copy Database\pos_system.bak into C:\BikeZonePOS\Database
+4. Make sure SQL Server service MSSQLSERVER or SQLEXPRESS is running
+5. Open Command Prompt as Administrator
+6. From Command Prompt as Administrator, run this command from the installer folder location:
+
+sqlcmd -S . -E -i "FULL_PATH_TO_THIS_INSTALLER_FOLDER\restore_database.sql"
+
+If your SQL Server is SQLEXPRESS, use:
+
+sqlcmd -S .\SQLEXPRESS -E -i "FULL_PATH_TO_THIS_INSTALLER_FOLDER\restore_database.sql"
+
+7. After restore finishes, run:
+
+C:\BikeZonePOS\App\Pos_System.exe
+
+Important notes:
+- To change the SQL Server connection on a client PC, edit only this file:
+  C:\BikeZonePOS\App\Database.config
+- Keep the connection name the same. Change only the connectionString value, for example:
+  Data Source=.\SQLEXPRESS;Initial Catalog=pos_system;Integrated Security=True;TrustServerCertificate=True
+- If sqlcmd is not found, install Microsoft SQL Server Command Line Utilities.
+- If the SQL service name is different on the target PC, the automatic script may need editing before use.

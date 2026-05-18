@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html>
+  <head>
+    <title>System Configuration Check Report for Microsoft SQL Server 2022</title>
+  </head>
+  <body>
+    <p STYLE="font-family: Verdana, Arial, sans-serif; font-size: 14pt;">
+      <b>Microsoft SQL Server 2022 - System Configuration Check Report</b>
+    </p>
+    <p STYLE="font-family: Verdana, Arial, sans-serif; font-size: 10pt;">
+      <b>Computer Name(s): </b>DESKTOP-8SDQO6G <br /><b>Report Date/Time: </b>5/8/2026 1:59 PM<br /><b>Saved to Directory: </b><a href="C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135919\SystemConfigurationCheck_Report.htm">C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135919\SystemConfigurationCheck_Report.htm</a></p>
+    <table border="1" cellpadding="7" cellspacing="0" STYLE="font-family: Verdana, Arial, sans-serif; font-size: 9pt;">
+      <tr style="background-color:Silver">
+        <th colspan="2" align="center">Rule Name</th>
+        <th align="center">Rule Description</th>
+        <th align="center">Result</th>
+        <th align="center">Message/Corrective Action</th>
+      </tr>
+      <tr style="background-color:Aqua">
+        <td colspan="5">
+          <b>GlobalRules:
+                    SQL Server 2022 Setup configuration checks for rules group 'GlobalRules'</b>
+        </td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>AclPermissionsFacet</td>
+        <td>Checks if the SQL Server registry keys are consistent.</td>
+        <td>Passed</td>
+        <td>SQL Server registry keys are consistent and can support SQL Server installation or upgrade.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>HasSecurityBackupAndDebugPrivilegesCheck</td>
+        <td>Checks whether the account that is running SQL Server Setup has the right to back up files and directories, the right to manage auditing and the security log and the right to debug programs.</td>
+        <td>Passed</td>
+        <td>The account that is running SQL Server Setup has the right to back up files and directories, the right to manage auditing and security log and the right to debug programs.</td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>MediaPathLength</td>
+        <td>Checks whether the SQL Server installation media is too long.</td>
+        <td>Passed</td>
+        <td>The SQL Server installation media is not too long.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>RebootRequiredCheck</td>
+        <td>Checks if a pending computer restart is required. A pending restart can cause Setup to fail.</td>
+        <td>Passed</td>
+        <td>The computer does not require a restart.</td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>SetupCompatibilityCheck</td>
+        <td>Checks whether the current version of SQL Server is compatible with a later installed version.</td>
+        <td>Passed</td>
+        <td>Setup has not detected any incompatibilities.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>ThreadHasAdminPrivilegeCheck</td>
+        <td>Checks whether the account running SQL Server Setup has administrator rights on the computer.</td>
+        <td>Passed</td>
+        <td>The account running SQL Server Setup has administrator rights on the computer.</td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>WmiServiceStateCheck</td>
+        <td>Checks whether the WMI service is started and running on the computer.</td>
+        <td>Passed</td>
+        <td>The Windows Management Instrumentation (WMI) service is running.</td>
+      </tr>
+      <tr style="background-color:Aqua">
+        <td colspan="5">
+          <b>InstallGlobalRules:
+                    SQL Server 2022 Setup configuration checks for rules group 'InstallGlobalRules'</b>
+        </td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>ServerCoreBlockUnsupportedSxSCheck</td>
+        <td>Checks if an earlier version of SQL Server is currently installed.</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>AclPermissionsFacet</td>
+        <td>Checks if the SQL Server registry keys are consistent.</td>
+        <td>Passed</td>
+        <td>SQL Server registry keys are consistent and can support SQL Server installation or upgrade.</td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>FacetDomainControllerCheck</td>
+        <td>Checks whether the computer is a domain controller. Installing SQL Server 2022 on a domain controller is not recommended.</td>
+        <td>Passed</td>
+        <td>This computer is not a domain controller.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>IsDotNetInstalled</td>
+        <td>This rule determines if the Microsoft .NET Framework 4.7.2, or newer, is installed on the system.</td>
+        <td>Passed</td>
+        <td>The Microsoft .NET Framework 4.7.2, or newer, is already installed.</td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>MLServerSupport</td>
+        <td>Checks if an earlier version of Machine Learning Server shared feature is currently installed.</td>
+        <td>Passed</td>
+        <td>No earlier version of Machine Learning Server shared feature was detected.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressWarn.ico" />
+        </td>
+        <td>IsFirewallEnabled</td>
+        <td>Checks whether the Windows Firewall is enabled.</td>
+        <td>Warning</td>
+        <td>The Windows Firewall is enabled. Make sure the appropriate ports are open to enable remote access. See the rules documentation at https://go.microsoft.com/fwlink/?linkid=2162127 for information about ports to open for each feature.</td>
+      </tr>
+      <tr style="background-color:Aqua">
+        <td colspan="5">
+          <b>InstallFeatureSpecificRules:
+                    SQL Server 2022 Setup configuration checks for rules group 'InstallFeatureSpecificRules'</b>
+        </td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>ASIsValidEditionForDeploymentModeCheck</td>
+        <td>Checks whether the SQL Server edition supports the currently selected Analysis Services server mode.</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>EnterpriseCalLimit</td>
+        <td>Checks if Enterprise Server/CAL product key was entered on a system with greater than 20 physical cores, or 40 logical cores with Hyper-threading enabled.</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>Polybase_IsDomainController</td>
+        <td>PolyBase cannot be installed on an Active Directory Domain Controller</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>Polybase_IsPolybaseInstalled</td>
+        <td>PolyBase can be installed on only one SQL Server instance per computer</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>Polybase_IsSqlEngineRunning</td>
+        <td>Adding PolyBase feature to a SQL Server instance requires connection to SQL Server Database Engine on the instance</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>PowerShellCheck</td>
+        <td>Checks whether Windows PowerShell 3.0 (or higher) is already installed on system. Windows PowerShell is needed by some SQL Server features.</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>ServerCoreBlockUnsupportedFeaturesCheck</td>
+        <td>Checks if all selected features are supported on Windows Server Core.</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>SlipstreamMediaInfoCheck</td>
+        <td>Checks whether the language of the original media is the same language as the specified service pack.</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr style="background-color:Aqua">
+        <td colspan="5">
+          <b>InstallFeatureSpecificConfigRules:
+                    SQL Server 2022 Setup configuration checks for rules group 'InstallFeatureSpecificConfigRules'</b>
+        </td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>ASIsValidEditionForDeploymentModeCheck</td>
+        <td>Checks whether the SQL Server edition supports the currently selected Analysis Services server mode.</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSkip.ico" />
+        </td>
+        <td>InstanceClashRule</td>
+        <td>Checks whether the specified instance name is already used by an existing SQL Server instance.</td>
+        <td>Not applicable</td>
+        <td>This rule does not apply to your system configuration.</td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>BlockCrossLanguageInstall</td>
+        <td>Checks whether the Setup language is the same as the language of existing SQL Server features.</td>
+        <td>Passed</td>
+        <td>There are no existing SQL Server features, or the Setup language is as same as the language of existing SQL Server features.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>BlockMixedArchitectureInstall</td>
+        <td>Checks whether the installing feature(s) are the same CPU architecture as the specified instance.</td>
+        <td>Passed</td>
+        <td>The CPU architecture of the installing feature(s) matches the specified instance.</td>
+      </tr>
+      <tr valign="top">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>FAT32FileSystemCheck</td>
+        <td>Checks whether the specified drive is FAT32 file system volume. Installing on a FAT32 file system is supported but not recommended as it is less secure than the NTFS file system.</td>
+        <td>Passed</td>
+        <td>The specified drive is not the FAT32 file system.</td>
+      </tr>
+      <tr valign="top" style="background-color:LightYellow">
+        <td>
+          <img src="resources\ProgressSuccess.ico" />
+        </td>
+        <td>StandaloneInstall_HasClusteredOrPreparedInstanceCheck</td>
+        <td>Checks if the selected instance name is already used by an existing cluster-prepared or clustered instance on any cluster node. </td>
+        <td>Passed</td>
+        <td>No clustered or cluster-prepared instance with the selected instance name is installed on any cluster node. </td>
+      </tr>
+    </table>
+    <p STYLE="font-family: Verdana, Arial, sans-serif; font-size: 10pt;">
+      <b>Community: </b>
+      <a href="https://go.microsoft.com/fwlink/?linkid=2094703">https://go.microsoft.com/fwlink/?linkid=2094703</a>
+      <br />
+      <b>Setup Help: </b>
+      <a href="https://go.microsoft.com/fwlink/?linkid=2162129">https://go.microsoft.com/fwlink/?linkid=2162129</a>
+    </p>
+  </body>
+  <xml id="xmlDataIsland">
+    <RunRuleResults>
+  <Header reportDate="5/8/2026" reportTime="1:59 PM" savedToDirectory="C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log\20260508_135919\SystemConfigurationCheck_Report.htm">
+    <Machines>
+      <Machine value="DESKTOP-8SDQO6G" />
+    </Machines>
+  </Header>
+  <group groupName="GlobalRules" groupDescription="SQL Server 2022 Setup configuration checks for rules group 'GlobalRules'">
+    <RunRuleResult ruleName="ThreadHasAdminPrivilegeCheck" machineName="DESKTOP-8SDQO6G" description="Checks whether the account running SQL Server Setup has administrator rights on the computer." result="Passed" message="The account running SQL Server Setup has administrator rights on the computer." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="HasSecurityBackupAndDebugPrivilegesCheck" machineName="DESKTOP-8SDQO6G" description="Checks whether the account that is running SQL Server Setup has the right to back up files and directories, the right to manage auditing and the security log and the right to debug programs." result="Passed" message="The account that is running SQL Server Setup has the right to back up files and directories, the right to manage auditing and security log and the right to debug programs." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="RebootRequiredCheck" machineName="DESKTOP-8SDQO6G" description="Checks if a pending computer restart is required. A pending restart can cause Setup to fail." result="Passed" message="The computer does not require a restart." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="WmiServiceStateCheck" machineName="DESKTOP-8SDQO6G" description="Checks whether the WMI service is started and running on the computer." result="Passed" message="The Windows Management Instrumentation (WMI) service is running." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="AclPermissionsFacet" machineName="DESKTOP-8SDQO6G" description="Checks if the SQL Server registry keys are consistent." result="Passed" message="SQL Server registry keys are consistent and can support SQL Server installation or upgrade." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="MediaPathLength" machineName="DESKTOP-8SDQO6G" description="Checks whether the SQL Server installation media is too long." result="Passed" message="The SQL Server installation media is not too long." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="SetupCompatibilityCheck" machineName="DESKTOP-8SDQO6G" description="Checks whether the current version of SQL Server is compatible with a later installed version." result="Passed" message="Setup has not detected any incompatibilities." imagePath="resources\ProgressSuccess.ico" />
+  </group>
+  <group groupName="InstallGlobalRules" groupDescription="SQL Server 2022 Setup configuration checks for rules group 'InstallGlobalRules'">
+    <RunRuleResult ruleName="MLServerSupport" machineName="DESKTOP-8SDQO6G" description="Checks if an earlier version of Machine Learning Server shared feature is currently installed." result="Passed" message="No earlier version of Machine Learning Server shared feature was detected." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="AclPermissionsFacet" machineName="DESKTOP-8SDQO6G" description="Checks if the SQL Server registry keys are consistent." result="Passed" message="SQL Server registry keys are consistent and can support SQL Server installation or upgrade." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="FacetDomainControllerCheck" machineName="DESKTOP-8SDQO6G" description="Checks whether the computer is a domain controller. Installing SQL Server 2022 on a domain controller is not recommended." result="Passed" message="This computer is not a domain controller." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="IsFirewallEnabled" machineName="DESKTOP-8SDQO6G" description="Checks whether the Windows Firewall is enabled." result="Warning" message="The Windows Firewall is enabled. Make sure the appropriate ports are open to enable remote access. See the rules documentation at https://go.microsoft.com/fwlink/?linkid=2162127 for information about ports to open for each feature." imagePath="resources\ProgressWarn.ico" />
+    <RunRuleResult ruleName="ServerCoreBlockUnsupportedSxSCheck" machineName="DESKTOP-8SDQO6G" description="Checks if an earlier version of SQL Server is currently installed." result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+    <RunRuleResult ruleName="IsDotNetInstalled" machineName="DESKTOP-8SDQO6G" description="This rule determines if the Microsoft .NET Framework 4.7.2, or newer, is installed on the system." result="Passed" message="The Microsoft .NET Framework 4.7.2, or newer, is already installed." imagePath="resources\ProgressSuccess.ico" />
+  </group>
+  <group groupName="InstallFeatureSpecificRules" groupDescription="SQL Server 2022 Setup configuration checks for rules group 'InstallFeatureSpecificRules'">
+    <RunRuleResult ruleName="ASIsValidEditionForDeploymentModeCheck" machineName="DESKTOP-8SDQO6G" description="Checks whether the SQL Server edition supports the currently selected Analysis Services server mode." result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+    <RunRuleResult ruleName="SlipstreamMediaInfoCheck" machineName="DESKTOP-8SDQO6G" description="Checks whether the language of the original media is the same language as the specified service pack." result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+    <RunRuleResult ruleName="PowerShellCheck" machineName="DESKTOP-8SDQO6G" description="Checks whether Windows PowerShell 3.0 (or higher) is already installed on system. Windows PowerShell is needed by some SQL Server features." result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+    <RunRuleResult ruleName="ServerCoreBlockUnsupportedFeaturesCheck" machineName="DESKTOP-8SDQO6G" description="Checks if all selected features are supported on Windows Server Core." result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+    <RunRuleResult ruleName="Polybase_IsPolybaseInstalled" machineName="DESKTOP-8SDQO6G" description="PolyBase can be installed on only one SQL Server instance per computer" result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+    <RunRuleResult ruleName="Polybase_IsSqlEngineRunning" machineName="DESKTOP-8SDQO6G" description="Adding PolyBase feature to a SQL Server instance requires connection to SQL Server Database Engine on the instance" result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+    <RunRuleResult ruleName="Polybase_IsDomainController" machineName="DESKTOP-8SDQO6G" description="PolyBase cannot be installed on an Active Directory Domain Controller" result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+    <RunRuleResult ruleName="EnterpriseCalLimit" machineName="DESKTOP-8SDQO6G" description="Checks if Enterprise Server/CAL product key was entered on a system with greater than 20 physical cores, or 40 logical cores with Hyper-threading enabled." result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+  </group>
+  <group groupName="InstallFeatureSpecificConfigRules" groupDescription="SQL Server 2022 Setup configuration checks for rules group 'InstallFeatureSpecificConfigRules'">
+    <RunRuleResult ruleName="FAT32FileSystemCheck" machineName="DESKTOP-8SDQO6G" description="Checks whether the specified drive is FAT32 file system volume. Installing on a FAT32 file system is supported but not recommended as it is less secure than the NTFS file system." result="Passed" message="The specified drive is not the FAT32 file system." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="InstanceClashRule" machineName="DESKTOP-8SDQO6G" description="Checks whether the specified instance name is already used by an existing SQL Server instance." result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+    <RunRuleResult ruleName="StandaloneInstall_HasClusteredOrPreparedInstanceCheck" machineName="DESKTOP-8SDQO6G" description="Checks if the selected instance name is already used by an existing cluster-prepared or clustered instance on any cluster node. " result="Passed" message="No clustered or cluster-prepared instance with the selected instance name is installed on any cluster node. " imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="BlockCrossLanguageInstall" machineName="DESKTOP-8SDQO6G" description="Checks whether the Setup language is the same as the language of existing SQL Server features." result="Passed" message="There are no existing SQL Server features, or the Setup language is as same as the language of existing SQL Server features." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="BlockMixedArchitectureInstall" machineName="DESKTOP-8SDQO6G" description="Checks whether the installing feature(s) are the same CPU architecture as the specified instance." result="Passed" message="The CPU architecture of the installing feature(s) matches the specified instance." imagePath="resources\ProgressSuccess.ico" />
+    <RunRuleResult ruleName="ASIsValidEditionForDeploymentModeCheck" machineName="DESKTOP-8SDQO6G" description="Checks whether the SQL Server edition supports the currently selected Analysis Services server mode." result="Not applicable" message="This rule does not apply to your system configuration." imagePath="resources\ProgressSkip.ico" />
+  </group>
+  <Resources community="https://go.microsoft.com/fwlink/?linkid=2094703" setupHelpFile="https://go.microsoft.com/fwlink/?linkid=2162129" />
+</RunRuleResults>
+  </xml>
+</html>

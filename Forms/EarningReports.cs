@@ -6,20 +6,18 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
     public partial class EarningReports : Form
     {
         private readonly string connStr = POS_System.Program.SettingsManager.ConnectionString;
-<<<<<<< HEAD
         private DataTable currentReportTable;
         private ComboBox comboReportMode;
         private TextBox txtSearch;
         private Label lblReportMode;
         private Label lblSearch;
-=======
->>>>>>> 19f309a5c7fd8647b5ac2d407bba710bbfe790f1
 
         public EarningReports()
         {
@@ -30,8 +28,16 @@ namespace Pos_System.Forms
 
         private void EarningReports_Load(object sender, EventArgs e)
         {
-            LoadUsers();
-            LoadReport();
+            try
+            {
+                AuditLogger.EnsureSalesColumns();
+                LoadUsers();
+                LoadReport();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not open earning reports: " + ex.Message, "Earning Reports", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void ConfigureForm()
@@ -290,16 +296,23 @@ namespace Pos_System.Forms
 
         private void LoadReport()
         {
-            ReportFilter filter;
-            if (!TryGetFilter(out filter))
+            try
             {
-                return;
-            }
+                ReportFilter filter;
+                if (!TryGetFilter(out filter))
+                {
+                    return;
+                }
 
-            currentReportTable = GetEarningReport(filter);
-            dataGridView1.DataSource = currentReportTable;
-            FormatReportGrid();
-            UpdateTotals(filter.ExchangeRate);
+                currentReportTable = GetEarningReport(filter);
+                dataGridView1.DataSource = currentReportTable;
+                FormatReportGrid();
+                UpdateTotals(filter.ExchangeRate);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not load earning report: " + ex.Message, "Earning Reports", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private bool TryGetFilter(out ReportFilter filter)

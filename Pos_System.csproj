@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -150,13 +151,11 @@
     <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
-    <Reference Include="System.Configuration" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Data.Common.4.3.0\lib\net451\System.Data.Common.dll</HintPath>
-      <Private>True</Private>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -175,6 +174,9 @@
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Resources.Extensions, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Resources.Extensions.4.7.1\lib\net461\System.Resources.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -254,7 +256,7 @@
     <Compile Include="Forms\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\.Designer.cs">
+    <Compile Include="Forms\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
@@ -285,6 +287,9 @@
     <Compile Include="Forms\ReportsForm.Designer.cs">
       <DependentUpon>ReportsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DiscountSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\SalesStartForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -295,6 +300,12 @@
       <DependentUpon>Sales.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SupplierBalanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UserPermissionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\SettingsPageForm.cs">
@@ -338,6 +349,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\AuditLogger.cs" />
     <Compile Include="Services\ArabicToolTipService.cs" />
+    <Compile Include="Services\LoadingOverlayService.cs" />
     <Compile Include="Services\ResponsiveLayoutService.cs" />
     <Compile Include="Services\RuntimeLanguageService.cs" />
     <Compile Include="Services\WorkHistoryService.cs" />
@@ -463,8 +475,8 @@
     </Compile>
     <Compile Include="Services\AppSession.cs" />
     <Compile Include="Services\AuditService.cs" />
-    <Compile Include="Services\DbHelper.cs" />
-    <Compile Include="Services\ModernUi.cs" />
+    <Compile Include="Services\PasswordHasher.cs" />
+    <Compile Include="Services\PermissionService.cs" />
     <EmbeddedResource Include="Forms\AddCustomers.resx">
       <DependentUpon>AddCustomers.cs</DependentUpon>
     </EmbeddedResource>
@@ -509,6 +521,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SupplierForm.resx">
       <DependentUpon>SupplierForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserPermissionsForm.resx">
+      <DependentUpon>UserPermissionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\WarhouseReports.resx">
       <DependentUpon>WarhouseReports.cs</DependentUpon>
@@ -789,26 +804,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="Microsoft.Office.Core">
-      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>8</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="VBIDE">
-      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>5</VersionMajor>
-      <VersionMinor>3</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
+    <Content Include="Database.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Microsoft.Data.SqlClient.SNI.1.1.0\build\net46\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('packages\Microsoft.Data.SqlClient.SNI.1.1.0\build\net46\Microsoft.Data.SqlClient.SNI.targets')" />

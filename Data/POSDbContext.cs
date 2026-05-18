@@ -1,11 +1,4 @@
 ﻿using Pos_System.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace Pos_System.Data
@@ -14,7 +7,6 @@ namespace Pos_System.Data
     {
         public POSDbContext(DbContextOptions<POSDbContext> options) : base(options) { }
 
-        // Tables
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
@@ -33,15 +25,10 @@ namespace Pos_System.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Example: enforce unique username
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Username)
                 .IsUnique();
 
-           // modelBuilder.Entity<User>().HasNoKey();
-
-
-            // Example: relationships
             modelBuilder.Entity<Sale>()
                 .HasOne(s => s.User)
                 .WithMany(u => u.Sales)
@@ -57,14 +44,12 @@ namespace Pos_System.Data
                 .WithMany(p => p.SaleItems)
                 .HasForeignKey(si => si.ProductId);
 
-            // Add other relationships as needed
-
             modelBuilder.Entity<BackupLog>().HasNoKey();
             modelBuilder.Entity<InventoryLog>().HasNoKey();
             modelBuilder.Entity<SaleItemsBackup>()
-       .HasOne(sib => sib.SalesBackup)
-       .WithMany(sb => sb.SaleItemsBackups)
-       .HasForeignKey(sib => sib.SalesBackupId);
+                .HasOne(sib => sib.SalesBackup)
+                .WithMany(sb => sb.SaleItemsBackups)
+                .HasForeignKey(sib => sib.SalesBackupId);
 
             base.OnModelCreating(modelBuilder);
 
