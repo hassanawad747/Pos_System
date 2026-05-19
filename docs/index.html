@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POS System Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <aside class="sidebar" aria-label="POS navigation">
+      <div class="brand">
+        <span class="brand-mark">POS</span>
+        <div>
+          <strong>POS System</strong>
+          <small>Customer demo</small>
+        </div>
+      </div>
+      <nav class="nav-list">
+        <button class="nav-item active" data-view="dashboard">Dashboard</button>
+        <button class="nav-item" data-view="sales">Sales</button>
+        <button class="nav-item" data-view="products">Products</button>
+        <button class="nav-item" data-view="customers">Customers</button>
+        <button class="nav-item" data-view="suppliers">Suppliers</button>
+        <button class="nav-item" data-view="reports">Reports</button>
+        <button class="nav-item" data-view="settings">Settings</button>
+      </nav>
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        Demo mode
+      </div>
+    </aside>
+
+    <section class="workspace">
+      <header class="topbar">
+        <div>
+          <h1 id="view-title">Dashboard</h1>
+          <p id="view-subtitle">Live-style overview for daily POS activity.</p>
+        </div>
+        <div class="operator">
+          <span>Admin</span>
+          <strong>Hassan</strong>
+        </div>
+      </header>
+
+      <section class="hero-grid" aria-label="Summary cards">
+        <article class="metric-card">
+          <span>Today Sales</span>
+          <strong>$2,840</strong>
+          <small>LBP 254,760,000</small>
+        </article>
+        <article class="metric-card">
+          <span>Invoices</span>
+          <strong>47</strong>
+          <small>9 returns handled</small>
+        </article>
+        <article class="metric-card">
+          <span>Low Stock</span>
+          <strong>12</strong>
+          <small>Needs reorder</small>
+        </article>
+        <article class="metric-card">
+          <span>Customers</span>
+          <strong>328</strong>
+          <small>18 with balances</small>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel main-panel" id="main-panel">
+          <div class="panel-heading">
+            <h2>Dashboard Activity</h2>
+            <button class="primary-action">New Sale</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Action</th>
+                  <th>User</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="data-table"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <aside class="panel detail-panel">
+          <div class="panel-heading">
+            <h2>Quick View</h2>
+          </div>
+          <div id="quick-view" class="quick-view"></div>
+        </aside>
+      </section>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
