@@ -18,7 +18,6 @@ namespace Pos_System.Forms
 {
     public partial class PosSystemDashboard : Form
     {
-        private const string WorkDayClosedAtSettingKey = "dashboard_work_day_closed_at";
         private string _username;
         private string _role;
         private Timer sessionTimer;
@@ -99,7 +98,7 @@ namespace Pos_System.Forms
         private void btnsales_Click(object sender, EventArgs e)
         {
             ActivateMenuButton(btnsales);
-            LoadForm(new SalesStartForm(_username, StartSalesWork_Click));
+            OpenSalesWorkspace();
         }
 
         private void StartSalesWork_Click(object sender, EventArgs e)
@@ -107,7 +106,7 @@ namespace Pos_System.Forms
             try
             {
                 WorkHistoryService.StartWork(LoginForm.LoggedInUserId, _username);
-                LoadForm(new Sales(lbusername.Text, _role));
+                LoadSalesForm();
             }
             catch (Exception ex)
             {
@@ -318,7 +317,7 @@ namespace Pos_System.Forms
             if (AppSession.IsCashier)
             {
                 ActivateMenuButton(btnsales);
-                LoadForm(new SalesStartForm(_username, StartSalesWork_Click));
+                OpenSalesWorkspace();
             }
             else
             {
@@ -1286,6 +1285,7 @@ namespace Pos_System.Forms
             string role = (_role ?? string.Empty).Trim().ToLowerInvariant();
             bool isAdmin = role == "admin";
             bool isManager = role == "manager" || role == "manger";
+            bool isCashier = role == "cashier";
             bool canViewDashboard = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenDashboard);
             bool canViewSales = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenSales);
             bool canViewUsers = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenUsers);
@@ -1297,6 +1297,7 @@ namespace Pos_System.Forms
             bool canViewProducts = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenProducts);
             bool canViewSuppliers = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenSuppliers);
             bool canViewCustomers = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenCustomers);
+            bool canViewDashboardBalances = PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenDashboardBalances);
 
             btnAddUsers.Visible = canViewUsers;
             btnsettings.Visible = canViewSettings;
@@ -1349,7 +1350,8 @@ namespace Pos_System.Forms
             lbr2slmal.Visible = canSeeInventoryMetrics;
             label19.Visible = canSeeInventoryMetrics;
             label20.Visible = canSeeInventoryMetrics;
-            SetCustomerBalancePanelVisible(true);
+            labelprofit.Visible = !isCashier;
+            SetCustomerBalancePanelVisible(canViewDashboardBalances);
             LayoutDashboardHome();
         }
 
@@ -1704,20 +1706,7 @@ namespace Pos_System.Forms
 
         private DateTime GetWorkDayStart()
         {
-            DateTime todayStart = DateTime.Today;
-            string closedAtRaw = POS_System.Program.SettingsManager.GetSetting(WorkDayClosedAtSettingKey, string.Empty);
-
-            if (DateTime.TryParse(
-                closedAtRaw,
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.RoundtripKind,
-                out DateTime closedAt) &&
-                closedAt.Date == todayStart)
-            {
-                return closedAt;
-            }
-
-            return todayStart;
+            return WorkHistoryService.GetDashboardWorkStart(LoginForm.LoggedInUserId, _username) ?? DateTime.Today;
         }
 
         private void EndWorkDayButton_Click(object sender, EventArgs e)
@@ -1751,24 +1740,30 @@ namespace Pos_System.Forms
                 return;
             }
 
-            POS_System.Program.SettingsManager.SaveSettings(new Dictionary<string, string>
-            {
-                { WorkDayClosedAtSettingKey, DateTime.Now.ToString("o", CultureInfo.InvariantCulture) }
-            });
-
             LoadDashboardData();
+
+            if (AppSession.IsCashier)
+            {
+                ActivateMenuButton(btnsales);
+                LoadStartSalesForm();
+            }
         }
 
         private void LoadSalesTrendChart()
         {
+            bool showAllUsers = CanCurrentUserSeeAllSalesTrend();
+
             DataTable table = ExecuteDataTable(@"
                 SELECT SaleDay = CONVERT(date, sale_date),
                        TotalSales = ISNULL(SUM(total_amount), 0)
                 FROM Sales
                 WHERE sale_date >= DATEADD(day, -6, CONVERT(date, GETDATE()))
+                  AND (@ShowAllUsers = 1 OR TRY_CONVERT(INT, user_id) = @CurrentUserId)
                   AND ISNULL(is_returned, 0) = 0
                 GROUP BY CONVERT(date, sale_date)
-                ORDER BY SaleDay;");
+                ORDER BY SaleDay;",
+                new SqlParameter("@ShowAllUsers", SqlDbType.Bit) { Value = showAllUsers },
+                new SqlParameter("@CurrentUserId", SqlDbType.Int) { Value = AppSession.UserId });
 
             chart1.Series.Clear();
             Series series = new Series("Sales")
@@ -1819,16 +1814,53 @@ namespace Pos_System.Forms
             chart2.Series.Add(series);
         }
 
-        private DataTable ExecuteDataTable(string query)
+        private DataTable ExecuteDataTable(string query, params SqlParameter[] parameters)
         {
             using (SqlConnection connection = new SqlConnection(POS_System.Program.SettingsManager.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             using (SqlDataAdapter adapter = new SqlDataAdapter(command))
             {
+                if (parameters != null && parameters.Length > 0)
+                {
+                    command.Parameters.AddRange(parameters);
+                }
+
                 DataTable table = new DataTable();
                 adapter.Fill(table);
                 return table;
             }
+        }
+
+        private void OpenSalesWorkspace()
+        {
+            if (HasOpenSalesSession())
+            {
+                LoadSalesForm();
+                return;
+            }
+
+            LoadStartSalesForm();
+        }
+
+        private void LoadSalesForm()
+        {
+            LoadForm(new Sales(lbusername.Text, _role));
+        }
+
+        private void LoadStartSalesForm()
+        {
+            LoadForm(new SalesStartForm(_username, StartSalesWork_Click));
+        }
+
+        private bool HasOpenSalesSession()
+        {
+            return WorkHistoryService.HasOpenWorkSession(LoginForm.LoggedInUserId, _username);
+        }
+
+        private bool CanCurrentUserSeeAllSalesTrend()
+        {
+            string role = (_role ?? string.Empty).Trim().ToLowerInvariant();
+            return role == "admin" || role == "manager" || role == "manger";
         }
 
         private void AuditNotificationButton_Click(object sender, EventArgs e)

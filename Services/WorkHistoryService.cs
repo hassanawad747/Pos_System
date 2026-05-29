@@ -76,6 +76,67 @@ namespace Pos_System.Services
             }
         }
 
+        public static bool HasOpenWorkSession(int userId, string username)
+        {
+            EnsureHistoryTable();
+
+            using (SqlConnection connection = new SqlConnection(POS_System.Program.SettingsManager.ConnectionString))
+            using (SqlCommand command = new SqlCommand(@"
+                SELECT TOP (1) 1
+                FROM dbo.History
+                WHERE username = @username
+                  AND work_date = @workDate
+                  AND end_time IS NULL
+                ORDER BY start_time DESC, history_id DESC;", connection))
+            {
+                command.Parameters.Add("@username", SqlDbType.NVarChar, 100).Value = NormalizeUsername(username);
+                command.Parameters.Add("@workDate", SqlDbType.Date).Value = DateTime.Today;
+                connection.Open();
+                object result = command.ExecuteScalar();
+                return result != null && result != DBNull.Value;
+            }
+        }
+
+        public static DateTime? GetDashboardWorkStart(int userId, string username)
+        {
+            EnsureHistoryTable();
+
+            using (SqlConnection connection = new SqlConnection(POS_System.Program.SettingsManager.ConnectionString))
+            using (SqlCommand command = new SqlCommand(@"
+                SELECT TOP (1)
+                    start_time,
+                    end_time
+                FROM dbo.History
+                WHERE username = @username
+                  AND work_date = @workDate
+                ORDER BY
+                    CASE WHEN end_time IS NULL THEN 0 ELSE 1 END,
+                    start_time DESC,
+                    history_id DESC;", connection))
+            {
+                command.Parameters.Add("@username", SqlDbType.NVarChar, 100).Value = NormalizeUsername(username);
+                command.Parameters.Add("@workDate", SqlDbType.Date).Value = DateTime.Today;
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (!reader.Read())
+                    {
+                        return null;
+                    }
+
+                    if (reader["end_time"] == DBNull.Value)
+                    {
+                        return reader["start_time"] == DBNull.Value
+                            ? (DateTime?)null
+                            : Convert.ToDateTime(reader["start_time"]);
+                    }
+
+                    return Convert.ToDateTime(reader["end_time"]);
+                }
+            }
+        }
+
         public static bool EndWork(int userId, string username, out TimeSpan workedTime)
         {
             EnsureHistoryTable();

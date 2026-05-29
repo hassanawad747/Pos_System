@@ -345,11 +345,25 @@ namespace Pos_System.Forms
                 return;
             }
 
+            DialogResult invoiceChoice = MessageBox.Show(
+                "Do you want to create this balance adjustment by invoice?\n\nYes = By invoice\nNo = Without invoice\nCancel = Stop",
+                "Balance Invoice",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question);
+
+            if (invoiceChoice == DialogResult.Cancel)
+            {
+                return;
+            }
+
             bool supplierOwesYou = comboBalanceType.SelectedItem != null &&
                 comboBalanceType.SelectedItem.ToString().Equals("Supplier owes you", StringComparison.OrdinalIgnoreCase);
             decimal signedAmount = supplierOwesYou ? -amount : amount;
             decimal delta = add ? signedAmount : -signedAmount;
             string currency = comboCurrency.SelectedItem != null ? comboCurrency.SelectedItem.ToString() : "USD";
+            string targetCurrency = ResolveTargetCurrency(SelectedSupplierId, currency);
+            decimal exchangeRate = POS_System.Program.SettingsManager.GetExchangeRate();
+            decimal effectiveDelta = ConvertDeltaForTargetCurrency(delta, currency, targetCurrency, exchangeRate);
 
             using (SqlConnection conn = new SqlConnection(connStr))
             using (SqlCommand cmd = new SqlCommand(@"
@@ -360,15 +374,37 @@ namespace Pos_System.Forms
                 WHERE supplier_id = @id;", conn))
             {
                 cmd.Parameters.AddWithValue("@id", SelectedSupplierId);
-                cmd.Parameters.AddWithValue("@currency", currency == "USD" ? "USD" : "LBP");
-                cmd.Parameters.Add("@delta", SqlDbType.Decimal).Value = delta;
+                cmd.Parameters.AddWithValue("@currency", targetCurrency == "USD" ? "USD" : "LBP");
+                cmd.Parameters.Add("@delta", SqlDbType.Decimal).Value = effectiveDelta;
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
 
+            string amountText = currency == "USD"
+                ? "$" + amount.ToString("N2", CultureInfo.InvariantCulture)
+                : amount.ToString("N0", CultureInfo.InvariantCulture) + " L.L";
+            string actionTitle = add ? "Add Supplier Balance" : "Less Supplier Balance";
+            string balanceAfterText = GetSupplierBalanceSummary(SelectedSupplierId);
             txtBalanceAmount.Clear();
             LoadSupplierGrid();
             LoadSelectedSupplier();
+
+            if (invoiceChoice == DialogResult.Yes)
+            {
+                using (BalanceAdjustmentInvoiceForm invoiceForm = new BalanceAdjustmentInvoiceForm(
+                    "Supplier",
+                    comboSupplier.Text,
+                    txtPhone.Text,
+                    actionTitle,
+                    amountText,
+                    balanceAfterText,
+                    AppSession.Username,
+                    DateTime.Now,
+                    false))
+                {
+                    invoiceForm.ShowDialog(this);
+                }
+            }
         }
 
         private void LoadSupplierItems()
@@ -522,6 +558,100 @@ namespace Pos_System.Forms
         {
             return decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out result) ||
                    decimal.TryParse(value, out result);
+        }
+
+        private string ResolveTargetCurrency(int supplierId, string selectedCurrency)
+        {
+            string normalizedCurrency = string.Equals(selectedCurrency, "USD", StringComparison.OrdinalIgnoreCase) ? "USD" : "LBP";
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(@"
+                SELECT
+                    balance_usd,
+                    balance_lb
+                FROM Suppliers
+                WHERE supplier_id = @id;", conn))
+            {
+                cmd.Parameters.AddWithValue("@id", supplierId);
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (!reader.Read())
+                    {
+                        return normalizedCurrency;
+                    }
+
+                    decimal balanceUsd = reader["balance_usd"] == DBNull.Value ? 0m : Convert.ToDecimal(reader["balance_usd"]);
+                    decimal balanceLb = reader["balance_lb"] == DBNull.Value ? 0m : Convert.ToDecimal(reader["balance_lb"]);
+
+                    if (normalizedCurrency == "LBP" && balanceLb == 0m && balanceUsd != 0m)
+                    {
+                        return "USD";
+                    }
+
+                    if (normalizedCurrency == "USD" && balanceUsd == 0m && balanceLb != 0m)
+                    {
+                        return "LBP";
+                    }
+
+                    return normalizedCurrency;
+                }
+            }
+        }
+
+        private static decimal ConvertDeltaForTargetCurrency(decimal delta, string selectedCurrency, string targetCurrency, decimal exchangeRate)
+        {
+            string normalizedSelected = string.Equals(selectedCurrency, "USD", StringComparison.OrdinalIgnoreCase) ? "USD" : "LBP";
+            string normalizedTarget = string.Equals(targetCurrency, "USD", StringComparison.OrdinalIgnoreCase) ? "USD" : "LBP";
+
+            if (normalizedSelected == normalizedTarget || exchangeRate <= 0m)
+            {
+                return delta;
+            }
+
+            if (normalizedSelected == "LBP" && normalizedTarget == "USD")
+            {
+                return delta / exchangeRate;
+            }
+
+            if (normalizedSelected == "USD" && normalizedTarget == "LBP")
+            {
+                return delta * exchangeRate;
+            }
+
+            return delta;
+        }
+
+        private string GetSupplierBalanceSummary(int supplierId)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(@"
+                SELECT
+                    balance_usd,
+                    balance_lb
+                FROM Suppliers
+                WHERE supplier_id = @id;", conn))
+            {
+                cmd.Parameters.AddWithValue("@id", supplierId);
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (!reader.Read())
+                    {
+                        return "-";
+                    }
+
+                    decimal balanceUsd = reader["balance_usd"] == DBNull.Value ? 0m : Convert.ToDecimal(reader["balance_usd"]);
+                    decimal balanceLb = reader["balance_lb"] == DBNull.Value ? 0m : Convert.ToDecimal(reader["balance_lb"]);
+                    return string.Format(
+                        CultureInfo.InvariantCulture,
+                        "USD: ${0:N2} | L.L: {1:N0}",
+                        balanceUsd,
+                        balanceLb);
+                }
+            }
         }
 
         private void NumericTextBox_KeyPress(object sender, KeyPressEventArgs e)

@@ -1,0 +1,10 @@
+{
+  "installRoot": "C:\\BikeZonePOS",
+  "databaseName": "pos_system",
+  "autoDetectSqlInstance": true,
+  "sqlInstance": ".",
+  "sqlServiceName": "MSSQLSERVER",
+  "shortcutName": "Bike Zone POS",
+  "launchAfterInstall": true,
+  "connectionString": ""
+}

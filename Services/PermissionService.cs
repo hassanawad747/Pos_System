@@ -24,6 +24,7 @@ namespace Pos_System.Services
         internal const string ScreenUseDiscount = "UseDiscount";
         internal const string ScreenManualDiscount = "ManualDiscount";
         internal const string ScreenDiscountSettings = "DiscountSettings";
+        internal const string ScreenDashboardBalances = "DashboardBalances";
 
         private sealed class ScreenDefinition
         {
@@ -52,7 +53,8 @@ namespace Pos_System.Services
             new ScreenDefinition(ScreenOptions, "Options"),
             new ScreenDefinition(ScreenUseDiscount, "Use Discount"),
             new ScreenDefinition(ScreenManualDiscount, "Manual Discount Textbox"),
-            new ScreenDefinition(ScreenDiscountSettings, "Discount Settings")
+            new ScreenDefinition(ScreenDiscountSettings, "Discount Settings"),
+            new ScreenDefinition(ScreenDashboardBalances, "Dashboard Balance Tables")
         };
 
         public static void EnsurePermissionsTable()
@@ -100,7 +102,10 @@ namespace Pos_System.Services
         {
             using (SqlConnection connection = new SqlConnection(POS_System.Program.SettingsManager.ConnectionString))
             using (SqlCommand command = new SqlCommand(
-                "SELECT user_id, username, role FROM Users ORDER BY username;", connection))
+                @"SELECT user_id, username, role
+                  FROM Users
+                  WHERE username <> 'admin'
+                  ORDER BY username;", connection))
             using (SqlDataAdapter adapter = new SqlDataAdapter(command))
             {
                 connection.Open();
@@ -134,7 +139,8 @@ namespace Pos_System.Services
                         GetDefaultCanEdit(role, screen.Key),
                         GetDefaultCanSave(role, screen.Key),
                         GetDefaultCanDelete(role, screen.Key),
-                        GetDefaultCanViewNotifications(role, screen.Key));
+                        GetDefaultCanViewNotifications(role, screen.Key),
+                        false);
                 }
 
                 EnsureSinglePermissionRow(
@@ -146,7 +152,10 @@ namespace Pos_System.Services
                     false,
                     false,
                     false,
-                    GetDefaultCanViewNotifications(role, GlobalScreenKey));
+                    GetDefaultCanViewNotifications(role, GlobalScreenKey),
+                    GetDefaultCanDeleteNotifications(role, GlobalScreenKey));
+
+                EnsureDefaultGlobalNotificationPermissions(connection, userId, role);
             }
         }
 
@@ -254,7 +263,7 @@ namespace Pos_System.Services
 
         public static bool CanDeleteNotifications(int userId, string role)
         {
-            if (userId <= 0)
+            if (userId <= 0 || !IsAdministratorIdentity(role))
             {
                 return false;
             }
@@ -272,7 +281,9 @@ namespace Pos_System.Services
                 command.Parameters.Add("@screenKey", SqlDbType.NVarChar, 100).Value = GlobalScreenKey;
                 connection.Open();
                 object result = command.ExecuteScalar();
-                return result != null && result != DBNull.Value && Convert.ToBoolean(result);
+                return result == null || result == DBNull.Value
+                    ? GetDefaultCanDeleteNotifications(role, GlobalScreenKey)
+                    : Convert.ToBoolean(result);
             }
         }
 
@@ -464,7 +475,8 @@ namespace Pos_System.Services
             bool canEdit,
             bool canSave,
             bool canDelete,
-            bool canViewNotifications)
+            bool canViewNotifications,
+            bool canDeleteNotifications)
         {
             using (SqlCommand command = new SqlCommand(@"
                 IF NOT EXISTS (
@@ -474,9 +486,9 @@ namespace Pos_System.Services
                       AND screen_key = @screenKey)
                 BEGIN
                     INSERT INTO dbo.UserPermissions
-                    (user_id, screen_key, can_view, can_create, can_edit, can_save, can_delete, can_view_notifications, is_customized, updated_by)
+                    (user_id, screen_key, can_view, can_create, can_edit, can_save, can_delete, can_view_notifications, can_delete_notifications, is_customized, updated_by)
                     VALUES
-                    (@userId, @screenKey, @canView, @canCreate, @canEdit, @canSave, @canDelete, @canViewNotifications, 0, @updatedBy);
+                    (@userId, @screenKey, @canView, @canCreate, @canEdit, @canSave, @canDelete, @canViewNotifications, @canDeleteNotifications, 0, @updatedBy);
                 END;", connection))
             {
                 command.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
@@ -487,8 +499,29 @@ namespace Pos_System.Services
                 command.Parameters.Add("@canSave", SqlDbType.Bit).Value = canSave;
                 command.Parameters.Add("@canDelete", SqlDbType.Bit).Value = canDelete;
                 command.Parameters.Add("@canViewNotifications", SqlDbType.Bit).Value = canViewNotifications;
+                command.Parameters.Add("@canDeleteNotifications", SqlDbType.Bit).Value = canDeleteNotifications;
                 command.Parameters.Add("@updatedBy", SqlDbType.NVarChar, 100).Value =
                     string.IsNullOrWhiteSpace(AppSession.Username) ? (object)DBNull.Value : AppSession.Username;
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private static void EnsureDefaultGlobalNotificationPermissions(SqlConnection connection, int userId, string role)
+        {
+            if (!IsAdministratorIdentity(role))
+            {
+                return;
+            }
+
+            using (SqlCommand command = new SqlCommand(@"
+                UPDATE dbo.UserPermissions
+                SET can_view_notifications = 1,
+                    can_delete_notifications = 1
+                WHERE user_id = @userId
+                  AND screen_key = @screenKey;", connection))
+            {
+                command.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+                command.Parameters.Add("@screenKey", SqlDbType.NVarChar, 100).Value = GlobalScreenKey;
                 command.ExecuteNonQuery();
             }
         }
@@ -550,6 +583,11 @@ namespace Pos_System.Services
         }
 
         private static bool GetDefaultCanViewNotifications(string role, string screenKey)
+        {
+            return IsAdministratorIdentity(role);
+        }
+
+        private static bool GetDefaultCanDeleteNotifications(string role, string screenKey)
         {
             return IsAdministratorIdentity(role);
         }

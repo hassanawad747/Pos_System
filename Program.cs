@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.ServiceProcess;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -21,25 +22,41 @@ namespace POS_System
         [STAThread]
         private static void Main()
         {
-            var options = new DbContextOptionsBuilder<POSDbContext>()
-                .UseSqlServer(SettingsManager.ConnectionString)
-                .Options;
-
-            var context = new POSDbContext(options);
-
-            AuditLogger.EnsureAuditTable();
-            AuditService.EnsureNotificationTable();
-            PermissionService.EnsurePermissionsTable();
-            WorkHistoryService.EnsureHistoryTable();
-            AuditLogger.EnsureCustomerBalanceColumns();
-            AuditLogger.EnsureSupplierBalanceColumns();
-            AuditLogger.EnsureSalesColumns();
-            InitializeDefaultSettings();
-            SettingsManager.LoadSettings();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoginForm(context));
+
+            try
+            {
+                string connectionString = SettingsManager.ConnectionString;
+
+                var options = new DbContextOptionsBuilder<POSDbContext>()
+                    .UseSqlServer(connectionString)
+                    .Options;
+
+                var context = new POSDbContext(options);
+
+                AuditLogger.EnsureAuditTable();
+                AuditService.EnsureNotificationTable();
+                PermissionService.EnsurePermissionsTable();
+                WorkHistoryService.EnsureHistoryTable();
+                AuditLogger.EnsureCustomerBalanceColumns();
+                AuditLogger.EnsureSupplierBalanceColumns();
+                AuditLogger.EnsureSalesColumns();
+                InitializeDefaultSettings();
+                SettingsManager.LoadSettings();
+
+                Application.Run(new LoginForm(context));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Unable to connect to the database.\n\n" +
+                    ex.Message +
+                    "\n\nCheck Database.config and make sure SQL Server is installed and running.",
+                    "Database Connection Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private static void InitializeDefaultSettings()
@@ -55,6 +72,8 @@ namespace POS_System
 
             private static readonly Dictionary<string, string> settingsCache =
                 new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            private static readonly object connectionStringLock = new object();
+            private static string resolvedConnectionString;
 
             private static readonly Dictionary<string, string> defaultSettings =
                 new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -86,31 +105,18 @@ namespace POS_System
             {
                 get
                 {
-                    string externalConnectionString = ReadExternalConnectionString();
-                    if (!string.IsNullOrWhiteSpace(externalConnectionString))
+                    lock (connectionStringLock)
                     {
-                        return externalConnectionString;
+                        if (!string.IsNullOrWhiteSpace(resolvedConnectionString) &&
+                            CanOpenConnection(resolvedConnectionString))
+                        {
+                            return resolvedConnectionString;
+                        }
+
+                        string resolved = ResolveConnectionString();
+                        resolvedConnectionString = resolved;
+                        return resolved;
                     }
-
-                    ConnectionStringSettings configuredConnection =
-                        ConfigurationManager.ConnectionStrings[ConnectionStringName];
-
-                    if (configuredConnection != null &&
-                        !string.IsNullOrWhiteSpace(configuredConnection.ConnectionString))
-                    {
-                        return configuredConnection.ConnectionString;
-                    }
-
-                    string fallbackConnectionString =
-                        Pos_System.Properties.Settings.Default.pos_systemConnectionString;
-
-                    if (!string.IsNullOrWhiteSpace(fallbackConnectionString))
-                    {
-                        return fallbackConnectionString;
-                    }
-
-                    throw new ConfigurationErrorsException(
-                        "Database connection string was not found. Edit Database.config beside Pos_System.exe.");
                 }
             }
 
@@ -123,6 +129,166 @@ namespace POS_System
 
                 SaveExternalConnectionString(connectionString);
                 ConfigurationManager.RefreshSection("connectionStrings");
+                resolvedConnectionString = connectionString;
+            }
+
+            private static string ResolveConnectionString()
+            {
+                List<string> attemptedDataSources = new List<string>();
+
+                foreach (string candidate in GetConnectionStringCandidates(attemptedDataSources))
+                {
+                    if (CanOpenConnection(candidate))
+                    {
+                        PersistResolvedConnectionString(candidate);
+                        return candidate;
+                    }
+                }
+
+                string attemptedSourcesMessage = attemptedDataSources.Count == 0
+                    ? "No connection strings were found."
+                    : "Attempted SQL Server instances: " +
+                      string.Join(", ", attemptedDataSources.Distinct(StringComparer.OrdinalIgnoreCase));
+
+                throw new ConfigurationErrorsException(
+                    "Database connection failed. " + attemptedSourcesMessage);
+            }
+
+            private static IEnumerable<string> GetConnectionStringCandidates(List<string> attemptedDataSources)
+            {
+                foreach (string baseConnectionString in GetBaseConnectionStrings())
+                {
+                    if (string.IsNullOrWhiteSpace(baseConnectionString))
+                    {
+                        continue;
+                    }
+
+                    SqlConnectionStringBuilder builder;
+                    try
+                    {
+                        builder = new SqlConnectionStringBuilder(baseConnectionString);
+                    }
+                    catch (ArgumentException)
+                    {
+                        continue;
+                    }
+
+                    builder.ConnectTimeout = Math.Max(3, Math.Min(builder.ConnectTimeout, 5));
+                    string primaryCandidate = builder.ConnectionString;
+                    attemptedDataSources.Add(builder.DataSource);
+                    yield return primaryCandidate;
+
+                    foreach (string dataSource in GetPreferredDataSources(builder.DataSource))
+                    {
+                        if (string.Equals(dataSource, builder.DataSource, StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
+
+                        SqlConnectionStringBuilder clone = new SqlConnectionStringBuilder(builder.ConnectionString)
+                        {
+                            DataSource = dataSource
+                        };
+
+                        attemptedDataSources.Add(clone.DataSource);
+                        yield return clone.ConnectionString;
+                    }
+                }
+            }
+
+            private static IEnumerable<string> GetBaseConnectionStrings()
+            {
+                string externalConnectionString = ReadExternalConnectionString();
+                if (!string.IsNullOrWhiteSpace(externalConnectionString))
+                {
+                    yield return externalConnectionString;
+                }
+
+                ConnectionStringSettings configuredConnection =
+                    ConfigurationManager.ConnectionStrings[ConnectionStringName];
+
+                if (configuredConnection != null &&
+                    !string.IsNullOrWhiteSpace(configuredConnection.ConnectionString))
+                {
+                    yield return configuredConnection.ConnectionString;
+                }
+
+                string fallbackConnectionString =
+                    Pos_System.Properties.Settings.Default.pos_systemConnectionString;
+
+                if (!string.IsNullOrWhiteSpace(fallbackConnectionString))
+                {
+                    yield return fallbackConnectionString;
+                }
+            }
+
+            private static IEnumerable<string> GetPreferredDataSources(string configuredDataSource)
+            {
+                HashSet<string> dataSources = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                if (!string.IsNullOrWhiteSpace(configuredDataSource))
+                {
+                    dataSources.Add(configuredDataSource);
+                }
+
+                dataSources.Add(@".");
+                dataSources.Add(@".\SQLEXPRESS");
+                dataSources.Add(@".\SQLEXPRESS01");
+                dataSources.Add(@"(localdb)\MSSQLLocalDB");
+
+                try
+                {
+                    foreach (ServiceController service in ServiceController.GetServices())
+                    {
+                        if (string.Equals(service.ServiceName, "MSSQLSERVER", StringComparison.OrdinalIgnoreCase))
+                        {
+                            dataSources.Add(@".");
+                        }
+                        else if (service.ServiceName.StartsWith("MSSQL$", StringComparison.OrdinalIgnoreCase))
+                        {
+                            string instanceName = service.ServiceName.Substring("MSSQL$".Length);
+                            if (!string.IsNullOrWhiteSpace(instanceName))
+                            {
+                                dataSources.Add(@".\" + instanceName);
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    // If services cannot be enumerated, the static fallback instances are still used.
+                }
+
+                foreach (string dataSource in dataSources)
+                {
+                    yield return dataSource;
+                }
+            }
+
+            private static bool CanOpenConnection(string connectionString)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        return true;
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            private static void PersistResolvedConnectionString(string connectionString)
+            {
+                string externalConnectionString = ReadExternalConnectionString();
+                if (!string.Equals(externalConnectionString, connectionString, StringComparison.OrdinalIgnoreCase))
+                {
+                    SaveExternalConnectionString(connectionString);
+                    ConfigurationManager.RefreshSection("connectionStrings");
+                }
             }
 
             private static string ReadExternalConnectionString()

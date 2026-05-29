@@ -1,1 +1,0 @@
-now i want to create a button in settings form to have a permision for users if click in button permision opened form and get a user permission and all forms worked by this permision

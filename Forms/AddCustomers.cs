@@ -71,7 +71,7 @@ namespace Pos_System.Forms
                 AuditService.Log("Customers", "Create", txtnumber.Text.Trim(), "Created customer " + txtname.Text.Trim());
                 MessageBox.Show("✅ تم إضافة العميل بنجاح بواسطة " + AppSession.Username);
                 DialogResult = DialogResult.OK;
-                Close();
+                //Close();
                 return;
             }
             catch (Exception ex)

@@ -37,6 +37,11 @@ namespace Pos_System.Forms
                 .Trim()
                 .ToLowerInvariant();
 
+            if (!CanShowAdminRoleOption() && defaultRole == "admin")
+            {
+                defaultRole = "cashier";
+            }
+
             rdCashier.Checked = defaultRole == "cashier";
             rdManger.Checked = defaultRole == "manager";
             rdAdmin.Checked = defaultRole == "admin";
@@ -51,8 +56,15 @@ namespace Pos_System.Forms
         {
             if (rdCashier.Checked) return "cashier";
             if (rdManger.Checked) return "manager";
-            if (rdAdmin.Checked) return "admin";
-            return POS_System.Program.SettingsManager.GetSetting("default_role", "cashier").Trim().ToLowerInvariant();
+            if (rdAdmin.Checked && CanShowAdminRoleOption()) return "admin";
+
+            string defaultRole = POS_System.Program.SettingsManager.GetSetting("default_role", "cashier").Trim().ToLowerInvariant();
+            if (!CanShowAdminRoleOption() && defaultRole == "admin")
+            {
+                return "cashier";
+            }
+
+            return defaultRole;
         }
 
         private bool ValidatePasswordPolicy(string password, bool requirePassword)
@@ -90,7 +102,10 @@ namespace Pos_System.Forms
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                SqlDataAdapter da = new SqlDataAdapter("SELECT user_id, username, role, created_at, created_by FROM Users", conn);
+                string query = CanShowAdminRoleOption()
+                    ? "SELECT user_id, username, role, created_at, created_by FROM Users"
+                    : "SELECT user_id, username, role, created_at, created_by FROM Users WHERE username <> 'admin'";
+                SqlDataAdapter da = new SqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 dataGridView1.DataSource = dt;
@@ -131,6 +146,12 @@ namespace Pos_System.Forms
             if (string.IsNullOrEmpty(role))
             {
                 MessageBox.Show("Please select a role!");
+                return;
+            }
+
+            if (role == "admin" && !CanShowAdminRoleOption())
+            {
+                MessageBox.Show("Only admin can create admin users.");
                 return;
             }
 
@@ -218,7 +239,14 @@ namespace Pos_System.Forms
 
                 rdCashier.Checked = role == "cashier";
                 rdManger.Checked = role == "manager";
-                rdAdmin.Checked = role == "admin";
+                rdAdmin.Checked = role == "admin" && CanShowAdminRoleOption();
+
+                if (role == "admin" && !CanShowAdminRoleOption())
+                {
+                    rdCashier.Checked = false;
+                    rdManger.Checked = false;
+                    rdAdmin.Checked = false;
+                }
             }
         }
 
@@ -257,6 +285,12 @@ namespace Pos_System.Forms
             if (string.IsNullOrEmpty(role))
             {
                 MessageBox.Show("Please select a role!");
+                return;
+            }
+
+            if (role == "admin" && !CanShowAdminRoleOption())
+            {
+                MessageBox.Show("Only admin can assign admin role.");
                 return;
             }
 
@@ -311,9 +345,28 @@ namespace Pos_System.Forms
             int maxLength = POS_System.Program.SettingsManager.GetIntSetting("password_max_length", 12);
             txtpassword.MaxLength = maxLength;
             txtConfirmPassword.MaxLength = maxLength;
+            ConfigureAdminRoleVisibility();
             ApplyDefaultRole();
             LoadUsers();
             PermissionService.ApplyActionPermissions(this, PermissionService.ScreenUsers);
+        }
+
+        private void ConfigureAdminRoleVisibility()
+        {
+            bool canShowAdminRole = CanShowAdminRoleOption();
+            rdAdmin.Visible = canShowAdminRole;
+            rdAdmin.Enabled = canShowAdminRole;
+
+            if (!canShowAdminRole && rdAdmin.Checked)
+            {
+                rdAdmin.Checked = false;
+                rdCashier.Checked = true;
+            }
+        }
+
+        private bool CanShowAdminRoleOption()
+        {
+            return AppSession.IsAdministrator;
         }
     }
 }

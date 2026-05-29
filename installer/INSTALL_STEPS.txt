@@ -7,11 +7,12 @@ Target install folders used by this package:
 
 Recommended automatic method:
 1. Copy this whole installer folder to the other PC.
-2. Install SQL Server Database Engine or SQL Server Express.
-3. Install sqlcmd if needed.
-4. Right click install_pos_system.bat.
-5. Choose Run as administrator.
-6. Wait until the script finishes and opens the application.
+2. Optional: edit Installer.config.json if you want to change install path, SQL instance, or the connection string.
+3. Install SQL Server Database Engine or SQL Server Express.
+4. Install sqlcmd if needed.
+5. Right click install_pos_system.bat.
+6. Choose Run as administrator.
+7. Wait until the script finishes and opens the application.
 
 Manual method:
 1. Create these folders:
@@ -34,9 +35,11 @@ sqlcmd -S .\SQLEXPRESS -E -i "FULL_PATH_TO_THIS_INSTALLER_FOLDER\restore_databas
 C:\BikeZonePOS\App\Pos_System.exe
 
 Important notes:
+- For installer-side SQL settings or a custom connection string, edit:
+  installer\Installer.config.json
 - To change the SQL Server connection on a client PC, edit only this file:
   C:\BikeZonePOS\App\Database.config
 - Keep the connection name the same. Change only the connectionString value, for example:
   Data Source=.\SQLEXPRESS;Initial Catalog=pos_system;Integrated Security=True;TrustServerCertificate=True
 - If sqlcmd is not found, install Microsoft SQL Server Command Line Utilities.
-- If the SQL service name is different on the target PC, the automatic script may need editing before use.
+- If autoDetectSqlInstance is false in Installer.config.json, make sure sqlInstance and sqlServiceName match the target PC.
