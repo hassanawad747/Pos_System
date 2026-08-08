@@ -53,8 +53,87 @@ BEGIN
         CREATE INDEX IX_CustomerPayments_customer_date ON dbo.CustomerPayments(customer_id, payment_date);
     END;
 
+    -- Existing installations may already have a current USD balance maintained by legacy code.
+    -- Seed it once as an opening balance instead of replaying historical sales and double-counting.
+    IF COL_LENGTH('dbo.Customers', 'balance_usd') IS NOT NULL
+    BEGIN
+        EXEC(N'
+            INSERT INTO dbo.CustomerTransactions
+                (customer_id, transaction_type, reference_type, reference_id, debit, credit, balance_after, currency, description, user_id, created_at)
+            SELECT customer_id,
+                   N''OPENING_BALANCE'',
+                   N''MIGRATION'',
+                   NULL,
+                   CASE WHEN balance_usd > 0 THEN balance_usd ELSE 0 END,
+                   CASE WHEN balance_usd < 0 THEN ABS(balance_usd) ELSE 0 END,
+                   balance_usd,
+                   N''USD'',
+                   N''Opening balance imported from legacy customer balance'',
+                   NULL,
+                   SYSUTCDATETIME()
+            FROM dbo.Customers
+            WHERE ISNULL(balance_usd, 0) <> 0;
+        ');
+    END;
+
     INSERT INTO dbo.SchemaMigrations(migration_key, description)
     VALUES(N'005_customer_ledger_payments', N'Create customer transaction ledger and customer payment tables');
 END;
 
 COMMIT TRANSACTION;
+GO
+
+/* Future sales are recorded automatically in the ledger. CREATE TRIGGER must be its own batch. */
+CREATE OR ALTER TRIGGER dbo.TR_Sales_CustomerLedger
+ON dbo.Sales
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    ;WITH ValidSales AS
+    (
+        SELECT i.sale_id,
+               i.customer_id,
+               CAST(ISNULL(i.total_amount, 0) AS DECIMAL(18,2)) AS total_amount,
+               i.user_id,
+               ISNULL(i.sale_date, SYSUTCDATETIME()) AS sale_date
+        FROM inserted i
+        WHERE i.customer_id IS NOT NULL AND ISNULL(i.total_amount, 0) > 0
+    ),
+    CurrentBalances AS
+    (
+        SELECT v.customer_id,
+               ISNULL((
+                   SELECT TOP (1) ct.balance_after
+                   FROM dbo.CustomerTransactions ct
+                   WHERE ct.customer_id = v.customer_id AND ct.currency = N'USD'
+                   ORDER BY ct.customer_transaction_id DESC
+               ), 0) AS starting_balance
+        FROM ValidSales v
+        GROUP BY v.customer_id
+    ),
+    OrderedSales AS
+    (
+        SELECT v.*,
+               b.starting_balance +
+               SUM(v.total_amount) OVER(PARTITION BY v.customer_id ORDER BY v.sale_id ROWS UNBOUNDED PRECEDING) AS new_balance
+        FROM ValidSales v
+        INNER JOIN CurrentBalances b ON b.customer_id = v.customer_id
+    )
+    INSERT INTO dbo.CustomerTransactions
+        (customer_id, transaction_type, reference_type, reference_id, debit, credit, balance_after, currency, description, user_id, created_at)
+    SELECT customer_id,
+           N'SALE',
+           N'SALE',
+           sale_id,
+           total_amount,
+           0,
+           new_balance,
+           N'USD',
+           N'Sale invoice #' + CONVERT(NVARCHAR(30), sale_id),
+           user_id,
+           sale_date
+    FROM OrderedSales;
+END;
+GO
