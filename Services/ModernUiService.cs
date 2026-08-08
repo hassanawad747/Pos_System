@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -22,6 +23,7 @@ namespace Pos_System.Services
 
         private static readonly HashSet<Form> ThemedForms = new HashSet<Form>();
         private static bool globalThemeEnabled;
+        private static Icon cachedAppIcon;
 
         public static void EnableGlobalTheme()
         {
@@ -68,6 +70,8 @@ namespace Pos_System.Services
         {
             if (form == null || form.IsDisposed) return;
 
+            ApplyApplicationIcon(form);
+
             if (!(form is LoginForm))
             {
                 form.BackColor = AppBackground;
@@ -75,6 +79,25 @@ namespace Pos_System.Services
             }
 
             ApplyToControls(form.Controls);
+        }
+
+        private static void ApplyApplicationIcon(Form form)
+        {
+            try
+            {
+                if (cachedAppIcon == null)
+                {
+                    string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BikeZonePOS.ico");
+                    if (File.Exists(path))
+                        cachedAppIcon = new Icon(path);
+                }
+                if (cachedAppIcon != null)
+                    form.Icon = cachedAppIcon;
+            }
+            catch
+            {
+                // Branding icon is optional; never block the POS because an icon is unavailable.
+            }
         }
 
         private static void ApplyToControls(Control.ControlCollection controls)
@@ -90,21 +113,13 @@ namespace Pos_System.Services
         private static void StyleSingleControl(Control control)
         {
             if (control is DataGridView grid)
-            {
                 StyleGrid(grid);
-            }
             else if (control is Button button)
-            {
                 StyleButton(button);
-            }
             else if (control is TextBox textBox)
-            {
                 StyleTextBox(textBox);
-            }
             else if (control is ComboBox comboBox)
-            {
                 StyleComboBox(comboBox);
-            }
             else if (control is NumericUpDown numeric)
             {
                 numeric.Font = new Font("Segoe UI", 10F);
@@ -136,9 +151,7 @@ namespace Pos_System.Services
                     panel.BackColor = Surface;
             }
             else if (control is ToolStrip strip)
-            {
                 StyleToolStrip(strip);
-            }
         }
 
         public static void StyleGrid(DataGridView grid)
