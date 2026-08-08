@@ -8,6 +8,8 @@ namespace Pos_System.Services
 {
     public class CustomerLedgerService
     {
+        private const byte MoneyPrecision = 24;
+        private const byte MoneyScale = 8;
         private readonly string connectionString;
 
         public CustomerLedgerService(string connectionString)
@@ -108,9 +110,7 @@ VALUES (@customer_id, @amount, @currency, @method, @reference, @notes, @user_id,
 SELECT CAST(SCOPE_IDENTITY() AS INT);", conn, tx))
                         {
                             paymentCmd.Parameters.Add("@customer_id", SqlDbType.Int).Value = customerId;
-                            paymentCmd.Parameters.Add("@amount", SqlDbType.Decimal).Value = amount;
-                            paymentCmd.Parameters["@amount"].Precision = 18;
-                            paymentCmd.Parameters["@amount"].Scale = 2;
+                            AddMoneyParameter(paymentCmd, "@amount", amount);
                             paymentCmd.Parameters.Add("@currency", SqlDbType.NVarChar, 10).Value = normalized;
                             paymentCmd.Parameters.Add("@method", SqlDbType.NVarChar, 50).Value = string.IsNullOrWhiteSpace(paymentMethod) ? "CASH" : paymentMethod.Trim().ToUpperInvariant();
                             paymentCmd.Parameters.Add("@reference", SqlDbType.NVarChar, 100).Value = string.IsNullOrWhiteSpace(referenceNumber) ? (object)DBNull.Value : referenceNumber.Trim();
@@ -127,12 +127,8 @@ VALUES (@customer_id, N'PAYMENT', N'CUSTOMER_PAYMENT', @payment_id, 0, @amount, 
                         {
                             ledgerCmd.Parameters.Add("@customer_id", SqlDbType.Int).Value = customerId;
                             ledgerCmd.Parameters.Add("@payment_id", SqlDbType.Int).Value = paymentId;
-                            ledgerCmd.Parameters.Add("@amount", SqlDbType.Decimal).Value = amount;
-                            ledgerCmd.Parameters["@amount"].Precision = 18;
-                            ledgerCmd.Parameters["@amount"].Scale = 2;
-                            ledgerCmd.Parameters.Add("@balance", SqlDbType.Decimal).Value = newBalance;
-                            ledgerCmd.Parameters["@balance"].Precision = 18;
-                            ledgerCmd.Parameters["@balance"].Scale = 2;
+                            AddMoneyParameter(ledgerCmd, "@amount", amount);
+                            AddMoneyParameter(ledgerCmd, "@balance", newBalance);
                             ledgerCmd.Parameters.Add("@currency", SqlDbType.NVarChar, 10).Value = normalized;
                             ledgerCmd.Parameters.Add("@description", SqlDbType.NVarChar, 1000).Value = "Customer payment" + (string.IsNullOrWhiteSpace(referenceNumber) ? string.Empty : " - " + referenceNumber.Trim());
                             ledgerCmd.Parameters.Add("@user_id", SqlDbType.Int).Value = userId;
@@ -149,6 +145,14 @@ VALUES (@customer_id, N'PAYMENT', N'CUSTOMER_PAYMENT', @payment_id, 0, @amount, 
                     }
                 }
             }
+        }
+
+        private static void AddMoneyParameter(SqlCommand command, string name, decimal value)
+        {
+            var parameter = command.Parameters.Add(name, SqlDbType.Decimal);
+            parameter.Precision = MoneyPrecision;
+            parameter.Scale = MoneyScale;
+            parameter.Value = Math.Round(value, MoneyScale);
         }
 
         private static string NormalizeCurrency(string currency)
