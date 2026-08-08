@@ -44,17 +44,21 @@ namespace Pos_System.Data
                 .WithMany(p => p.SaleItems)
                 .HasForeignKey(si => si.ProductId);
 
-            modelBuilder.Entity<BackupLog>().HasNoKey();
-            modelBuilder.Entity<InventoryLog>().HasNoKey();
+            // InventoryLog and BackupLog are regular tables with primary keys.
+            // Keeping them as keyless entities prevents EF Core from tracking and
+            // persisting them correctly.
+            modelBuilder.Entity<InventoryLog>()
+                .HasKey(log => log.LogId);
+
+            modelBuilder.Entity<BackupLog>()
+                .HasKey(log => log.BackupId);
+
             modelBuilder.Entity<SaleItemsBackup>()
                 .HasOne(sib => sib.SalesBackup)
                 .WithMany(sb => sb.SaleItemsBackups)
                 .HasForeignKey(sib => sib.SalesBackupId);
 
             base.OnModelCreating(modelBuilder);
-
-
         }
     }
-
 }
