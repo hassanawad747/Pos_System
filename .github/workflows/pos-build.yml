@@ -27,19 +27,21 @@ jobs:
         shell: pwsh
         run: nuget restore packages.config -PackagesDirectory packages
 
-      - name: Validate installer PowerShell syntax
+      - name: Validate LAN installer PowerShell syntax
         shell: pwsh
         run: |
-          $tokens = $null
-          $errors = $null
-          [void][System.Management.Automation.Language.Parser]::ParseFile(
-            (Resolve-Path 'installer\install_pos_system.ps1'),
-            [ref]$tokens,
-            [ref]$errors
-          )
-          if ($errors.Count -gt 0) {
-            $errors | ForEach-Object { Write-Error $_.Message }
-            exit 1
+          foreach ($file in @('installer\setup_pos_lan.ps1')) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              (Resolve-Path $file),
+              [ref]$tokens,
+              [ref]$errors
+            )
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Error ("$file : " + $_.Message) }
+              exit 1
+            }
           }
 
       - name: Build Pos_System
@@ -110,14 +112,23 @@ jobs:
             $command.CommandText = @"
           IF OBJECT_ID(N'dbo.Users', N'U') IS NULL THROW 52000, 'Users table missing.', 1;
           IF OBJECT_ID(N'dbo.Settings', N'U') IS NULL THROW 52001, 'Settings table missing.', 1;
-          IF OBJECT_ID(N'dbo.Purchases', N'U') IS NULL THROW 52002, 'Purchases table missing.', 1;
-          IF OBJECT_ID(N'dbo.PurchaseItems', N'U') IS NULL THROW 52003, 'PurchaseItems table missing.', 1;
-          IF OBJECT_ID(N'dbo.InventoryTransactions', N'U') IS NULL THROW 52004, 'InventoryTransactions table missing.', 1;
-          IF OBJECT_ID(N'dbo.SupplierTransactions', N'U') IS NULL THROW 52005, 'SupplierTransactions table missing.', 1;
-          IF OBJECT_ID(N'dbo.SupplierPayments', N'U') IS NULL THROW 52006, 'SupplierPayments table missing.', 1;
-          IF COL_LENGTH('dbo.Products', 'purchase_price') IS NULL THROW 52007, 'Products.purchase_price missing.', 1;
-          IF COL_LENGTH('dbo.Products', 'selling_price') IS NULL THROW 52008, 'Products.selling_price missing.', 1;
-          IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL THROW 52009, 'Sales.invoice_number missing.', 1;
+          IF COL_LENGTH('dbo.Settings', 'key_name') IS NULL THROW 52002, 'Settings.key_name missing.', 1;
+          IF COL_LENGTH('dbo.Products', 'price_usd') IS NULL THROW 52003, 'Products.price_usd missing.', 1;
+          IF COL_LENGTH('dbo.Products', 'sale_price_usd') IS NULL THROW 52004, 'Products.sale_price_usd missing.', 1;
+          IF OBJECT_ID(N'dbo.Sale_Items', N'U') IS NULL THROW 52005, 'Legacy Sale_Items table missing.', 1;
+          IF COL_LENGTH('dbo.Sales', 'customer_name') IS NULL THROW 52006, 'Sales.customer_name missing.', 1;
+          IF COL_LENGTH('dbo.Customers', 'balance_usd') IS NULL THROW 52007, 'Customers.balance_usd missing.', 1;
+          IF OBJECT_ID(N'dbo.Purchases', N'U') IS NULL THROW 52008, 'Purchases table missing.', 1;
+          IF OBJECT_ID(N'dbo.PurchaseItems', N'U') IS NULL THROW 52009, 'PurchaseItems table missing.', 1;
+          IF OBJECT_ID(N'dbo.InventoryTransactions', N'U') IS NULL THROW 52010, 'InventoryTransactions table missing.', 1;
+          IF OBJECT_ID(N'dbo.SupplierTransactions', N'U') IS NULL THROW 52011, 'SupplierTransactions table missing.', 1;
+          IF OBJECT_ID(N'dbo.SupplierPayments', N'U') IS NULL THROW 52012, 'SupplierPayments table missing.', 1;
+          IF OBJECT_ID(N'dbo.CustomerTransactions', N'U') IS NULL THROW 52013, 'CustomerTransactions table missing.', 1;
+          IF OBJECT_ID(N'dbo.CustomerPayments', N'U') IS NULL THROW 52014, 'CustomerPayments table missing.', 1;
+          IF OBJECT_ID(N'dbo.TR_Sales_CustomerLedger', N'TR') IS NULL THROW 52015, 'Customer ledger sale trigger missing.', 1;
+          IF COL_LENGTH('dbo.Products', 'purchase_price') IS NULL THROW 52016, 'Products.purchase_price missing.', 1;
+          IF COL_LENGTH('dbo.Products', 'selling_price') IS NULL THROW 52017, 'Products.selling_price missing.', 1;
+          IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL THROW 52018, 'Sales.invoice_number missing.', 1;
           "@
             [void]$command.ExecuteNonQuery()
 
@@ -144,7 +155,7 @@ jobs:
           Copy-Item 'database\install\000_base_schema.sql' (Join-Path $package 'Database\000_base_schema.sql') -Force
           Copy-Item 'database\migrations\*.sql' (Join-Path $package 'Migrations') -Force
           Copy-Item 'installer\install_pos_system.bat' $package -Force
-          Copy-Item 'installer\install_pos_system.ps1' $package -Force
+          Copy-Item 'installer\setup_pos_lan.ps1' $package -Force
           Copy-Item 'installer\Installer.config.json' $package -Force
           Copy-Item 'installer\README.txt' $package -Force
           Copy-Item 'installer\INSTALL_STEPS.txt' $package -Force
@@ -157,7 +168,7 @@ jobs:
           @"
           BuildCommit=$env:GITHUB_SHA
           BuildDateUtc=$([DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ'))
-          InstallModel=SQL_ONLY_SERVER_CLIENT
+          InstallModel=SQL_ONLY_LAN_SERVER_CLIENT
           DatabaseBaseSchema=000_base_schema.sql
           DatabaseMigrations=$migrationNames
           "@ | Set-Content (Join-Path $package 'VERSION.txt') -Encoding UTF8
