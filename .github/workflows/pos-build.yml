@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-database:
     runs-on: windows-latest
 
     steps:
@@ -30,3 +30,65 @@ jobs:
       - name: Build Pos_System
         shell: pwsh
         run: msbuild Pos_System.csproj /m /p:Configuration=Debug /p:Platform=AnyCPU /verbosity:minimal
+
+      - name: Start SQL Server LocalDB
+        shell: pwsh
+        run: |
+          sqllocaldb start MSSQLLocalDB
+          sqllocaldb info MSSQLLocalDB
+
+      - name: Apply database migrations 001-004
+        shell: pwsh
+        run: |
+          function Invoke-SqlFile([string]$Path, [string]$Database = 'master') {
+            $connectionString = "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=$Database;Integrated Security=True;TrustServerCertificate=True"
+            $text = Get-Content -Raw $Path
+            $batches = [regex]::Split($text, '(?im)^\s*GO\s*(?:--.*)?$')
+            foreach ($batch in $batches) {
+              if ([string]::IsNullOrWhiteSpace($batch)) { continue }
+              $connection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+              try {
+                $connection.Open()
+                $command = $connection.CreateCommand()
+                $command.CommandTimeout = 120
+                $command.CommandText = $batch
+                [void]$command.ExecuteNonQuery()
+              }
+              finally {
+                $connection.Dispose()
+              }
+            }
+          }
+
+          Invoke-SqlFile 'database/ci/create_test_baseline.sql' 'master'
+          Invoke-SqlFile 'database/migrations/001_create_schema_migrations.sql' 'pos_system_ci'
+          Invoke-SqlFile 'database/migrations/002_pos_foundation_upgrade.sql' 'pos_system_ci'
+          Invoke-SqlFile 'database/migrations/003_purchases_inventory_ledger.sql' 'pos_system_ci'
+          Invoke-SqlFile 'database/migrations/004_supplier_ledger_payments.sql' 'pos_system_ci'
+
+      - name: Verify upgraded schema
+        shell: pwsh
+        run: |
+          $connectionString = 'Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=pos_system_ci;Integrated Security=True;TrustServerCertificate=True'
+          $connection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+          $connection.Open()
+          try {
+            $command = $connection.CreateCommand()
+            $command.CommandText = @"
+          IF OBJECT_ID(N'dbo.Purchases', N'U') IS NULL THROW 52001, 'Purchases table missing after migration.', 1;
+          IF OBJECT_ID(N'dbo.PurchaseItems', N'U') IS NULL THROW 52002, 'PurchaseItems table missing after migration.', 1;
+          IF OBJECT_ID(N'dbo.InventoryTransactions', N'U') IS NULL THROW 52003, 'InventoryTransactions table missing after migration.', 1;
+          IF OBJECT_ID(N'dbo.SupplierTransactions', N'U') IS NULL THROW 52004, 'SupplierTransactions table missing after migration.', 1;
+          IF OBJECT_ID(N'dbo.SupplierPayments', N'U') IS NULL THROW 52005, 'SupplierPayments table missing after migration.', 1;
+          IF COL_LENGTH('dbo.Products', 'purchase_price') IS NULL THROW 52006, 'Products.purchase_price missing.', 1;
+          IF COL_LENGTH('dbo.Products', 'selling_price') IS NULL THROW 52007, 'Products.selling_price missing.', 1;
+          IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL THROW 52008, 'Sales.invoice_number missing.', 1;
+          IF (SELECT COUNT(*) FROM dbo.SchemaMigrations WHERE migration_key IN
+             (N'001_create_schema_migrations', N'002_pos_foundation_upgrade', N'003_purchases_inventory_ledger', N'004_supplier_ledger_payments')) <> 4
+             THROW 52009, 'Not all expected migrations were recorded.', 1;
+          "@
+            [void]$command.ExecuteNonQuery()
+          }
+          finally {
+            $connection.Dispose()
+          }
