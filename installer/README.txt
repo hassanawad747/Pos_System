@@ -1,37 +1,55 @@
-POS System installer package
+Bike Zone POS - Install / Update Package
 
-Files in this folder:
-- App = application files
-- Database = SQL backup file
-- Installer.config.json = installer settings and optional connection string override
-- install_pos_system.bat = easiest installer to run
-- install_pos_system.ps1 = installer script
-- INSTALL_STEPS.txt = full manual steps
-- restore_database.sql = manual SQL restore script
+Main files:
+- App\ = latest compiled desktop application (Pos_System.exe + DLLs)
+- Database\pos_system.bak = baseline database used ONLY for a fresh device
+- Migrations\ = all versioned SQL database updates
+- Installer.config.json = SQL/install settings
+- install_pos_system.bat = main entry point (Run as administrator)
+- install_pos_system.ps1 = PowerShell install/update engine
+- VERSION.txt = generated build commit/date/migration list in GitHub artifact
 
-Client database connection:
-- The installer updates App\Database.config automatically.
-- Edit Installer.config.json if you want to change SQL instance, install path, shortcut name, or connection string.
-- If connectionString in Installer.config.json is empty, the installer builds it from sqlInstance and databaseName.
-- If connectionString in Installer.config.json has a value, that exact connection string is written into App\Database.config.
-- Do not edit Pos_System.exe.config for the database connection.
+Recommended command:
+  install_pos_system.bat
 
-Quick install on another PC:
+AUTO MODE:
+- If database pos_system does not exist: Fresh Install
+  1. Restore Database\pos_system.bak
+  2. Run every migration in Migrations\ in filename order
+  3. Install latest App files
+  4. Write Database.config
+  5. Create desktop shortcut
+  6. Start application
 
-1. Copy this whole folder to the other PC.
-2. Optional: open Installer.config.json and edit the SQL settings or connection string.
-3. Install SQL Server Database Engine or SQL Server Express.
-4. Make sure SQL Server service exists: MSSQLSERVER or SQLEXPRESS.
-5. Install sqlcmd if it is not already installed.
-6. Right click install_pos_system.bat.
-7. Choose Run as administrator.
+- If database pos_system already exists: Safe Upgrade
+  1. DO NOT restore the baseline .bak over live data
+  2. Create a pre-upgrade SQL backup
+  3. Run every migration in Migrations\ in filename order
+  4. Save previous application files under C:\BikeZonePOS\PreviousVersions
+  5. Install latest App files
+  6. Start application
 
-The installer will:
-- Copy the app to C:\BikeZonePOS\App
-- Copy the backup to C:\BikeZonePOS\Database
-- Restore database pos_system
-- Write App\Database.config from Installer.config.json
-- Create a desktop shortcut
-- Open the application
+Explicit modes:
+  install_pos_system.bat install
+  install_pos_system.bat upgrade
 
-If automatic install fails, open INSTALL_STEPS.txt and follow the manual steps.
+Default locations:
+- C:\BikeZonePOS\App
+- C:\BikeZonePOS\Database
+- C:\BikeZonePOS\Database\Backups
+- C:\BikeZonePOS\PreviousVersions
+
+SQL Server:
+- Existing SQL Server / SQL Server Express instances are auto-detected.
+- sqlcmd.exe is NOT required by the new installer.
+- If SQL Server is missing and SQL2022-SSEI-Expr.exe is included, the installer opens the Microsoft SQL Server Express installer.
+
+Connection:
+- Installer.config.json can override SQL instance/database/connection string.
+- App\Database.config is generated automatically for the detected target.
+
+Release process:
+Every successful push build on the development branch creates a GitHub Actions artifact named:
+  BikeZonePOS-Installer
+
+The artifact contains the compiled application, database baseline, ALL migration scripts, setup scripts and version information. Future database migrations are included automatically; the workflow does not require a hard-coded migration list.
