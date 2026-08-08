@@ -18,31 +18,15 @@ namespace Pos_System.Services
 
         public Purchase CreatePurchase(Purchase purchase)
         {
-            if (purchase == null)
-                throw new ArgumentNullException(nameof(purchase));
+            if (purchase == null) throw new ArgumentNullException(nameof(purchase));
+            if (purchase.SupplierId <= 0) throw new InvalidOperationException("A supplier is required for a purchase.");
+            if (purchase.UserId <= 0) throw new InvalidOperationException("A user is required for a purchase.");
+            if (purchase.PurchaseItems == null || !purchase.PurchaseItems.Any()) throw new InvalidOperationException("A purchase must contain at least one item.");
+            if (!_context.Suppliers.Any(s => s.SupplierId == purchase.SupplierId)) throw new InvalidOperationException("The selected supplier does not exist.");
+            if (!_context.Users.Any(u => u.User_Id == purchase.UserId)) throw new InvalidOperationException("The selected user does not exist.");
 
-            if (purchase.SupplierId <= 0)
-                throw new InvalidOperationException("A supplier is required for a purchase.");
-
-            if (purchase.UserId <= 0)
-                throw new InvalidOperationException("A user is required for a purchase.");
-
-            if (purchase.PurchaseItems == null || !purchase.PurchaseItems.Any())
-                throw new InvalidOperationException("A purchase must contain at least one item.");
-
-            if (!_context.Suppliers.Any(s => s.SupplierId == purchase.SupplierId))
-                throw new InvalidOperationException("The selected supplier does not exist.");
-
-            if (!_context.Users.Any(u => u.User_Id == purchase.UserId))
-                throw new InvalidOperationException("The selected user does not exist.");
-
-            if (string.IsNullOrWhiteSpace(purchase.InvoiceNumber))
-            {
-                purchase.InvoiceNumber = GeneratePurchaseNumber();
-            }
-
-            if (_context.Purchases.Any(p => p.InvoiceNumber == purchase.InvoiceNumber))
-                throw new InvalidOperationException("The purchase invoice number already exists.");
+            if (string.IsNullOrWhiteSpace(purchase.InvoiceNumber)) purchase.InvoiceNumber = GeneratePurchaseNumber();
+            if (_context.Purchases.Any(p => p.InvoiceNumber == purchase.InvoiceNumber)) throw new InvalidOperationException("The purchase invoice number already exists.");
 
             DateTime now = DateTime.UtcNow;
             purchase.PurchaseDate = purchase.PurchaseDate == default(DateTime) ? now : purchase.PurchaseDate;
@@ -60,25 +44,16 @@ namespace Pos_System.Services
                 {
                     foreach (PurchaseItem item in purchase.PurchaseItems)
                     {
-                        if (item.ProductId <= 0)
-                            throw new InvalidOperationException("Every purchase item must have a product.");
-
-                        if (item.Quantity <= 0)
-                            throw new InvalidOperationException("Purchase item quantity must be greater than zero.");
-
-                        if (item.UnitCost < 0)
-                            throw new InvalidOperationException("Purchase item unit cost cannot be negative.");
+                        if (item.ProductId <= 0) throw new InvalidOperationException("Every purchase item must have a product.");
+                        if (item.Quantity <= 0) throw new InvalidOperationException("Purchase item quantity must be greater than zero.");
+                        if (item.UnitCost < 0) throw new InvalidOperationException("Purchase item unit cost cannot be negative.");
 
                         Product product = _context.Products.SingleOrDefault(p => p.ProductId == item.ProductId);
-                        if (product == null)
-                            throw new InvalidOperationException("A product in the purchase does not exist. ProductId: " + item.ProductId);
+                        if (product == null) throw new InvalidOperationException("Product does not exist. ProductId: " + item.ProductId);
 
                         decimal baseAmount = item.UnitCost * item.Quantity;
-                        if (item.DiscountAmount < 0 || item.DiscountAmount > baseAmount)
-                            throw new InvalidOperationException("Purchase item discount is invalid.");
-
-                        if (item.TaxAmount < 0)
-                            throw new InvalidOperationException("Purchase item tax cannot be negative.");
+                        if (item.DiscountAmount < 0 || item.DiscountAmount > baseAmount) throw new InvalidOperationException("Purchase item discount is invalid.");
+                        if (item.TaxAmount < 0) throw new InvalidOperationException("Purchase item tax cannot be negative.");
 
                         item.LineTotal = baseAmount - item.DiscountAmount + item.TaxAmount;
                         subtotal += baseAmount;
@@ -87,7 +62,6 @@ namespace Pos_System.Services
 
                         int oldQuantity = product.StockQuantity;
                         int newQuantity = checked(oldQuantity + item.Quantity);
-
                         product.StockQuantity = newQuantity;
                         product.PurchasePrice = item.UnitCost;
                         product.UpdatedAt = now;
@@ -115,9 +89,12 @@ namespace Pos_System.Services
                         throw new InvalidOperationException("Paid amount must be between zero and the purchase total.");
 
                     purchase.RemainingAmount = purchase.TotalAmount - purchase.PaidAmount;
-                    purchase.PaymentStatus = purchase.RemainingAmount == 0m
-                        ? "PAID"
-                        : purchase.PaidAmount > 0m ? "PARTIAL" : "UNPAID";
+                    purchase.PaymentStatus = purchase.RemainingAmount == 0m ? "PAID" : purchase.PaidAmount > 0m ? "PARTIAL" : "UNPAID";
+
+                    decimal previousSupplierBalance = _context.SupplierTransactions
+                        .Where(x => x.SupplierId == purchase.SupplierId && x.Currency == "USD")
+                        .Select(x => (decimal?)(x.Credit - x.Debit))
+                        .Sum() ?? 0m;
 
                     _context.Purchases.Add(purchase);
                     _context.SaveChanges();
@@ -126,6 +103,54 @@ namespace Pos_System.Services
                     {
                         inventoryRow.ReferenceId = purchase.PurchaseId;
                         _context.InventoryTransactions.Add(inventoryRow);
+                    }
+
+                    decimal balanceAfterPurchase = previousSupplierBalance + purchase.TotalAmount;
+                    _context.SupplierTransactions.Add(new SupplierTransaction
+                    {
+                        SupplierId = purchase.SupplierId,
+                        TransactionType = "PURCHASE",
+                        ReferenceType = "PURCHASE",
+                        ReferenceId = purchase.PurchaseId,
+                        Debit = 0m,
+                        Credit = purchase.TotalAmount,
+                        BalanceAfter = balanceAfterPurchase,
+                        Currency = "USD",
+                        Description = "Purchase " + purchase.InvoiceNumber,
+                        UserId = purchase.UserId,
+                        CreatedAt = now
+                    });
+
+                    if (purchase.PaidAmount > 0m)
+                    {
+                        var payment = new SupplierPayment
+                        {
+                            SupplierId = purchase.SupplierId,
+                            Amount = purchase.PaidAmount,
+                            Currency = "USD",
+                            PaymentMethod = string.IsNullOrWhiteSpace(purchase.PaymentMethod) ? "CASH" : purchase.PaymentMethod.Trim().ToUpperInvariant(),
+                            ReferenceNumber = purchase.InvoiceNumber,
+                            Notes = "Payment recorded with purchase",
+                            UserId = purchase.UserId,
+                            PaymentDate = now
+                        };
+                        _context.SupplierPayments.Add(payment);
+                        _context.SaveChanges();
+
+                        _context.SupplierTransactions.Add(new SupplierTransaction
+                        {
+                            SupplierId = purchase.SupplierId,
+                            TransactionType = "PAYMENT",
+                            ReferenceType = "SUPPLIER_PAYMENT",
+                            ReferenceId = payment.SupplierPaymentId,
+                            Debit = purchase.PaidAmount,
+                            Credit = 0m,
+                            BalanceAfter = balanceAfterPurchase - purchase.PaidAmount,
+                            Currency = "USD",
+                            Description = "Payment with purchase " + purchase.InvoiceNumber,
+                            UserId = purchase.UserId,
+                            CreatedAt = now
+                        });
                     }
 
                     _context.SaveChanges();
@@ -142,8 +167,7 @@ namespace Pos_System.Services
 
         private string GeneratePurchaseNumber()
         {
-            return "PUR-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff") + "-" +
-                   Guid.NewGuid().ToString("N").Substring(0, 6).ToUpperInvariant();
+            return "PUR-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff") + "-" + Guid.NewGuid().ToString("N").Substring(0, 6).ToUpperInvariant();
         }
     }
 }
