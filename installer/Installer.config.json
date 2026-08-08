@@ -6,5 +6,7 @@
   "sqlServiceName": "MSSQLSERVER",
   "shortcutName": "Bike Zone POS",
   "launchAfterInstall": true,
+  "installSqlIfMissing": true,
+  "createPreUpgradeBackup": true,
   "connectionString": ""
 }
