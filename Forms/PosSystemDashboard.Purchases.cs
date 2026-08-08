@@ -9,6 +9,7 @@ namespace Pos_System.Forms
         private bool purchaseMenusAdded;
         private ToolStripButton menuPurchases;
         private ToolStripButton menuSupplierLedger;
+        private ToolStripButton menuCustomerLedger;
 
         protected override void OnShown(EventArgs e)
         {
@@ -22,12 +23,18 @@ namespace Pos_System.Forms
 
             menuPurchases = CreateDashboardMenuButton("Purchases", OpenPurchases_Click);
             menuSupplierLedger = CreateDashboardMenuButton("Supplier Ledger", OpenSupplierLedger_Click);
+            menuCustomerLedger = CreateDashboardMenuButton("Customer Ledger", OpenCustomerLedger_Click);
 
             int supplierIndex = dashboardMenuStrip.Items.IndexOf(menuSupplier);
             if (supplierIndex < 0) supplierIndex = Math.Min(3, dashboardMenuStrip.Items.Count);
 
             dashboardMenuStrip.Items.Insert(supplierIndex, menuPurchases);
             dashboardMenuStrip.Items.Insert(Math.Min(supplierIndex + 2, dashboardMenuStrip.Items.Count), menuSupplierLedger);
+
+            int customerIndex = dashboardMenuStrip.Items.IndexOf(menuCustomers);
+            if (customerIndex < 0) customerIndex = Math.Min(supplierIndex + 3, dashboardMenuStrip.Items.Count);
+            dashboardMenuStrip.Items.Insert(Math.Min(customerIndex + 1, dashboardMenuStrip.Items.Count), menuCustomerLedger);
+
             purchaseMenusAdded = true;
             LayoutDashboardMenuButtons();
         }
@@ -50,6 +57,16 @@ namespace Pos_System.Forms
                 return;
             }
             LoadForm(new SupplierLedgerForm());
+        }
+
+        private void OpenCustomerLedger_Click(object sender, EventArgs e)
+        {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenCustomers))
+            {
+                MessageBox.Show("You do not have permission to open customer ledger.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            LoadForm(new CustomerLedgerForm());
         }
     }
 }
