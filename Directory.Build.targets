@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\BusinessIntelligenceService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ErrorLogService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ActionPermissionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\AppServices.cs" />
 
     <Compile Include="$(MSBuildThisFileDirectory)Forms\PurchaseForm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Forms\SupplierLedgerForm.cs" />
