@@ -27,6 +27,21 @@ jobs:
         shell: pwsh
         run: nuget restore packages.config -PackagesDirectory packages
 
+      - name: Validate installer PowerShell syntax
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [void][System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'installer\install_pos_system.ps1'),
+            [ref]$tokens,
+            [ref]$errors
+          )
+          if ($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.Message }
+            exit 1
+          }
+
       - name: Build Pos_System
         shell: pwsh
         run: msbuild Pos_System.csproj /m /p:Configuration=Debug /p:Platform=AnyCPU /verbosity:minimal
@@ -37,7 +52,7 @@ jobs:
           sqllocaldb start MSSQLLocalDB
           sqllocaldb info MSSQLLocalDB
 
-      - name: Apply database migrations 001-004
+      - name: Apply all database migrations
         shell: pwsh
         run: |
           function Invoke-SqlFile([string]$Path, [string]$Database = 'master') {
@@ -61,10 +76,12 @@ jobs:
           }
 
           Invoke-SqlFile 'database/ci/create_test_baseline.sql' 'master'
-          Invoke-SqlFile 'database/migrations/001_create_schema_migrations.sql' 'pos_system_ci'
-          Invoke-SqlFile 'database/migrations/002_pos_foundation_upgrade.sql' 'pos_system_ci'
-          Invoke-SqlFile 'database/migrations/003_purchases_inventory_ledger.sql' 'pos_system_ci'
-          Invoke-SqlFile 'database/migrations/004_supplier_ledger_payments.sql' 'pos_system_ci'
+          $migrations = Get-ChildItem 'database\migrations' -Filter '*.sql' -File | Sort-Object Name
+          if (-not $migrations) { throw 'No database migrations were found.' }
+          foreach ($migration in $migrations) {
+            Write-Host "Applying $($migration.Name)"
+            Invoke-SqlFile $migration.FullName 'pos_system_ci'
+          }
 
       - name: Verify upgraded schema
         shell: pwsh
@@ -83,11 +100,15 @@ jobs:
           IF COL_LENGTH('dbo.Products', 'purchase_price') IS NULL THROW 52006, 'Products.purchase_price missing.', 1;
           IF COL_LENGTH('dbo.Products', 'selling_price') IS NULL THROW 52007, 'Products.selling_price missing.', 1;
           IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL THROW 52008, 'Sales.invoice_number missing.', 1;
-          IF (SELECT COUNT(*) FROM dbo.SchemaMigrations WHERE migration_key IN
-             (N'001_create_schema_migrations', N'002_pos_foundation_upgrade', N'003_purchases_inventory_ledger', N'004_supplier_ledger_payments')) <> 4
-             THROW 52009, 'Not all expected migrations were recorded.', 1;
           "@
             [void]$command.ExecuteNonQuery()
+
+            $command.CommandText = 'SELECT COUNT(*) FROM dbo.SchemaMigrations;'
+            $appliedCount = [int]$command.ExecuteScalar()
+            $fileCount = (Get-ChildItem 'database\migrations' -Filter '*.sql' -File).Count
+            if ($appliedCount -lt $fileCount) {
+              throw "SchemaMigrations recorded $appliedCount migrations but repository contains $fileCount migration files."
+            }
           }
           finally {
             $connection.Dispose()
@@ -116,10 +137,11 @@ jobs:
             Copy-Item 'installer\SQL2022-SSEI-Expr.exe' $package -Force
           }
 
+          $migrationNames = (Get-ChildItem 'database\migrations' -Filter '*.sql' -File | Sort-Object Name | Select-Object -ExpandProperty Name) -join ','
           @"
           BuildCommit=$env:GITHUB_SHA
           BuildDateUtc=$([DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ'))
-          DatabaseMigrations=001-004
+          DatabaseMigrations=$migrationNames
           "@ | Set-Content (Join-Path $package 'VERSION.txt') -Encoding UTF8
 
       - name: Upload installer package
