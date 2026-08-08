@@ -31,8 +31,6 @@ END;
 COMMIT TRANSACTION;
 GO
 
-/* Create one payment record automatically for the current legacy Sales screen.
-   Later the split-payment UI can replace this legacy-auto row with multiple explicit rows. */
 CREATE OR ALTER TRIGGER dbo.TR_Sales_DefaultSalePayment
 ON dbo.Sales
 AFTER INSERT
@@ -61,6 +59,34 @@ BEGIN
 END;
 GO
 
+/* A sale debits the customer ledger; payment rows credit it, leaving only the unpaid balance. */
+CREATE OR ALTER TRIGGER dbo.TR_SalePayments_CustomerLedger
+ON dbo.SalePayments
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    ;WITH P AS
+    (
+        SELECT i.sale_payment_id,i.sale_id,i.amount,i.currency,i.created_at,s.customer_id,s.user_id
+        FROM inserted i INNER JOIN dbo.Sales s ON s.sale_id=i.sale_id
+        WHERE s.customer_id IS NOT NULL AND i.amount>0
+    ), B AS
+    (
+        SELECT p.customer_id,p.currency,
+               ISNULL((SELECT TOP(1) ct.balance_after FROM dbo.CustomerTransactions ct WHERE ct.customer_id=p.customer_id AND ct.currency=p.currency ORDER BY ct.customer_transaction_id DESC),0) starting_balance
+        FROM P p GROUP BY p.customer_id,p.currency
+    ), O AS
+    (
+        SELECT p.*, b.starting_balance - SUM(p.amount) OVER(PARTITION BY p.customer_id,p.currency ORDER BY p.sale_payment_id ROWS UNBOUNDED PRECEDING) new_balance
+        FROM P p INNER JOIN B b ON b.customer_id=p.customer_id AND b.currency=p.currency
+    )
+    INSERT dbo.CustomerTransactions(customer_id,transaction_type,reference_type,reference_id,debit,credit,balance_after,currency,description,user_id,created_at)
+    SELECT customer_id,N'SALE_PAYMENT',N'SALE_PAYMENT',sale_payment_id,0,amount,new_balance,currency,N'Payment for sale #'+CONVERT(NVARCHAR(30),sale_id),user_id,created_at
+    FROM O;
+END;
+GO
+
 CREATE OR ALTER TRIGGER dbo.TR_SalePayments_CashMovement
 ON dbo.SalePayments
 AFTER INSERT
@@ -69,8 +95,7 @@ BEGIN
     SET NOCOUNT ON;
     INSERT dbo.CashMovements(cash_session_id,movement_type,amount,currency,reference_type,reference_id,description,user_id,created_at)
     SELECT i.cash_session_id,N'SALE',i.amount,i.currency,N'SALE_PAYMENT',i.sale_payment_id,N'Sale payment',s.user_id,i.created_at
-    FROM inserted i
-    INNER JOIN dbo.Sales s ON s.sale_id=i.sale_id
+    FROM inserted i INNER JOIN dbo.Sales s ON s.sale_id=i.sale_id
     WHERE i.cash_session_id IS NOT NULL AND UPPER(i.payment_method)=N'CASH';
 END;
 GO
