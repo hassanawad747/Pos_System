@@ -44,19 +44,19 @@ jobs:
             $connectionString = "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=$Database;Integrated Security=True;TrustServerCertificate=True"
             $text = Get-Content -Raw $Path
             $batches = [regex]::Split($text, '(?im)^\s*GO\s*(?:--.*)?$')
-            foreach ($batch in $batches) {
-              if ([string]::IsNullOrWhiteSpace($batch)) { continue }
-              $connection = New-Object System.Data.SqlClient.SqlConnection $connectionString
-              try {
-                $connection.Open()
+            $connection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+            try {
+              $connection.Open()
+              foreach ($batch in $batches) {
+                if ([string]::IsNullOrWhiteSpace($batch)) { continue }
                 $command = $connection.CreateCommand()
                 $command.CommandTimeout = 120
                 $command.CommandText = $batch
                 [void]$command.ExecuteNonQuery()
               }
-              finally {
-                $connection.Dispose()
-              }
+            }
+            finally {
+              $connection.Dispose()
             }
           }
 
