@@ -1,6 +1,5 @@
 @echo off
 setlocal
-
 cd /d "%~dp0"
 
 net session >nul 2>&1
@@ -13,26 +12,25 @@ if not "%errorlevel%"=="0" (
     exit /b 1
 )
 
-set "MODE=Auto"
-if /I "%~1"=="install" set "MODE=Install"
-if /I "%~1"=="upgrade" set "MODE=Upgrade"
-if /I "%~1"=="auto" set "MODE=Auto"
+set "ROLE=Interactive"
+if /I "%~1"=="server" set "ROLE=Server"
+if /I "%~1"=="client" set "ROLE=Client"
 
 echo.
-echo =============================================
-echo  Bike Zone POS - Install / Update
-echo  Mode: %MODE%
-echo =============================================
+echo =================================================
+echo  Bike Zone POS - LAN Server / Client Installer
+echo  Role: %ROLE%
+echo =================================================
 echo.
 
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0install_pos_system.ps1" -Mode "%MODE%"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0install_pos_system.ps1" -Role "%ROLE%"
 set "EXITCODE=%errorlevel%"
 
 echo.
 if "%EXITCODE%"=="0" (
-    echo POS setup/update finished successfully.
+    echo POS setup finished successfully.
 ) else (
-    echo POS setup/update failed. Error code: %EXITCODE%
+    echo POS setup failed. Error code: %EXITCODE%
 )
 
 echo.
