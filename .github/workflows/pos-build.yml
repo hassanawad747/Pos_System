@@ -92,3 +92,41 @@ jobs:
           finally {
             $connection.Dispose()
           }
+
+      - name: Build installer package
+        if: github.event_name != 'pull_request'
+        shell: pwsh
+        run: |
+          $package = Join-Path $PWD 'dist\BikeZonePOS-Installer'
+          New-Item -ItemType Directory -Force -Path $package | Out-Null
+          New-Item -ItemType Directory -Force -Path (Join-Path $package 'App') | Out-Null
+          New-Item -ItemType Directory -Force -Path (Join-Path $package 'Database') | Out-Null
+          New-Item -ItemType Directory -Force -Path (Join-Path $package 'Migrations') | Out-Null
+
+          Copy-Item 'bin\Debug\*' (Join-Path $package 'App') -Recurse -Force
+          Copy-Item 'database\migrations\*.sql' (Join-Path $package 'Migrations') -Force
+          Copy-Item 'installer\Database\pos_system.bak' (Join-Path $package 'Database\pos_system.bak') -Force
+          Copy-Item 'installer\install_pos_system.bat' $package -Force
+          Copy-Item 'installer\install_pos_system.ps1' $package -Force
+          Copy-Item 'installer\Installer.config.json' $package -Force
+          Copy-Item 'installer\README.txt' $package -Force
+          Copy-Item 'installer\INSTALL_STEPS.txt' $package -Force
+          Copy-Item 'installer\تعليمات_التثبيت_بالعربي.txt' $package -Force
+          if (Test-Path 'installer\SQL2022-SSEI-Expr.exe') {
+            Copy-Item 'installer\SQL2022-SSEI-Expr.exe' $package -Force
+          }
+
+          @"
+          BuildCommit=$env:GITHUB_SHA
+          BuildDateUtc=$([DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ'))
+          DatabaseMigrations=001-004
+          "@ | Set-Content (Join-Path $package 'VERSION.txt') -Encoding UTF8
+
+      - name: Upload installer package
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: BikeZonePOS-Installer
+          path: dist/BikeZonePOS-Installer
+          if-no-files-found: error
+          retention-days: 30
