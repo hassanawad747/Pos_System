@@ -1,0 +1,13 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    Pos_System.csproj is a legacy non-SDK project, so new .cs files are not
+    included automatically. Keep new module files explicitly included here
+    until the project is migrated to SDK-style .NET.
+  -->
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Purchase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PurchaseItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\InventoryTransaction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\PurchaseService.cs" />
+  </ItemGroup>
+</Project>
