@@ -63,6 +63,7 @@ namespace Pos_System.Services
                 ApplyApplicationIcon(embeddedForm);
                 embeddedForm.BackColor = AppBackground;
                 embeddedForm.Font = new Font("Segoe UI", 9.5F);
+                TryAttachSpecializedUi(embeddedForm);
             }
         }
 
@@ -88,6 +89,13 @@ namespace Pos_System.Services
 
             HookControlTree(form);
             ApplyToControls(form.Controls);
+            TryAttachSpecializedUi(form);
+        }
+
+        private static void TryAttachSpecializedUi(Form form)
+        {
+            if (form is Pos_System.Forms.Sales)
+                SalesAdvancedUiService.Attach(form);
         }
 
         private static void HookControlTree(Control control)
@@ -139,6 +147,8 @@ namespace Pos_System.Services
             {
                 StyleSingleControl(control);
                 HookControlTree(control);
+                Form embeddedForm = control as Form;
+                if (embeddedForm != null) TryAttachSpecializedUi(embeddedForm);
                 if (control.HasChildren)
                     ApplyToControls(control.Controls);
             }
