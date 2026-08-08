@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -19,6 +20,50 @@ namespace Pos_System.Services
         internal static readonly Color Danger = Color.FromArgb(220, 38, 38);
         internal static readonly Color Sidebar = Color.FromArgb(15, 23, 42);
 
+        private static readonly HashSet<Form> ThemedForms = new HashSet<Form>();
+        private static bool globalThemeEnabled;
+
+        public static void EnableGlobalTheme()
+        {
+            if (globalThemeEnabled) return;
+            globalThemeEnabled = true;
+            Application.Idle += Application_Idle;
+        }
+
+        private static void Application_Idle(object sender, EventArgs e)
+        {
+            for (int index = 0; index < Application.OpenForms.Count; index++)
+            {
+                Form form = Application.OpenForms[index];
+                if (form == null || form.IsDisposed) continue;
+
+                if (!ThemedForms.Contains(form))
+                {
+                    Apply(form);
+                    ThemedForms.Add(form);
+                    form.ControlAdded += Form_ControlAdded;
+                    form.Disposed += Form_Disposed;
+                }
+            }
+        }
+
+        private static void Form_ControlAdded(object sender, ControlEventArgs e)
+        {
+            if (e.Control == null) return;
+            StyleSingleControl(e.Control);
+            if (e.Control.HasChildren)
+                ApplyToControls(e.Control.Controls);
+        }
+
+        private static void Form_Disposed(object sender, EventArgs e)
+        {
+            Form form = sender as Form;
+            if (form == null) return;
+            ThemedForms.Remove(form);
+            form.ControlAdded -= Form_ControlAdded;
+            form.Disposed -= Form_Disposed;
+        }
+
         public static void Apply(Form form)
         {
             if (form == null || form.IsDisposed) return;
@@ -36,59 +81,63 @@ namespace Pos_System.Services
         {
             foreach (Control control in controls.Cast<Control>().ToList())
             {
-                if (control is DataGridView grid)
-                {
-                    StyleGrid(grid);
-                }
-                else if (control is Button button)
-                {
-                    StyleButton(button);
-                }
-                else if (control is TextBox textBox)
-                {
-                    StyleTextBox(textBox);
-                }
-                else if (control is ComboBox comboBox)
-                {
-                    StyleComboBox(comboBox);
-                }
-                else if (control is NumericUpDown numeric)
-                {
-                    numeric.Font = new Font("Segoe UI", 10F);
-                    numeric.BackColor = Surface;
-                    numeric.ForeColor = TextPrimary;
-                    numeric.BorderStyle = BorderStyle.FixedSingle;
-                }
-                else if (control is DateTimePicker picker)
-                {
-                    picker.Font = new Font("Segoe UI", 9.5F);
-                    picker.CalendarForeColor = TextPrimary;
-                    picker.CalendarMonthBackground = Surface;
-                }
-                else if (control is Label label)
-                {
-                    if (label.ForeColor == Color.Black || label.ForeColor == SystemColors.ControlText)
-                        label.ForeColor = TextPrimary;
-                    if (label.Font.Name != "Segoe UI")
-                        label.Font = new Font("Segoe UI", Math.Max(9F, label.Font.Size), label.Font.Style);
-                }
-                else if (control is GroupBox groupBox)
-                {
-                    groupBox.ForeColor = TextPrimary;
-                    groupBox.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-                }
-                else if (control is Panel panel)
-                {
-                    if (panel.BackColor == SystemColors.Control || panel.BackColor == Color.Transparent)
-                        panel.BackColor = Surface;
-                }
-                else if (control is ToolStrip strip)
-                {
-                    StyleToolStrip(strip);
-                }
-
+                StyleSingleControl(control);
                 if (control.HasChildren)
                     ApplyToControls(control.Controls);
+            }
+        }
+
+        private static void StyleSingleControl(Control control)
+        {
+            if (control is DataGridView grid)
+            {
+                StyleGrid(grid);
+            }
+            else if (control is Button button)
+            {
+                StyleButton(button);
+            }
+            else if (control is TextBox textBox)
+            {
+                StyleTextBox(textBox);
+            }
+            else if (control is ComboBox comboBox)
+            {
+                StyleComboBox(comboBox);
+            }
+            else if (control is NumericUpDown numeric)
+            {
+                numeric.Font = new Font("Segoe UI", 10F);
+                numeric.BackColor = Surface;
+                numeric.ForeColor = TextPrimary;
+                numeric.BorderStyle = BorderStyle.FixedSingle;
+            }
+            else if (control is DateTimePicker picker)
+            {
+                picker.Font = new Font("Segoe UI", 9.5F);
+                picker.CalendarForeColor = TextPrimary;
+                picker.CalendarMonthBackground = Surface;
+            }
+            else if (control is Label label)
+            {
+                if (label.ForeColor == Color.Black || label.ForeColor == SystemColors.ControlText)
+                    label.ForeColor = TextPrimary;
+                if (label.Font.Name != "Segoe UI")
+                    label.Font = new Font("Segoe UI", Math.Max(9F, label.Font.Size), label.Font.Style);
+            }
+            else if (control is GroupBox groupBox)
+            {
+                groupBox.ForeColor = TextPrimary;
+                groupBox.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            }
+            else if (control is Panel panel)
+            {
+                if (panel.BackColor == SystemColors.Control || panel.BackColor == Color.Transparent)
+                    panel.BackColor = Surface;
+            }
+            else if (control is ToolStrip strip)
+            {
+                StyleToolStrip(strip);
             }
         }
 
