@@ -17,6 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup .NET 10 LTS
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
@@ -40,9 +45,13 @@ jobs:
             }
           }
 
-      - name: Build Pos_System
+      - name: Build Pos_System .NET Framework production app
         shell: pwsh
         run: msbuild Pos_System.csproj /m /p:Configuration=Debug /p:Platform=AnyCPU /verbosity:minimal
+
+      - name: Build .NET 10 modernization app
+        shell: pwsh
+        run: dotnet build modern/PosSystem.Modern/PosSystem.Modern.csproj --configuration Release --no-restore:false
 
       - name: Validate branded shortcut icon generation
         shell: pwsh
@@ -119,12 +128,10 @@ jobs:
           IF OBJECT_ID(N'dbo.CashSessions', N'U') IS NULL THROW 52009, 'CashSessions missing.', 1;
           IF OBJECT_ID(N'dbo.SalePayments', N'U') IS NULL THROW 52010, 'SalePayments missing.', 1;
           IF OBJECT_ID(N'dbo.WhishPaymentAttempts', N'U') IS NULL THROW 52011, 'WhishPaymentAttempts missing.', 1;
-
           IF OBJECT_ID(N'dbo.HeldSales', N'U') IS NULL THROW 52100, 'HeldSales missing.', 1;
           IF OBJECT_ID(N'dbo.Quotations', N'U') IS NULL THROW 52101, 'Quotations missing.', 1;
           IF OBJECT_ID(N'dbo.SalesReturns', N'U') IS NULL THROW 52102, 'SalesReturns missing.', 1;
           IF OBJECT_ID(N'dbo.SalesReturnItems', N'U') IS NULL THROW 52103, 'SalesReturnItems missing.', 1;
-
           IF OBJECT_ID(N'dbo.Branches', N'U') IS NULL THROW 52200, 'Branches missing.', 1;
           IF OBJECT_ID(N'dbo.Warehouses', N'U') IS NULL THROW 52201, 'Warehouses missing.', 1;
           IF OBJECT_ID(N'dbo.ProductStock', N'U') IS NULL THROW 52202, 'ProductStock missing.', 1;
@@ -135,14 +142,12 @@ jobs:
           IF OBJECT_ID(N'dbo.ProductBarcodes', N'U') IS NULL THROW 52207, 'ProductBarcodes missing.', 1;
           IF OBJECT_ID(N'dbo.ProductBatches', N'U') IS NULL THROW 52208, 'ProductBatches missing.', 1;
           IF OBJECT_ID(N'dbo.ProductSerials', N'U') IS NULL THROW 52209, 'ProductSerials missing.', 1;
-
           IF OBJECT_ID(N'dbo.Currencies', N'U') IS NULL THROW 52300, 'Currencies missing.', 1;
           IF OBJECT_ID(N'dbo.ExchangeRates', N'U') IS NULL THROW 52301, 'ExchangeRates missing.', 1;
           IF OBJECT_ID(N'dbo.TaxRates', N'U') IS NULL THROW 52302, 'TaxRates missing.', 1;
           IF OBJECT_ID(N'dbo.ProductPrices', N'U') IS NULL THROW 52303, 'ProductPrices missing.', 1;
           IF OBJECT_ID(N'dbo.Promotions', N'U') IS NULL THROW 52304, 'Promotions missing.', 1;
           IF OBJECT_ID(N'dbo.LoyaltyAccounts', N'U') IS NULL THROW 52305, 'LoyaltyAccounts missing.', 1;
-
           IF OBJECT_ID(N'dbo.ActionPermissions', N'U') IS NULL THROW 52400, 'ActionPermissions missing.', 1;
           IF OBJECT_ID(N'dbo.ErrorLogs', N'U') IS NULL THROW 52401, 'ErrorLogs missing.', 1;
           IF OBJECT_ID(N'dbo.DatabaseVerificationRuns', N'U') IS NULL THROW 52402, 'DatabaseVerificationRuns missing.', 1;
@@ -152,7 +157,6 @@ jobs:
           IF OBJECT_ID(N'dbo.vw_SupplierBusinessSummary', N'V') IS NULL THROW 52406, 'Supplier BI view missing.', 1;
           "@
             [void]$command.ExecuteNonQuery()
-
             $command.CommandText = 'SELECT COUNT(*) FROM dbo.SchemaMigrations;'
             $appliedCount = [int]$command.ExecuteScalar()
             $fileCount = (Get-ChildItem 'database\migrations' -Filter '*.sql' -File).Count
@@ -215,6 +219,7 @@ jobs:
           DatabaseMigrations=$migrationNames
           BrandingIcon=BikeZonePOS.ico generated during install
           DatabaseVerificationTool=verify_database.ps1
+          ModernizationTarget=net10.0-windows (validated in CI, not installer default until parity complete)
           "@ | Set-Content (Join-Path $package 'VERSION.txt') -Encoding UTF8
 
       - name: Upload installer package
