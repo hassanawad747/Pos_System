@@ -14,6 +14,9 @@ namespace Pos_System.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleItem> SaleItems { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<PurchaseItem> PurchaseItems { get; set; }
+        public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
         public DbSet<InventoryLog> InventoryLogs { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Setting> Settings { get; set; }
@@ -29,14 +32,21 @@ namespace Pos_System.Data
                 .HasIndex(u => u.Username)
                 .IsUnique();
 
-            // Product lookup is one of the hottest POS paths, so keep barcode indexed.
-            // It is intentionally not unique yet because existing data must be checked
-            // for duplicate/blank barcodes before enforcing a unique constraint.
             modelBuilder.Entity<Product>()
-                .HasIndex(p => p.Barcode);
+                .HasIndex(p => p.Barcode)
+                .IsUnique()
+                .HasFilter("[Barcode] IS NOT NULL");
 
             modelBuilder.Entity<Product>()
                 .Property(p => p.Price)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.PurchasePrice)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.SellingPrice)
                 .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Product>()
@@ -50,6 +60,11 @@ namespace Pos_System.Data
                 .WithMany(s => s.Products)
                 .HasForeignKey(p => p.SupplierId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Sale>()
+                .HasIndex(s => s.InvoiceNumber)
+                .IsUnique()
+                .HasFilter("[InvoiceNumber] IS NOT NULL");
 
             modelBuilder.Entity<Sale>()
                 .Property(s => s.TotalAmount)
@@ -99,6 +114,81 @@ namespace Pos_System.Data
                 .HasForeignKey(si => si.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Purchase>()
+                .HasIndex(p => p.InvoiceNumber)
+                .IsUnique();
+
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.Subtotal)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.DiscountAmount)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.TaxAmount)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.TotalAmount)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.PaidAmount)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.RemainingAmount)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Purchase>()
+                .HasOne(p => p.Supplier)
+                .WithMany()
+                .HasForeignKey(p => p.SupplierId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Purchase>()
+                .HasOne(p => p.User)
+                .WithMany()
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PurchaseItem>()
+                .Property(pi => pi.UnitCost)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<PurchaseItem>()
+                .Property(pi => pi.DiscountAmount)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<PurchaseItem>()
+                .Property(pi => pi.TaxAmount)
+                .HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<PurchaseItem>()
+                .Property(pi => pi.LineTotal)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<PurchaseItem>()
+                .HasOne(pi => pi.Purchase)
+                .WithMany(p => p.PurchaseItems)
+                .HasForeignKey(pi => pi.PurchaseId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PurchaseItem>()
+                .HasOne(pi => pi.Product)
+                .WithMany(p => p.PurchaseItems)
+                .HasForeignKey(pi => pi.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<InventoryTransaction>()
+                .HasOne(it => it.Product)
+                .WithMany(p => p.InventoryTransactions)
+                .HasForeignKey(it => it.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<InventoryTransaction>()
+                .HasOne(it => it.User)
+                .WithMany()
+                .HasForeignKey(it => it.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<InventoryTransaction>()
+                .HasIndex(it => new { it.ProductId, it.CreatedAt });
+
             modelBuilder.Entity<Discount>()
                 .Property(d => d.Value)
                 .HasColumnType("decimal(18,2)");
@@ -131,7 +221,6 @@ namespace Pos_System.Data
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // InventoryLog and BackupLog are regular tables with primary keys.
             modelBuilder.Entity<InventoryLog>()
                 .HasKey(log => log.LogId);
 
