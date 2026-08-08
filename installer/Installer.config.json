@@ -2,11 +2,11 @@
   "installRoot": "C:\\BikeZonePOS",
   "databaseName": "pos_system",
   "autoDetectSqlInstance": true,
-  "sqlInstance": ".",
-  "sqlServiceName": "MSSQLSERVER",
+  "sqlInstance": ".\\SQLEXPRESS",
+  "sqlServiceName": "MSSQL$SQLEXPRESS",
+  "sqlPort": 1433,
+  "databaseLogin": "bikezone_pos_app",
   "shortcutName": "Bike Zone POS",
   "launchAfterInstall": true,
-  "installSqlIfMissing": true,
-  "createPreUpgradeBackup": true,
-  "connectionString": ""
+  "installSqlIfMissing": true
 }
