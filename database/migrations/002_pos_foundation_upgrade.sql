@@ -26,7 +26,6 @@ BEGIN
     IF COL_LENGTH('dbo.Products', 'selling_price') IS NULL
         ALTER TABLE dbo.Products ADD selling_price DECIMAL(18,2) NULL;
 
-    -- Dynamic SQL is required when a column may have been added earlier in this same batch.
     EXEC(N'UPDATE dbo.Products SET selling_price = price WHERE selling_price IS NULL;');
 
     IF COL_LENGTH('dbo.Products', 'updated_at') IS NULL
@@ -44,21 +43,21 @@ BEGIN
         UPDATE dbo.Sales
         SET invoice_number = N''INV-'' + RIGHT(REPLICATE(''0'', 10) + CONVERT(VARCHAR(10), sale_id), 10)
         WHERE invoice_number IS NULL OR LTRIM(RTRIM(invoice_number)) = N'''';
+
+        IF EXISTS (
+            SELECT invoice_number
+            FROM dbo.Sales
+            WHERE invoice_number IS NOT NULL
+            GROUP BY invoice_number
+            HAVING COUNT(*) > 1
+        )
+            THROW 51004, ''Duplicate invoice numbers exist.'', 1;
     ');
 
-    IF EXISTS (
-        SELECT 1
-        FROM dbo.Sales
-        CROSS APPLY (SELECT CASE WHEN COL_LENGTH('dbo.Sales', 'invoice_number') IS NOT NULL THEN 1 ELSE 0 END AS has_column) c
-        WHERE c.has_column = 0
-    )
+    IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL
         THROW 51005, 'Sales.invoice_number was not created.', 1;
 
-    IF EXISTS (SELECT 1 FROM sys.indexes WHERE object_id = OBJECT_ID(N'dbo.Sales') AND name = N'UX_Sales_invoice_number')
-    BEGIN
-        -- already present
-    END
-    ELSE
+    IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE object_id = OBJECT_ID(N'dbo.Sales') AND name = N'UX_Sales_invoice_number')
         EXEC(N'CREATE UNIQUE INDEX UX_Sales_invoice_number ON dbo.Sales(invoice_number) WHERE invoice_number IS NOT NULL;');
 
     IF COL_LENGTH('dbo.Sales', 'created_at') IS NULL
