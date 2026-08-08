@@ -1,50 +1,107 @@
-تعليمات تثبيت برنامج Bike Zone POS على كمبيوتر ثاني
+تعليمات تثبيت وتحديث Bike Zone POS
 
-المتطلبات قبل التشغيل:
-1. يجب أن يكون SQL Server Express مثبت على الكمبيوتر الثاني.
-2. يجب أن يكون اسم السيرفر/النسخة SQLEXPRESS.
-3. يجب أن تكون أداة sqlcmd.exe موجودة على الكمبيوتر.
-4. يجب تشغيل ملف التثبيت كمسؤول Administrator.
+الهدف:
+نفس Package يعمل على جهاز جديد أو جهاز عليه نسخة سابقة من البرنامج.
+لا تحتاج لتعديل قاعدة البيانات يدويًا بعد كل تحديث.
 
-طريقة التثبيت الأسهل:
-1. انسخ فولدر BikeZone_POS_Installer كامل إلى الكمبيوتر الثاني.
-2. ضع الفولدر على سطح المكتب Desktop.
-3. افتح الفولدر BikeZone_POS_Installer.
-4. اضغط كليك يمين على الملف:
+المتطلبات:
+1. Windows.
+2. تشغيل install_pos_system.bat كمسؤول Administrator.
+3. SQL Server / SQL Server Express.
+   - إذا لم يجده الـ installer وكان ملف SQL2022-SSEI-Expr.exe موجودًا، سيفتح مثبت SQL Server Express.
+4. لا حاجة إلى sqlcmd.exe في النسخة الجديدة من الـ installer.
+
+طريقة التشغيل الأسهل:
+1. فك ضغط BikeZonePOS-Installer.
+2. افتح الفولدر.
+3. كليك يمين على:
    install_pos_system.bat
-5. اختر:
-   Run as administrator
-6. انتظر حتى ينتهي التثبيت.
-
-طريقة التثبيت من Command Prompt:
-1. افتح قائمة Start.
-2. اكتب:
-   cmd
-3. اضغط كليك يمين على Command Prompt.
 4. اختر:
    Run as administrator
-5. اكتب الأمر التالي واضغط Enter:
-   cd /d "%USERPROFILE%\Desktop\BikeZone_POS_Installer"
-6. اكتب الأمر التالي واضغط Enter:
+5. اترك Mode = Auto.
+
+من Command Prompt كمسؤول:
+cd /d "PATH_TO_BikeZonePOS-Installer"
+install_pos_system.bat
+
+الأوضاع المتاحة:
+
+1) Auto - المفضل
+install_pos_system.bat
+
+إذا كانت قاعدة pos_system غير موجودة:
+Fresh Install
+- Restore لقاعدة البداية من Database\pos_system.bak
+- تشغيل كل migrations بالترتيب
+- نسخ آخر نسخة من البرنامج
+- إنشاء Desktop shortcut
+- تشغيل البرنامج
+
+إذا كانت قاعدة pos_system موجودة:
+Upgrade
+- لا يحذف قاعدة البيانات
+- لا يعمل Restore فوق بياناتك
+- يعمل Backup أمان للقاعدة الحالية
+- يشغل فقط migrations الجديدة/اللازمة
+- يحدث ملفات البرنامج
+- يحتفظ بنسخة من ملفات التطبيق القديمة داخل PreviousVersions
+- يشغل النسخة الجديدة
+
+2) إجبار Fresh Install:
+install_pos_system.bat install
+
+يستخدم فقط لجهاز جديد لا توجد عليه قاعدة pos_system.
+إذا كانت القاعدة موجودة سيتوقف لحماية البيانات.
+
+3) إجبار Upgrade:
+install_pos_system.bat upgrade
+
+يستخدم فقط عندما تكون قاعدة pos_system موجودة.
+إذا لم يجد القاعدة سيتوقف ويطلب Install/Auto.
+
+أماكن التثبيت الافتراضية:
+Application:
+C:\BikeZonePOS\App
+
+Database files / backups:
+C:\BikeZonePOS\Database
+
+Safety backups before upgrades:
+C:\BikeZonePOS\Database\Backups
+
+Previous application versions:
+C:\BikeZonePOS\PreviousVersions
+
+Desktop shortcut:
+Bike Zone POS
+
+مجلدات الـ Package:
+App\
+  يحتوي Pos_System.exe وجميع DLLs من آخر Build ناجح.
+
+Database\
+  يحتوي pos_system.bak ويستخدم فقط في Fresh Install.
+
+Migrations\
+  يحتوي جميع تحديثات SQL مثل:
+  001_create_schema_migrations.sql
+  002_pos_foundation_upgrade.sql
+  003_purchases_inventory_ledger.sql
+  004_supplier_ledger_payments.sql
+  وأي migrations جديدة سنضيفها لاحقًا.
+
+كل Migration مصممة لتُسجّل في SchemaMigrations حتى لا يعاد تطبيق التحديث نفسه بشكل غير صحيح.
+
+بعد كل Feature جديدة في المشروع:
+1. يتم تعديل الكود.
+2. إذا احتاجت Database change يتم إنشاء migration جديدة.
+3. GitHub Actions يعمل Build واختبار للبرنامج والـ migrations.
+4. يتم إنشاء Artifact جديد باسم:
+   BikeZonePOS-Installer
+5. تنزل الـ Artifact، تفك الضغط، وتشغل:
    install_pos_system.bat
+6. الـ installer يحدث البرنامج وقاعدة البيانات ويحافظ على بيانات الجهاز الموجودة.
 
-ماذا يفعل ملف التثبيت؟
-1. يشغل خدمة SQL Server Express.
-2. ينسخ ملفات البرنامج إلى:
-   C:\BikeZonePOS\App
-3. ينسخ ملف قاعدة البيانات الاحتياطي إلى:
-   C:\BikeZonePOS\Database
-4. يسترجع قاعدة البيانات باسم:
-   pos_system
-5. ينشئ اختصار على سطح المكتب باسم:
-   Bike Zone POS
-6. يفتح البرنامج بعد انتهاء التثبيت.
-
-إذا ظهر خطأ أن SQL Server Express غير موجود:
-ثبت SQL Server Express على الكمبيوتر الثاني، ويجب أن يكون اسم النسخة SQLEXPRESS، ثم شغل التثبيت مرة ثانية.
-
-إذا ظهر خطأ أن sqlcmd.exe غير موجود:
-ثبت Microsoft SQL Server Command Line Utilities، ثم شغل التثبيت مرة ثانية.
-
-ملاحظة مهمة:
-انسخ الفولدر كامل كما هو، ولا تحذف فولدر App أو Database لأن ملف التثبيت يحتاجهما.
+مهم جدًا:
+في جهاز عليه بيانات حقيقية لا تستعمل Restore يدويًا فوق pos_system عند كل تحديث.
+استخدم Auto أو Upgrade حتى تبقى المبيعات والعملاء والمخزون والدفعات محفوظة.
