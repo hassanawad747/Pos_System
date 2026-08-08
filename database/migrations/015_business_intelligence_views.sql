@@ -69,15 +69,30 @@ GO
 
 CREATE OR ALTER VIEW dbo.vw_SupplierBusinessSummary
 AS
+WITH PurchaseAgg AS
+(
+    SELECT supplier_id,
+           COUNT_BIG(*) AS purchase_count,
+           SUM(CAST(ISNULL(total_amount,0) AS DECIMAL(38,8))) AS lifetime_purchases,
+           MAX(purchase_date) AS last_purchase_at
+    FROM dbo.Purchases
+    GROUP BY supplier_id
+),
+LedgerAgg AS
+(
+    SELECT supplier_id,
+           SUM(CAST(ISNULL(credit,0)-ISNULL(debit,0) AS DECIMAL(38,8))) AS ledger_balance
+    FROM dbo.SupplierTransactions
+    GROUP BY supplier_id
+)
 SELECT s.supplier_id,s.name,
-       COUNT(DISTINCT p.purchase_id) AS purchase_count,
-       SUM(CAST(ISNULL(p.total_amount,0) AS DECIMAL(38,8))) AS lifetime_purchases,
-       MAX(p.purchase_date) AS last_purchase_at,
-       SUM(CAST(ISNULL(st.credit,0)-ISNULL(st.debit,0) AS DECIMAL(38,8))) AS ledger_balance
+       ISNULL(p.purchase_count,0) AS purchase_count,
+       ISNULL(p.lifetime_purchases,0) AS lifetime_purchases,
+       p.last_purchase_at,
+       ISNULL(l.ledger_balance,0) AS ledger_balance
 FROM dbo.Suppliers s
-LEFT JOIN dbo.Purchases p ON p.supplier_id=s.supplier_id
-LEFT JOIN dbo.SupplierTransactions st ON st.supplier_id=s.supplier_id
-GROUP BY s.supplier_id,s.name;
+LEFT JOIN PurchaseAgg p ON p.supplier_id=s.supplier_id
+LEFT JOIN LedgerAgg l ON l.supplier_id=s.supplier_id;
 GO
 
 CREATE OR ALTER VIEW dbo.vw_HourlySales
