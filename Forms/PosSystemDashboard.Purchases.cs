@@ -15,6 +15,7 @@ namespace Pos_System.Forms
         private ToolStripButton menuCashReports;
         private ToolStripButton menuSalesOperations;
         private ToolStripButton menuInventoryOperations;
+        private ToolStripButton menuStockLoss;
         private ToolStripButton menuPricingAdmin;
         private ToolStripButton menuBusinessIntelligence;
         private ToolStripButton menuSecurityAdmin;
@@ -37,6 +38,7 @@ namespace Pos_System.Forms
             menuCashReports = CreateDashboardMenuButton("X / Z Reports", OpenCashReports_Click);
             menuSalesOperations = CreateDashboardMenuButton("Sales Ops", OpenSalesOperations_Click);
             menuInventoryOperations = CreateDashboardMenuButton("Stock Ops", OpenInventoryOperations_Click);
+            menuStockLoss = CreateDashboardMenuButton("Damage / Expiry", OpenStockLoss_Click);
             menuPricingAdmin = CreateDashboardMenuButton("Pricing", OpenPricingAdmin_Click);
             menuBusinessIntelligence = CreateDashboardMenuButton("BI", OpenBusinessIntelligence_Click);
             menuSecurityAdmin = CreateDashboardMenuButton("Security", OpenSecurityAdmin_Click);
@@ -52,12 +54,13 @@ namespace Pos_System.Forms
             if (reportsIndex < 0) reportsIndex = dashboardMenuStrip.Items.Count;
             dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex, dashboardMenuStrip.Items.Count), menuSalesOperations);
             dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 1, dashboardMenuStrip.Items.Count), menuInventoryOperations);
-            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 2, dashboardMenuStrip.Items.Count), menuExpenses);
-            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 3, dashboardMenuStrip.Items.Count), menuCashShift);
-            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 4, dashboardMenuStrip.Items.Count), menuCashReports);
-            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 5, dashboardMenuStrip.Items.Count), menuPricingAdmin);
-            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 6, dashboardMenuStrip.Items.Count), menuBusinessIntelligence);
-            if (AppSession.IsAdministrator) dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 7, dashboardMenuStrip.Items.Count), menuSecurityAdmin);
+            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 2, dashboardMenuStrip.Items.Count), menuStockLoss);
+            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 3, dashboardMenuStrip.Items.Count), menuExpenses);
+            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 4, dashboardMenuStrip.Items.Count), menuCashShift);
+            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 5, dashboardMenuStrip.Items.Count), menuCashReports);
+            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 6, dashboardMenuStrip.Items.Count), menuPricingAdmin);
+            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 7, dashboardMenuStrip.Items.Count), menuBusinessIntelligence);
+            if (AppSession.IsAdministrator) dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 8, dashboardMenuStrip.Items.Count), menuSecurityAdmin);
             purchaseMenusAdded = true;
             LayoutDashboardMenuButtons();
         }
@@ -70,6 +73,7 @@ namespace Pos_System.Forms
         private void OpenCashReports_Click(object sender, EventArgs e) { if (!RequireScreen(PermissionService.ScreenReports,"X/Z reports")) return; SetWorkspaceTitle("X / Z Reports"); LoadForm(new CashReportForm()); }
         private void OpenSalesOperations_Click(object sender, EventArgs e) { if (!RequireScreen(PermissionService.ScreenSales,"sales operations")) return; SetWorkspaceTitle("Sales Operations"); LoadForm(AppServices.Get<SalesLifecycleForm>()); }
         private void OpenInventoryOperations_Click(object sender, EventArgs e) { if (!RequireScreen(PermissionService.ScreenProducts,"inventory operations")) return; SetWorkspaceTitle("Inventory Operations"); LoadForm(AppServices.Get<InventoryOperationsForm>()); }
+        private void OpenStockLoss_Click(object sender, EventArgs e) { if (!RequireScreen(PermissionService.ScreenProducts,"damage/expired stock")) return; SetWorkspaceTitle("Damage / Expired Stock"); LoadForm(AppServices.Get<StockLossForm>()); }
         private void OpenPricingAdmin_Click(object sender, EventArgs e) { if (!RequireScreen(PermissionService.ScreenSettings,"pricing administration")) return; SetWorkspaceTitle("Pricing / Tax / Loyalty"); LoadForm(AppServices.Get<PricingAdminForm>()); }
         private void OpenBusinessIntelligence_Click(object sender, EventArgs e) { if (!RequireScreen(PermissionService.ScreenReports,"business intelligence")) return; SetWorkspaceTitle("Business Intelligence"); LoadForm(AppServices.Get<BusinessIntelligenceForm>()); }
         private void OpenSecurityAdmin_Click(object sender, EventArgs e) { if (!AppSession.IsAdministrator) { MessageBox.Show("Administrator access is required.","Permission",MessageBoxButtons.OK,MessageBoxIcon.Warning); return; } SetWorkspaceTitle("Security & Reliability"); LoadForm(AppServices.Get<SecurityAdminForm>()); }
