@@ -48,6 +48,18 @@ jobs:
         shell: pwsh
         run: msbuild Pos_System.csproj /m /p:Configuration=Debug /p:Platform=AnyCPU /verbosity:minimal
 
+      - name: Validate branded shortcut icon generation
+        shell: pwsh
+        run: |
+          $testApp = 'C:\BikeZonePOS\App'
+          New-Item -ItemType Directory -Force -Path $testApp | Out-Null
+          Copy-Item 'bin\Debug\Pos_System.exe' (Join-Path $testApp 'Pos_System.exe') -Force
+          & '.\installer\create_pos_icon.ps1'
+          $icon = Join-Path $testApp 'BikeZonePOS.ico'
+          if (-not (Test-Path $icon)) { throw 'BikeZonePOS.ico was not generated.' }
+          if ((Get-Item $icon).Length -le 0) { throw 'BikeZonePOS.ico is empty.' }
+          Write-Host "Generated icon bytes: $((Get-Item $icon).Length)"
+
       - name: Start SQL Server LocalDB
         shell: pwsh
         run: |
