@@ -38,6 +38,7 @@ namespace Pos_System.Services
 
         public SupplierPayment RecordPayment(int supplierId, decimal amount, string paymentMethod, string referenceNumber, string notes, int userId, string currency = "USD")
         {
+            ActionPermissionService.Demand("SUPPLIER.PAYMENT");
             if (supplierId <= 0) throw new InvalidOperationException("Select a supplier.");
             if (userId <= 0) throw new InvalidOperationException("A logged-in user is required.");
             if (amount <= 0) throw new InvalidOperationException("Payment amount must be greater than zero.");

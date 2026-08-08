@@ -10,8 +10,8 @@ namespace Pos_System.Services
     internal static class SalesAdvancedUiService
     {
         private static readonly HashSet<Form> Attached = new HashSet<Form>();
-        private static int pendingHeldSaleId;
-        private static List<SalesLifecycleService.CartLine> pendingResumeLines;
+        private static SalesLifecycleService.CheckoutSourceData pendingSource;
+        private static SalesLifecycleService.CheckoutSourceData activeSource;
 
         public static void Attach(Form salesForm)
         {
@@ -24,7 +24,7 @@ namespace Pos_System.Services
             if (grid == null || save == null) return;
 
             Attached.Add(salesForm);
-            salesForm.Disposed += (s, e) => Attached.Remove(salesForm);
+            salesForm.Disposed += (s, e) => { Attached.Remove(salesForm); activeSource = null; };
 
             Control host = save.Parent;
             var hold = NewActionButton("Hold Sale", Color.FromArgb(245, 158, 11));
@@ -65,22 +65,31 @@ namespace Pos_System.Services
             };
 
             host.Controls.Add(hold); host.Controls.Add(quote); hold.BringToFront(); quote.BringToFront();
-            TryApplyPendingResume(grid);
+            TryApplyPendingResume(grid, customer, usd, lbp);
         }
 
-        public static void QueueResume(int heldSaleId, List<SalesLifecycleService.CartLine> lines)
+        public static void QueueResume(SalesLifecycleService.CheckoutSourceData source)
         {
-            pendingHeldSaleId = heldSaleId;
-            pendingResumeLines = lines;
+            if (source == null || source.Lines == null || source.Lines.Count == 0) throw new InvalidOperationException("The source document has no items.");
+            pendingSource = source;
         }
 
-        private static void TryApplyPendingResume(DataGridView grid)
+        public static bool TryGetCheckoutSource(out string sourceType, out int? sourceId)
         {
-            if (pendingResumeLines == null || pendingResumeLines.Count == 0) return;
+            sourceType = activeSource == null ? null : activeSource.SourceType;
+            sourceId = activeSource == null ? (int?)null : activeSource.SourceId;
+            return activeSource != null;
+        }
+
+        public static void ClearCheckoutSource() { activeSource = null; }
+
+        private static void TryApplyPendingResume(DataGridView grid, ComboBox customer, RadioButton usd, RadioButton lbp)
+        {
+            if (pendingSource == null || pendingSource.Lines == null || pendingSource.Lines.Count == 0) return;
             try
             {
                 grid.Rows.Clear();
-                foreach (SalesLifecycleService.CartLine line in pendingResumeLines)
+                foreach (SalesLifecycleService.CartLine line in pendingSource.Lines)
                 {
                     int rowIndex = grid.Rows.Add();
                     DataGridViewRow row = grid.Rows[rowIndex];
@@ -91,11 +100,19 @@ namespace Pos_System.Services
                     SetCell(row, "price_lb", line.UnitPrice);
                     SetCell(row, "original_price_usd", line.OriginalUnitPrice);
                     SetCell(row, "original_price_lb", line.OriginalUnitPrice);
+                    SetCell(row, "product_unit_id", line.ProductUnitId);
+                    SetCell(row, "warehouse_id", line.WarehouseId);
+                    SetCell(row, "batch_number", line.BatchNumber);
+                    SetCell(row, "serial_number", line.SerialNumber);
                 }
-                new SalesLifecycleService(POS_System.Program.SettingsManager.ConnectionString).MarkHeldSaleResumed(pendingHeldSaleId);
-                MessageBox.Show("Held sale restored into the cart.", "Resume Sale", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (customer != null && pendingSource.CustomerId.HasValue) customer.SelectedValue = pendingSource.CustomerId.Value;
+                bool useLbp = string.Equals(pendingSource.Currency, "LBP", StringComparison.OrdinalIgnoreCase);
+                if (usd != null) usd.Checked = !useLbp;
+                if (lbp != null) lbp.Checked = useLbp;
+                activeSource = pendingSource;
+                MessageBox.Show((activeSource.SourceType == "QUOTATION" ? "Quotation" : "Held sale") + " restored into the cart. It will remain open until checkout commits successfully.", "Resume Sale", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            finally { pendingHeldSaleId = 0; pendingResumeLines = null; }
+            finally { pendingSource = null; }
         }
 
         private static List<SalesLifecycleService.CartLine> ReadCart(DataGridView grid, bool useUsd)
@@ -110,7 +127,7 @@ namespace Pos_System.Services
                 decimal original = DecimalCell(row, useUsd ? "original_price_usd" : "original_price_lb");
                 if (original <= 0) original = price;
                 decimal discount = Math.Max(0, (original - price) * qty);
-                lines.Add(new SalesLifecycleService.CartLine { ProductId = productId, ProductName = StringCell(row, "product_name"), Quantity = qty, UnitPrice = price, OriginalUnitPrice = original, DiscountAmount = discount, TaxAmount = 0, LineTotal = price * qty });
+                lines.Add(new SalesLifecycleService.CartLine { ProductId = productId, ProductName = StringCell(row, "product_name"), Quantity = qty, UnitPrice = price, OriginalUnitPrice = original, DiscountAmount = discount, TaxAmount = 0, LineTotal = price * qty, ProductUnitId=NullableIntCell(row,"product_unit_id"), WarehouseId=NullableIntCell(row,"warehouse_id"), BatchNumber=StringCell(row,"batch_number"), SerialNumber=StringCell(row,"serial_number") });
             }
             if (lines.Count == 0) throw new InvalidOperationException("Add at least one product before using this action.");
             return lines;
@@ -137,6 +154,7 @@ namespace Pos_System.Services
         }
 
         private static int IntCell(DataGridViewRow row, string name) { return Has(row, name) && int.TryParse(Convert.ToString(row.Cells[name].Value), out int v) ? v : 0; }
+        private static int? NullableIntCell(DataGridViewRow row,string name){int value=IntCell(row,name);return value>0?(int?)value:null;}
         private static decimal DecimalCell(DataGridViewRow row, string name) { return Has(row, name) && decimal.TryParse(Convert.ToString(row.Cells[name].Value), out decimal v) ? v : 0m; }
         private static string StringCell(DataGridViewRow row, string name) { return Has(row, name) ? Convert.ToString(row.Cells[name].Value) : string.Empty; }
         private static bool Has(DataGridViewRow row, string name) { return row.DataGridView != null && row.DataGridView.Columns.Contains(name); }

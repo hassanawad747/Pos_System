@@ -1,5 +1,5 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'Pos_System'">
     <Compile Include="$(MSBuildThisFileDirectory)Models\Purchase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\PurchaseItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\InventoryTransaction.cs" />
@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\ModernUiService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\WhishPaymentService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\SalesLifecycleService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\CheckoutService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\SalesAdvancedUiService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\InventoryOperationsService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\StockLossService.cs" />

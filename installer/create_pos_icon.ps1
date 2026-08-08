@@ -1,10 +1,11 @@
+param([string]$InstallRoot='C:\BikeZonePOS\App',[string]$ShortcutName='Bike Zone POS')
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 
-$installRoot = 'C:\BikeZonePOS\App'
+$installRoot = $InstallRoot
 $exePath = Join-Path $installRoot 'Pos_System.exe'
 $iconPath = Join-Path $installRoot 'BikeZonePOS.ico'
-$shortcutPath = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Bike Zone POS.lnk'
+$shortcutPath = Join-Path ([Environment]::GetFolderPath('Desktop')) ($ShortcutName+'.lnk')
 
 if (-not (Test-Path $installRoot)) { exit 0 }
 

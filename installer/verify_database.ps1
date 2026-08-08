@@ -3,23 +3,31 @@ param(
     [string]$Database = 'pos_system',
     [string]$Login = 'bikezone_pos_app',
     [string]$Password,
+    [switch]$IntegratedSecurity,
+    [string]$BackupRoot,
     [switch]$KeepBackup
 )
 
 $ErrorActionPreference='Stop'
-$Root='C:\BikeZonePOS\Database\Backups'
-New-Item -ItemType Directory -Force -Path $Root | Out-Null
-if([string]::IsNullOrWhiteSpace($Password)){
+if(-not $IntegratedSecurity -and [string]::IsNullOrWhiteSpace($Password)){
     $secure=Read-Host 'Database password' -AsSecureString
     $ptr=[Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
     try{$Password=[Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr)}finally{[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr)}
 }
-if([string]::IsNullOrWhiteSpace($Password)){throw 'Database password is required.'}
+if(-not $IntegratedSecurity -and [string]::IsNullOrWhiteSpace($Password)){throw 'Database password is required.'}
 
 $builder=New-Object Data.SqlClient.SqlConnectionStringBuilder
-$builder.DataSource=$Server;$builder.InitialCatalog=$Database;$builder.UserID=$Login;$builder.Password=$Password;$builder.IntegratedSecurity=$false;$builder.TrustServerCertificate=$true;$builder.ConnectTimeout=15
+$builder['Data Source']=$Server;$builder['Initial Catalog']=$Database;$builder['Integrated Security']=[bool]$IntegratedSecurity;$builder['TrustServerCertificate']=$true;$builder['Connect Timeout']=15
+if(-not $IntegratedSecurity){$builder['User ID']=$Login;$builder['Password']=$Password}
+if([string]::IsNullOrWhiteSpace($BackupRoot)){
+    $masterBuilder=New-Object Data.SqlClient.SqlConnectionStringBuilder $builder.ConnectionString;$masterBuilder['Initial Catalog']='master'
+    $c=New-Object Data.SqlClient.SqlConnection $masterBuilder.ConnectionString
+    try{$c.Open();$cmd=$c.CreateCommand();$cmd.CommandText="SELECT CAST(SERVERPROPERTY('InstanceDefaultBackupPath') AS NVARCHAR(4000));";$BackupRoot=[string]$cmd.ExecuteScalar()}finally{$c.Dispose()}
+}
+if([string]::IsNullOrWhiteSpace($BackupRoot) -and $IntegratedSecurity){$BackupRoot=[IO.Path]::GetTempPath()}
+if([string]::IsNullOrWhiteSpace($BackupRoot)){throw 'SQL Server default backup directory could not be resolved.'}
 $stamp=[DateTime]::Now.ToString('yyyyMMdd_HHmmss')
-$backup=Join-Path $Root ("${Database}_verify_${stamp}.bak")
+$backup=Join-Path $BackupRoot ("${Database}_verify_${stamp}.bak")
 
 function SqlLiteral([string]$value){return $value.Replace("'","''")}
 function Run([string]$sql){$c=New-Object Data.SqlClient.SqlConnection $builder.ConnectionString;try{$c.Open();$cmd=$c.CreateCommand();$cmd.CommandTimeout=600;$cmd.CommandText=$sql;[void]$cmd.ExecuteNonQuery()}finally{$c.Dispose()}}
@@ -53,5 +61,5 @@ VALUES(N'BACKUP_RESTORE_VERIFY',@db,@status,@details,@machine,SYSUTCDATETIME());
         [void]$cmd.Parameters.Add('@machine',[Data.SqlDbType]::NVarChar,120);$cmd.Parameters['@machine'].Value=$env:COMPUTERNAME
         [void]$cmd.ExecuteNonQuery();$c.Dispose()
     }catch{}
-    if(-not $KeepBackup -and (Test-Path $backup)){Remove-Item $backup -Force -ErrorAction SilentlyContinue}
+    if(-not $KeepBackup){try{if(Test-Path $backup -ErrorAction SilentlyContinue){Remove-Item $backup -Force -ErrorAction SilentlyContinue}}catch{}}
 }

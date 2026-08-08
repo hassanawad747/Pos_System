@@ -18,6 +18,7 @@ namespace Pos_System.Services
 
         public int AddExchangeRate(string from,string to,decimal rate,DateTime effective,int? userId)
         {
+            ActionPermissionService.Demand("CURRENCY.MANAGE");
             if(rate<=0)throw new InvalidOperationException("Exchange rate must be greater than zero.");
             from=(from??"").Trim().ToUpperInvariant();to=(to??"").Trim().ToUpperInvariant();
             using(var c=Open())using(var tx=c.BeginTransaction())
@@ -29,17 +30,20 @@ namespace Pos_System.Services
 
         public int AddTaxRate(string code,string name,decimal percent,bool inclusive)
         {
+            ActionPermissionService.Demand("TAX.MANAGE");
             if(string.IsNullOrWhiteSpace(code)||string.IsNullOrWhiteSpace(name))throw new InvalidOperationException("Tax code and name are required."); if(percent<0||percent>100)throw new InvalidOperationException("Tax percent must be between 0 and 100.");
             using(var c=Open())using(var cmd=new SqlCommand("INSERT dbo.TaxRates(code,name,rate_percent,is_inclusive,is_active,effective_from) VALUES(@code,@name,@rate,@inc,1,SYSUTCDATETIME());SELECT CAST(SCOPE_IDENTITY() AS INT);",c)){cmd.Parameters.AddWithValue("@code",code.Trim().ToUpperInvariant());cmd.Parameters.AddWithValue("@name",name.Trim());Dec(cmd,"@rate",percent,9,4);cmd.Parameters.AddWithValue("@inc",inclusive);return Convert.ToInt32(cmd.ExecuteScalar());}
         }
 
         public int AddPriceLevel(string code,string name,decimal discount)
         {
+            ActionPermissionService.Demand("PRICING.MANAGE");
             using(var c=Open())using(var cmd=new SqlCommand("INSERT dbo.CustomerPriceLevels(code,name,discount_percent,is_active) VALUES(@c,@n,@d,1);SELECT CAST(SCOPE_IDENTITY() AS INT);",c)){cmd.Parameters.AddWithValue("@c",code.Trim().ToUpperInvariant());cmd.Parameters.AddWithValue("@n",name.Trim());Dec(cmd,"@d",discount,9,4);return Convert.ToInt32(cmd.ExecuteScalar());}
         }
 
         public int AddPromotion(string code,string name,string type,decimal? discountPercent,decimal? minInvoice,DateTime? start,DateTime? end)
         {
+            ActionPermissionService.Demand("PRICING.MANAGE");
             using(var c=Open())using(var tx=c.BeginTransaction())
             {try{int id;using(var cmd=new SqlCommand("INSERT dbo.Promotions(code,name,promotion_type,start_at,end_at,is_active) VALUES(@c,@n,@t,@s,@e,1);SELECT CAST(SCOPE_IDENTITY() AS INT);",c,tx)){cmd.Parameters.AddWithValue("@c",code.Trim().ToUpperInvariant());cmd.Parameters.AddWithValue("@n",name.Trim());cmd.Parameters.AddWithValue("@t",type.Trim().ToUpperInvariant());cmd.Parameters.AddWithValue("@s",start.HasValue?(object)start.Value:DBNull.Value);cmd.Parameters.AddWithValue("@e",end.HasValue?(object)end.Value:DBNull.Value);id=Convert.ToInt32(cmd.ExecuteScalar());}
                 using(var cmd=new SqlCommand("INSERT dbo.PromotionRules(promotion_id,min_invoice_amount,discount_percent) VALUES(@p,@min,@disc);",c,tx)){cmd.Parameters.AddWithValue("@p",id);NullableDec(cmd,"@min",minInvoice);NullableDec(cmd,"@disc",discountPercent,9,4);cmd.ExecuteNonQuery();}tx.Commit();return id;
@@ -48,6 +52,7 @@ namespace Pos_System.Services
 
         public void AdjustLoyalty(int customerId,decimal points,string description,int userId)
         {
+            ActionPermissionService.Demand("CUSTOMER.ADJUSTMENT");
             using(var c=Open())using(var tx=c.BeginTransaction(IsolationLevel.Serializable))
             {try{int accountId;decimal before;
                 using(var cmd=new SqlCommand("SELECT loyalty_account_id,points_balance FROM dbo.LoyaltyAccounts WITH(UPDLOCK,HOLDLOCK) WHERE customer_id=@c;",c,tx)){cmd.Parameters.AddWithValue("@c",customerId);using(var r=cmd.ExecuteReader()){if(r.Read()){accountId=Convert.ToInt32(r[0]);before=Convert.ToDecimal(r[1]);}else{r.Close();using(var create=new SqlCommand("INSERT dbo.LoyaltyAccounts(customer_id,points_balance,lifetime_points) VALUES(@c,0,0);SELECT CAST(SCOPE_IDENTITY() AS INT);",c,tx)){create.Parameters.AddWithValue("@c",customerId);accountId=Convert.ToInt32(create.ExecuteScalar());before=0;}}}}
@@ -59,6 +64,7 @@ namespace Pos_System.Services
 
         public void SetProductPrice(int productId,int priceLevelId,string currency,decimal price)
         {
+            ActionPermissionService.Demand("PRICING.MANAGE");
             if(price<0)throw new InvalidOperationException("Price cannot be negative.");using(var c=Open())using(var cmd=new SqlCommand("INSERT dbo.ProductPrices(product_id,price_level_id,currency,price,effective_from) VALUES(@p,@l,@c,@price,SYSUTCDATETIME());",c)){cmd.Parameters.AddWithValue("@p",productId);cmd.Parameters.AddWithValue("@l",priceLevelId);cmd.Parameters.AddWithValue("@c",currency);Dec(cmd,"@price",price);cmd.ExecuteNonQuery();}
         }
 

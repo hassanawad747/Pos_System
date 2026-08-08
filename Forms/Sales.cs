@@ -1163,6 +1163,14 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             datagridsales.Columns["category_id"].Visible = false;
             datagridsales.Columns.Add("barcode", "Barcode");
             datagridsales.Columns["barcode"].Visible = false;
+            datagridsales.Columns.Add("product_unit_id", "Product Unit ID");
+            datagridsales.Columns["product_unit_id"].Visible = false;
+            datagridsales.Columns.Add("warehouse_id", "Warehouse ID");
+            datagridsales.Columns["warehouse_id"].Visible = false;
+            datagridsales.Columns.Add("batch_number", "Batch");
+            datagridsales.Columns["batch_number"].Visible = false;
+            datagridsales.Columns.Add("serial_number", "Serial / IMEI");
+            datagridsales.Columns["serial_number"].Visible = false;
 
             // زر Edit
             DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
@@ -1418,15 +1426,21 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                string query = @"SELECT product_id,
-                                        name,
-                                        category_id,
-                                        barcode,
-                                        COALESCE(NULLIF(sale_price_usd, 0), price_usd, 0) AS price_usd,
-                                        COALESCE(NULLIF(sale_price_lb, 0), price_lb, 0) AS price_lb,
-                                        exchange_rate
-                     FROM Products
-                     WHERE name = @keyword OR barcode = @keyword";
+                string query = @"SELECT TOP(1) p.product_id,p.name,p.category_id,
+                                        COALESCE(pb.barcode,p.barcode,N'') barcode,
+                                        COALESCE(NULLIF(pu.selling_price,0),NULLIF(p.sale_price_usd,0),p.price_usd,0) AS price_usd,
+                                        COALESCE(NULLIF(p.sale_price_lb,0),p.price_lb,0) AS price_lb,
+                                        p.exchange_rate,pb.product_unit_id
+                     FROM dbo.Products p
+                     OUTER APPLY(
+                       SELECT TOP(1) b.barcode,b.product_unit_id
+                       FROM dbo.ProductBarcodes b
+                       WHERE b.product_id=p.product_id AND b.barcode=@keyword
+                       ORDER BY b.is_primary DESC,b.product_barcode_id
+                     )pb
+                     LEFT JOIN dbo.ProductUnits pu ON pu.product_unit_id=pb.product_unit_id
+                     WHERE p.name=@keyword OR p.barcode=@keyword OR pb.barcode=@keyword
+                     ORDER BY CASE WHEN pb.barcode=@keyword THEN 0 WHEN p.barcode=@keyword THEN 1 ELSE 2 END";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@keyword", keyword);
@@ -1455,6 +1469,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
                     addedRow.Cells["original_price_lb"].Value = Convert.ToDecimal(reader["price_usd"]) * exchangeRate;
                     addedRow.Cells["category_id"].Value = categoryId;
                     addedRow.Cells["barcode"].Value = barcode;
+                    addedRow.Cells["product_unit_id"].Value = reader["product_unit_id"] == DBNull.Value ? (object)null : Convert.ToInt32(reader["product_unit_id"]);
 
                     UpdateTotals();
                 }
@@ -2255,6 +2270,33 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
 
 
 
+            bool useUnifiedCheckout = true;
+            if (useUnifiedCheckout)
+            {
+                try
+                {
+                    if (string.Equals(paymentMethod, "WHISH", StringComparison.OrdinalIgnoreCase))
+                        throw new InvalidOperationException("Use Split Payment for WHISH so the payer phone and provider authorization can be verified before checkout.");
+
+                    CheckoutService.Request request = BuildCheckoutRequest(rbDollar.Checked, userId, customerId, customerName, rbDollar.Checked ? "USD" : "LBP", POS_System.Program.SettingsManager.GetExchangeRate());
+                    if (customerPaid > 0m)
+                        request.Payments.Add(new CheckoutService.Payment { Method = paymentMethod, Amount = customerPaid });
+                    CheckoutService.Result checkout = new CheckoutService(connStr).Complete(request);
+                    SalesAdvancedUiService.ClearCheckoutSource();
+                    AuditService.Log("Sales", "Create", checkout.SaleId.ToString(), "Created unified checkout invoice " + checkout.SaleId);
+                    MessageBox.Show("تمت العملية بنجاح - رقم الفاتورة: " + checkout.SaleId);
+                    if (printReceipt) PrintReceipt(checkout.SaleId, customerName, paymentMethod);
+                    clearinput();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    ErrorLogService.Log(ex, "UNIFIED_CHECKOUT", Name);
+                    MessageBox.Show("خطأ: " + ex.Message);
+                    return false;
+                }
+            }
+
             int saleId;
 
             using (SqlConnection conn = new SqlConnection(connStr))
@@ -2611,9 +2653,11 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
             productId = 0;
 
             using (SqlCommand cmd = new SqlCommand(
-                @"SELECT TOP 1 product_id
-                  FROM Products
-                  WHERE barcode = @keyword OR name = @keyword", conn, transaction))
+                @"SELECT TOP 1 p.product_id
+                  FROM dbo.Products p
+                  LEFT JOIN dbo.ProductBarcodes b ON b.product_id=p.product_id AND b.barcode=@keyword
+                  WHERE p.barcode=@keyword OR p.name=@keyword OR b.barcode=@keyword
+                  ORDER BY CASE WHEN b.barcode=@keyword THEN 0 WHEN p.barcode=@keyword THEN 1 ELSE 2 END", conn, transaction))
             {
                 cmd.Parameters.Add("@keyword", SqlDbType.NVarChar, 100).Value = keyword;
 

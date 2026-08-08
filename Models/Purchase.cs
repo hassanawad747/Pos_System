@@ -19,6 +19,9 @@ namespace Pos_System.Models
         public string PaymentStatus { get; set; }
         public string PaymentMethod { get; set; }
         public string Notes { get; set; }
+        public string Currency { get; set; }
+        public decimal? ExchangeRate { get; set; }
+        public Guid OperationKey { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 

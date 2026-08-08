@@ -1,6 +1,7 @@
 param(
     [ValidateSet('Interactive','Server','Client')]
-    [string]$Role = 'Interactive'
+    [string]$Role = 'Interactive',
+    [switch]$ValidationOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -130,7 +131,7 @@ function Sql-Scalar([string]$sql,[string]$db='master') {
 }
 
 function Sql-File([string]$path,[string]$db) {
-    $text = Get-Content $path -Raw
+    $text = Get-Content $path -Raw -Encoding UTF8
     $batches = [regex]::Split($text,'(?im)^\s*GO\s*(?:--.*)?$')
     $c = New-WindowsConnection $db
     try {
@@ -140,6 +141,20 @@ function Sql-File([string]$path,[string]$db) {
         }
     }
     finally { $c.Dispose() }
+}
+
+function Backup-ExistingDatabase {
+    $dbLiteral=SqlLiteral $DatabaseName
+    if([int](Sql-Scalar "SELECT CASE WHEN DB_ID(N'$dbLiteral') IS NULL THEN 0 ELSE 1 END" 'master') -eq 0){return}
+    Step 'Backing up existing database before upgrade'
+    $backupRoot=[string](Sql-Scalar "SELECT CAST(SERVERPROPERTY('InstanceDefaultBackupPath') AS NVARCHAR(4000));" 'master')
+    if([string]::IsNullOrWhiteSpace($backupRoot)){throw 'SQL Server default backup directory could not be resolved.'}
+    $stamp=[DateTime]::Now.ToString('yyyyMMdd_HHmmss')
+    $backup=Join-Path $backupRoot ("${DatabaseName}_pre_upgrade_${stamp}.bak")
+    $safePath=SqlLiteral $backup
+    $safeDb=$DatabaseName.Replace(']',']]')
+    Sql-NonQuery "BACKUP DATABASE [$safeDb] TO DISK=N'$safePath' WITH COPY_ONLY,INIT,CHECKSUM;RESTORE VERIFYONLY FROM DISK=N'$safePath' WITH CHECKSUM;" 'master' 900
+    Ok "Verified pre-upgrade backup: $backup"
 }
 
 function Base-Schema-Path {
@@ -256,8 +271,8 @@ function Ensure-FirstAdmin {
 
 function App-ConnectionString([string]$server,[string]$password) {
     $b=New-Object Data.SqlClient.SqlConnectionStringBuilder
-    $b.DataSource="$server,$SqlPort"; $b.InitialCatalog=$DatabaseName; $b.UserID=$DatabaseLogin; $b.Password=$password
-    $b.IntegratedSecurity=$false; $b.TrustServerCertificate=$true; $b.ConnectTimeout=10
+    $b['Data Source']="$server,$SqlPort";$b['Initial Catalog']=$DatabaseName;$b['User ID']=$DatabaseLogin;$b['Password']=$password
+    $b['Integrated Security']=$false;$b['TrustServerCertificate']=$true;$b['Connect Timeout']=10
     return $b.ConnectionString
 }
 
@@ -286,7 +301,12 @@ function Install-App([string]$connectionString) {
 function Shortcut {
     $target=Join-Path $InstallRoot 'App\Pos_System.exe'
     $desktop=[Environment]::GetFolderPath('Desktop'); $path=Join-Path $desktop ($ShortcutName+'.lnk')
-    $shell=New-Object -ComObject WScript.Shell; $s=$shell.CreateShortcut($path); $s.TargetPath=$target; $s.WorkingDirectory=(Split-Path $target); $s.IconLocation="$target,0"; $s.Save()
+    $iconScript=Join-Path $Root 'create_pos_icon.ps1'
+    if(-not(Test-Path $iconScript)){throw 'create_pos_icon.ps1 is missing from the installer package.'}
+    & $iconScript -InstallRoot (Join-Path $InstallRoot 'App') -ShortcutName $ShortcutName
+    $icon=Join-Path $InstallRoot 'App\BikeZonePOS.ico'
+    if(-not(Test-Path $icon)){throw 'The branded shortcut icon was not generated.'}
+    $shell=New-Object -ComObject WScript.Shell; $s=$shell.CreateShortcut($path); $s.TargetPath=$target; $s.WorkingDirectory=(Split-Path $target); $s.IconLocation="$icon,0"; $s.Save()
     Ok 'Desktop shortcut created'
 }
 
@@ -305,10 +325,27 @@ Write-Host ' Bike Zone POS - SQL-Only LAN Setup' -ForegroundColor Cyan
 Write-Host " Role: $selected" -ForegroundColor White
 Write-Host '=================================================' -ForegroundColor DarkCyan
 
+if($ValidationOnly){
+    if($selected -eq 'Interactive'){throw 'ValidationOnly requires -Role Server or -Role Client.'}
+    if(-not(Test-Path (Join-Path $AppSource 'Pos_System.exe'))){throw 'Release application is missing from App.'}
+    if(-not(Test-Path (Base-Schema-Path))){throw 'Base SQL schema is missing.'}
+    $migrationFiles=@(Get-ChildItem (Migrations-Path) -Filter '*.sql' -File|Sort-Object Name)
+    if($migrationFiles.Count -eq 0){throw 'No migrations are available.'}
+    if(@(Get-ChildItem $Root -Filter '*.bak' -File -Recurse).Count -ne 0){throw 'Installer must not contain a .bak file.'}
+    if(-not(Test-Path (Join-Path $Root 'create_pos_icon.ps1'))){throw 'Branded icon generator is missing.'}
+    $testServer=if($selected -eq 'Server'){'127.0.0.1'}else{'192.0.2.10'}
+    $testConnection=App-ConnectionString $testServer 'validation-password'
+    $testBuilder=New-Object Data.SqlClient.SqlConnectionStringBuilder $testConnection
+    if([string]$testBuilder['Initial Catalog'] -ne $DatabaseName){throw 'Generated database configuration is invalid.'}
+    Write-Host "VALIDATION PASSED: $selected role, Release app, SQL-only base, $($migrationFiles.Count) ordered migrations, client/server configuration, branded icon, no .bak." -ForegroundColor Green
+    exit 0
+}
+
 if ($selected -eq 'Server') {
     Ensure-SqlEngine
     Configure-LanSql
     $dbPassword=Read-NewPassword 'Database'
+    Backup-ExistingDatabase
     Ensure-Database
     Apply-Migrations
     Ensure-AppLogin $dbPassword

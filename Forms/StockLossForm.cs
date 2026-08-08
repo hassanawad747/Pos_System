@@ -36,7 +36,7 @@ namespace Pos_System.Forms
 
         private void LoadLookups()
         {
-            try{DataTable w=service.Warehouses();warehouse.DataSource=w;warehouse.DisplayMember="name";warehouse.ValueMember="warehouse_id";DataTable p=service.Products();product.DataSource=p;product.DisplayMember="name";product.ValueMember="product_id";LoadBatches();LoadRecent();}catch(Exception ex){Handle(ex);}
+            try{DataTable w=service.Warehouses();warehouse.DataSource=w;warehouse.DisplayMember="name";warehouse.ValueMember="warehouse_id";DataTable p=service.Products();product.DataSource=p;product.DisplayMember="name";product.ValueMember="product_id";LoadBatches();LoadRecent();}catch(Exception ex){HandleError(ex);}
         }
         private void LoadBatches()
         {
@@ -50,7 +50,7 @@ namespace Pos_System.Forms
             {
                 int id=service.RecordLoss(Convert.ToInt32(warehouse.SelectedValue),Convert.ToInt32(product.SelectedValue),Convert.ToInt32(quantity.Value),Convert.ToString(type.SelectedItem),Convert.ToString(batch.SelectedValue),reason.Text,AppSession.UserId);
                 MessageBox.Show("Stock loss recorded. Transaction #"+id,"Inventory",MessageBoxButtons.OK,MessageBoxIcon.Information);reason.Clear();LoadBatches();LoadRecent();
-            }catch(Exception ex){Handle(ex);}
+            }catch(Exception ex){HandleError(ex);}
         }
         private void LoadRecent()
         {
@@ -59,9 +59,9 @@ namespace Pos_System.Forms
                 using(var c=new System.Data.SqlClient.SqlConnection(POS_System.Program.SettingsManager.ConnectionString))using(var da=new System.Data.SqlClient.SqlDataAdapter(@"SELECT TOP(200) i.inventory_transaction_id,p.name product,i.transaction_type,i.quantity_change,w.name warehouse,i.batch_number,i.notes,i.created_at
 FROM dbo.InventoryTransactions i JOIN dbo.Products p ON p.product_id=i.product_id LEFT JOIN dbo.Warehouses w ON w.warehouse_id=i.warehouse_id
 WHERE i.transaction_type IN(N'DAMAGE',N'EXPIRED') ORDER BY i.created_at DESC;",c)){var t=new DataTable();da.Fill(t);recent.DataSource=t;}
-            }catch(Exception ex){Handle(ex);}
+            }catch(Exception ex){HandleError(ex);}
         }
         private static ComboBox Combo(Control parent,string label,int y){parent.Controls.Add(new Label{Text=label,Left=20,Top=y+5,Width=125});var c=new ComboBox{Left=150,Top=y,Width=280,DropDownStyle=ComboBoxStyle.DropDownList};parent.Controls.Add(c);return c;}
-        private static void Handle(Exception ex){ErrorLogService.Log(ex,"STOCK_LOSS",nameof(StockLossForm));MessageBox.Show(ex.Message,"Inventory",MessageBoxButtons.OK,MessageBoxIcon.Error);}
+        private static void HandleError(Exception ex){ErrorLogService.Log(ex,"STOCK_LOSS",nameof(StockLossForm));MessageBox.Show(ex.Message,"Inventory",MessageBoxButtons.OK,MessageBoxIcon.Error);}
     }
 }

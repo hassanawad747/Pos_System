@@ -104,6 +104,10 @@ namespace Pos_System.Forms
                 if (total <= 0)
                     throw new InvalidOperationException("Sale total must be greater than zero.");
 
+                CheckoutService.Request checkoutRequest = BuildCheckoutRequest(useUsd, userId, customerId, cmbCustomer.Text, currency, exchangeRate);
+                CheckoutService.Result preview = new CheckoutService(connStr).Preview(checkoutRequest);
+                total = preview.Total;
+
                 using (var dialog = new SplitPaymentDialog(total, currency))
                 {
                     if (dialog.ShowDialog(this) != DialogResult.OK)
@@ -117,50 +121,23 @@ namespace Pos_System.Forms
                     if (remaining < 0)
                         throw new InvalidOperationException("Payments cannot exceed the sale total.");
 
-                    int saleId;
-                    string customerName = cmbCustomer.Text;
-
-                    using (var conn = new SqlConnection(connStr))
+                    checkoutRequest.Payments = payments.Select(x => new CheckoutService.Payment
                     {
-                        conn.Open();
-                        using (var tx = conn.BeginTransaction(IsolationLevel.ReadCommitted))
-                        {
-                            try
-                            {
-                                int? openCashSessionId = GetOpenCashSessionId(conn, tx, userId);
-                                if (payments.Any(x => x.Method == "CASH") && !openCashSessionId.HasValue)
-                                    throw new InvalidOperationException("Open a Cash Shift before using CASH in a split payment.");
-
-                                saleId = InsertSplitSaleHeader(
-                                    conn,
-                                    tx,
-                                    userId,
-                                    customerId,
-                                    customerName,
-                                    total,
-                                    totalQuantity,
-                                    useUsd ? (decimal?)remaining : null,
-                                    useUsd ? null : (decimal?)remaining);
-
-                                InsertSplitSaleItems(conn, tx, saleId, customerName, useUsd);
-                                InsertSplitSalePayments(conn, tx, saleId, payments, currency, exchangeRate, openCashSessionId);
-
-                                UpdateCustomerBalance(
-                                    conn,
-                                    tx,
-                                    customerId,
-                                    useUsd ? (decimal?)remaining : null,
-                                    useUsd ? null : (decimal?)remaining);
-
-                                tx.Commit();
-                            }
-                            catch
-                            {
-                                tx.Rollback();
-                                throw;
-                            }
-                        }
-                    }
+                        Method = x.Method,
+                        Amount = x.Amount,
+                        Reference = x.Reference,
+                        ProviderName = x.Method == "WHISH" ? "WHISH" : null,
+                        PayerPhone = x.PhoneNumber,
+                        ProviderStatus = x.ProviderStatus,
+                        ProviderTransactionId = x.ProviderTransactionId,
+                        ProviderMessage = x.ProviderMessage
+                    }).ToList();
+                    CheckoutService.Result checkoutResult = new CheckoutService(connStr).Complete(checkoutRequest);
+                    int saleId = checkoutResult.SaleId;
+                    remaining = checkoutResult.Remaining;
+                    paidTotal = checkoutResult.Paid;
+                    total = checkoutResult.Total;
+                    SalesAdvancedUiService.ClearCheckoutSource();
 
                     AuditService.Log("Sales", "Create", saleId.ToString(), "Created split-payment sale invoice " + saleId);
 
@@ -178,6 +155,60 @@ namespace Pos_System.Forms
                 MessageBox.Show("Split payment sale could not be completed:\n" + ex.Message,
                     "Split Payment", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private CheckoutService.Request BuildCheckoutRequest(bool useUsd, int userId, int customerId, string customerName, string currency, decimal exchangeRate)
+        {
+            var request = new CheckoutService.Request
+            {
+                UserId = userId,
+                Username = LoginForm.LoggedInUsername,
+                CustomerId = customerId,
+                CustomerName = customerName,
+                Currency = currency,
+                ExchangeRate = exchangeRate
+            };
+            string sourceType; int? sourceId;
+            if (SalesAdvancedUiService.TryGetCheckoutSource(out sourceType, out sourceId)) { request.SourceType = sourceType; request.SourceId = sourceId; }
+            foreach (DataGridViewRow row in datagridsales.Rows)
+            {
+                if (row.IsNewRow) continue;
+                int productId = GetIntCellValue(row, "product_id"); int quantity = GetIntCellValue(row, "quantity");
+                if (productId <= 0 || quantity <= 0) continue;
+                decimal price = GetDecimalCellValue(row, useUsd ? "price_usd" : "price_lb");
+                decimal original = GetDecimalCellValue(row, useUsd ? "original_price_usd" : "original_price_lb");
+                request.Lines.Add(new CheckoutService.Line
+                {
+                    ProductId = productId,
+                    ProductName = Convert.ToString(row.Cells["product_name"].Value),
+                    Quantity = quantity,
+                    UnitPrice = price,
+                    OriginalUnitPrice = original > 0m ? original : price,
+                    ProductUnitId = GetNullableIntCellValue(row,"product_unit_id"),
+                    WarehouseId = GetNullableIntCellValue(row,"warehouse_id"),
+                    BatchNumber = GetStringCellValue(row,"batch_number"),
+                    SerialNumbers = SplitSerialNumbers(GetStringCellValue(row,"serial_number"))
+                });
+            }
+            return request;
+        }
+
+        private static int? GetNullableIntCellValue(DataGridViewRow row,string name)
+        {
+            if(row.DataGridView==null||!row.DataGridView.Columns.Contains(name))return null;
+            return int.TryParse(Convert.ToString(row.Cells[name].Value),out int value)&&value>0?(int?)value:null;
+        }
+
+        private static string GetStringCellValue(DataGridViewRow row,string name)
+        {
+            if(row.DataGridView==null||!row.DataGridView.Columns.Contains(name))return null;
+            string value=Convert.ToString(row.Cells[name].Value);
+            return string.IsNullOrWhiteSpace(value)?null:value.Trim();
+        }
+
+        private static IList<string> SplitSerialNumbers(string value)
+        {
+            return string.IsNullOrWhiteSpace(value)?new List<string>():value.Split(new[]{',',';','\r','\n'},StringSplitOptions.RemoveEmptyEntries).Select(x=>x.Trim()).Where(x=>x.Length>0).ToList();
         }
 
         private void AuthorizeWhishPayments(List<SplitPaymentEntry> payments, string currency)

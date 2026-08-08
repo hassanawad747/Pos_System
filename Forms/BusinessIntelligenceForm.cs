@@ -18,7 +18,7 @@ namespace Pos_System.Forms
             this.service=service ?? throw new ArgumentNullException(nameof(service));
             Text="Business Intelligence";Dock=DockStyle.Fill;BackColor=ModernUiService.AppBackground;Font=new Font("Segoe UI",9.5F);
             tabs=new TabControl{Dock=DockStyle.Fill};Controls.Add(tabs);
-            AddTab("Profit",()=>this.service.DailyProfit());AddTab("Products",()=>this.service.ProductPerformance());AddTab("Stock",()=>this.service.StockHealth());AddTab("Customers",()=>this.service.Customers());AddTab("Suppliers",()=>this.service.Suppliers());AddTab("Hourly Sales",()=>this.service.Hourly());AddTab("Returns",()=>this.service.Returns());
+            AddTab("Profit",()=>this.service.DailyProfit());AddTab("Sales Trends",()=>this.service.SalesTrends());AddTab("Best Sellers",()=>this.service.ProductPerformance());AddTab("Slow / Dead",()=>this.service.SlowDeadStock());AddTab("Stock Value",()=>this.service.StockHealth());AddTab("Reorder",()=>this.service.Reorder());AddTab("Expiry",()=>this.service.Batches());AddTab("Losses",()=>this.service.Losses());AddTab("Customers",()=>this.service.Customers());AddTab("Customer Profit",()=>this.service.CustomerProfitability());AddTab("Suppliers",()=>this.service.Suppliers());AddTab("Hourly Sales",()=>this.service.Hourly());AddTab("Cashiers",()=>this.service.Cashiers());AddTab("Shift Differences",()=>this.service.Shifts());AddTab("Returns",()=>this.service.ReturnAnalysis());AddTab("Discounts",()=>this.service.Discounts());AddTab("Audit",()=>this.service.Audit());
         }
         private void AddTab(string name,Func<DataTable> loader)
         {

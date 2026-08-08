@@ -64,21 +64,35 @@ namespace Pos_System.Forms
         {
             try
             {
+                ActionPermissionService.Demand("EXPENSE.CREATE");
                 if(AppSession.UserId<=0) throw new InvalidOperationException("No logged-in user.");
                 if(category.SelectedValue==null) throw new InvalidOperationException("Select expense category.");
                 if(amount.Value<=0) throw new InvalidOperationException("Amount must be greater than zero.");
                 using(var conn=new SqlConnection(cs))
-                using(var cmd=new SqlCommand(@"INSERT dbo.Expenses(expense_category_id,amount,currency,expense_date,description,payment_method,reference_number,user_id) VALUES(@c,@a,@cur,@d,@desc,@m,@r,@u)",conn))
                 {
-                    cmd.Parameters.Add("@c",SqlDbType.Int).Value=Convert.ToInt32(category.SelectedValue);
-                    var p=cmd.Parameters.Add("@a",SqlDbType.Decimal); p.Precision=24;p.Scale=8;p.Value=amount.Value;
-                    cmd.Parameters.Add("@cur",SqlDbType.NVarChar,10).Value=Convert.ToString(currency.SelectedItem);
-                    cmd.Parameters.Add("@d",SqlDbType.DateTime2).Value=date.Value;
-                    cmd.Parameters.Add("@desc",SqlDbType.NVarChar,1000).Value=string.IsNullOrWhiteSpace(description.Text)?(object)DBNull.Value:description.Text.Trim();
-                    cmd.Parameters.Add("@m",SqlDbType.NVarChar,50).Value=Convert.ToString(method.SelectedItem);
-                    cmd.Parameters.Add("@r",SqlDbType.NVarChar,100).Value=string.IsNullOrWhiteSpace(reference.Text)?(object)DBNull.Value:reference.Text.Trim();
-                    cmd.Parameters.Add("@u",SqlDbType.Int).Value=AppSession.UserId;
-                    conn.Open(); cmd.ExecuteNonQuery();
+                    conn.Open();using(var tx=conn.BeginTransaction(IsolationLevel.Serializable))
+                    try
+                    {
+                        int expenseId;
+                        using(var cmd=new SqlCommand(@"INSERT dbo.Expenses(expense_category_id,amount,currency,expense_date,description,payment_method,reference_number,user_id,exchange_rate) VALUES(@c,@a,@cur,@d,@desc,@m,@r,@u,@rate);SELECT CAST(SCOPE_IDENTITY() AS INT);",conn,tx))
+                        {
+                            cmd.Parameters.Add("@c",SqlDbType.Int).Value=Convert.ToInt32(category.SelectedValue);
+                            var p=cmd.Parameters.Add("@a",SqlDbType.Decimal);p.Precision=24;p.Scale=8;p.Value=amount.Value;
+                            cmd.Parameters.Add("@cur",SqlDbType.NVarChar,10).Value=Convert.ToString(currency.SelectedItem);
+                            cmd.Parameters.Add("@d",SqlDbType.DateTime2).Value=date.Value;
+                            cmd.Parameters.Add("@desc",SqlDbType.NVarChar,1000).Value=string.IsNullOrWhiteSpace(description.Text)?(object)DBNull.Value:description.Text.Trim();
+                            cmd.Parameters.Add("@m",SqlDbType.NVarChar,50).Value=Convert.ToString(method.SelectedItem);
+                            cmd.Parameters.Add("@r",SqlDbType.NVarChar,100).Value=string.IsNullOrWhiteSpace(reference.Text)?(object)DBNull.Value:reference.Text.Trim();
+                            cmd.Parameters.Add("@u",SqlDbType.Int).Value=AppSession.UserId;
+                            var rate=cmd.Parameters.Add("@rate",SqlDbType.Decimal);rate.Precision=24;rate.Scale=8;rate.Value=POS_System.Program.SettingsManager.GetExchangeRate();
+                            expenseId=Convert.ToInt32(cmd.ExecuteScalar());
+                        }
+                        if(string.Equals(Convert.ToString(method.SelectedItem),"CASH",StringComparison.OrdinalIgnoreCase))
+                        using(var cmd=new SqlCommand(@"DECLARE @session INT=(SELECT TOP(1) cash_session_id FROM dbo.CashSessions WITH(UPDLOCK,HOLDLOCK) WHERE user_id=@u AND status=N'OPEN' ORDER BY opened_at DESC);IF @session IS NULL THROW 52920,'Open a cash shift before recording a cash expense.',1;INSERT dbo.CashMovements(cash_session_id,movement_type,amount,currency,reference_type,reference_id,description,user_id) VALUES(@session,N'EXPENSE',@a,@cur,N'EXPENSE',@id,@desc,@u);",conn,tx))
+                        {cmd.Parameters.AddWithValue("@u",AppSession.UserId);var p=cmd.Parameters.Add("@a",SqlDbType.Decimal);p.Precision=24;p.Scale=8;p.Value=amount.Value;cmd.Parameters.AddWithValue("@cur",Convert.ToString(currency.SelectedItem));cmd.Parameters.AddWithValue("@id",expenseId);cmd.Parameters.AddWithValue("@desc",string.IsNullOrWhiteSpace(description.Text)?"Expense":description.Text.Trim());cmd.ExecuteNonQuery();}
+                        tx.Commit();
+                    }
+                    catch{tx.Rollback();throw;}
                 }
                 AuditService.Log("Expenses","Create",null,"Created expense " + amount.Value.ToString("N2") + " " + Convert.ToString(currency.SelectedItem));
                 amount.Value=0;description.Clear();reference.Clear();LoadExpenses();

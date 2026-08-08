@@ -125,6 +125,9 @@ namespace Pos_System.Data
             modelBuilder.Entity<Purchase>().Property(x => x.PaymentStatus).HasColumnName("payment_status");
             modelBuilder.Entity<Purchase>().Property(x => x.PaymentMethod).HasColumnName("payment_method");
             modelBuilder.Entity<Purchase>().Property(x => x.Notes).HasColumnName("notes");
+            modelBuilder.Entity<Purchase>().Property(x => x.Currency).HasColumnName("currency");
+            modelBuilder.Entity<Purchase>().Property(x => x.ExchangeRate).HasColumnName("exchange_rate").HasColumnType("decimal(24,8)");
+            modelBuilder.Entity<Purchase>().Property(x => x.OperationKey).HasColumnName("operation_key");
             modelBuilder.Entity<Purchase>().Property(x => x.CreatedAt).HasColumnName("created_at");
             modelBuilder.Entity<Purchase>().Property(x => x.UpdatedAt).HasColumnName("updated_at");
             modelBuilder.Entity<Purchase>().HasIndex(x => x.InvoiceNumber).IsUnique();

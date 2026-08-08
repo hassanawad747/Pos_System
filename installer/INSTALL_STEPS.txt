@@ -1,45 +1,25 @@
-POS System manual installation steps
+Bike Zone POS manual installation steps (SQL-only)
 
-Target install folders used by this package:
-- Application: C:\BikeZonePOS\App
-- Database backup: C:\BikeZonePOS\Database\pos_system.bak
-- Database name inside SQL Server: pos_system
+Recommended method:
+1. Copy the entire installer folder to the target computer.
+2. Right-click install_pos_system.bat and choose Run as administrator.
+3. Choose SERVER on the manager/database computer or CLIENT on a workstation.
+4. Follow the secure password and connection prompts.
 
-Recommended automatic method:
-1. Copy this whole installer folder to the other PC.
-2. Optional: edit Installer.config.json if you want to change install path, SQL instance, or the connection string.
-3. Install SQL Server Database Engine or SQL Server Express.
-4. Install sqlcmd if needed.
-5. Right click install_pos_system.bat.
-6. Choose Run as administrator.
-7. Wait until the script finishes and opens the application.
+SERVER:
+- Detects or installs SQL Server Express.
+- Creates a new database from Database\000_base_schema.sql only when no database exists.
+- Makes and verifies a copy-only backup before upgrading an existing database.
+- Runs every Migrations\*.sql file in filename order.
+- Preserves existing application data.
+- Creates the first POS administrator for a fresh system.
+- Installs the Release application and branded desktop shortcut.
 
-Manual method:
-1. Create these folders:
-   C:\BikeZonePOS\App
-   C:\BikeZonePOS\Database
-2. Copy all files from the App folder into C:\BikeZonePOS\App
-3. Copy Database\pos_system.bak into C:\BikeZonePOS\Database
-4. Make sure SQL Server service MSSQLSERVER or SQLEXPRESS is running
-5. Open Command Prompt as Administrator
-6. From Command Prompt as Administrator, run this command from the installer folder location:
+CLIENT:
+- Requests the SERVER computer name or LAN IP and database password.
+- Tests the remote SQL connection before installing.
+- Never creates or restores a local business database.
+- Installs the Release application and branded desktop shortcut.
 
-sqlcmd -S . -E -i "FULL_PATH_TO_THIS_INSTALLER_FOLDER\restore_database.sql"
-
-If your SQL Server is SQLEXPRESS, use:
-
-sqlcmd -S .\SQLEXPRESS -E -i "FULL_PATH_TO_THIS_INSTALLER_FOLDER\restore_database.sql"
-
-7. After restore finishes, run:
-
-C:\BikeZonePOS\App\Pos_System.exe
-
-Important notes:
-- For installer-side SQL settings or a custom connection string, edit:
-  installer\Installer.config.json
-- To change the SQL Server connection on a client PC, edit only this file:
-  C:\BikeZonePOS\App\Database.config
-- Keep the connection name the same. Change only the connectionString value, for example:
-  Data Source=.\SQLEXPRESS;Initial Catalog=pos_system;Integrated Security=True;TrustServerCertificate=True
-- If sqlcmd is not found, install Microsoft SQL Server Command Line Utilities.
-- If autoDetectSqlInstance is false in Installer.config.json, make sure sqlInstance and sqlServiceName match the target PC.
+This installer intentionally contains no .bak file and has no backup-file dependency.
+Operational backups are created and verified on the SERVER by verify_database.ps1.

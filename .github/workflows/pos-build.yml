@@ -35,7 +35,7 @@ jobs:
       - name: Validate installer PowerShell syntax
         shell: pwsh
         run: |
-          foreach ($file in @('installer\setup_pos_lan.ps1','installer\create_pos_icon.ps1','installer\verify_database.ps1')) {
+          foreach ($file in @('installer\setup_pos_lan.ps1','installer\create_pos_icon.ps1','installer\verify_database.ps1','installer\build_installer.ps1')) {
             $tokens = $null
             $errors = $null
             [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file),[ref]$tokens,[ref]$errors)
@@ -45,9 +45,13 @@ jobs:
             }
           }
 
-      - name: Build Pos_System .NET Framework production app
+      - name: Build Pos_System .NET Framework Debug app
         shell: pwsh
         run: msbuild Pos_System.csproj /m /p:Configuration=Debug /p:Platform=AnyCPU /verbosity:minimal
+
+      - name: Build Pos_System .NET Framework production app
+        shell: pwsh
+        run: msbuild Pos_System.csproj /m /p:Configuration=Release /p:Platform=AnyCPU /verbosity:minimal
 
       - name: Build .NET 10 modernization app
         shell: pwsh
@@ -58,7 +62,7 @@ jobs:
         run: |
           $testApp = 'C:\BikeZonePOS\App'
           New-Item -ItemType Directory -Force -Path $testApp | Out-Null
-          Copy-Item 'bin\Debug\Pos_System.exe' (Join-Path $testApp 'Pos_System.exe') -Force
+          Copy-Item 'bin\Release\Pos_System.exe' (Join-Path $testApp 'Pos_System.exe') -Force
           & '.\installer\create_pos_icon.ps1'
           $icon = Join-Path $testApp 'BikeZonePOS.ico'
           if (-not (Test-Path $icon)) { throw 'BikeZonePOS.ico was not generated.' }
@@ -185,38 +189,23 @@ jobs:
           }
           finally{$c.Dispose()}
 
+      - name: Run complete database and service acceptance suite
+        shell: pwsh
+        run: |
+          .\database\ci\run_database_validation.ps1
+          dotnet build .\tests\PosSystem.Acceptance\PosSystem.Acceptance.csproj -c Release
+          .\tests\PosSystem.Acceptance\bin\Release\net48\PosSystem.Acceptance.exe
+
       - name: Build installer package
         if: github.event_name != 'pull_request'
         shell: pwsh
+        run: .\installer\build_installer.ps1
+      - name: Validate packaged Server and Client roles
+        if: github.event_name != 'pull_request'
+        shell: pwsh
         run: |
-          $package = Join-Path $PWD 'dist\BikeZonePOS-Installer'
-          New-Item -ItemType Directory -Force -Path $package | Out-Null
-          New-Item -ItemType Directory -Force -Path (Join-Path $package 'App') | Out-Null
-          New-Item -ItemType Directory -Force -Path (Join-Path $package 'Database') | Out-Null
-          New-Item -ItemType Directory -Force -Path (Join-Path $package 'Migrations') | Out-Null
-          Copy-Item 'bin\Debug\*' (Join-Path $package 'App') -Recurse -Force
-          Copy-Item 'database\install\000_base_schema.sql' (Join-Path $package 'Database\000_base_schema.sql') -Force
-          Copy-Item 'database\migrations\*.sql' (Join-Path $package 'Migrations') -Force
-          Copy-Item 'installer\install_pos_system.bat' $package -Force
-          Copy-Item 'installer\setup_pos_lan.ps1' $package -Force
-          Copy-Item 'installer\create_pos_icon.ps1' $package -Force
-          Copy-Item 'installer\verify_database.ps1' $package -Force
-          Copy-Item 'installer\Installer.config.json' $package -Force
-          Copy-Item 'installer\README.txt' $package -Force
-          Copy-Item 'installer\INSTALL_STEPS.txt' $package -Force
-          Copy-Item 'installer\تعليمات_التثبيت_بالعربي.txt' $package -Force
-          if (Test-Path 'installer\SQL2022-SSEI-Expr.exe') { Copy-Item 'installer\SQL2022-SSEI-Expr.exe' $package -Force }
-          $migrationNames=(Get-ChildItem 'database\migrations' -Filter '*.sql' -File|Sort-Object Name|Select-Object -ExpandProperty Name)-join ','
-          @"
-          BuildCommit=$env:GITHUB_SHA
-          BuildDateUtc=$([DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ'))
-          InstallModel=SQL_ONLY_LAN_SERVER_CLIENT
-          DatabaseBaseSchema=000_base_schema.sql
-          DatabaseMigrations=$migrationNames
-          BrandingIcon=BikeZonePOS.ico generated during install
-          DatabaseVerificationTool=verify_database.ps1
-          ModernizationTarget=net10.0-windows (validated in CI, not installer default until parity complete)
-          "@ | Set-Content (Join-Path $package 'VERSION.txt') -Encoding UTF8
+          .\dist\BikeZonePOS-Installer\setup_pos_lan.ps1 -Role Server -ValidationOnly
+          .\dist\BikeZonePOS-Installer\setup_pos_lan.ps1 -Role Client -ValidationOnly
 
       - name: Upload installer package
         if: github.event_name != 'pull_request'

@@ -77,6 +77,7 @@ ORDER BY customer_transaction_id DESC;", conn))
 
         public int RecordPayment(int customerId, decimal amount, string paymentMethod, string referenceNumber, string notes, int userId, string currency = "USD")
         {
+            ActionPermissionService.Demand("CUSTOMER.ADJUSTMENT");
             if (customerId <= 0) throw new InvalidOperationException("Select a customer.");
             if (userId <= 0) throw new InvalidOperationException("A logged-in user is required.");
             if (amount <= 0) throw new InvalidOperationException("Payment amount must be greater than zero.");

@@ -138,6 +138,7 @@ namespace Pos_System.Forms
                 var purchase = new Purchase {
                     SupplierId = supplierId, UserId = AppSession.UserId, PurchaseDate = DateTime.UtcNow,
                     PaidAmount = paidInput.Value, PaymentMethod = Convert.ToString(paymentMethodCombo.SelectedItem), Notes = notesText.Text.Trim(),
+                    Currency="USD",ExchangeRate=POS_System.Program.SettingsManager.GetExchangeRate(),OperationKey=Guid.NewGuid(),
                     PurchaseItems = rows.Select(x => new PurchaseItem {
                         ProductId = x.ProductId, Quantity = x.Quantity, UnitCost = x.UnitCost,
                         DiscountAmount = x.Discount, TaxAmount = x.Tax, LineTotal = x.LineTotal

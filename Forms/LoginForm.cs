@@ -64,6 +64,7 @@ namespace Pos_System
                 txtusername.Focus();
                 lblConnectionStatus.Text = "● Database connection ready";
                 lblConnectionStatus.ForeColor = Color.FromArgb(22, 163, 74);
+                BeginInvoke(new Action(OfferFirstAdministratorSetup));
             };
         }
 

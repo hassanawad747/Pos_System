@@ -43,6 +43,7 @@ namespace Pos_System.Services
 
         public int OpenSession(int registerId, int userId, decimal openingUsd, decimal openingLbp)
         {
+            ActionPermissionService.Demand("CASH.MANAGE");
             if (GetOpenSessionId(registerId).HasValue) throw new InvalidOperationException("This register already has an open shift.");
             using (var conn = new SqlConnection(connectionString))
             using (var cmd = new SqlCommand(@"INSERT dbo.CashSessions(register_id,user_id,opening_usd,opening_lbp,status) VALUES(@r,@u,@usd,@lbp,N'OPEN'); SELECT CAST(SCOPE_IDENTITY() AS INT);", conn))
@@ -56,6 +57,7 @@ namespace Pos_System.Services
 
         public void RecordMovement(int sessionId, string type, decimal amount, string currency, string referenceType, int? referenceId, string description, int userId)
         {
+            ActionPermissionService.Demand("CASH.MANAGE");
             if (amount < 0) throw new InvalidOperationException("Movement amount cannot be negative.");
             using (var conn = new SqlConnection(connectionString))
             using (var cmd = new SqlCommand(@"INSERT dbo.CashMovements(cash_session_id,movement_type,amount,currency,reference_type,reference_id,description,user_id) VALUES(@s,@t,@a,@c,@rt,@ri,@d,@u)", conn))
@@ -87,6 +89,7 @@ FROM dbo.CashSessions s LEFT JOIN dbo.CashMovements m ON m.cash_session_id=s.cas
 
         public void CloseSession(int sessionId, decimal actualUsd, decimal actualLbp, string notes)
         {
+            ActionPermissionService.Demand("CASH.MANAGE");
             GetExpected(sessionId,out decimal expectedUsd,out decimal expectedLbp);
             using (var conn = new SqlConnection(connectionString))
             using (var cmd = new SqlCommand(@"UPDATE dbo.CashSessions SET closed_at=SYSUTCDATETIME(),expected_usd=@eu,expected_lbp=@el,actual_usd=@au,actual_lbp=@al,difference_usd=@du,difference_lbp=@dl,status=N'CLOSED',notes=@n WHERE cash_session_id=@s AND status=N'OPEN'", conn))
