@@ -1,6 +1,8 @@
 /* BikeZone POS - SQL-only fresh install base schema
-   This script intentionally contains no CREATE DATABASE and no .bak restore logic.
+   No CREATE DATABASE and no .bak restore logic.
    The installer creates the target database, then executes this file inside it.
+   This base includes the legacy columns still used by WinForms screens; versioned migrations
+   then add the newer domain tables and columns.
 */
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -25,7 +27,11 @@ BEGIN
         supplier_id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Suppliers PRIMARY KEY,
         name NVARCHAR(200) NOT NULL,
         contact_info NVARCHAR(255) NULL,
-        address NVARCHAR(500) NULL
+        address NVARCHAR(500) NULL,
+        email NVARCHAR(255) NULL,
+        balance_usd DECIMAL(24,8) NOT NULL CONSTRAINT DF_Suppliers_balance_usd DEFAULT (0),
+        balance_lb DECIMAL(24,8) NOT NULL CONSTRAINT DF_Suppliers_balance_lb DEFAULT (0),
+        balance_updated_at DATETIME2 NULL
     );
 END;
 
@@ -38,6 +44,10 @@ BEGIN
         phone NVARCHAR(50) NULL,
         email NVARCHAR(255) NULL,
         loyalty_points INT NOT NULL CONSTRAINT DF_Customers_loyalty DEFAULT (0),
+        balance DECIMAL(24,8) NOT NULL CONSTRAINT DF_Customers_balance DEFAULT (0),
+        balance_usd DECIMAL(24,8) NOT NULL CONSTRAINT DF_Customers_balance_usd DEFAULT (0),
+        balance_lb DECIMAL(24,8) NOT NULL CONSTRAINT DF_Customers_balance_lb DEFAULT (0),
+        balance_updated_at DATETIME2 NULL,
         created_at DATETIME2 NOT NULL CONSTRAINT DF_Customers_created DEFAULT SYSUTCDATETIME()
     );
 END;
@@ -59,7 +69,13 @@ BEGIN
         product_id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Products PRIMARY KEY,
         name NVARCHAR(200) NOT NULL,
         category_id INT NULL,
+        /* price is retained for EF/backward compatibility. Legacy WinForms uses the USD/LBP columns below. */
         price DECIMAL(18,2) NOT NULL CONSTRAINT DF_Products_price DEFAULT (0),
+        price_usd DECIMAL(24,8) NOT NULL CONSTRAINT DF_Products_price_usd DEFAULT (0),
+        price_lb DECIMAL(24,8) NOT NULL CONSTRAINT DF_Products_price_lb DEFAULT (0),
+        exchange_rate DECIMAL(24,8) NOT NULL CONSTRAINT DF_Products_exchange_rate DEFAULT (0),
+        sale_price_usd DECIMAL(24,8) NOT NULL CONSTRAINT DF_Products_sale_price_usd DEFAULT (0),
+        sale_price_lb DECIMAL(24,8) NOT NULL CONSTRAINT DF_Products_sale_price_lb DEFAULT (0),
         stock_quantity INT NOT NULL CONSTRAINT DF_Products_stock DEFAULT (0),
         barcode NVARCHAR(100) NULL,
         supplier_id INT NULL,
@@ -77,13 +93,21 @@ BEGIN
         user_id INT NULL,
         customer_id INT NULL,
         sale_date DATETIME2 NOT NULL CONSTRAINT DF_Sales_date DEFAULT SYSUTCDATETIME(),
-        total_amount DECIMAL(18,2) NOT NULL CONSTRAINT DF_Sales_total DEFAULT (0),
+        total_amount DECIMAL(24,8) NOT NULL CONSTRAINT DF_Sales_total DEFAULT (0),
         payment_method NVARCHAR(50) NULL,
+        created_by NVARCHAR(100) NULL,
+        customer_name NVARCHAR(200) NULL,
+        balance_usd DECIMAL(24,8) NULL,
+        balance_lb DECIMAL(24,8) NULL,
+        quantity INT NOT NULL CONSTRAINT DF_Sales_quantity DEFAULT (0),
+        is_returned BIT NOT NULL CONSTRAINT DF_Sales_is_returned DEFAULT (0),
+        status NVARCHAR(50) NULL,
         CONSTRAINT FK_Sales_Users FOREIGN KEY(user_id) REFERENCES dbo.Users(user_id),
         CONSTRAINT FK_Sales_Customers FOREIGN KEY(customer_id) REFERENCES dbo.Customers(customer_id)
     );
 END;
 
+/* EF-era table retained until all code is moved off it. */
 IF OBJECT_ID(N'dbo.SaleItems', N'U') IS NULL
 BEGIN
     CREATE TABLE dbo.SaleItems
@@ -104,15 +128,41 @@ BEGIN
     );
 END;
 
+/* Current WinForms Sales screen uses dbo.Sale_Items. */
+IF OBJECT_ID(N'dbo.Sale_Items', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Sale_Items
+    (
+        sale_item_id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Sale_Items PRIMARY KEY,
+        sale_id INT NOT NULL,
+        product_id INT NOT NULL,
+        quantity INT NOT NULL,
+        unit_price DECIMAL(24,8) NOT NULL,
+        original_unit_price DECIMAL(24,8) NULL,
+        discount_amount DECIMAL(24,8) NULL,
+        discount_type NVARCHAR(30) NULL,
+        discount_value DECIMAL(18,4) NULL,
+        discount_by NVARCHAR(100) NULL,
+        name_product NVARCHAR(200) NULL,
+        customer_name NVARCHAR(200) NULL,
+        created_by NVARCHAR(100) NULL,
+        sale_date DATETIME2 NOT NULL CONSTRAINT DF_Sale_Items_date DEFAULT SYSUTCDATETIME(),
+        CONSTRAINT FK_Sale_Items_Sales FOREIGN KEY(sale_id) REFERENCES dbo.Sales(sale_id),
+        CONSTRAINT FK_Sale_Items_Products FOREIGN KEY(product_id) REFERENCES dbo.Products(product_id)
+    );
+    CREATE INDEX IX_Sale_Items_sale_id ON dbo.Sale_Items(sale_id);
+    CREATE INDEX IX_Sale_Items_product_id ON dbo.Sale_Items(product_id);
+END;
+
 IF OBJECT_ID(N'dbo.Settings', N'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Settings
     (
-        SettingId INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Settings PRIMARY KEY,
-        KeyName NVARCHAR(150) NOT NULL,
-        Value NVARCHAR(MAX) NULL
+        setting_id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Settings PRIMARY KEY,
+        key_name NVARCHAR(150) NOT NULL,
+        value NVARCHAR(MAX) NULL
     );
-    CREATE UNIQUE INDEX UX_Settings_KeyName ON dbo.Settings(KeyName);
+    CREATE UNIQUE INDEX UX_Settings_key_name ON dbo.Settings(key_name);
 END;
 
 IF OBJECT_ID(N'dbo.Reports', N'U') IS NULL
@@ -147,24 +197,26 @@ BEGIN
     );
 END;
 
+/* Current return workflow uses snake_case names and permits partial rows with only sale/product/qty/date. */
 IF OBJECT_ID(N'dbo.Returns', N'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Returns
     (
-        ReturnId INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Returns PRIMARY KEY,
-        SaleId INT NOT NULL,
-        ProductId INT NOT NULL,
-        CustomerId INT NOT NULL,
-        UserId INT NOT NULL,
-        ReturnDate DATETIME2 NOT NULL CONSTRAINT DF_Returns_date DEFAULT SYSUTCDATETIME(),
-        Quantity INT NOT NULL,
-        Reason NVARCHAR(1000) NULL,
-        RefundAmount DECIMAL(18,2) NOT NULL CONSTRAINT DF_Returns_refund DEFAULT (0),
-        CONSTRAINT FK_Returns_Sales FOREIGN KEY(SaleId) REFERENCES dbo.Sales(sale_id),
-        CONSTRAINT FK_Returns_Products FOREIGN KEY(ProductId) REFERENCES dbo.Products(product_id),
-        CONSTRAINT FK_Returns_Customers FOREIGN KEY(CustomerId) REFERENCES dbo.Customers(customer_id),
-        CONSTRAINT FK_Returns_Users FOREIGN KEY(UserId) REFERENCES dbo.Users(user_id)
+        return_id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Returns PRIMARY KEY,
+        sale_id INT NOT NULL,
+        product_id INT NOT NULL,
+        customer_id INT NULL,
+        user_id INT NULL,
+        return_date DATETIME2 NOT NULL CONSTRAINT DF_Returns_date DEFAULT SYSUTCDATETIME(),
+        quantity INT NOT NULL,
+        reason NVARCHAR(1000) NULL,
+        refund_amount DECIMAL(24,8) NOT NULL CONSTRAINT DF_Returns_refund DEFAULT (0),
+        CONSTRAINT FK_Returns_Sales FOREIGN KEY(sale_id) REFERENCES dbo.Sales(sale_id),
+        CONSTRAINT FK_Returns_Products FOREIGN KEY(product_id) REFERENCES dbo.Products(product_id),
+        CONSTRAINT FK_Returns_Customers FOREIGN KEY(customer_id) REFERENCES dbo.Customers(customer_id),
+        CONSTRAINT FK_Returns_Users FOREIGN KEY(user_id) REFERENCES dbo.Users(user_id)
     );
+    CREATE INDEX IX_Returns_sale_product ON dbo.Returns(sale_id, product_id);
 END;
 
 IF OBJECT_ID(N'dbo.InventoryLogs', N'U') IS NULL
