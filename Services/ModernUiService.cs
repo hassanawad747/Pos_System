@@ -22,6 +22,7 @@ namespace Pos_System.Services
         internal static readonly Color Sidebar = Color.FromArgb(15, 23, 42);
 
         private static readonly HashSet<Form> ThemedForms = new HashSet<Form>();
+        private static readonly HashSet<Control> HookedControls = new HashSet<Control>();
         private static bool globalThemeEnabled;
         private static Icon cachedAppIcon;
 
@@ -43,18 +44,26 @@ namespace Pos_System.Services
                 {
                     Apply(form);
                     ThemedForms.Add(form);
-                    form.ControlAdded += Form_ControlAdded;
                     form.Disposed += Form_Disposed;
                 }
             }
         }
 
-        private static void Form_ControlAdded(object sender, ControlEventArgs e)
+        private static void DynamicControlAdded(object sender, ControlEventArgs e)
         {
             if (e.Control == null) return;
             StyleSingleControl(e.Control);
+            HookControlTree(e.Control);
             if (e.Control.HasChildren)
                 ApplyToControls(e.Control.Controls);
+
+            Form embeddedForm = e.Control as Form;
+            if (embeddedForm != null)
+            {
+                ApplyApplicationIcon(embeddedForm);
+                embeddedForm.BackColor = AppBackground;
+                embeddedForm.Font = new Font("Segoe UI", 9.5F);
+            }
         }
 
         private static void Form_Disposed(object sender, EventArgs e)
@@ -62,7 +71,6 @@ namespace Pos_System.Services
             Form form = sender as Form;
             if (form == null) return;
             ThemedForms.Remove(form);
-            form.ControlAdded -= Form_ControlAdded;
             form.Disposed -= Form_Disposed;
         }
 
@@ -78,7 +86,32 @@ namespace Pos_System.Services
                 form.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
             }
 
+            HookControlTree(form);
             ApplyToControls(form.Controls);
+        }
+
+        private static void HookControlTree(Control control)
+        {
+            if (control == null || control.IsDisposed) return;
+
+            if (!HookedControls.Contains(control))
+            {
+                HookedControls.Add(control);
+                control.ControlAdded += DynamicControlAdded;
+                control.Disposed += HookedControlDisposed;
+            }
+
+            foreach (Control child in control.Controls.Cast<Control>().ToList())
+                HookControlTree(child);
+        }
+
+        private static void HookedControlDisposed(object sender, EventArgs e)
+        {
+            Control control = sender as Control;
+            if (control == null) return;
+            HookedControls.Remove(control);
+            control.ControlAdded -= DynamicControlAdded;
+            control.Disposed -= HookedControlDisposed;
         }
 
         private static void ApplyApplicationIcon(Form form)
@@ -105,6 +138,7 @@ namespace Pos_System.Services
             foreach (Control control in controls.Cast<Control>().ToList())
             {
                 StyleSingleControl(control);
+                HookControlTree(control);
                 if (control.HasChildren)
                     ApplyToControls(control.Controls);
             }
