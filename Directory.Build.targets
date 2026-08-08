@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\SupplierLedgerService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\CustomerLedgerService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\CashSessionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ModernUiService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Forms\PurchaseForm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Forms\SupplierLedgerForm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Forms\CustomerLedgerForm.cs" />
