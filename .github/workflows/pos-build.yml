@@ -52,16 +52,32 @@ jobs:
           sqllocaldb start MSSQLLocalDB
           sqllocaldb info MSSQLLocalDB
 
-      - name: Apply all database migrations
+      - name: Validate SQL-only fresh install and all migrations
         shell: pwsh
         run: |
-          function Invoke-SqlFile([string]$Path, [string]$Database = 'master') {
-            $connectionString = "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=$Database;Integrated Security=True;TrustServerCertificate=True"
+          function New-Connection([string]$Database = 'master') {
+            $cs = "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=$Database;Integrated Security=True;TrustServerCertificate=True"
+            $connection = New-Object System.Data.SqlClient.SqlConnection $cs
+            $connection.Open()
+            return $connection
+          }
+
+          function Invoke-Sql([string]$Query, [string]$Database = 'master') {
+            $connection = New-Connection $Database
+            try {
+              $command = $connection.CreateCommand()
+              $command.CommandTimeout = 120
+              $command.CommandText = $Query
+              [void]$command.ExecuteNonQuery()
+            }
+            finally { $connection.Dispose() }
+          }
+
+          function Invoke-SqlFile([string]$Path, [string]$Database) {
             $text = Get-Content -Raw $Path
             $batches = [regex]::Split($text, '(?im)^\s*GO\s*(?:--.*)?$')
-            $connection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+            $connection = New-Connection $Database
             try {
-              $connection.Open()
               foreach ($batch in $batches) {
                 if ([string]::IsNullOrWhiteSpace($batch)) { continue }
                 $command = $connection.CreateCommand()
@@ -70,12 +86,12 @@ jobs:
                 [void]$command.ExecuteNonQuery()
               }
             }
-            finally {
-              $connection.Dispose()
-            }
+            finally { $connection.Dispose() }
           }
 
-          Invoke-SqlFile 'database/ci/create_test_baseline.sql' 'master'
+          Invoke-Sql "IF DB_ID(N'pos_system_ci') IS NOT NULL BEGIN ALTER DATABASE pos_system_ci SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE pos_system_ci; END; CREATE DATABASE pos_system_ci;" 'master'
+          Invoke-SqlFile 'database/install/000_base_schema.sql' 'pos_system_ci'
+
           $migrations = Get-ChildItem 'database\migrations' -Filter '*.sql' -File | Sort-Object Name
           if (-not $migrations) { throw 'No database migrations were found.' }
           foreach ($migration in $migrations) {
@@ -92,14 +108,16 @@ jobs:
           try {
             $command = $connection.CreateCommand()
             $command.CommandText = @"
-          IF OBJECT_ID(N'dbo.Purchases', N'U') IS NULL THROW 52001, 'Purchases table missing after migration.', 1;
-          IF OBJECT_ID(N'dbo.PurchaseItems', N'U') IS NULL THROW 52002, 'PurchaseItems table missing after migration.', 1;
-          IF OBJECT_ID(N'dbo.InventoryTransactions', N'U') IS NULL THROW 52003, 'InventoryTransactions table missing after migration.', 1;
-          IF OBJECT_ID(N'dbo.SupplierTransactions', N'U') IS NULL THROW 52004, 'SupplierTransactions table missing after migration.', 1;
-          IF OBJECT_ID(N'dbo.SupplierPayments', N'U') IS NULL THROW 52005, 'SupplierPayments table missing after migration.', 1;
-          IF COL_LENGTH('dbo.Products', 'purchase_price') IS NULL THROW 52006, 'Products.purchase_price missing.', 1;
-          IF COL_LENGTH('dbo.Products', 'selling_price') IS NULL THROW 52007, 'Products.selling_price missing.', 1;
-          IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL THROW 52008, 'Sales.invoice_number missing.', 1;
+          IF OBJECT_ID(N'dbo.Users', N'U') IS NULL THROW 52000, 'Users table missing.', 1;
+          IF OBJECT_ID(N'dbo.Settings', N'U') IS NULL THROW 52001, 'Settings table missing.', 1;
+          IF OBJECT_ID(N'dbo.Purchases', N'U') IS NULL THROW 52002, 'Purchases table missing.', 1;
+          IF OBJECT_ID(N'dbo.PurchaseItems', N'U') IS NULL THROW 52003, 'PurchaseItems table missing.', 1;
+          IF OBJECT_ID(N'dbo.InventoryTransactions', N'U') IS NULL THROW 52004, 'InventoryTransactions table missing.', 1;
+          IF OBJECT_ID(N'dbo.SupplierTransactions', N'U') IS NULL THROW 52005, 'SupplierTransactions table missing.', 1;
+          IF OBJECT_ID(N'dbo.SupplierPayments', N'U') IS NULL THROW 52006, 'SupplierPayments table missing.', 1;
+          IF COL_LENGTH('dbo.Products', 'purchase_price') IS NULL THROW 52007, 'Products.purchase_price missing.', 1;
+          IF COL_LENGTH('dbo.Products', 'selling_price') IS NULL THROW 52008, 'Products.selling_price missing.', 1;
+          IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL THROW 52009, 'Sales.invoice_number missing.', 1;
           "@
             [void]$command.ExecuteNonQuery()
 
@@ -110,9 +128,7 @@ jobs:
               throw "SchemaMigrations recorded $appliedCount migrations but repository contains $fileCount migration files."
             }
           }
-          finally {
-            $connection.Dispose()
-          }
+          finally { $connection.Dispose() }
 
       - name: Build installer package
         if: github.event_name != 'pull_request'
@@ -125,8 +141,8 @@ jobs:
           New-Item -ItemType Directory -Force -Path (Join-Path $package 'Migrations') | Out-Null
 
           Copy-Item 'bin\Debug\*' (Join-Path $package 'App') -Recurse -Force
+          Copy-Item 'database\install\000_base_schema.sql' (Join-Path $package 'Database\000_base_schema.sql') -Force
           Copy-Item 'database\migrations\*.sql' (Join-Path $package 'Migrations') -Force
-          Copy-Item 'installer\Database\pos_system.bak' (Join-Path $package 'Database\pos_system.bak') -Force
           Copy-Item 'installer\install_pos_system.bat' $package -Force
           Copy-Item 'installer\install_pos_system.ps1' $package -Force
           Copy-Item 'installer\Installer.config.json' $package -Force
@@ -141,6 +157,8 @@ jobs:
           @"
           BuildCommit=$env:GITHUB_SHA
           BuildDateUtc=$([DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ'))
+          InstallModel=SQL_ONLY_SERVER_CLIENT
+          DatabaseBaseSchema=000_base_schema.sql
           DatabaseMigrations=$migrationNames
           "@ | Set-Content (Join-Path $package 'VERSION.txt') -Encoding UTF8
 
