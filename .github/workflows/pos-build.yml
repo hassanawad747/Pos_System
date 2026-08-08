@@ -30,7 +30,7 @@ jobs:
       - name: Validate LAN installer PowerShell syntax
         shell: pwsh
         run: |
-          foreach ($file in @('installer\setup_pos_lan.ps1')) {
+          foreach ($file in @('installer\setup_pos_lan.ps1','installer\create_pos_icon.ps1')) {
             $tokens = $null
             $errors = $null
             [void][System.Management.Automation.Language.Parser]::ParseFile(
@@ -159,6 +159,7 @@ jobs:
           Copy-Item 'database\migrations\*.sql' (Join-Path $package 'Migrations') -Force
           Copy-Item 'installer\install_pos_system.bat' $package -Force
           Copy-Item 'installer\setup_pos_lan.ps1' $package -Force
+          Copy-Item 'installer\create_pos_icon.ps1' $package -Force
           Copy-Item 'installer\Installer.config.json' $package -Force
           Copy-Item 'installer\README.txt' $package -Force
           Copy-Item 'installer\INSTALL_STEPS.txt' $package -Force
@@ -174,6 +175,7 @@ jobs:
           InstallModel=SQL_ONLY_LAN_SERVER_CLIENT
           DatabaseBaseSchema=000_base_schema.sql
           DatabaseMigrations=$migrationNames
+          BrandingIcon=BikeZonePOS.ico generated during install
           "@ | Set-Content (Join-Path $package 'VERSION.txt') -Encoding UTF8
 
       - name: Upload installer package
