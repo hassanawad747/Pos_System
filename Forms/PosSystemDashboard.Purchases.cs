@@ -18,6 +18,7 @@ namespace Pos_System.Forms
         {
             base.OnShown(e);
             AddPurchaseMenus();
+            ApplyModernDashboardChrome();
         }
 
         private void AddPurchaseMenus()
@@ -58,6 +59,7 @@ namespace Pos_System.Forms
                 MessageBox.Show("You do not have permission to open purchases.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            SetWorkspaceTitle("Purchases");
             LoadForm(new PurchaseForm());
         }
 
@@ -68,6 +70,7 @@ namespace Pos_System.Forms
                 MessageBox.Show("You do not have permission to open supplier ledger.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            SetWorkspaceTitle("Supplier Ledger");
             LoadForm(new SupplierLedgerForm());
         }
 
@@ -78,6 +81,7 @@ namespace Pos_System.Forms
                 MessageBox.Show("You do not have permission to open customer ledger.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            SetWorkspaceTitle("Customer Ledger");
             LoadForm(new CustomerLedgerForm());
         }
 
@@ -88,6 +92,7 @@ namespace Pos_System.Forms
                 MessageBox.Show("You do not have permission to open expenses.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            SetWorkspaceTitle("Expenses");
             LoadForm(new ExpenseForm());
         }
 
@@ -98,6 +103,7 @@ namespace Pos_System.Forms
                 MessageBox.Show("You do not have permission to open cash shift.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            SetWorkspaceTitle("Cash Shift");
             LoadForm(new CashSessionForm());
         }
 
@@ -108,6 +114,7 @@ namespace Pos_System.Forms
                 MessageBox.Show("You do not have permission to open X/Z reports.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            SetWorkspaceTitle("X / Z Reports");
             LoadForm(new CashReportForm());
         }
     }
