@@ -1,0 +1,32 @@
+name: POS Build Validation
+
+on:
+  push:
+    branches:
+      - agent/pos-foundation-fixes
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore packages
+        shell: pwsh
+        run: nuget restore packages.config -PackagesDirectory packages
+
+      - name: Build Pos_System
+        shell: pwsh
+        run: msbuild Pos_System.csproj /m /p:Configuration=Debug /p:Platform=AnyCPU /verbosity:minimal
