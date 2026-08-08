@@ -12,6 +12,7 @@ namespace Pos_System.Forms
         private ToolStripButton menuCustomerLedger;
         private ToolStripButton menuExpenses;
         private ToolStripButton menuCashShift;
+        private ToolStripButton menuCashReports;
 
         protected override void OnShown(EventArgs e)
         {
@@ -28,6 +29,7 @@ namespace Pos_System.Forms
             menuCustomerLedger = CreateDashboardMenuButton("Customer Ledger", OpenCustomerLedger_Click);
             menuExpenses = CreateDashboardMenuButton("Expenses", OpenExpenses_Click);
             menuCashShift = CreateDashboardMenuButton("Cash Shift", OpenCashShift_Click);
+            menuCashReports = CreateDashboardMenuButton("X / Z Reports", OpenCashReports_Click);
 
             int supplierIndex = dashboardMenuStrip.Items.IndexOf(menuSupplier);
             if (supplierIndex < 0) supplierIndex = Math.Min(3, dashboardMenuStrip.Items.Count);
@@ -43,6 +45,7 @@ namespace Pos_System.Forms
             if (reportsIndex < 0) reportsIndex = dashboardMenuStrip.Items.Count;
             dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex, dashboardMenuStrip.Items.Count), menuExpenses);
             dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 1, dashboardMenuStrip.Items.Count), menuCashShift);
+            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 2, dashboardMenuStrip.Items.Count), menuCashReports);
 
             purchaseMenusAdded = true;
             LayoutDashboardMenuButtons();
@@ -96,6 +99,16 @@ namespace Pos_System.Forms
                 return;
             }
             LoadForm(new CashSessionForm());
+        }
+
+        private void OpenCashReports_Click(object sender, EventArgs e)
+        {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenReports))
+            {
+                MessageBox.Show("You do not have permission to open X/Z reports.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            LoadForm(new CashReportForm());
         }
     }
 }
