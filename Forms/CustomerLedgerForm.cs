@@ -1,4 +1,3 @@
-using Pos_System.Models;
 using Pos_System.Services;
 using System;
 using System.Data;
@@ -14,6 +13,7 @@ namespace Pos_System.Forms
         private readonly string connectionString = POS_System.Program.SettingsManager.ConnectionString;
         private readonly CustomerLedgerService ledgerService;
         private ComboBox customerCombo;
+        private ComboBox currencyCombo;
         private Label balanceLabel;
         private NumericUpDown amountInput;
         private ComboBox methodCombo;
@@ -28,29 +28,35 @@ namespace Pos_System.Forms
             Load += CustomerLedgerForm_Load;
         }
 
+        private string SelectedCurrency => Convert.ToString(currencyCombo.SelectedItem) == "LBP" ? "LBP" : "USD";
+
         private void BuildUi()
         {
             Text = "Customer Ledger";
             BackColor = Color.FromArgb(244, 247, 252);
-            MinimumSize = new Size(980, 620);
+            MinimumSize = new Size(1040, 620);
 
             var top = new Panel { Dock = DockStyle.Top, Height = 105, BackColor = Color.White, Padding = new Padding(14) };
             var title = new Label { Text = "Customer Ledger & Payments", AutoSize = true, Location = new Point(14, 12), Font = new Font("Segoe UI", 15F, FontStyle.Bold) };
             customerCombo = new ComboBox { Location = new Point(105, 55), Width = 270, DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 10F) };
             customerCombo.SelectedIndexChanged += (s, e) => RefreshLedger();
-            balanceLabel = new Label { Text = "Balance: $0.00", AutoSize = true, Location = new Point(430, 58), Font = new Font("Segoe UI", 13F, FontStyle.Bold), ForeColor = Color.FromArgb(185, 28, 28) };
-            top.Controls.AddRange(new Control[] { L("Customer", 14, 60), customerCombo, balanceLabel, title });
+            currencyCombo = new ComboBox { Location = new Point(445, 55), Width = 90, DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 10F) };
+            currencyCombo.Items.AddRange(new object[] { "USD", "LBP" });
+            currencyCombo.SelectedIndex = 0;
+            currencyCombo.SelectedIndexChanged += (s, e) => RefreshLedger();
+            balanceLabel = new Label { Text = "Balance: $0.00", AutoSize = true, Location = new Point(585, 58), Font = new Font("Segoe UI", 13F, FontStyle.Bold), ForeColor = Color.FromArgb(185, 28, 28) };
+            top.Controls.AddRange(new Control[] { L("Customer", 14, 60), customerCombo, L("Currency", 385, 60), currencyCombo, balanceLabel, title });
 
             var payment = new Panel { Dock = DockStyle.Top, Height = 100, BackColor = Color.FromArgb(248, 250, 252), Padding = new Padding(14) };
-            amountInput = new NumericUpDown { Location = new Point(80, 18), Width = 120, DecimalPlaces = 2, Maximum = 1000000000m, ThousandsSeparator = true };
-            methodCombo = new ComboBox { Location = new Point(285, 18), Width = 130, DropDownStyle = ComboBoxStyle.DropDownList };
+            amountInput = new NumericUpDown { Location = new Point(80, 18), Width = 140, DecimalPlaces = 2, Maximum = 9999999999999999m, ThousandsSeparator = true };
+            methodCombo = new ComboBox { Location = new Point(305, 18), Width = 130, DropDownStyle = ComboBoxStyle.DropDownList };
             methodCombo.Items.AddRange(new object[] { "CASH", "CARD", "BANK", "OTHER" });
             methodCombo.SelectedIndex = 0;
-            referenceText = new TextBox { Location = new Point(505, 18), Width = 155 };
-            notesText = new TextBox { Location = new Point(80, 56), Width = 580 };
-            var pay = B("Record Payment", 700, 26, 165, Color.FromArgb(22, 163, 74));
+            referenceText = new TextBox { Location = new Point(525, 18), Width = 155 };
+            notesText = new TextBox { Location = new Point(80, 56), Width = 600 };
+            var pay = B("Record Payment", 720, 26, 165, Color.FromArgb(22, 163, 74));
             pay.Click += RecordPayment_Click;
-            payment.Controls.AddRange(new Control[] { L("Amount", 14, 22), amountInput, L("Method", 225, 22), methodCombo, L("Reference", 430, 22), referenceText, L("Notes", 14, 60), notesText, pay });
+            payment.Controls.AddRange(new Control[] { L("Amount", 14, 22), amountInput, L("Method", 245, 22), methodCombo, L("Reference", 450, 22), referenceText, L("Notes", 14, 60), notesText, pay });
 
             grid = new DataGridView
             {
@@ -101,13 +107,15 @@ namespace Pos_System.Forms
 
         private void RefreshLedger()
         {
-            if (SelectedCustomerId <= 0) return;
+            if (SelectedCustomerId <= 0 || currencyCombo.SelectedIndex < 0) return;
             try
             {
-                decimal balance = ledgerService.GetBalance(SelectedCustomerId, "USD");
-                balanceLabel.Text = "Customer owes: $" + balance.ToString("N2");
+                string currency = SelectedCurrency;
+                decimal balance = ledgerService.GetBalance(SelectedCustomerId, currency);
+                string symbol = currency == "USD" ? "$" : "LBP ";
+                balanceLabel.Text = "Customer owes: " + symbol + balance.ToString("N2");
                 balanceLabel.ForeColor = balance > 0 ? Color.FromArgb(185, 28, 28) : Color.FromArgb(22, 101, 52);
-                grid.DataSource = ledgerService.GetTransactions(SelectedCustomerId, "USD")
+                grid.DataSource = ledgerService.GetTransactions(SelectedCustomerId, currency)
                     .Select(x => new
                     {
                         Date = x.CreatedAt.ToLocalTime(),
@@ -116,6 +124,7 @@ namespace Pos_System.Forms
                         Debit = x.Debit,
                         Credit = x.Credit,
                         Balance = x.BalanceAfter,
+                        Currency = x.Currency,
                         x.Description
                     }).ToList();
             }
@@ -137,7 +146,7 @@ namespace Pos_System.Forms
                     referenceText.Text,
                     notesText.Text,
                     AppSession.UserId,
-                    "USD");
+                    SelectedCurrency);
 
                 MessageBox.Show("Customer payment saved successfully.", "Customer Payment", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 amountInput.Value = 0;
