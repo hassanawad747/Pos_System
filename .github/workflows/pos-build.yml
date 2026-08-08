@@ -129,6 +129,9 @@ jobs:
           IF COL_LENGTH('dbo.Products', 'purchase_price') IS NULL THROW 52016, 'Products.purchase_price missing.', 1;
           IF COL_LENGTH('dbo.Products', 'selling_price') IS NULL THROW 52017, 'Products.selling_price missing.', 1;
           IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL THROW 52018, 'Sales.invoice_number missing.', 1;
+          IF OBJECT_ID(N'dbo.WhishPaymentAttempts', N'U') IS NULL THROW 52019, 'WhishPaymentAttempts table missing.', 1;
+          IF COL_LENGTH('dbo.SalePayments', 'payer_phone') IS NULL THROW 52020, 'SalePayments.payer_phone missing.', 1;
+          IF COL_LENGTH('dbo.SalePayments', 'provider_status') IS NULL THROW 52021, 'SalePayments.provider_status missing.', 1;
           "@
             [void]$command.ExecuteNonQuery()
 
