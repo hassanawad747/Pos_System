@@ -11,6 +11,7 @@ namespace Pos_System.Forms
         private ToolStripButton menuSupplierLedger;
         private ToolStripButton menuCustomerLedger;
         private ToolStripButton menuExpenses;
+        private ToolStripButton menuCashShift;
 
         protected override void OnShown(EventArgs e)
         {
@@ -26,6 +27,7 @@ namespace Pos_System.Forms
             menuSupplierLedger = CreateDashboardMenuButton("Supplier Ledger", OpenSupplierLedger_Click);
             menuCustomerLedger = CreateDashboardMenuButton("Customer Ledger", OpenCustomerLedger_Click);
             menuExpenses = CreateDashboardMenuButton("Expenses", OpenExpenses_Click);
+            menuCashShift = CreateDashboardMenuButton("Cash Shift", OpenCashShift_Click);
 
             int supplierIndex = dashboardMenuStrip.Items.IndexOf(menuSupplier);
             if (supplierIndex < 0) supplierIndex = Math.Min(3, dashboardMenuStrip.Items.Count);
@@ -40,6 +42,7 @@ namespace Pos_System.Forms
             int reportsIndex = dashboardMenuStrip.Items.IndexOf(menuReports);
             if (reportsIndex < 0) reportsIndex = dashboardMenuStrip.Items.Count;
             dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex, dashboardMenuStrip.Items.Count), menuExpenses);
+            dashboardMenuStrip.Items.Insert(Math.Min(reportsIndex + 1, dashboardMenuStrip.Items.Count), menuCashShift);
 
             purchaseMenusAdded = true;
             LayoutDashboardMenuButtons();
@@ -83,6 +86,16 @@ namespace Pos_System.Forms
                 return;
             }
             LoadForm(new ExpenseForm());
+        }
+
+        private void OpenCashShift_Click(object sender, EventArgs e)
+        {
+            if (!PermissionService.CanViewScreen(AppSession.UserId, _role, PermissionService.ScreenSales))
+            {
+                MessageBox.Show("You do not have permission to open cash shift.", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            LoadForm(new CashSessionForm());
         }
     }
 }
