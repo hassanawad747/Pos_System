@@ -6,10 +6,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\InventoryTransaction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\SupplierTransaction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\SupplierPayment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CustomerTransaction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CustomerPayment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\PurchaseService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\SupplierLedgerService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\CustomerLedgerService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Forms\PurchaseForm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Forms\SupplierLedgerForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\CustomerLedgerForm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Forms\PosSystemDashboard.Purchases.cs" />
   </ItemGroup>
 </Project>
