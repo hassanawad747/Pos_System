@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Forms\ExpenseForm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Forms\CashSessionForm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Forms\CashReportForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\Sales.SplitPayments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Forms\PosSystemDashboard.Purchases.cs" />
   </ItemGroup>
 </Project>
