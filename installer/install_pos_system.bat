@@ -18,12 +18,12 @@ if /I "%~1"=="client" set "ROLE=Client"
 
 echo.
 echo =================================================
-echo  Bike Zone POS - LAN Server / Client Installer
+echo  Bike Zone POS - SQL-Only LAN Installer
 echo  Role: %ROLE%
 echo =================================================
 echo.
 
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0install_pos_system.ps1" -Role "%ROLE%"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0setup_pos_lan.ps1" -Role "%ROLE%"
 set "EXITCODE=%errorlevel%"
 
 echo.
