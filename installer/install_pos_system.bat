@@ -26,6 +26,12 @@ echo.
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0setup_pos_lan.ps1" -Role "%ROLE%"
 set "EXITCODE=%errorlevel%"
 
+if "%EXITCODE%"=="0" (
+    if exist "%~dp0create_pos_icon.ps1" (
+        powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0create_pos_icon.ps1"
+    )
+)
+
 echo.
 if "%EXITCODE%"=="0" (
     echo POS setup finished successfully.
