@@ -27,17 +27,13 @@ jobs:
         shell: pwsh
         run: nuget restore packages.config -PackagesDirectory packages
 
-      - name: Validate LAN installer PowerShell syntax
+      - name: Validate installer PowerShell syntax
         shell: pwsh
         run: |
-          foreach ($file in @('installer\setup_pos_lan.ps1','installer\create_pos_icon.ps1')) {
+          foreach ($file in @('installer\setup_pos_lan.ps1','installer\create_pos_icon.ps1','installer\verify_database.ps1')) {
             $tokens = $null
             $errors = $null
-            [void][System.Management.Automation.Language.Parser]::ParseFile(
-              (Resolve-Path $file),
-              [ref]$tokens,
-              [ref]$errors
-            )
+            [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file),[ref]$tokens,[ref]$errors)
             if ($errors.Count -gt 0) {
               $errors | ForEach-Object { Write-Error ("$file : " + $_.Message) }
               exit 1
@@ -75,18 +71,11 @@ jobs:
             $connection.Open()
             return $connection
           }
-
           function Invoke-Sql([string]$Query, [string]$Database = 'master') {
             $connection = New-Connection $Database
-            try {
-              $command = $connection.CreateCommand()
-              $command.CommandTimeout = 120
-              $command.CommandText = $Query
-              [void]$command.ExecuteNonQuery()
-            }
+            try { $command=$connection.CreateCommand();$command.CommandTimeout=120;$command.CommandText=$Query;[void]$command.ExecuteNonQuery() }
             finally { $connection.Dispose() }
           }
-
           function Invoke-SqlFile([string]$Path, [string]$Database) {
             $text = Get-Content -Raw $Path
             $batches = [regex]::Split($text, '(?im)^\s*GO\s*(?:--.*)?$')
@@ -94,10 +83,7 @@ jobs:
             try {
               foreach ($batch in $batches) {
                 if ([string]::IsNullOrWhiteSpace($batch)) { continue }
-                $command = $connection.CreateCommand()
-                $command.CommandTimeout = 120
-                $command.CommandText = $batch
-                [void]$command.ExecuteNonQuery()
+                $command=$connection.CreateCommand();$command.CommandTimeout=120;$command.CommandText=$batch;[void]$command.ExecuteNonQuery()
               }
             }
             finally { $connection.Dispose() }
@@ -105,7 +91,6 @@ jobs:
 
           Invoke-Sql "IF DB_ID(N'pos_system_ci') IS NOT NULL BEGIN ALTER DATABASE pos_system_ci SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE pos_system_ci; END; CREATE DATABASE pos_system_ci;" 'master'
           Invoke-SqlFile 'database/install/000_base_schema.sql' 'pos_system_ci'
-
           $migrations = Get-ChildItem 'database\migrations' -Filter '*.sql' -File | Sort-Object Name
           if (-not $migrations) { throw 'No database migrations were found.' }
           foreach ($migration in $migrations) {
@@ -113,7 +98,7 @@ jobs:
             Invoke-SqlFile $migration.FullName 'pos_system_ci'
           }
 
-      - name: Verify upgraded schema
+      - name: Verify upgraded schema and roadmap modules
         shell: pwsh
         run: |
           $connectionString = 'Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=pos_system_ci;Integrated Security=True;TrustServerCertificate=True'
@@ -124,37 +109,81 @@ jobs:
             $command.CommandText = @"
           IF OBJECT_ID(N'dbo.Users', N'U') IS NULL THROW 52000, 'Users table missing.', 1;
           IF OBJECT_ID(N'dbo.Settings', N'U') IS NULL THROW 52001, 'Settings table missing.', 1;
-          IF COL_LENGTH('dbo.Settings', 'key_name') IS NULL THROW 52002, 'Settings.key_name missing.', 1;
-          IF COL_LENGTH('dbo.Products', 'price_usd') IS NULL THROW 52003, 'Products.price_usd missing.', 1;
-          IF COL_LENGTH('dbo.Products', 'sale_price_usd') IS NULL THROW 52004, 'Products.sale_price_usd missing.', 1;
-          IF OBJECT_ID(N'dbo.Sale_Items', N'U') IS NULL THROW 52005, 'Legacy Sale_Items table missing.', 1;
-          IF COL_LENGTH('dbo.Sales', 'customer_name') IS NULL THROW 52006, 'Sales.customer_name missing.', 1;
-          IF COL_LENGTH('dbo.Customers', 'balance_usd') IS NULL THROW 52007, 'Customers.balance_usd missing.', 1;
-          IF OBJECT_ID(N'dbo.Purchases', N'U') IS NULL THROW 52008, 'Purchases table missing.', 1;
-          IF OBJECT_ID(N'dbo.PurchaseItems', N'U') IS NULL THROW 52009, 'PurchaseItems table missing.', 1;
-          IF OBJECT_ID(N'dbo.InventoryTransactions', N'U') IS NULL THROW 52010, 'InventoryTransactions table missing.', 1;
-          IF OBJECT_ID(N'dbo.SupplierTransactions', N'U') IS NULL THROW 52011, 'SupplierTransactions table missing.', 1;
-          IF OBJECT_ID(N'dbo.SupplierPayments', N'U') IS NULL THROW 52012, 'SupplierPayments table missing.', 1;
-          IF OBJECT_ID(N'dbo.CustomerTransactions', N'U') IS NULL THROW 52013, 'CustomerTransactions table missing.', 1;
-          IF OBJECT_ID(N'dbo.CustomerPayments', N'U') IS NULL THROW 52014, 'CustomerPayments table missing.', 1;
-          IF OBJECT_ID(N'dbo.TR_Sales_CustomerLedger', N'TR') IS NULL THROW 52015, 'Customer ledger sale trigger missing.', 1;
-          IF COL_LENGTH('dbo.Products', 'purchase_price') IS NULL THROW 52016, 'Products.purchase_price missing.', 1;
-          IF COL_LENGTH('dbo.Products', 'selling_price') IS NULL THROW 52017, 'Products.selling_price missing.', 1;
-          IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL THROW 52018, 'Sales.invoice_number missing.', 1;
-          IF OBJECT_ID(N'dbo.WhishPaymentAttempts', N'U') IS NULL THROW 52019, 'WhishPaymentAttempts table missing.', 1;
-          IF COL_LENGTH('dbo.SalePayments', 'payer_phone') IS NULL THROW 52020, 'SalePayments.payer_phone missing.', 1;
-          IF COL_LENGTH('dbo.SalePayments', 'provider_status') IS NULL THROW 52021, 'SalePayments.provider_status missing.', 1;
+          IF COL_LENGTH('dbo.Products', 'purchase_price') IS NULL THROW 52002, 'Products.purchase_price missing.', 1;
+          IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL THROW 52003, 'Sales.invoice_number missing.', 1;
+          IF OBJECT_ID(N'dbo.Purchases', N'U') IS NULL THROW 52004, 'Purchases missing.', 1;
+          IF OBJECT_ID(N'dbo.InventoryTransactions', N'U') IS NULL THROW 52005, 'InventoryTransactions missing.', 1;
+          IF OBJECT_ID(N'dbo.SupplierTransactions', N'U') IS NULL THROW 52006, 'SupplierTransactions missing.', 1;
+          IF OBJECT_ID(N'dbo.CustomerTransactions', N'U') IS NULL THROW 52007, 'CustomerTransactions missing.', 1;
+          IF OBJECT_ID(N'dbo.Expenses', N'U') IS NULL THROW 52008, 'Expenses missing.', 1;
+          IF OBJECT_ID(N'dbo.CashSessions', N'U') IS NULL THROW 52009, 'CashSessions missing.', 1;
+          IF OBJECT_ID(N'dbo.SalePayments', N'U') IS NULL THROW 52010, 'SalePayments missing.', 1;
+          IF OBJECT_ID(N'dbo.WhishPaymentAttempts', N'U') IS NULL THROW 52011, 'WhishPaymentAttempts missing.', 1;
+
+          IF OBJECT_ID(N'dbo.HeldSales', N'U') IS NULL THROW 52100, 'HeldSales missing.', 1;
+          IF OBJECT_ID(N'dbo.Quotations', N'U') IS NULL THROW 52101, 'Quotations missing.', 1;
+          IF OBJECT_ID(N'dbo.SalesReturns', N'U') IS NULL THROW 52102, 'SalesReturns missing.', 1;
+          IF OBJECT_ID(N'dbo.SalesReturnItems', N'U') IS NULL THROW 52103, 'SalesReturnItems missing.', 1;
+
+          IF OBJECT_ID(N'dbo.Branches', N'U') IS NULL THROW 52200, 'Branches missing.', 1;
+          IF OBJECT_ID(N'dbo.Warehouses', N'U') IS NULL THROW 52201, 'Warehouses missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductStock', N'U') IS NULL THROW 52202, 'ProductStock missing.', 1;
+          IF OBJECT_ID(N'dbo.StockTransfers', N'U') IS NULL THROW 52203, 'StockTransfers missing.', 1;
+          IF OBJECT_ID(N'dbo.StockCounts', N'U') IS NULL THROW 52204, 'StockCounts missing.', 1;
+          IF OBJECT_ID(N'dbo.Units', N'U') IS NULL THROW 52205, 'Units missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductUnits', N'U') IS NULL THROW 52206, 'ProductUnits missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductBarcodes', N'U') IS NULL THROW 52207, 'ProductBarcodes missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductBatches', N'U') IS NULL THROW 52208, 'ProductBatches missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductSerials', N'U') IS NULL THROW 52209, 'ProductSerials missing.', 1;
+
+          IF OBJECT_ID(N'dbo.Currencies', N'U') IS NULL THROW 52300, 'Currencies missing.', 1;
+          IF OBJECT_ID(N'dbo.ExchangeRates', N'U') IS NULL THROW 52301, 'ExchangeRates missing.', 1;
+          IF OBJECT_ID(N'dbo.TaxRates', N'U') IS NULL THROW 52302, 'TaxRates missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductPrices', N'U') IS NULL THROW 52303, 'ProductPrices missing.', 1;
+          IF OBJECT_ID(N'dbo.Promotions', N'U') IS NULL THROW 52304, 'Promotions missing.', 1;
+          IF OBJECT_ID(N'dbo.LoyaltyAccounts', N'U') IS NULL THROW 52305, 'LoyaltyAccounts missing.', 1;
+
+          IF OBJECT_ID(N'dbo.ActionPermissions', N'U') IS NULL THROW 52400, 'ActionPermissions missing.', 1;
+          IF OBJECT_ID(N'dbo.ErrorLogs', N'U') IS NULL THROW 52401, 'ErrorLogs missing.', 1;
+          IF OBJECT_ID(N'dbo.DatabaseVerificationRuns', N'U') IS NULL THROW 52402, 'DatabaseVerificationRuns missing.', 1;
+          IF COL_LENGTH('dbo.Sale_Items','unit_cost_snapshot') IS NULL THROW 52403, 'Sale cost snapshot missing.', 1;
+          IF OBJECT_ID(N'dbo.vw_DailyProfitSummary', N'V') IS NULL THROW 52404, 'Daily profit view missing.', 1;
+          IF OBJECT_ID(N'dbo.vw_StockHealth', N'V') IS NULL THROW 52405, 'Stock health view missing.', 1;
+          IF OBJECT_ID(N'dbo.vw_SupplierBusinessSummary', N'V') IS NULL THROW 52406, 'Supplier BI view missing.', 1;
           "@
             [void]$command.ExecuteNonQuery()
 
             $command.CommandText = 'SELECT COUNT(*) FROM dbo.SchemaMigrations;'
             $appliedCount = [int]$command.ExecuteScalar()
             $fileCount = (Get-ChildItem 'database\migrations' -Filter '*.sql' -File).Count
-            if ($appliedCount -lt $fileCount) {
-              throw "SchemaMigrations recorded $appliedCount migrations but repository contains $fileCount migration files."
-            }
+            if ($appliedCount -lt $fileCount) { throw "SchemaMigrations recorded $appliedCount migrations but repository contains $fileCount migration files." }
           }
           finally { $connection.Dispose() }
+
+      - name: Run database behavioral smoke tests
+        shell: pwsh
+        run: |
+          $cs='Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=pos_system_ci;Integrated Security=True;TrustServerCertificate=True'
+          $c=New-Object System.Data.SqlClient.SqlConnection $cs;$c.Open()
+          try {
+            $cmd=$c.CreateCommand();$cmd.CommandTimeout=120;$cmd.CommandText=@"
+          BEGIN TRANSACTION;
+          DECLARE @uid INT,@cid INT,@sid INT,@pid INT,@wid INT;
+          INSERT dbo.Users(username,password_hash,role,created_at) VALUES(N'ci_admin',N'PBKDF2$1$100000$test$test',N'admin',SYSUTCDATETIME()); SET @uid=SCOPE_IDENTITY();
+          INSERT dbo.Customers(name,balance_usd,balance_lb) VALUES(N'CI Customer',0,0); SET @cid=SCOPE_IDENTITY();
+          INSERT dbo.Suppliers(name) VALUES(N'CI Supplier'); SET @sid=SCOPE_IDENTITY();
+          INSERT dbo.Products(name,price,stock_quantity,supplier_id,purchase_price,selling_price) VALUES(N'CI Product',15,10,@sid,10,15); SET @pid=SCOPE_IDENTITY();
+          SELECT TOP(1) @wid=warehouse_id FROM dbo.Warehouses WHERE is_default=1 ORDER BY warehouse_id;
+          INSERT dbo.ProductStock(warehouse_id,product_id,quantity,minimum_stock,reorder_point) VALUES(@wid,@pid,10,3,3);
+          IF NOT EXISTS(SELECT 1 FROM dbo.vw_StockHealth WHERE product_id=@pid AND quantity=10) THROW 52900,'Stock health smoke test failed.',1;
+          INSERT dbo.LoyaltyAccounts(customer_id,points_balance,lifetime_points) VALUES(@cid,5,5);
+          IF NOT EXISTS(SELECT 1 FROM dbo.vw_CustomerBusinessSummary WHERE customer_id=@cid AND loyalty_points=5) THROW 52901,'Customer BI smoke test failed.',1;
+          INSERT dbo.ActionPermissions(role_name,action_key,is_allowed) SELECT N'ci_role',N'SALE.CREATE',1 WHERE NOT EXISTS(SELECT 1 FROM dbo.ActionPermissions WHERE role_name=N'ci_role' AND action_key=N'SALE.CREATE');
+          IF NOT EXISTS(SELECT 1 FROM dbo.ActionPermissions WHERE role_name=N'ci_role' AND action_key=N'SALE.CREATE' AND is_allowed=1) THROW 52902,'Action permission smoke test failed.',1;
+          ROLLBACK TRANSACTION;
+          "@;[void]$cmd.ExecuteNonQuery()
+          }
+          finally{$c.Dispose()}
 
       - name: Build installer package
         if: github.event_name != 'pull_request'
@@ -165,22 +194,19 @@ jobs:
           New-Item -ItemType Directory -Force -Path (Join-Path $package 'App') | Out-Null
           New-Item -ItemType Directory -Force -Path (Join-Path $package 'Database') | Out-Null
           New-Item -ItemType Directory -Force -Path (Join-Path $package 'Migrations') | Out-Null
-
           Copy-Item 'bin\Debug\*' (Join-Path $package 'App') -Recurse -Force
           Copy-Item 'database\install\000_base_schema.sql' (Join-Path $package 'Database\000_base_schema.sql') -Force
           Copy-Item 'database\migrations\*.sql' (Join-Path $package 'Migrations') -Force
           Copy-Item 'installer\install_pos_system.bat' $package -Force
           Copy-Item 'installer\setup_pos_lan.ps1' $package -Force
           Copy-Item 'installer\create_pos_icon.ps1' $package -Force
+          Copy-Item 'installer\verify_database.ps1' $package -Force
           Copy-Item 'installer\Installer.config.json' $package -Force
           Copy-Item 'installer\README.txt' $package -Force
           Copy-Item 'installer\INSTALL_STEPS.txt' $package -Force
           Copy-Item 'installer\تعليمات_التثبيت_بالعربي.txt' $package -Force
-          if (Test-Path 'installer\SQL2022-SSEI-Expr.exe') {
-            Copy-Item 'installer\SQL2022-SSEI-Expr.exe' $package -Force
-          }
-
-          $migrationNames = (Get-ChildItem 'database\migrations' -Filter '*.sql' -File | Sort-Object Name | Select-Object -ExpandProperty Name) -join ','
+          if (Test-Path 'installer\SQL2022-SSEI-Expr.exe') { Copy-Item 'installer\SQL2022-SSEI-Expr.exe' $package -Force }
+          $migrationNames=(Get-ChildItem 'database\migrations' -Filter '*.sql' -File|Sort-Object Name|Select-Object -ExpandProperty Name)-join ','
           @"
           BuildCommit=$env:GITHUB_SHA
           BuildDateUtc=$([DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ'))
@@ -188,6 +214,7 @@ jobs:
           DatabaseBaseSchema=000_base_schema.sql
           DatabaseMigrations=$migrationNames
           BrandingIcon=BikeZonePOS.ico generated during install
+          DatabaseVerificationTool=verify_database.ps1
           "@ | Set-Content (Join-Path $package 'VERSION.txt') -Encoding UTF8
 
       - name: Upload installer package
