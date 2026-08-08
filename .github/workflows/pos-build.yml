@@ -51,7 +51,7 @@ jobs:
 
       - name: Build .NET 10 modernization app
         shell: pwsh
-        run: dotnet build modern/PosSystem.Modern/PosSystem.Modern.csproj --configuration Release --no-restore:false
+        run: dotnet build modern/PosSystem.Modern/PosSystem.Modern.csproj --configuration Release
 
       - name: Validate branded shortcut icon generation
         shell: pwsh
@@ -97,15 +97,11 @@ jobs:
             }
             finally { $connection.Dispose() }
           }
-
           Invoke-Sql "IF DB_ID(N'pos_system_ci') IS NOT NULL BEGIN ALTER DATABASE pos_system_ci SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE pos_system_ci; END; CREATE DATABASE pos_system_ci;" 'master'
           Invoke-SqlFile 'database/install/000_base_schema.sql' 'pos_system_ci'
           $migrations = Get-ChildItem 'database\migrations' -Filter '*.sql' -File | Sort-Object Name
           if (-not $migrations) { throw 'No database migrations were found.' }
-          foreach ($migration in $migrations) {
-            Write-Host "Applying $($migration.Name)"
-            Invoke-SqlFile $migration.FullName 'pos_system_ci'
-          }
+          foreach ($migration in $migrations) { Write-Host "Applying $($migration.Name)"; Invoke-SqlFile $migration.FullName 'pos_system_ci' }
 
       - name: Verify upgraded schema and roadmap modules
         shell: pwsh
