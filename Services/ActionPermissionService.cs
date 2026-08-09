@@ -5,13 +5,16 @@ namespace Pos_System.Services
 {
     internal static class ActionPermissionService
     {
-        public static bool Can(string actionKey)
+        public static bool Can(string actionKey, string connectionString = null)
         {
             if (AppSession.IsAdministrator) return true;
             if (string.IsNullOrWhiteSpace(actionKey) || string.IsNullOrWhiteSpace(AppSession.Role)) return false;
             try
             {
-                using (var conn = new SqlConnection(POS_System.Program.SettingsManager.ConnectionString))
+                string effectiveConnectionString = string.IsNullOrWhiteSpace(connectionString)
+                    ? POS_System.Program.SettingsManager.ConnectionString
+                    : connectionString;
+                using (var conn = new SqlConnection(effectiveConnectionString))
                 using (var cmd = new SqlCommand("SELECT TOP(1) is_allowed FROM dbo.ActionPermissions WHERE role_name=@role AND action_key=@action;", conn))
                 {
                     cmd.Parameters.AddWithValue("@role", AppSession.Role);
