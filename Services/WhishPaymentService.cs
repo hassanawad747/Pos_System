@@ -7,6 +7,15 @@ namespace Pos_System.Services
 {
     internal sealed class WhishPaymentService
     {
+        private readonly string connectionString;
+
+        public WhishPaymentService(string connectionString = null)
+        {
+            this.connectionString = string.IsNullOrWhiteSpace(connectionString)
+                ? POS_System.Program.SettingsManager.ConnectionString
+                : connectionString;
+        }
+
         public sealed class AuthorizationResult
         {
             public bool IsAuthorized { get; set; }
@@ -82,7 +91,7 @@ namespace Pos_System.Services
             return result;
         }
 
-        private static void RecordAttempt(
+        private void RecordAttempt(
             int? saleId,
             string phoneNumber,
             decimal amount,
@@ -98,7 +107,7 @@ namespace Pos_System.Services
                     ? "POS-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff")
                     : clientReference.Trim();
 
-                using (var connection = new SqlConnection(POS_System.Program.SettingsManager.ConnectionString))
+                using (var connection = new SqlConnection(connectionString))
                 using (var command = new SqlCommand(@"
 IF OBJECT_ID(N'dbo.WhishPaymentAttempts',N'U') IS NOT NULL
 BEGIN

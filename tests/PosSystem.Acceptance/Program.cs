@@ -31,7 +31,7 @@ INSERT dbo.LoyaltyAccounts(customer_id,points_balance,lifetime_points) SELECT cu
             Exec("INSERT dbo.CashRegisters(name,computer_name,location,is_active) VALUES(N'Acceptance Register',N'"+Environment.MachineName.Replace("'","''")+"',N'Test',1);INSERT dbo.CashSessions(register_id,user_id,opening_usd,opening_lbp,status) VALUES(SCOPE_IDENTITY(),"+userId+",0,0,N'OPEN');");
         }
         private static void PasswordTests(){string hash=PasswordHasher.Hash("secret");Check(PasswordHasher.Verify("secret",hash),"PBKDF2 authentication");Check(!PasswordHasher.Verify("wrong",hash),"wrong password rejected");Check(PasswordHasher.NeedsRehash("legacy-password")&&PasswordHasher.IsPbkdf2(hash),"legacy password migration detection");}
-        private static void WhishTest(){var result=new WhishPaymentService().Authorize("03123456",10,"USD","acceptance");Check(!result.IsAuthorized&&result.Status=="PROVIDER_NOT_CONFIGURED","WHISH fail closed");}
+        private static void WhishTest(){var result=new WhishPaymentService(Cs).Authorize("03123456",10,"USD","acceptance");Check(!result.IsAuthorized&&result.Status=="PROVIDER_NOT_CONFIGURED","WHISH fail closed");}
         private static CheckoutService.Request Request(int qty,Guid? key=null,string currency="USD")
         {return new CheckoutService.Request{OperationKey=key??Guid.NewGuid(),UserId=userId,Username="admin",CustomerId=customerId,CustomerName="Test Customer",Currency=currency,ExchangeRate=89500,Lines=new List<CheckoutService.Line>{new CheckoutService.Line{ProductId=productId,ProductName="Test Product",Quantity=qty,UnitPrice=10,OriginalUnitPrice=10,WarehouseId=warehouse1}}};}
         private static void CheckoutTests()
