@@ -13,6 +13,8 @@ Copy-Item (Join-Path $repo 'database\install\000_base_schema.sql') (Join-Path $O
 Copy-Item (Join-Path $repo 'database\migrations\*.sql') (Join-Path $OutputDirectory 'Migrations') -Force
 $files=@('install_pos_system.bat','setup_pos_lan.ps1','create_pos_icon.ps1','verify_database.ps1','Installer.config.json','README.txt','INSTALL_STEPS.txt')
 foreach($name in $files){$source=Join-Path $PSScriptRoot $name;if(-not(Test-Path $source)){throw "Installer file missing: $name"};Copy-Item $source $OutputDirectory -Force}
+$setupText=Get-Content (Join-Path $OutputDirectory 'setup_pos_lan.ps1') -Raw
+if($setupText -match '\.DataSource\s*='){throw 'Unsafe SqlConnectionStringBuilder DataSource property assignment detected. Use the exact Data Source keyword.'}
 $localized=@(Get-ChildItem $PSScriptRoot -Filter '*.txt' -File|Where-Object{$_.Name -notin @('README.txt','INSTALL_STEPS.txt')})
 if($localized.Count -eq 0){throw 'Localized installer instructions are missing.'}
 foreach($file in $localized){Copy-Item $file.FullName $OutputDirectory -Force}

@@ -165,12 +165,12 @@ function New-WindowsSqlConnection([string]$Database = 'master') {
 
 function New-AppSqlConnection([string]$ServerAddress, [string]$Password, [string]$Database = $DatabaseName) {
     $builder = New-Object System.Data.SqlClient.SqlConnectionStringBuilder
-    $builder.DataSource = "$ServerAddress,$SqlPort"
-    $builder.InitialCatalog = $Database
-    $builder.UserID = $DatabaseLogin
-    $builder.Password = $Password
-    $builder.IntegratedSecurity = $false
-    $builder.TrustServerCertificate = $true
+    $builder['Data Source'] = "$ServerAddress,$SqlPort"
+    $builder['Initial Catalog'] = $Database
+    $builder['User ID'] = $DatabaseLogin
+    $builder['Password'] = $Password
+    $builder['Integrated Security'] = $false
+    $builder['TrustServerCertificate'] = $true
     $builder.ConnectTimeout = 10
     $connection = New-Object System.Data.SqlClient.SqlConnection $builder.ConnectionString
     $connection.Open()
@@ -373,12 +373,12 @@ function Test-AppConnection([string]$ServerAddress, [string]$Password) {
 
 function Build-AppConnectionString([string]$ServerAddress, [string]$Password) {
     $builder = New-Object System.Data.SqlClient.SqlConnectionStringBuilder
-    $builder.DataSource = "$ServerAddress,$SqlPort"
-    $builder.InitialCatalog = $DatabaseName
-    $builder.UserID = $DatabaseLogin
-    $builder.Password = $Password
-    $builder.IntegratedSecurity = $false
-    $builder.TrustServerCertificate = $true
+    $builder['Data Source'] = "$ServerAddress,$SqlPort"
+    $builder['Initial Catalog'] = $DatabaseName
+    $builder['User ID'] = $DatabaseLogin
+    $builder['Password'] = $Password
+    $builder['Integrated Security'] = $false
+    $builder['TrustServerCertificate'] = $true
     $builder.ConnectTimeout = 10
     return $builder.ConnectionString
 }

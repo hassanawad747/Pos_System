@@ -6,6 +6,11 @@ param(
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
+trap {
+    Write-Host "`nSETUP ERROR: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host 'No existing POS data was intentionally deleted. Correct the reported problem and run the installer again.' -ForegroundColor Yellow
+    exit 1
+}
 
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $AppSource = Join-Path $Root 'App'
@@ -25,6 +30,7 @@ $DatabaseLogin = 'bikezone_pos_app'
 $ShortcutName = 'Bike Zone POS'
 $LaunchAfterInstall = $true
 $InstallSqlIfMissing = $true
+$RequiredLatestMigration = '018_checkout_inventory_integration.sql'
 
 function Step([string]$text) { Write-Host "`n== $text" -ForegroundColor Cyan }
 function Ok([string]$text) { Write-Host "   OK: $text" -ForegroundColor Green }
@@ -143,6 +149,18 @@ function Sql-File([string]$path,[string]$db) {
     finally { $c.Dispose() }
 }
 
+function Read-DatabasePassword {
+    while ($true) {
+        $password = Read-NewPassword 'Database'
+        $hasUpper = $password -cmatch '[A-Z]'
+        $hasLower = $password -cmatch '[a-z]'
+        $hasDigit = $password -match '[0-9]'
+        $hasSymbol = $password -match '[^A-Za-z0-9]'
+        if ($password.Length -ge 12 -and $hasUpper -and $hasLower -and $hasDigit -and $hasSymbol) { return $password }
+        Write-Host 'Database password must contain at least 12 characters, uppercase, lowercase, number, and symbol.' -ForegroundColor Yellow
+    }
+}
+
 function Backup-ExistingDatabase {
     $dbLiteral=SqlLiteral $DatabaseName
     if([int](Sql-Scalar "SELECT CASE WHEN DB_ID(N'$dbLiteral') IS NULL THEN 0 ELSE 1 END" 'master') -eq 0){return}
@@ -168,6 +186,15 @@ function Migrations-Path {
     throw 'Migrations folder is missing.'
 }
 
+function Migration-Files {
+    $files = @(Get-ChildItem (Migrations-Path) -Filter '*.sql' -File | Sort-Object Name)
+    if ($files.Count -eq 0) { throw 'No migration SQL files found.' }
+    $duplicates = @($files | Group-Object { if ($_.Name -match '^(\d{3})_') { $matches[1] } else { 'INVALID' } } | Where-Object { $_.Name -eq 'INVALID' -or $_.Count -ne 1 })
+    if ($duplicates.Count -gt 0) { throw 'Migration filenames are invalid or contain duplicate numeric prefixes.' }
+    if ($files[-1].Name -ne $RequiredLatestMigration) { throw "Installer migrations are incomplete. Expected latest file: $RequiredLatestMigration; found: $($files[-1].Name). Rebuild and copy the complete dist\BikeZonePOS-Installer folder." }
+    return $files
+}
+
 function Ensure-Database {
     $dbLiteral = SqlLiteral $DatabaseName
     $exists = [int](Sql-Scalar "SELECT CASE WHEN DB_ID(N'$dbLiteral') IS NULL THEN 0 ELSE 1 END" 'master')
@@ -184,8 +211,7 @@ function Ensure-Database {
 
 function Apply-Migrations {
     Step 'Applying versioned SQL updates'
-    $files = @(Get-ChildItem (Migrations-Path) -Filter '*.sql' -File | Sort-Object Name)
-    if ($files.Count -eq 0) { throw 'No migration SQL files found.' }
+    $files = @(Migration-Files)
     foreach ($f in $files) { Write-Host "   -> $($f.Name)"; Sql-File $f.FullName $DatabaseName }
     Ok "$($files.Count) migration script(s) processed"
 }
@@ -270,17 +296,21 @@ function Ensure-FirstAdmin {
 }
 
 function App-ConnectionString([string]$server,[string]$password) {
+    $endpoint=$server.Trim()
+    if($endpoint -notmatch ',\s*\d+\s*$'){$endpoint="$endpoint,$SqlPort"}
     $b=New-Object Data.SqlClient.SqlConnectionStringBuilder
-    $b['Data Source']="$server,$SqlPort";$b['Initial Catalog']=$DatabaseName;$b['User ID']=$DatabaseLogin;$b['Password']=$password
+    $b['Data Source']=$endpoint;$b['Initial Catalog']=$DatabaseName;$b['User ID']=$DatabaseLogin;$b['Password']=$password
     $b['Integrated Security']=$false;$b['TrustServerCertificate']=$true;$b['Connect Timeout']=10
     return $b.ConnectionString
 }
 
 function Test-AppDb([string]$server,[string]$password) {
-    $c=New-Object Data.SqlClient.SqlConnection (App-ConnectionString $server $password)
+    $connectionString=App-ConnectionString $server $password
+    $c=New-Object Data.SqlClient.SqlConnection $connectionString
     try{$c.Open(); $cmd=$c.CreateCommand(); $cmd.CommandText='SELECT 1'; [void]$cmd.ExecuteScalar()}
     finally{$c.Dispose()}
-    Ok "Database connection succeeded: $server,$SqlPort"
+    $parsed=New-Object Data.SqlClient.SqlConnectionStringBuilder $connectionString
+    Ok "Database connection succeeded: $($parsed['Data Source'])"
 }
 
 function Install-App([string]$connectionString) {
@@ -329,14 +359,16 @@ if($ValidationOnly){
     if($selected -eq 'Interactive'){throw 'ValidationOnly requires -Role Server or -Role Client.'}
     if(-not(Test-Path (Join-Path $AppSource 'Pos_System.exe'))){throw 'Release application is missing from App.'}
     if(-not(Test-Path (Base-Schema-Path))){throw 'Base SQL schema is missing.'}
-    $migrationFiles=@(Get-ChildItem (Migrations-Path) -Filter '*.sql' -File|Sort-Object Name)
-    if($migrationFiles.Count -eq 0){throw 'No migrations are available.'}
+    $migrationFiles=@(Migration-Files)
     if(@(Get-ChildItem $Root -Filter '*.bak' -File -Recurse).Count -ne 0){throw 'Installer must not contain a .bak file.'}
     if(-not(Test-Path (Join-Path $Root 'create_pos_icon.ps1'))){throw 'Branded icon generator is missing.'}
     $testServer=if($selected -eq 'Server'){'127.0.0.1'}else{'192.0.2.10'}
     $testConnection=App-ConnectionString $testServer 'validation-password'
     $testBuilder=New-Object Data.SqlClient.SqlConnectionStringBuilder $testConnection
     if([string]$testBuilder['Initial Catalog'] -ne $DatabaseName){throw 'Generated database configuration is invalid.'}
+    if([string]$testBuilder['Data Source'] -ne "$testServer,$SqlPort"){throw 'Generated SQL Server endpoint is invalid.'}
+    $explicitPortBuilder=New-Object Data.SqlClient.SqlConnectionStringBuilder (App-ConnectionString "$testServer,$SqlPort" 'validation-password')
+    if([string]$explicitPortBuilder['Data Source'] -ne "$testServer,$SqlPort"){throw 'An explicitly supplied SQL port was duplicated.'}
     Write-Host "VALIDATION PASSED: $selected role, Release app, SQL-only base, $($migrationFiles.Count) ordered migrations, client/server configuration, branded icon, no .bak." -ForegroundColor Green
     exit 0
 }
@@ -344,7 +376,7 @@ if($ValidationOnly){
 if ($selected -eq 'Server') {
     Ensure-SqlEngine
     Configure-LanSql
-    $dbPassword=Read-NewPassword 'Database'
+    $dbPassword=Read-DatabasePassword
     Backup-ExistingDatabase
     Ensure-Database
     Apply-Migrations
