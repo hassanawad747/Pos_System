@@ -4,4 +4,5 @@ bin/
 obj/
 .dotnet/
 .dotnet_home/
+dist/
 Pos_System/

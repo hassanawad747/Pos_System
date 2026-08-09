@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net48</TargetFramework><AssemblyName>PosSystem.Acceptance</AssemblyName><LangVersion>7.3</LangVersion></PropertyGroup>
+  <ItemGroup><ProjectReference Include="..\..\Pos_System.csproj" /></ItemGroup>
+</Project>

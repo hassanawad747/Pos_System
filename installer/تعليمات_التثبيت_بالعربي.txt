@@ -1,50 +1,160 @@
-تعليمات تثبيت برنامج Bike Zone POS على كمبيوتر ثاني
+تعليمات Bike Zone POS - تثبيت شبكة LAN بدون ملف BAK
 
-المتطلبات قبل التشغيل:
-1. يجب أن يكون SQL Server Express مثبت على الكمبيوتر الثاني.
-2. يجب أن يكون اسم السيرفر/النسخة SQLEXPRESS.
-3. يجب أن تكون أداة sqlcmd.exe موجودة على الكمبيوتر.
-4. يجب تشغيل ملف التثبيت كمسؤول Administrator.
+الفكرة الجديدة:
+- يوجد جهاز واحد فقط يكون SERVER ويحمل قاعدة البيانات المشتركة.
+- باقي الأجهزة تكون CLIENT وتشغل برنامج POS وتتصل بقاعدة البيانات الموجودة على SERVER عبر الشبكة المحلية LAN.
+- لا يوجد ملف pos_system.bak داخل الـ Installer.
+- إنشاء قاعدة البيانات الجديدة يتم من ملفات SQL فقط، ثم يتم تشغيل جميع ملفات Migrations بالترتيب.
 
-طريقة التثبيت الأسهل:
-1. انسخ فولدر BikeZone_POS_Installer كامل إلى الكمبيوتر الثاني.
-2. ضع الفولدر على سطح المكتب Desktop.
-3. افتح الفولدر BikeZone_POS_Installer.
-4. اضغط كليك يمين على الملف:
-   install_pos_system.bat
-5. اختر:
-   Run as administrator
-6. انتظر حتى ينتهي التثبيت.
+الملف الذي تشغله دائمًا:
+install_pos_system.bat
 
-طريقة التثبيت من Command Prompt:
-1. افتح قائمة Start.
-2. اكتب:
-   cmd
-3. اضغط كليك يمين على Command Prompt.
-4. اختر:
-   Run as administrator
-5. اكتب الأمر التالي واضغط Enter:
-   cd /d "%USERPROFILE%\Desktop\BikeZone_POS_Installer"
-6. اكتب الأمر التالي واضغط Enter:
-   install_pos_system.bat
+مهم: شغله Run as administrator.
 
-ماذا يفعل ملف التثبيت؟
-1. يشغل خدمة SQL Server Express.
-2. ينسخ ملفات البرنامج إلى:
+========================================
+الخيار 1: SERVER
+========================================
+
+اختر SERVER على كمبيوتر المدير أو الكمبيوتر الذي سيبقى عليه SQL Server وقاعدة البيانات.
+
+الـ Installer يقوم تلقائيًا بـ:
+1. البحث عن SQL Server / SQL Server Express وتشغيل الخدمة.
+2. إذا لم يجد SQL Server وكان SQL2022-SSEI-Expr.exe موجودًا، يفتح مثبت SQL Server Express.
+3. تفعيل Mixed Mode Authentication.
+4. تفعيل TCP/IP للشبكة المحلية.
+5. تثبيت SQL على Port ثابت:
+   1433
+6. فتح Windows Firewall على TCP 1433.
+7. يطلب منك إدخال Database Password مرتين للتأكيد.
+8. إذا قاعدة pos_system غير موجودة:
+   - ينشئ قاعدة جديدة.
+   - يشغل Database\000_base_schema.sql.
+9. يشغل تلقائيًا جميع الملفات داخل Migrations\ بالترتيب، مثل:
+   001_create_schema_migrations.sql
+   002_pos_foundation_upgrade.sql
+   003_purchases_inventory_ledger.sql
+   004_supplier_ledger_payments.sql
+   005_customer_ledger_payments.sql
+   وأي Migration جديدة نضيفها لاحقًا.
+10. ينشئ SQL Login خاص بالبرنامج:
+    bikezone_pos_app
+    ويضع عليه نفس Database Password الذي أدخلته.
+11. إذا كانت القاعدة جديدة ولا يوجد Users، يطلب منك:
+    - POS Admin username
+    - POS Admin password
+    وهذا هو حساب الدخول داخل البرنامج، وهو مختلف عن Database Password.
+12. يثبت أحدث Pos_System.exe والـ DLLs.
+13. ينشئ Desktop Shortcut.
+14. يعرض لك:
+    - Computer Name للجهاز SERVER
+    - LAN IPv4 Address
+    - SQL Port
+    - Database Name
+
+يمكن تشغيل SERVER مباشرة بالأمر:
+install_pos_system.bat server
+
+========================================
+الخيار 2: CLIENT
+========================================
+
+اختر CLIENT على أجهزة الكاشير أو الموظفين.
+
+الـ CLIENT لا ينشئ قاعدة بيانات ولا يثبت نسخة قاعدة محلية.
+
+الـ Installer يقوم بـ:
+1. يطلب:
+   Server computer name or LAN IP
+
+مثال:
+192.168.1.10
+
+أو:
+MANAGER-PC
+
+2. يطلب Database Password الذي أنشأته على جهاز SERVER.
+3. يجرب الاتصال أولًا بـ:
+   SERVER-IP,1433
+4. إذا الاتصال نجح، يثبت البرنامج على:
    C:\BikeZonePOS\App
-3. ينسخ ملف قاعدة البيانات الاحتياطي إلى:
-   C:\BikeZonePOS\Database
-4. يسترجع قاعدة البيانات باسم:
-   pos_system
-5. ينشئ اختصار على سطح المكتب باسم:
-   Bike Zone POS
-6. يفتح البرنامج بعد انتهاء التثبيت.
+5. ينشئ Database.config تلقائيًا ليشير إلى قاعدة البيانات على SERVER.
+6. ينشئ Desktop Shortcut.
+7. يشغل البرنامج.
 
-إذا ظهر خطأ أن SQL Server Express غير موجود:
-ثبت SQL Server Express على الكمبيوتر الثاني، ويجب أن يكون اسم النسخة SQLEXPRESS، ثم شغل التثبيت مرة ثانية.
+يمكن تشغيل CLIENT مباشرة بالأمر:
+install_pos_system.bat client
 
-إذا ظهر خطأ أن sqlcmd.exe غير موجود:
-ثبت Microsoft SQL Server Command Line Utilities، ثم شغل التثبيت مرة ثانية.
+========================================
+مثال شبكة كاملة
+========================================
 
-ملاحظة مهمة:
-انسخ الفولدر كامل كما هو، ولا تحذف فولدر App أو Database لأن ملف التثبيت يحتاجهما.
+جهاز المدير SERVER:
+Computer Name = MANAGER-PC
+IP = 192.168.1.10
+Database = pos_system
+Port = 1433
+SQL Login = bikezone_pos_app
+
+Cashier 1:
+CLIENT -> Server = 192.168.1.10
+
+Cashier 2:
+CLIENT -> Server = 192.168.1.10
+
+Cashier 3:
+CLIENT -> Server = 192.168.1.10
+
+كل هذه الأجهزة تستخدم نفس البيانات الموجودة على SERVER.
+أي Sale أو Customer أو Product أو Purchase يتم حفظه في قاعدة واحدة مشتركة.
+
+========================================
+طريقة التحديث لاحقًا
+========================================
+
+عندما ننزل Version جديدة:
+
+أولًا على SERVER:
+1. نزل أحدث BikeZonePOS-Installer.
+2. شغل install_pos_system.bat كمسؤول.
+3. اختر SERVER.
+4. إذا pos_system موجودة، لا يعيد إنشاءها ولا يحذف البيانات.
+5. يشغل migrations الجديدة ثم يحدث ملفات البرنامج.
+
+بعدها على كل CLIENT:
+1. شغل نفس الـ Installer.
+2. اختر CLIENT.
+3. أدخل IP/Name للـ SERVER.
+4. أدخل Database Password.
+5. تتحدث ملفات البرنامج فقط، والبيانات تبقى على SERVER.
+
+========================================
+لماذا ألغينا ملف BAK؟
+========================================
+
+لأن Restore لملف BAK قد يسبب مشاكل إذا أُخذ Backup من SQL Server Version أحدث من SQL Server الموجود على الجهاز الجديد.
+النسخة الجديدة تستخدم SQL scripts فقط:
+
+000_base_schema.sql
+ثم
+001...
+002...
+003...
+004...
+005...
+إلخ.
+
+بهذا يصبح نشر النظام على أجهزة مختلفة أسهل وأوضح من ناحية Version Compatibility.
+
+========================================
+ملاحظات مهمة للشبكة
+========================================
+
+1. يفضل إعطاء جهاز SERVER IP ثابت أو DHCP Reservation، حتى لا يتغير IP ويتوقف اتصال CLIENTs.
+2. يجب أن تكون أجهزة CLIENT قادرة على Ping أو الوصول إلى SERVER على الشبكة المحلية.
+3. Database Password يجب أن يكون نفسه على SERVER وعلى CLIENTs.
+4. لا تعطي كل جهاز قاعدة بيانات منفصلة؛ القاعدة موجودة فقط على SERVER.
+5. SSMS غير مطلوب لتثبيت البرنامج بشكل طبيعي. PowerShell يشغل ملفات SQL بنفسه.
+6. Database Password يُخزن حاليًا داخل Database.config لأن البرنامج Desktop يعتمد SQL connection string؛ لذلك حافظ على صلاحيات Windows ومجلد C:\BikeZonePOS.
+7. POS Admin password ليس هو Database Password:
+   - Database Password: لاتصال البرنامج بـ SQL Server.
+   - POS Admin password: لتسجيل الدخول داخل Bike Zone POS.

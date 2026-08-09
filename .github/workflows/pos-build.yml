@@ -1,0 +1,226 @@
+name: POS Build Validation
+
+on:
+  push:
+    branches:
+      - agent/pos-foundation-fixes
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-database:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10 LTS
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore packages
+        shell: pwsh
+        run: nuget restore packages.config -PackagesDirectory packages
+
+      - name: Validate installer PowerShell syntax
+        shell: pwsh
+        run: |
+          foreach ($file in @('installer\setup_pos_lan.ps1','installer\create_pos_icon.ps1','installer\verify_database.ps1','installer\build_installer.ps1')) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file),[ref]$tokens,[ref]$errors)
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Error ("$file : " + $_.Message) }
+              exit 1
+            }
+          }
+
+      - name: Build Pos_System .NET Framework Debug app
+        shell: pwsh
+        run: msbuild Pos_System.csproj /m /p:Configuration=Debug /p:Platform=AnyCPU /verbosity:minimal
+
+      - name: Build Pos_System .NET Framework production app
+        shell: pwsh
+        run: msbuild Pos_System.csproj /m /p:Configuration=Release /p:Platform=AnyCPU /verbosity:minimal
+
+      - name: Build .NET 10 modernization app
+        shell: pwsh
+        run: dotnet build modern/PosSystem.Modern/PosSystem.Modern.csproj --configuration Release
+
+      - name: Validate branded shortcut icon generation
+        shell: pwsh
+        run: |
+          $testApp = 'C:\BikeZonePOS\App'
+          New-Item -ItemType Directory -Force -Path $testApp | Out-Null
+          Copy-Item 'bin\Release\Pos_System.exe' (Join-Path $testApp 'Pos_System.exe') -Force
+          & '.\installer\create_pos_icon.ps1'
+          $icon = Join-Path $testApp 'BikeZonePOS.ico'
+          if (-not (Test-Path $icon)) { throw 'BikeZonePOS.ico was not generated.' }
+          if ((Get-Item $icon).Length -le 0) { throw 'BikeZonePOS.ico is empty.' }
+          Write-Host "Generated icon bytes: $((Get-Item $icon).Length)"
+
+      - name: Start SQL Server LocalDB
+        shell: pwsh
+        run: |
+          sqllocaldb start MSSQLLocalDB
+          sqllocaldb info MSSQLLocalDB
+
+      - name: Validate SQL-only fresh install and all migrations
+        shell: pwsh
+        run: |
+          function New-Connection([string]$Database = 'master') {
+            $cs = "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=$Database;Integrated Security=True;TrustServerCertificate=True"
+            $connection = New-Object System.Data.SqlClient.SqlConnection $cs
+            $connection.Open()
+            return $connection
+          }
+          function Invoke-Sql([string]$Query, [string]$Database = 'master') {
+            $connection = New-Connection $Database
+            try { $command=$connection.CreateCommand();$command.CommandTimeout=120;$command.CommandText=$Query;[void]$command.ExecuteNonQuery() }
+            finally { $connection.Dispose() }
+          }
+          function Invoke-SqlFile([string]$Path, [string]$Database) {
+            $text = Get-Content -Raw $Path
+            $batches = [regex]::Split($text, '(?im)^\s*GO\s*(?:--.*)?$')
+            $connection = New-Connection $Database
+            try {
+              foreach ($batch in $batches) {
+                if ([string]::IsNullOrWhiteSpace($batch)) { continue }
+                $command=$connection.CreateCommand();$command.CommandTimeout=120;$command.CommandText=$batch;[void]$command.ExecuteNonQuery()
+              }
+            }
+            finally { $connection.Dispose() }
+          }
+          Invoke-Sql "IF DB_ID(N'pos_system_ci') IS NOT NULL BEGIN ALTER DATABASE pos_system_ci SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE pos_system_ci; END; CREATE DATABASE pos_system_ci;" 'master'
+          Invoke-SqlFile 'database/install/000_base_schema.sql' 'pos_system_ci'
+          $migrations = Get-ChildItem 'database\migrations' -Filter '*.sql' -File | Sort-Object Name
+          if (-not $migrations) { throw 'No database migrations were found.' }
+          foreach ($migration in $migrations) { Write-Host "Applying $($migration.Name)"; Invoke-SqlFile $migration.FullName 'pos_system_ci' }
+
+      - name: Verify upgraded schema and roadmap modules
+        shell: pwsh
+        run: |
+          $connectionString = 'Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=pos_system_ci;Integrated Security=True;TrustServerCertificate=True'
+          $connection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+          $connection.Open()
+          try {
+            $command = $connection.CreateCommand()
+            $command.CommandText = @"
+          IF OBJECT_ID(N'dbo.Users', N'U') IS NULL THROW 52000, 'Users table missing.', 1;
+          IF OBJECT_ID(N'dbo.Settings', N'U') IS NULL THROW 52001, 'Settings table missing.', 1;
+          IF COL_LENGTH('dbo.Products', 'purchase_price') IS NULL THROW 52002, 'Products.purchase_price missing.', 1;
+          IF COL_LENGTH('dbo.Sales', 'invoice_number') IS NULL THROW 52003, 'Sales.invoice_number missing.', 1;
+          IF OBJECT_ID(N'dbo.Purchases', N'U') IS NULL THROW 52004, 'Purchases missing.', 1;
+          IF OBJECT_ID(N'dbo.InventoryTransactions', N'U') IS NULL THROW 52005, 'InventoryTransactions missing.', 1;
+          IF OBJECT_ID(N'dbo.SupplierTransactions', N'U') IS NULL THROW 52006, 'SupplierTransactions missing.', 1;
+          IF OBJECT_ID(N'dbo.CustomerTransactions', N'U') IS NULL THROW 52007, 'CustomerTransactions missing.', 1;
+          IF OBJECT_ID(N'dbo.Expenses', N'U') IS NULL THROW 52008, 'Expenses missing.', 1;
+          IF OBJECT_ID(N'dbo.CashSessions', N'U') IS NULL THROW 52009, 'CashSessions missing.', 1;
+          IF OBJECT_ID(N'dbo.SalePayments', N'U') IS NULL THROW 52010, 'SalePayments missing.', 1;
+          IF OBJECT_ID(N'dbo.WhishPaymentAttempts', N'U') IS NULL THROW 52011, 'WhishPaymentAttempts missing.', 1;
+          IF OBJECT_ID(N'dbo.HeldSales', N'U') IS NULL THROW 52100, 'HeldSales missing.', 1;
+          IF OBJECT_ID(N'dbo.Quotations', N'U') IS NULL THROW 52101, 'Quotations missing.', 1;
+          IF OBJECT_ID(N'dbo.SalesReturns', N'U') IS NULL THROW 52102, 'SalesReturns missing.', 1;
+          IF OBJECT_ID(N'dbo.SalesReturnItems', N'U') IS NULL THROW 52103, 'SalesReturnItems missing.', 1;
+          IF OBJECT_ID(N'dbo.Branches', N'U') IS NULL THROW 52200, 'Branches missing.', 1;
+          IF OBJECT_ID(N'dbo.Warehouses', N'U') IS NULL THROW 52201, 'Warehouses missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductStock', N'U') IS NULL THROW 52202, 'ProductStock missing.', 1;
+          IF OBJECT_ID(N'dbo.StockTransfers', N'U') IS NULL THROW 52203, 'StockTransfers missing.', 1;
+          IF OBJECT_ID(N'dbo.StockCounts', N'U') IS NULL THROW 52204, 'StockCounts missing.', 1;
+          IF OBJECT_ID(N'dbo.Units', N'U') IS NULL THROW 52205, 'Units missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductUnits', N'U') IS NULL THROW 52206, 'ProductUnits missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductBarcodes', N'U') IS NULL THROW 52207, 'ProductBarcodes missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductBatches', N'U') IS NULL THROW 52208, 'ProductBatches missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductSerials', N'U') IS NULL THROW 52209, 'ProductSerials missing.', 1;
+          IF OBJECT_ID(N'dbo.Currencies', N'U') IS NULL THROW 52300, 'Currencies missing.', 1;
+          IF OBJECT_ID(N'dbo.ExchangeRates', N'U') IS NULL THROW 52301, 'ExchangeRates missing.', 1;
+          IF OBJECT_ID(N'dbo.TaxRates', N'U') IS NULL THROW 52302, 'TaxRates missing.', 1;
+          IF OBJECT_ID(N'dbo.ProductPrices', N'U') IS NULL THROW 52303, 'ProductPrices missing.', 1;
+          IF OBJECT_ID(N'dbo.Promotions', N'U') IS NULL THROW 52304, 'Promotions missing.', 1;
+          IF OBJECT_ID(N'dbo.LoyaltyAccounts', N'U') IS NULL THROW 52305, 'LoyaltyAccounts missing.', 1;
+          IF OBJECT_ID(N'dbo.ActionPermissions', N'U') IS NULL THROW 52400, 'ActionPermissions missing.', 1;
+          IF OBJECT_ID(N'dbo.ErrorLogs', N'U') IS NULL THROW 52401, 'ErrorLogs missing.', 1;
+          IF OBJECT_ID(N'dbo.DatabaseVerificationRuns', N'U') IS NULL THROW 52402, 'DatabaseVerificationRuns missing.', 1;
+          IF COL_LENGTH('dbo.Sale_Items','unit_cost_snapshot') IS NULL THROW 52403, 'Sale cost snapshot missing.', 1;
+          IF OBJECT_ID(N'dbo.vw_DailyProfitSummary', N'V') IS NULL THROW 52404, 'Daily profit view missing.', 1;
+          IF OBJECT_ID(N'dbo.vw_StockHealth', N'V') IS NULL THROW 52405, 'Stock health view missing.', 1;
+          IF OBJECT_ID(N'dbo.vw_SupplierBusinessSummary', N'V') IS NULL THROW 52406, 'Supplier BI view missing.', 1;
+          "@
+            [void]$command.ExecuteNonQuery()
+            $command.CommandText = 'SELECT COUNT(*) FROM dbo.SchemaMigrations;'
+            $appliedCount = [int]$command.ExecuteScalar()
+            $fileCount = (Get-ChildItem 'database\migrations' -Filter '*.sql' -File).Count
+            if ($appliedCount -lt $fileCount) { throw "SchemaMigrations recorded $appliedCount migrations but repository contains $fileCount migration files." }
+          }
+          finally { $connection.Dispose() }
+
+      - name: Run database behavioral smoke tests
+        shell: pwsh
+        run: |
+          $cs='Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=pos_system_ci;Integrated Security=True;TrustServerCertificate=True'
+          $c=New-Object System.Data.SqlClient.SqlConnection $cs;$c.Open()
+          try {
+            $cmd=$c.CreateCommand();$cmd.CommandTimeout=120;$cmd.CommandText=@"
+          BEGIN TRANSACTION;
+          DECLARE @uid INT,@cid INT,@sid INT,@pid INT,@wid INT;
+          INSERT dbo.Users(username,password_hash,role,created_at) VALUES(N'ci_admin',N'PBKDF2$1$100000$test$test',N'admin',SYSUTCDATETIME()); SET @uid=SCOPE_IDENTITY();
+          INSERT dbo.Customers(name,balance_usd,balance_lb) VALUES(N'CI Customer',0,0); SET @cid=SCOPE_IDENTITY();
+          INSERT dbo.Suppliers(name) VALUES(N'CI Supplier'); SET @sid=SCOPE_IDENTITY();
+          INSERT dbo.Products(name,price,stock_quantity,supplier_id,purchase_price,selling_price) VALUES(N'CI Product',15,10,@sid,10,15); SET @pid=SCOPE_IDENTITY();
+          SELECT TOP(1) @wid=warehouse_id FROM dbo.Warehouses WHERE is_default=1 ORDER BY warehouse_id;
+          INSERT dbo.ProductStock(warehouse_id,product_id,quantity,minimum_stock,reorder_point) VALUES(@wid,@pid,10,3,3);
+          IF NOT EXISTS(SELECT 1 FROM dbo.vw_StockHealth WHERE product_id=@pid AND quantity=10) THROW 52900,'Stock health smoke test failed.',1;
+          INSERT dbo.LoyaltyAccounts(customer_id,points_balance,lifetime_points) VALUES(@cid,5,5);
+          IF NOT EXISTS(SELECT 1 FROM dbo.vw_CustomerBusinessSummary WHERE customer_id=@cid AND loyalty_points=5) THROW 52901,'Customer BI smoke test failed.',1;
+          INSERT dbo.ActionPermissions(role_name,action_key,is_allowed) SELECT N'ci_role',N'SALE.CREATE',1 WHERE NOT EXISTS(SELECT 1 FROM dbo.ActionPermissions WHERE role_name=N'ci_role' AND action_key=N'SALE.CREATE');
+          IF NOT EXISTS(SELECT 1 FROM dbo.ActionPermissions WHERE role_name=N'ci_role' AND action_key=N'SALE.CREATE' AND is_allowed=1) THROW 52902,'Action permission smoke test failed.',1;
+          ROLLBACK TRANSACTION;
+          "@;[void]$cmd.ExecuteNonQuery()
+          }
+          finally{$c.Dispose()}
+
+      - name: Validate fresh and upgraded databases
+        shell: pwsh
+        run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\database\ci\run_database_validation.ps1
+
+      - name: Build service acceptance suite
+        shell: pwsh
+        run: dotnet build .\tests\PosSystem.Acceptance\PosSystem.Acceptance.csproj -c Release
+
+      - name: Run complete service acceptance suite
+        shell: pwsh
+        run: |
+          & .\tests\PosSystem.Acceptance\bin\Release\net48\PosSystem.Acceptance.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build installer package
+        if: github.event_name != 'pull_request'
+        shell: pwsh
+        run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\installer\build_installer.ps1
+      - name: Validate packaged Server and Client roles
+        if: github.event_name != 'pull_request'
+        shell: pwsh
+        run: |
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\dist\BikeZonePOS-Installer\setup_pos_lan.ps1 -Role Server -ValidationOnly
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\dist\BikeZonePOS-Installer\setup_pos_lan.ps1 -Role Client -ValidationOnly
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload installer package
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: BikeZonePOS-Installer
+          path: dist/BikeZonePOS-Installer
+          if-no-files-found: error
+          retention-days: 30

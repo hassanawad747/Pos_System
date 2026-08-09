@@ -1,0 +1,43 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'Pos_System'">
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Purchase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PurchaseItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\InventoryTransaction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SupplierTransaction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SupplierPayment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CustomerTransaction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CustomerPayment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\PurchaseService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\SupplierLedgerService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\CustomerLedgerService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\CashSessionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ModernUiService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\WhishPaymentService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\SalesLifecycleService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\CheckoutService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\SalesAdvancedUiService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\InventoryOperationsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\StockLossService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\PricingService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BusinessIntelligenceService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ErrorLogService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ActionPermissionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\AppServices.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\PurchaseForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\SupplierLedgerForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\CustomerLedgerForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\ExpenseForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\CashSessionForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\CashReportForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\SalesLifecycleForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\InventoryOperationsForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\StockLossForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\PricingAdminForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\BusinessIntelligenceForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\SecurityAdminForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\LoginForm.Bootstrap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\Sales.SplitPayments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\PosSystemDashboard.Purchases.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Forms\PosSystemDashboard.ModernUi.cs" />
+  </ItemGroup>
+</Project>

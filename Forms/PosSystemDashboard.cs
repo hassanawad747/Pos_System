@@ -98,6 +98,7 @@ namespace Pos_System.Forms
         private void btnsales_Click(object sender, EventArgs e)
         {
             ActivateMenuButton(btnsales);
+            SetWorkspaceTitle("Sales");
             OpenSalesWorkspace();
         }
 
@@ -123,6 +124,7 @@ namespace Pos_System.Forms
             }
 
             ActivateMenuButton(btnProducts);
+            SetWorkspaceTitle("Inventory");
             LoadForm(new InventoryPageForm());
         }
 
@@ -140,6 +142,7 @@ namespace Pos_System.Forms
             }
 
             ActivateMenuButton(btnCustomers);
+            SetWorkspaceTitle("Customers");
             LoadForm(new CustomersPageForm());
         }
 
@@ -151,6 +154,7 @@ namespace Pos_System.Forms
                 return;
             }
 
+            SetWorkspaceTitle("Suppliers");
             LoadForm(new SupplierBalanceForm());
         }
 
@@ -163,6 +167,7 @@ namespace Pos_System.Forms
             }
 
             ActivateMenuButton(btnEarningReports);
+            SetWorkspaceTitle("Earning Report");
             LoadForm(new EarningReports());
         }
 
@@ -175,6 +180,7 @@ namespace Pos_System.Forms
             }
 
             ActivateMenuButton(btnWarhouseReports);
+            SetWorkspaceTitle("Warehouse Report");
             LoadForm(new WarhouseReports());
         }
 
@@ -243,6 +249,7 @@ namespace Pos_System.Forms
 
         private void ShowDashboardHome()
         {
+            SetWorkspaceTitle("Dashboard");
             activeChildForm = null;
             activeFormHostPanel = null;
             panelContent.Controls.Clear();
@@ -295,6 +302,7 @@ namespace Pos_System.Forms
             }
 
             ActivateMenuButton(button8);
+            SetWorkspaceTitle("Reports Overview");
             LoadForm(new ReportsOverviewPageForm());
         }
 
@@ -307,6 +315,7 @@ namespace Pos_System.Forms
             }
 
             ActivateMenuButton(btnAddUsers);
+            SetWorkspaceTitle("Users");
             LoadForm(new AddUsers());
         }
 
@@ -334,7 +343,7 @@ namespace Pos_System.Forms
             panel1.BackColor = Color.FromArgb(15, 23, 42);
             panelheader.BackColor = Color.FromArgb(17, 24, 39);
             panelheader.Dock = DockStyle.None;
-            panelheader.Height = 74;
+            panelheader.Height = 84;
             panel2.Dock = DockStyle.None;
             panel3.Dock = DockStyle.None;
             panel2.BackColor = Color.White;
@@ -411,11 +420,11 @@ namespace Pos_System.Forms
                 return;
             }
 
-            panelheader.SetBounds(0, 0, panelContent.ClientSize.Width, 74);
+            panelheader.SetBounds(0, 0, panelContent.ClientSize.Width, 84);
 
             if (dashboardMenuStrip != null)
             {
-                dashboardMenuStrip.SetBounds(0, panelheader.Bottom, panelContent.ClientSize.Width, 36);
+                dashboardMenuStrip.SetBounds(0, panelheader.Bottom, panelContent.ClientSize.Width, 52);
                 LayoutDashboardMenuButtons();
             }
         }
@@ -1061,52 +1070,13 @@ namespace Pos_System.Forms
                 return;
             }
 
-            ToolStripButton[] leftButtons =
+            foreach (ToolStripItem item in dashboardMenuStrip.Items)
             {
-                menuDashboard,
-                menuSales,
-                menuProducts,
-                menuSupplier,
-                menuCustomers,
-                menuEarningReports,
-                menuWarhouseReports,
-                menuReports,
-                menuAddUsers,
-                menuSettings,
-                menuSave,
-                menuSaveAs,
-                menuEdit,
-                menuDelete,
-                menuPrint
-            };
-
-            int visibleButtonCount = leftButtons.Count(button => button != null && button.Visible) + (menuLogout.Visible ? 1 : 0);
-            if (visibleButtonCount == 0)
-            {
-                return;
+                item.AutoSize = true;
+                item.Margin = new Padding(3, 1, 3, 1);
             }
 
-            int separatorWidth = dashboardMenuStrip.Items
-                .OfType<ToolStripSeparator>()
-                .Where(separator => separator.Visible)
-                .Sum(separator => separator.Width);
-            int availableWidth = dashboardMenuStrip.ClientSize.Width - separatorWidth - dashboardMenuStrip.Padding.Horizontal - 8;
-            int buttonWidth = Math.Max(1, availableWidth / visibleButtonCount);
-
-            foreach (ToolStripButton button in leftButtons)
-            {
-                if (button == null)
-                {
-                    continue;
-                }
-
-                button.AutoSize = false;
-                button.Width = buttonWidth;
-                button.TextAlign = ContentAlignment.MiddleCenter;
-            }
-
-            menuLogout.AutoSize = false;
-            menuLogout.Width = buttonWidth;
+            menuLogout.Alignment = ToolStripItemAlignment.Right;
             menuLogout.TextAlign = ContentAlignment.MiddleCenter;
         }
 
@@ -2132,6 +2102,7 @@ namespace Pos_System.Forms
             }
 
             ActivateMenuButton(btnsettings);
+            SetWorkspaceTitle("Settings");
             LoadForm(new Settings());
         }
 
