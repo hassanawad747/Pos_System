@@ -9,6 +9,8 @@ namespace Pos_System.Forms
     {
         private Label modernWorkspaceTitle;
         private Label modernConnectionBadge;
+        private Label modernBrandTitle;
+        private Label modernUserBadge;
         private bool modernDashboardApplied;
 
         private void ApplyModernDashboardChrome()
@@ -28,14 +30,36 @@ namespace Pos_System.Forms
                 panelheader.BackColor = Color.White;
                 panelheader.Padding = new Padding(20, 8, 20, 8);
 
+                foreach (Control control in panelheader.Controls)
+                    control.Visible = false;
+
+                modernBrandTitle = new Label
+                {
+                    Text = "BIKE ZONE  POS",
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 15F, FontStyle.Bold),
+                    ForeColor = ModernUiService.TextPrimary,
+                    Location = new Point(24, 11)
+                };
+
                 modernWorkspaceTitle = new Label
                 {
-                    Text = "Bike Zone POS  /  Workspace",
+                    Text = "Dashboard  •  Workspace",
                     AutoSize = true,
-                    Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+                    Font = new Font("Segoe UI", 9.5F),
+                    ForeColor = ModernUiService.TextSecondary,
+                    Location = new Point(26, 48)
+                };
+
+                modernUserBadge = new Label
+                {
+                    Text = (_username ?? "User") + "  •  " + (_role ?? string.Empty),
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
                     ForeColor = ModernUiService.TextPrimary,
-                    Location = new Point(18, 10),
-                    Anchor = AnchorStyles.Left | AnchorStyles.Top
+                    BackColor = ModernUiService.SurfaceMuted,
+                    Padding = new Padding(14, 8, 14, 8),
+                    Anchor = AnchorStyles.Right | AnchorStyles.Top
                 };
 
                 modernConnectionBadge = new Label
@@ -47,32 +71,33 @@ namespace Pos_System.Forms
                     Anchor = AnchorStyles.Right | AnchorStyles.Top
                 };
 
+                panelheader.Controls.Add(modernBrandTitle);
                 panelheader.Controls.Add(modernWorkspaceTitle);
+                panelheader.Controls.Add(modernUserBadge);
                 panelheader.Controls.Add(modernConnectionBadge);
-                panelheader.Resize += (s, e) =>
+                if (auditNotificationButton != null)
                 {
-                    modernConnectionBadge.Location = new Point(
-                        Math.Max(10, panelheader.ClientSize.Width - modernConnectionBadge.Width - 22),
-                        13);
-                };
-                modernConnectionBadge.Location = new Point(
-                    Math.Max(10, panelheader.ClientSize.Width - modernConnectionBadge.Width - 22),
-                    13);
+                    auditNotificationButton.Visible = AppSession.IsAdministrator;
+                    panelheader.Controls.Add(auditNotificationButton);
+                }
+
+                panelheader.Resize += (sender, args) => LayoutModernHeader();
+                LayoutModernHeader();
             }
 
             if (dashboardMenuStrip != null)
             {
                 dashboardMenuStrip.BackColor = ModernUiService.Sidebar;
                 dashboardMenuStrip.ForeColor = Color.White;
-                dashboardMenuStrip.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-                dashboardMenuStrip.Padding = new Padding(12, 6, 12, 6);
+                dashboardMenuStrip.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+                dashboardMenuStrip.Padding = new Padding(18, 8, 18, 8);
                 dashboardMenuStrip.RenderMode = ToolStripRenderMode.System;
 
                 foreach (ToolStripItem item in dashboardMenuStrip.Items)
                 {
                     item.ForeColor = Color.White;
                     item.BackColor = ModernUiService.Sidebar;
-                    item.Padding = new Padding(10, 6, 10, 6);
+                    item.Padding = new Padding(12, 7, 12, 7);
                     item.Margin = new Padding(2, 1, 2, 1);
                 }
             }
@@ -80,10 +105,23 @@ namespace Pos_System.Forms
             ModernUiService.Apply(this);
         }
 
+        private void LayoutModernHeader()
+        {
+            if (panelheader == null || modernConnectionBadge == null || modernUserBadge == null) return;
+            int right = panelheader.ClientSize.Width - 24;
+            if (auditNotificationButton != null && auditNotificationButton.Visible)
+            {
+                auditNotificationButton.SetBounds(right - 44, 18, 42, 42);
+                right = auditNotificationButton.Left - 14;
+            }
+            modernConnectionBadge.Location = new Point(Math.Max(10, right - modernConnectionBadge.Width), 34);
+            modernUserBadge.Location = new Point(Math.Max(10, modernConnectionBadge.Left - modernUserBadge.Width - 22), 22);
+        }
+
         private void SetWorkspaceTitle(string title)
         {
             if (modernWorkspaceTitle != null && !modernWorkspaceTitle.IsDisposed)
-                modernWorkspaceTitle.Text = "Bike Zone POS  /  " + (string.IsNullOrWhiteSpace(title) ? "Workspace" : title);
+                modernWorkspaceTitle.Text = (string.IsNullOrWhiteSpace(title) ? "Dashboard" : title) + "  •  Workspace";
         }
     }
 }

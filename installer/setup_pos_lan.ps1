@@ -30,7 +30,7 @@ $DatabaseLogin = 'bikezone_pos_app'
 $ShortcutName = 'Bike Zone POS'
 $LaunchAfterInstall = $true
 $InstallSqlIfMissing = $true
-$RequiredLatestMigration = '018_checkout_inventory_integration.sql'
+$RequiredLatestMigration = '019_legacy_form_schema_compatibility.sql'
 
 function Step([string]$text) { Write-Host "`n== $text" -ForegroundColor Cyan }
 function Ok([string]$text) { Write-Host "   OK: $text" -ForegroundColor Green }

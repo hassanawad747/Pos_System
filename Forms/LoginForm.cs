@@ -48,6 +48,11 @@ namespace Pos_System
         {
             AcceptButton = btnlogin;
             KeyPreview = true;
+            txtusername.TabIndex = 0;
+            passwordPanel.TabIndex = 1;
+            passwordPanel.TabStop = false;
+            txtpassword.TabIndex = 0;
+            btnlogin.TabIndex = 2;
             txtusername.KeyDown += LoginTextBox_KeyDown;
             txtpassword.KeyDown += LoginTextBox_KeyDown;
             KeyDown += LoginTextBox_KeyDown;

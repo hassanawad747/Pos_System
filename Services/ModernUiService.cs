@@ -9,7 +9,7 @@ namespace Pos_System.Services
 {
     internal static class ModernUiService
     {
-        internal static readonly Color AppBackground = Color.FromArgb(245, 247, 251);
+        internal static readonly Color AppBackground = Color.FromArgb(244, 247, 250);
         internal static readonly Color Surface = Color.White;
         internal static readonly Color SurfaceMuted = Color.FromArgb(248, 250, 252);
         internal static readonly Color TextPrimary = Color.FromArgb(15, 23, 42);
@@ -17,7 +17,9 @@ namespace Pos_System.Services
         internal static readonly Color Border = Color.FromArgb(226, 232, 240);
         internal static readonly Color Primary = Color.FromArgb(37, 99, 235);
         internal static readonly Color PrimaryHover = Color.FromArgb(29, 78, 216);
-        internal static readonly Color Success = Color.FromArgb(22, 163, 74);
+        internal static readonly Color Accent = Color.FromArgb(13, 148, 136);
+        internal static readonly Color Success = Color.FromArgb(5, 150, 105);
+        internal static readonly Color Warning = Color.FromArgb(217, 119, 6);
         internal static readonly Color Danger = Color.FromArgb(220, 38, 38);
         internal static readonly Color Sidebar = Color.FromArgb(15, 23, 42);
 
@@ -179,6 +181,8 @@ namespace Pos_System.Services
             }
             else if (control is Label label)
             {
+                if (label.BackColor == Color.Black || label.BackColor == SystemColors.Control)
+                    label.BackColor = Color.Transparent;
                 if (label.ForeColor == Color.Black || label.ForeColor == SystemColors.ControlText)
                     label.ForeColor = TextPrimary;
                 if (label.Font.Name != "Segoe UI")
@@ -193,6 +197,25 @@ namespace Pos_System.Services
             {
                 if (panel.BackColor == SystemColors.Control || panel.BackColor == Color.Transparent)
                     panel.BackColor = Surface;
+            }
+            else if (control is TabControl tabs)
+            {
+                tabs.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+                tabs.Padding = new Point(18, 7);
+            }
+            else if (control is CheckBox checkBox)
+            {
+                checkBox.Font = new Font("Segoe UI", Math.Max(9F, checkBox.Font.Size));
+                checkBox.ForeColor = TextPrimary;
+                if (checkBox.BackColor == Color.Black || checkBox.BackColor == SystemColors.Control)
+                    checkBox.BackColor = Color.Transparent;
+            }
+            else if (control is RadioButton radioButton)
+            {
+                radioButton.Font = new Font("Segoe UI", Math.Max(9F, radioButton.Font.Size));
+                radioButton.ForeColor = TextPrimary;
+                if (radioButton.BackColor == Color.Black || radioButton.BackColor == SystemColors.Control)
+                    radioButton.BackColor = Color.Transparent;
             }
             else if (control is ToolStrip strip)
                 StyleToolStrip(strip);
@@ -232,11 +255,18 @@ namespace Pos_System.Services
             if (button.Font.Name != "Segoe UI")
                 button.Font = new Font("Segoe UI", Math.Max(9F, button.Font.Size), FontStyle.Bold);
 
-            if (button.BackColor == SystemColors.Control || button.BackColor == Color.Transparent || button.BackColor == Color.White)
-            {
+            string intent = ((button.Name ?? string.Empty) + " " + (button.Text ?? string.Empty)).ToLowerInvariant();
+            if (intent.Contains("delete") || intent.Contains("remove") || intent.Contains("clear") ||
+                intent.Contains("loss") || intent.Contains("cancel") || intent.Contains("void") || intent.Contains("مسح"))
+                button.BackColor = Danger;
+            else if (intent.Contains("save") || intent.Contains("add") || intent.Contains("record") ||
+                     intent.Contains("start") || intent.Contains("open") || intent.Contains("دفع") || intent.Contains("اضافة"))
+                button.BackColor = Success;
+            else if (button.BackColor == SystemColors.Control || button.BackColor == Color.Transparent ||
+                     button.BackColor == Color.White || button.BackColor == Color.Black)
                 button.BackColor = Primary;
-                button.ForeColor = Color.White;
-            }
+
+            button.ForeColor = Color.White;
 
             button.FlatAppearance.MouseOverBackColor = Lighten(button.BackColor, 0.08F);
             button.FlatAppearance.MouseDownBackColor = Darken(button.BackColor, 0.08F);

@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using ClosedXML.Excel;
 using Pos_System.Services;
 
 namespace Pos_System.Forms
@@ -22,6 +23,7 @@ namespace Pos_System.Forms
             POS_System.Program.SettingsManager.RegisterForm(this);
             CreateBalanceAdjustmentControls();
             ConfigureCustomerGrid();
+            ConfigureCustomerWorkspace();
         }
 
         private void Customers_Load(object sender, EventArgs e)
@@ -219,6 +221,82 @@ namespace Pos_System.Forms
                     Name = "balance_status",
                     ReadOnly = true
                 });
+            }
+        }
+
+        private void ConfigureCustomerWorkspace()
+        {
+            panel1.Height = 72;
+            panel1.Padding = new Padding(24, 14, 24, 14);
+            panel1.BackColor = ModernUiService.Surface;
+
+            panel1.Controls.Clear();
+            txtsearch.Multiline = false;
+            txtsearch.Dock = DockStyle.Fill;
+            txtsearch.Margin = new Padding(0, 4, 12, 4);
+            button1.Dock = DockStyle.Right;
+            button1.Width = 142;
+            button1.Text = "Add Customer";
+            button2.Dock = DockStyle.Right;
+            button2.Width = 112;
+            button2.Text = "Export Excel";
+            button2.Click += ExportCustomers_Click;
+            panel1.Controls.Add(txtsearch);
+            panel1.Controls.Add(button1);
+            panel1.Controls.Add(button2);
+
+            panel3.Height = 76;
+            panel3.BackColor = ModernUiService.Surface;
+            Control[] balanceControls = new Control[panel3.Controls.Count];
+            panel3.Controls.CopyTo(balanceControls, 0);
+            panel3.Controls.Clear();
+            FlowLayoutPanel balanceBar = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                AutoScroll = true,
+                WrapContents = false,
+                FlowDirection = FlowDirection.LeftToRight,
+                Padding = new Padding(24, 13, 24, 10),
+                BackColor = ModernUiService.Surface
+            };
+            foreach (Control control in balanceControls)
+            {
+                control.Anchor = AnchorStyles.None;
+                control.Margin = new Padding(0, 4, 14, 4);
+                if (!(control is Label)) control.Height = 40;
+                balanceBar.Controls.Add(control);
+            }
+            panel3.Controls.Add(balanceBar);
+
+            if (dataGridView1.Columns.Contains("customer_id")) dataGridView1.Columns["customer_id"].HeaderText = "ID";
+            if (dataGridView1.Columns.Contains("name")) dataGridView1.Columns["name"].HeaderText = "Customer";
+            if (dataGridView1.Columns.Contains("loyalty_points")) dataGridView1.Columns["loyalty_points"].HeaderText = "Loyalty";
+            if (dataGridView1.Columns.Contains("created_by")) dataGridView1.Columns["created_by"].HeaderText = "Created By";
+            if (dataGridView1.Columns.Contains("created_at")) dataGridView1.Columns["created_at"].HeaderText = "Created At";
+        }
+
+        private void ExportCustomers_Click(object sender, EventArgs e)
+        {
+            DataTable table = dataGridView1.DataSource as DataTable;
+            if (table == null || table.Rows.Count == 0)
+            {
+                MessageBox.Show("There are no customers to export.", "Export Excel");
+                return;
+            }
+
+            using (SaveFileDialog dialog = new SaveFileDialog
+            {
+                Filter = "Excel workbook (*.xlsx)|*.xlsx",
+                FileName = "Customers_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx"
+            })
+            {
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                using (XLWorkbook workbook = new XLWorkbook())
+                {
+                    workbook.Worksheets.Add(table, "Customers");
+                    workbook.SaveAs(dialog.FileName);
+                }
+                MessageBox.Show("Customer list exported successfully.", "Export Excel");
             }
         }
 

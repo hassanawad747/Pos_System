@@ -12,12 +12,14 @@ Recreate $fresh;File (Join-Path $repo 'database\install\000_base_schema.sql') $f
 foreach($migration in (Migrations)){Write-Host "FRESH -> $($migration.Name)";File $migration.FullName $fresh}
 Recreate $upgrade;File (Join-Path $repo 'database\install\000_base_schema.sql') $upgrade
 $all=Migrations
-foreach($migration in @($all|Where-Object Name -ne '018_checkout_inventory_integration.sql')){Write-Host "UPGRADE BASE -> $($migration.Name)";File $migration.FullName $upgrade}
+$latest=$all[-1]
+foreach($migration in @($all|Select-Object -SkipLast 1)){Write-Host "UPGRADE BASE -> $($migration.Name)";File $migration.FullName $upgrade}
 NonQuery "INSERT dbo.Settings(key_name,value) VALUES(N'ci_preserve_sentinel',N'KEEP_ME');" $upgrade
-File (Join-Path $repo 'database\migrations\018_checkout_inventory_integration.sql') $upgrade
+Write-Host "UPGRADE LATEST -> $($latest.Name)";File $latest.FullName $upgrade
 if([string](Scalar "SELECT value FROM dbo.Settings WHERE key_name=N'ci_preserve_sentinel';" $upgrade) -ne 'KEEP_ME'){throw 'Existing-data upgrade did not preserve the sentinel row.'}
 $count=$all.Count
 foreach($db in @($fresh,$upgrade)){if([int](Scalar 'SELECT COUNT(*) FROM dbo.SchemaMigrations;' $db) -ne $count){throw "$db migration count does not match repository count $count."}}
+foreach($db in @($fresh,$upgrade)){if([int](Scalar "SELECT COUNT(*) FROM sys.columns WHERE object_id IN (OBJECT_ID(N'dbo.Customers'),OBJECT_ID(N'dbo.Users')) AND name=N'created_by';" $db) -ne 2){throw "$db is missing a creator audit column required by a maintained form."}}
 $behavior=@"
 BEGIN TRANSACTION;
 DECLARE @u INT,@supplier INT,@customer INT,@category INT,@product INT,@warehouse INT,@sale INT,@quotation INT;

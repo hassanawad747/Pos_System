@@ -15,6 +15,7 @@ BEGIN
         username NVARCHAR(100) NOT NULL,
         password_hash NVARCHAR(500) NULL,
         role NVARCHAR(50) NULL,
+        created_by NVARCHAR(100) NULL,
         created_at DATETIME2 NOT NULL CONSTRAINT DF_Users_created_at DEFAULT SYSUTCDATETIME()
     );
     CREATE UNIQUE INDEX UX_Users_username ON dbo.Users(username);
@@ -48,6 +49,7 @@ BEGIN
         balance_usd DECIMAL(24,8) NOT NULL CONSTRAINT DF_Customers_balance_usd DEFAULT (0),
         balance_lb DECIMAL(24,8) NOT NULL CONSTRAINT DF_Customers_balance_lb DEFAULT (0),
         balance_updated_at DATETIME2 NULL,
+        created_by NVARCHAR(100) NULL,
         created_at DATETIME2 NOT NULL CONSTRAINT DF_Customers_created DEFAULT SYSUTCDATETIME()
     );
 END;
