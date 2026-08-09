@@ -189,23 +189,32 @@ jobs:
           }
           finally{$c.Dispose()}
 
-      - name: Run complete database and service acceptance suite
+      - name: Validate fresh and upgraded databases
+        shell: pwsh
+        run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\database\ci\run_database_validation.ps1
+
+      - name: Build service acceptance suite
+        shell: pwsh
+        run: dotnet build .\tests\PosSystem.Acceptance\PosSystem.Acceptance.csproj -c Release
+
+      - name: Run complete service acceptance suite
         shell: pwsh
         run: |
-          .\database\ci\run_database_validation.ps1
-          dotnet build .\tests\PosSystem.Acceptance\PosSystem.Acceptance.csproj -c Release
-          .\tests\PosSystem.Acceptance\bin\Release\net48\PosSystem.Acceptance.exe
+          & .\tests\PosSystem.Acceptance\bin\Release\net48\PosSystem.Acceptance.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Build installer package
         if: github.event_name != 'pull_request'
         shell: pwsh
-        run: .\installer\build_installer.ps1
+        run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\installer\build_installer.ps1
       - name: Validate packaged Server and Client roles
         if: github.event_name != 'pull_request'
         shell: pwsh
         run: |
-          .\dist\BikeZonePOS-Installer\setup_pos_lan.ps1 -Role Server -ValidationOnly
-          .\dist\BikeZonePOS-Installer\setup_pos_lan.ps1 -Role Client -ValidationOnly
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\dist\BikeZonePOS-Installer\setup_pos_lan.ps1 -Role Server -ValidationOnly
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\dist\BikeZonePOS-Installer\setup_pos_lan.ps1 -Role Client -ValidationOnly
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Upload installer package
         if: github.event_name != 'pull_request'
