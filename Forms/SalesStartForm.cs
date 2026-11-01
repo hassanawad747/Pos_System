@@ -13,6 +13,7 @@ namespace Pos_System.Forms
         {
             this.username = username;
             this.startClicked = startClicked;
+            POS_System.Program.SettingsManager.RegisterForm(this);
 
             InitializeStartScreen();
         }

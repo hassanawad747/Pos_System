@@ -7,6 +7,7 @@ namespace Pos_System.Forms
     {
         public AdminDashboardHomeForm()
         {
+            POS_System.Program.SettingsManager.RegisterForm(this);
             BackColor = Color.White;
             Controls.Add(new Label
             {

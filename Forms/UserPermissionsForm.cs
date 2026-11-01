@@ -29,6 +29,7 @@ namespace Pos_System.Forms
         private void InitializePermissionForm()
         {
             Text = "User Permissions";
+            POS_System.Program.SettingsManager.RegisterForm(this);
             StartPosition = FormStartPosition.CenterParent;
             MinimumSize = new Size(920, 620);
             Size = new Size(1100, 700);

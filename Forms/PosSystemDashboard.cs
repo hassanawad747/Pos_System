@@ -57,6 +57,15 @@ namespace Pos_System.Forms
         private ToolStripButton menuPrint;
         private ToolStripButton menuLogout;
         private Button activeMenuButton;
+        private bool smartShellReady;
+        private Panel smartHome;
+        private Panel smartPageHost;
+        private FlowLayoutPanel smartNav;
+        private Button smartSupplierButton;
+        private Panel cardSales;
+        private Panel cardInvoices;
+        private Panel cardProducts;
+        private Panel cardCapital;
 
 
 
@@ -180,22 +189,15 @@ namespace Pos_System.Forms
 
         private void LoadForm(Form form)
         {
-            activeChildForm = form;
-            panelContent.SuspendLayout();
-            panelContent.Controls.Clear();
-
-            activeFormHostPanel = new Panel
+            if (!smartShellReady)
             {
-                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                BackColor = Color.FromArgb(244, 247, 252)
-            };
+                AssembleSmartShell();
+            }
 
-            panelContent.Controls.Add(activeFormHostPanel);
-            panelContent.Controls.Add(panelheader);
-            panelContent.Controls.Add(dashboardMenuStrip);
-            LayoutDashboardHeaderAndMenu();
-            LayoutActiveChildForm();
-            activeFormHostPanel.Resize += ActiveFormHostPanel_Resize;
+            activeChildForm = form;
+            smartHome.Visible = false;
+            smartPageHost.Visible = true;
+            smartPageHost.Controls.Clear();
 
             form.TopLevel = false;
             POS_System.Program.SettingsManager.RegisterForm(form);
@@ -203,21 +205,20 @@ namespace Pos_System.Forms
             form.FormBorderStyle = FormBorderStyle.None;
             form.WindowState = FormWindowState.Normal;
             form.Dock = DockStyle.Fill;
-            activeFormHostPanel.Controls.Add(form);
+            smartPageHost.Controls.Add(form);
             HideChildFormHeaders(form);
-            form.Bounds = activeFormHostPanel.ClientRectangle;
             form.Show();
+            label11.Text = string.IsNullOrWhiteSpace(form.Text) ? "Smart POS" : form.Text.Trim();
             BringDashboardHeaderToFront();
-            panelContent.ResumeLayout();
         }
 
         private void HideChildFormHeaders(Form form)
         {
-            foreach (Control control in GetAllControls(form))
+            foreach (Control control in GetAllControls(form).ToList())
             {
-                if (control.Name.Equals("panelheader", StringComparison.OrdinalIgnoreCase))
+                if (control.Name.Equals("panelheader", StringComparison.OrdinalIgnoreCase) && control.Parent != null)
                 {
-                    control.Visible = false;
+                    control.Parent.Controls.Remove(control);
                 }
             }
         }
@@ -243,38 +244,23 @@ namespace Pos_System.Forms
 
         private void ShowDashboardHome()
         {
+            if (!smartShellReady)
+            {
+                AssembleSmartShell();
+            }
+
             activeChildForm = null;
             activeFormHostPanel = null;
-            panelContent.Controls.Clear();
-
-            foreach (Control control in dashboardHomeControls)
-            {
-                panelContent.Controls.Add(control);
-            }
-
-            if (dashboardMenuStrip != null && !panelContent.Controls.Contains(dashboardMenuStrip))
-            {
-                panelContent.Controls.Add(dashboardMenuStrip);
-            }
-
+            smartPageHost.Controls.Clear();
+            smartPageHost.Visible = false;
+            smartHome.Visible = true;
+            label11.Text = "Dashboard";
             LayoutDashboardHome();
             BringDashboardHeaderToFront();
 
-            if (auditPanel != null && !panelContent.Controls.Contains(auditPanel))
+            if (auditPanel != null)
             {
-                panelContent.Controls.Add(auditPanel);
                 auditPanel.BringToFront();
-            }
-
-            if (customerBalancePanel != null && !panelContent.Controls.Contains(customerBalancePanel))
-            {
-                panelContent.Controls.Add(customerBalancePanel);
-            }
-
-            if (endWorkDayButton != null && !panelContent.Controls.Contains(endWorkDayButton))
-            {
-                panelContent.Controls.Add(endWorkDayButton);
-                endWorkDayButton.BringToFront();
             }
 
             ApplyRolePermissions();
@@ -378,7 +364,7 @@ namespace Pos_System.Forms
             StartClock();
             panelContent.Resize += DashboardContent_Resize;
             Resize += DashboardContent_Resize;
-            LayoutDashboardHome();
+            AssembleSmartShell();
         }
 
         private void DashboardContent_Resize(object sender, EventArgs e)
@@ -388,6 +374,12 @@ namespace Pos_System.Forms
 
         private void LayoutDashboardHome()
         {
+            if (smartShellReady)
+            {
+                LayoutSmartChrome();
+                return;
+            }
+
             if (panelContent == null || panelContent.Width <= 0 || panelContent.Height <= 0)
             {
                 return;
@@ -1253,16 +1245,529 @@ namespace Pos_System.Forms
             }
         }
 
+        private void AssembleSmartShell()
+        {
+            if (smartShellReady)
+            {
+                return;
+            }
+
+            Text = "Smart POS";
+            BackColor = PosPalette.Canvas;
+            panel1.Visible = true;
+            panel1.Dock = DockStyle.Left;
+            panel1.Width = 232;
+            PosPresenter.SetRole(panel1, "sidebar");
+
+            panelContent.Dock = DockStyle.Fill;
+            PosPresenter.SetRole(panelContent, "canvas");
+
+            Panel brand = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 84,
+                BackColor = PosPalette.Sidebar,
+                Padding = new Padding(16, 16, 16, 8)
+            };
+            PosPresenter.SetRole(brand, "sidebar");
+            Label mark = new Label
+            {
+                Dock = DockStyle.Left,
+                Width = 48,
+                Text = "POS",
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = PosPalette.Ui(11F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = PosPalette.Accent
+            };
+            Label brandName = new Label
+            {
+                Dock = DockStyle.Top,
+                Height = 28,
+                Text = "Smart POS",
+                Font = PosPalette.Ui(14F, FontStyle.Bold),
+                ForeColor = PosPalette.SidebarInk,
+                Padding = new Padding(10, 4, 0, 0)
+            };
+            Label brandSub = new Label
+            {
+                Dock = DockStyle.Top,
+                Height = 22,
+                Text = "Shop floor",
+                Font = PosPalette.Ui(9F, FontStyle.Regular),
+                ForeColor = PosPalette.Muted,
+                Padding = new Padding(10, 0, 0, 0)
+            };
+            brand.Controls.Add(brandSub);
+            brand.Controls.Add(brandName);
+            brand.Controls.Add(mark);
+
+            smartNav = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = true,
+                AutoScroll = true,
+                Padding = new Padding(10, 8, 10, 8),
+                BackColor = PosPalette.Sidebar
+            };
+            PosPresenter.SetRole(smartNav, "sidebar");
+
+            if (smartSupplierButton == null)
+            {
+                smartSupplierButton = new Button
+                {
+                    Name = "btnSuppliersNav",
+                    Text = "Suppliers",
+                    Visible = true
+                };
+                smartSupplierButton.Click += menuSupplier_Click;
+            }
+
+            Button[] navButtons =
+            {
+                btnpossystemdashboard,
+                btnsales,
+                btnCustomers,
+                btnProducts,
+                smartSupplierButton,
+                btnEarningReports,
+                btnWarhouseReports,
+                button8,
+                btnAddUsers,
+                btnsettings
+            };
+
+            foreach (Button button in navButtons)
+            {
+                if (button == null)
+                {
+                    continue;
+                }
+
+                button.Width = 196;
+                button.Height = 40;
+                button.Margin = new Padding(0, 0, 0, 6);
+                PosPresenter.SetRole(button, "nav");
+                smartNav.Controls.Add(button);
+            }
+
+            Panel footer = new Panel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 132,
+                BackColor = PosPalette.Sidebar,
+                Padding = new Padding(12, 8, 12, 12)
+            };
+            PosPresenter.SetRole(footer, "sidebar");
+            lbusername.AutoSize = false;
+            lbusername.Dock = DockStyle.Top;
+            lbusername.Height = 22;
+            lbrole.AutoSize = false;
+            lbrole.Dock = DockStyle.Top;
+            lbrole.Height = 20;
+            PosPresenter.SetRole(lbusername, "ink");
+            PosPresenter.SetRole(lbrole, "muted");
+            if (endWorkDayButton != null)
+            {
+                PosPresenter.SetRole(endWorkDayButton, "danger");
+            }
+
+            button1.Text = "Log out";
+            button1.Dock = DockStyle.Bottom;
+            button1.Height = 36;
+            PosPresenter.SetRole(button1, "secondary");
+            if (endWorkDayButton != null)
+            {
+                endWorkDayButton.Dock = DockStyle.Bottom;
+                endWorkDayButton.Height = 36;
+            }
+
+            footer.Controls.Add(lbrole);
+            footer.Controls.Add(lbusername);
+            if (endWorkDayButton != null)
+            {
+                footer.Controls.Add(endWorkDayButton);
+            }
+
+            footer.Controls.Add(button1);
+
+            panel1.Controls.Clear();
+            panel1.Controls.Add(smartNav);
+            panel1.Controls.Add(footer);
+            panel1.Controls.Add(brand);
+
+            panelheader.Dock = DockStyle.Top;
+            panelheader.Height = 72;
+            label11.Text = "Dashboard";
+            PosPresenter.SetRole(panelheader, "surface");
+            label11.Font = PosPalette.Ui(20F, FontStyle.Bold);
+            label11.AutoSize = false;
+            label11.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            label11.TextAlign = ContentAlignment.MiddleLeft;
+            PosPresenter.SetRole(label11, "ink");
+            label10.AutoSize = true;
+            lbuser1.AutoSize = true;
+            label6.AutoSize = true;
+            lbdatetime.AutoSize = true;
+            PosPresenter.SetRole(label10, "muted");
+            PosPresenter.SetRole(lbuser1, "ink");
+            PosPresenter.SetRole(label6, "muted");
+            PosPresenter.SetRole(lbdatetime, "muted");
+            label5.Visible = false;
+            label4.Visible = false;
+            label7.Visible = false;
+
+            panelheader.Controls.Clear();
+            panelheader.Controls.Add(label11);
+            panelheader.Controls.Add(label10);
+            panelheader.Controls.Add(lbuser1);
+            panelheader.Controls.Add(label6);
+            panelheader.Controls.Add(lbdatetime);
+            if (auditNotificationButton != null)
+            {
+                auditNotificationButton.Dock = DockStyle.Right;
+                auditNotificationButton.Width = 48;
+                panelheader.Controls.Add(auditNotificationButton);
+            }
+
+            if (auditBadgeLabel != null)
+            {
+                panelheader.Controls.Add(auditBadgeLabel);
+            }
+
+            if (dashboardMenuStrip != null)
+            {
+                dashboardMenuStrip.Dock = DockStyle.Top;
+                dashboardMenuStrip.Height = 44;
+                dashboardMenuStrip.BackColor = PosPalette.Surface;
+                dashboardMenuStrip.ForeColor = PosPalette.Ink;
+                dashboardMenuStrip.Renderer = PosPresenter.CreateRenderer();
+                PosPresenter.SetRole(dashboardMenuStrip, "surface");
+                foreach (ToolStripItem item in dashboardMenuStrip.Items)
+                {
+                    item.ForeColor = PosPalette.Ink;
+                    item.BackColor = PosPalette.Surface;
+                }
+            }
+
+            cardSales = MakeMetricCard(label8, lbmbe3atlyoum, labelprofit, PosPalette.Accent, "Sales today");
+            cardInvoices = MakeMetricCard(label9, lb3ddfweter, label18, PosPalette.Gold, "Invoices");
+            cardProducts = MakeMetricCard(label13, lb3ddmontajet, label19, PosPalette.Success, "Products");
+            cardCapital = MakeMetricCard(label14, lbr2slmal, label20, PosPalette.Header, "Inventory");
+
+            TableLayoutPanel kpiRow = new TableLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                Height = 128,
+                ColumnCount = 4,
+                RowCount = 1,
+                BackColor = PosPalette.Canvas,
+                Padding = new Padding(8, 8, 8, 0)
+            };
+            for (int i = 0; i < 4; i++)
+            {
+                kpiRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            }
+
+            kpiRow.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            kpiRow.Controls.Add(cardSales, 0, 0);
+            kpiRow.Controls.Add(cardInvoices, 1, 0);
+            kpiRow.Controls.Add(cardProducts, 2, 0);
+            kpiRow.Controls.Add(cardCapital, 3, 0);
+
+            Panel chartCard1 = ChartCard(chart1);
+            Panel chartCard2 = ChartCard(chart2);
+            TableLayoutPanel chartRow = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 1,
+                BackColor = PosPalette.Canvas,
+                Padding = new Padding(8)
+            };
+            chartRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            chartRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            chartRow.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            chartRow.Controls.Add(chartCard1, 0, 0);
+            chartRow.Controls.Add(chartCard2, 1, 0);
+
+            RebuildBalanceLayout();
+            if (customerBalancePanel != null)
+            {
+                customerBalancePanel.Dock = DockStyle.Bottom;
+                customerBalancePanel.Height = 220;
+                PosPresenter.SetRole(customerBalancePanel, "surface");
+            }
+
+            smartHome = new Panel { Dock = DockStyle.Fill, BackColor = PosPalette.Canvas };
+            PosPresenter.SetRole(smartHome, "canvas");
+            smartHome.Controls.Add(chartRow);
+            if (customerBalancePanel != null)
+            {
+                smartHome.Controls.Add(customerBalancePanel);
+            }
+
+            smartHome.Controls.Add(kpiRow);
+
+            smartPageHost = new Panel { Dock = DockStyle.Fill, Visible = false, BackColor = PosPalette.Canvas };
+            PosPresenter.SetRole(smartPageHost, "canvas");
+
+            panelContent.Controls.Clear();
+            panelContent.Controls.Add(smartHome);
+            panelContent.Controls.Add(smartPageHost);
+            if (dashboardMenuStrip != null)
+            {
+                panelContent.Controls.Add(dashboardMenuStrip);
+            }
+
+            panelContent.Controls.Add(panelheader);
+            if (auditPanel != null)
+            {
+                panelContent.Controls.Add(auditPanel);
+                PosPresenter.SetRole(auditPanel, "surface");
+                auditPanel.BringToFront();
+            }
+
+            Controls.Clear();
+            Controls.Add(panelContent);
+            Controls.Add(panel1);
+
+            smartShellReady = true;
+            PosPresenter.SetRole(this, "canvas");
+            HideDuplicateMenuNavigation();
+            LayoutSmartChrome();
+        }
+
+        private Panel MakeMetricCard(Label title, Label value, Label subtitle, Color accent, string titleText)
+        {
+            Panel card = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Margin = new Padding(8),
+                BackColor = PosPalette.Surface,
+                Padding = new Padding(14, 10, 14, 8)
+            };
+            PosPresenter.SetRole(card, "surface");
+            Panel bar = new Panel { Dock = DockStyle.Top, Height = 4, BackColor = accent };
+            if (title != null)
+            {
+                title.Text = titleText;
+                title.Dock = DockStyle.Top;
+                title.Height = 22;
+                title.Font = PosPalette.Ui(9F, FontStyle.Bold);
+                PosPresenter.SetRole(title, "muted");
+            }
+
+            if (value != null)
+            {
+                value.Dock = DockStyle.Top;
+                value.Height = 36;
+                value.Font = PosPalette.Ui(18F, FontStyle.Bold);
+                PosPresenter.SetRole(value, "ink");
+            }
+
+            if (subtitle != null)
+            {
+                subtitle.Dock = DockStyle.Top;
+                subtitle.Height = 22;
+                subtitle.Font = PosPalette.Ui(8.5F, FontStyle.Regular);
+                PosPresenter.SetRole(subtitle, "muted");
+            }
+
+            card.Controls.Add(subtitle);
+            card.Controls.Add(value);
+            card.Controls.Add(title);
+            card.Controls.Add(bar);
+            return card;
+        }
+
+        private Panel ChartCard(Chart chart)
+        {
+            Panel card = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Margin = new Padding(8),
+                BackColor = PosPalette.Surface,
+                Padding = new Padding(8)
+            };
+            PosPresenter.SetRole(card, "surface");
+            if (chart != null)
+            {
+                chart.Dock = DockStyle.Fill;
+                chart.BackColor = PosPalette.Surface;
+                card.Controls.Add(chart);
+            }
+
+            return card;
+        }
+
+        private void RebuildBalanceLayout()
+        {
+            if (customerBalancePanel == null)
+            {
+                return;
+            }
+
+            TableLayoutPanel table = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 1,
+                Padding = new Padding(8),
+                BackColor = PosPalette.Canvas
+            };
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            table.Controls.Add(BalanceColumn(customerBalanceTitleLabel, customerBalanceSummaryLabel, dataGridView1), 0, 0);
+            table.Controls.Add(BalanceColumn(supplierBalanceTitleLabel, supplierBalanceSummaryLabel, dataGridView2), 1, 0);
+            customerBalancePanel.Controls.Clear();
+            customerBalancePanel.Controls.Add(table);
+            customerBalancePanel.BorderStyle = BorderStyle.None;
+            customerBalancePanel.BackColor = PosPalette.Canvas;
+        }
+
+        private Control BalanceColumn(Label title, Label summary, DataGridView grid)
+        {
+            Panel column = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Margin = new Padding(8, 0, 8, 0),
+                BackColor = PosPalette.Surface,
+                Padding = new Padding(8)
+            };
+            PosPresenter.SetRole(column, "surface");
+            Panel head = new Panel { Dock = DockStyle.Top, Height = 28, BackColor = PosPalette.Surface };
+            if (summary != null)
+            {
+                summary.Dock = DockStyle.Fill;
+                summary.TextAlign = ContentAlignment.MiddleRight;
+                summary.Font = PosPalette.Ui(8.5F, FontStyle.Bold);
+                PosPresenter.SetRole(summary, "muted");
+                head.Controls.Add(summary);
+            }
+
+            if (title != null)
+            {
+                title.Dock = DockStyle.Left;
+                title.AutoSize = true;
+                title.Font = PosPalette.Ui(11F, FontStyle.Bold);
+                PosPresenter.SetRole(title, "ink");
+                head.Controls.Add(title);
+            }
+
+            if (grid != null)
+            {
+                grid.Dock = DockStyle.Fill;
+                PosPresenter.StyleGrid(grid);
+                column.Controls.Add(grid);
+            }
+
+            column.Controls.Add(head);
+            return column;
+        }
+
+        private void LayoutSmartChrome()
+        {
+            if (!smartShellReady)
+            {
+                return;
+            }
+
+            if (smartNav != null)
+            {
+                int width = Math.Max(160, smartNav.ClientSize.Width - smartNav.Padding.Horizontal);
+                foreach (Control control in smartNav.Controls)
+                {
+                    control.Width = width;
+                }
+            }
+
+            if (panelheader != null && label11 != null)
+            {
+                int right = auditNotificationButton != null && auditNotificationButton.Visible
+                    ? auditNotificationButton.Width + 12
+                    : 16;
+                label11.SetBounds(16, 8, Math.Max(180, panelheader.ClientSize.Width / 2), 56);
+                int x = panelheader.ClientSize.Width - right;
+                PlaceHeaderLabel(lbdatetime, ref x);
+                PlaceHeaderLabel(label6, ref x);
+                PlaceHeaderLabel(lbuser1, ref x);
+                PlaceHeaderLabel(label10, ref x);
+            }
+
+            if (auditPanel != null)
+            {
+                auditPanel.Location = new Point(
+                    Math.Max(12, panelContent.ClientSize.Width - auditPanel.Width - 16),
+                    panelheader.Bottom + 8);
+            }
+
+            if (cardProducts != null)
+            {
+                cardProducts.Visible = label13 == null || label13.Visible;
+            }
+
+            if (cardCapital != null)
+            {
+                cardCapital.Visible = label14 == null || label14.Visible;
+            }
+        }
+
+        private static void PlaceHeaderLabel(Label label, ref int rightEdge)
+        {
+            if (label == null || !label.Visible)
+            {
+                return;
+            }
+
+            Size size = TextRenderer.MeasureText(label.Text, label.Font);
+            int width = size.Width + 8;
+            rightEdge -= width;
+            label.SetBounds(Math.Max(200, rightEdge), 24, width, 24);
+        }
+
+        private void HideDuplicateMenuNavigation()
+        {
+            ToolStripButton[] navigation =
+            {
+                menuDashboard,
+                menuSales,
+                menuProducts,
+                menuSupplier,
+                menuCustomers,
+                menuEarningReports,
+                menuWarhouseReports,
+                menuReports,
+                menuAddUsers,
+                menuSettings,
+                menuLogout
+            };
+
+            foreach (ToolStripButton button in navigation)
+            {
+                if (button != null)
+                {
+                    button.Visible = false;
+                }
+            }
+        }
+
         private void ConfigureChart(Chart chart, string title)
         {
-            chart.BackColor = Color.White;
+            chart.BackColor = PosPalette.Surface;
             chart.Titles.Clear();
-            chart.Titles.Add(new Title(title, Docking.Top, new Font("Segoe UI", 11F, FontStyle.Bold), Color.FromArgb(30, 41, 59)));
+            chart.Titles.Add(new Title(title, Docking.Top, PosPalette.Ui(11F, FontStyle.Bold), PosPalette.Ink));
             chart.Legends.Clear();
             chart.Legends.Add(new Legend("Legend"));
-            chart.ChartAreas[0].BackColor = Color.White;
-            chart.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.FromArgb(226, 232, 240);
-            chart.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.FromArgb(226, 232, 240);
+            chart.ChartAreas[0].BackColor = PosPalette.Surface;
+            chart.ChartAreas[0].AxisX.MajorGrid.LineColor = PosPalette.Line;
+            chart.ChartAreas[0].AxisY.MajorGrid.LineColor = PosPalette.Line;
+            chart.ChartAreas[0].AxisX.LineColor = PosPalette.Line;
+            chart.ChartAreas[0].AxisY.LineColor = PosPalette.Line;
+            chart.ChartAreas[0].AxisX.LabelStyle.ForeColor = PosPalette.Muted;
+            chart.ChartAreas[0].AxisY.LabelStyle.ForeColor = PosPalette.Muted;
         }
 
         private void StartClock()
@@ -1352,6 +1857,12 @@ namespace Pos_System.Forms
             label20.Visible = canSeeInventoryMetrics;
             labelprofit.Visible = !isCashier;
             SetCustomerBalancePanelVisible(canViewDashboardBalances);
+            if (smartSupplierButton != null)
+            {
+                smartSupplierButton.Visible = canViewSuppliers;
+            }
+
+            HideDuplicateMenuNavigation();
             LayoutDashboardHome();
         }
 
@@ -1770,7 +2281,7 @@ namespace Pos_System.Forms
             {
                 ChartType = SeriesChartType.Line,
                 BorderWidth = 3,
-                Color = Color.FromArgb(37, 99, 235),
+                Color = PosPalette.Accent,
                 MarkerStyle = MarkerStyle.Circle,
                 MarkerSize = 7
             };
@@ -1808,7 +2319,16 @@ namespace Pos_System.Forms
                     ? "Uncategorized"
                     : Convert.ToString(row["category_name"]);
                 int count = Convert.ToInt32(row["ProductCount"]);
-                series.Points.AddXY(category, count);
+                int pointIndex = series.Points.AddXY(category, count);
+                Color[] sliceColors =
+                {
+                    PosPalette.Accent,
+                    PosPalette.Gold,
+                    PosPalette.Success,
+                    PosPalette.Header,
+                    PosPalette.AccentDeep
+                };
+                series.Points[pointIndex].Color = sliceColors[pointIndex % sliceColors.Length];
             }
 
             chart2.Series.Add(series);
@@ -2111,11 +2631,24 @@ namespace Pos_System.Forms
         {
             if (activeMenuButton != null && activeMenuButton != button)
             {
-                activeMenuButton.BackColor = Color.Transparent;
-                activeMenuButton.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular);
+                if (smartShellReady)
+                {
+                    PosPresenter.SetRole(activeMenuButton, "nav");
+                }
+                else
+                {
+                    activeMenuButton.BackColor = Color.Transparent;
+                    activeMenuButton.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular);
+                }
             }
 
             activeMenuButton = button;
+            if (smartShellReady)
+            {
+                PosPresenter.SetRole(activeMenuButton, "nav-active");
+                return;
+            }
+
             activeMenuButton.BackColor = Color.FromArgb(37, 99, 235);
             activeMenuButton.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
         }

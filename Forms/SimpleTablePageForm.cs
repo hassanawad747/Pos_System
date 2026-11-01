@@ -8,6 +8,7 @@ namespace Pos_System.Forms
         public SimpleTablePageForm(string title, string subtitle, string tableName, string message)
         {
             Text = title;
+            POS_System.Program.SettingsManager.RegisterForm(this);
             BackColor = Color.White;
 
             Label titleLabel = new Label

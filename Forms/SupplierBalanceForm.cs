@@ -42,6 +42,7 @@ namespace Pos_System.Forms
         private void InitializeSupplierBalanceForm()
         {
             Text = "Supplier";
+            POS_System.Program.SettingsManager.RegisterForm(this);
             BackColor = Color.FromArgb(244, 247, 252);
             MinimumSize = new Size(1000, 620);
             Size = new Size(1200, 720);

@@ -45,6 +45,7 @@ namespace Pos_System.Forms
         private void InitializeInvoiceForm()
         {
             Text = "Balance Invoice";
+            POS_System.Program.SettingsManager.RegisterForm(this);
             StartPosition = FormStartPosition.CenterParent;
             Size = new Size(720, 520);
             MinimumSize = new Size(640, 460);

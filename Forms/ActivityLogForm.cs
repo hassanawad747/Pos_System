@@ -14,6 +14,7 @@ namespace Pos_System.Forms
         public ActivityLogForm()
         {
             Text = "Activity Log";
+            POS_System.Program.SettingsManager.RegisterForm(this);
             BackColor = Color.White;
             Width = 900;
             Height = 520;

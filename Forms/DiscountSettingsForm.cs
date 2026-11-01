@@ -24,6 +24,7 @@ namespace Pos_System.Forms
         public DiscountSettingsForm()
         {
             Text = "Discount Settings";
+            POS_System.Program.SettingsManager.RegisterForm(this);
             StartPosition = FormStartPosition.CenterParent;
             Size = new Size(980, 620);
             MinimumSize = new Size(820, 520);

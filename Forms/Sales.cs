@@ -265,6 +265,11 @@ namespace Pos_System.Forms
 
         private void ApplySalesResponsiveLayout()
         {
+            if (PosPresenter.IsMounted(this))
+            {
+                return;
+            }
+
             int formWidth = Math.Max(1, ClientSize.Width);
             int formHeight = Math.Max(1, ClientSize.Height);
             int headerHeight = panelheader.Visible ? 60 : 0;
@@ -288,6 +293,11 @@ namespace Pos_System.Forms
 
         private void LayoutSalesTopPanel()
         {
+            if (PosPresenter.IsMounted(this))
+            {
+                return;
+            }
+
             int padding = 12;
             int right = panel2.ClientSize.Width - padding;
             if (right <= padding)
@@ -308,6 +318,11 @@ namespace Pos_System.Forms
 
         private void LayoutRightSalesPanel()
         {
+            if (PosPresenter.IsMounted(this))
+            {
+                return;
+            }
+
             int margin = 14;
             int width = Math.Max(0, panel1.ClientSize.Width - (margin * 2));
             int bottom = panel1.ClientSize.Height - 14;
@@ -1006,6 +1021,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             invoiceForm.Controls.Add(bodyPanel);
             invoiceForm.Controls.Add(summaryPanel);
             invoiceForm.Controls.Add(headerPanel);
+            PosPresenter.Watch(invoiceForm);
             invoiceForm.ShowDialog();
         }
 
@@ -1292,8 +1308,6 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
                     return;
                 }
 
-                Random rnd = new Random();
-
                 int x = 10;
                 int y = 10;
                 int margin = 10;
@@ -1309,13 +1323,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
 
                     btn.Location = new Point(x, y);
 
-                    btn.BackColor = Color.FromArgb(
-                        rnd.Next(50, 200),
-                        rnd.Next(50, 200),
-                        rnd.Next(50, 200)
-                    );
-                    btn.ForeColor = Color.White;
-                    btn.FlatStyle = FlatStyle.Flat;
+                    PosPresenter.StyleProductButton(btn);
 
                     // 🔁 ترتيب الأزرار
                     x += btn.Width + margin;
@@ -2043,6 +2051,7 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
             reviewForm.CancelButton = noButton;
 
             RefreshReviewTotals();
+            PosPresenter.Watch(reviewForm);
 
             if (reviewForm.ShowDialog(this) != DialogResult.OK)
                 return false;
