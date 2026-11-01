@@ -533,6 +533,7 @@ namespace POS_System
                 CaptureOriginalColors(form);
                 ResponsiveLayoutService.Register(form);
                 ArabicToolTipService.Register(form);
+                PosPresenter.Watch(form);
                 registeredForms.Add(form);
                 form.Shown += RegisteredFormShown;
                 form.Disposed += RegisteredFormDisposed;
@@ -640,23 +641,8 @@ namespace POS_System
 
             private static void ApplyTheme(Control control, string theme)
             {
-                if (control == null)
-                {
-                    return;
-                }
-
-                switch (theme)
-                {
-                    case "light":
-                        ApplyColorTheme(control, Color.White, Color.Black);
-                        break;
-                    case "dark":
-                        ApplyColorTheme(control, Color.Black, Color.White);
-                        break;
-                    default:
-                        RestoreOriginalTheme(control);
-                        break;
-                }
+                Form form = control as Form ?? control?.FindForm();
+                PosPresenter.ApplyTheme(form, theme);
             }
 
             private static void ApplyColorTheme(Control control, Color backColor, Color foreColor)

@@ -25,7 +25,7 @@ namespace Pos_System.Services
         private static void Form_Shown(object sender, EventArgs e)
         {
             Form form = sender as Form;
-            if (form == null || form.IsDisposed || snapshots.ContainsKey(form))
+            if (form == null || form.IsDisposed || snapshots.ContainsKey(form) || PosPresenter.IsMounted(form))
             {
                 return;
             }

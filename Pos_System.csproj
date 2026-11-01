@@ -478,6 +478,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Services\AppSession.cs" />
+    <Compile Include="Services\PosPalette.cs" />
+    <Compile Include="Services\PosPresenter.cs" />
     <Compile Include="Services\AuditService.cs" />
     <Compile Include="Services\PasswordHasher.cs" />
     <Compile Include="Services\PermissionService.cs" />
