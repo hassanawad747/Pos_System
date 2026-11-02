@@ -248,6 +248,12 @@
     <Compile Include="Forms\Dashboard.Designer.cs">
       <DependentUpon>Dashboard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CashierCheckoutExtras.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Forms\ExchangeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\EarningReports.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -353,7 +359,14 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\AuditLogger.cs" />
     <Compile Include="Services\ArabicToolTipService.cs" />
+    <Compile Include="Services\BackupScheduleService.cs" />
     <Compile Include="Services\LoadingOverlayService.cs" />
+    <Compile Include="Services\LoyaltyService.cs" />
+    <Compile Include="Services\PageChrome.cs" />
+    <Compile Include="Services\PromotionService.cs" />
+    <Compile Include="Services\ReceiptPrinterService.cs" />
+    <Compile Include="Services\SalePaymentService.cs" />
+    <Compile Include="Services\ExchangeService.cs" />
     <Compile Include="Services\ResponsiveLayoutService.cs" />
     <Compile Include="Services\RuntimeLanguageService.cs" />
     <Compile Include="Services\WorkHistoryService.cs" />
