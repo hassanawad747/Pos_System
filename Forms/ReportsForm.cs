@@ -284,16 +284,16 @@ END", connection))
 
             SuspendLayout();
 
-            BackColor = Color.FromArgb(241, 245, 249);
-            panelheader.Height = 60;
-            panelheader.BackColor = Color.FromArgb(2, 6, 23);
+            BackColor = PosPalette.Canvas;
+            panelheader.Height = 56;
+            panelheader.BackColor = PosPalette.Header;
             panel1.Height = 156;
-            panel1.BackColor = Color.FromArgb(248, 250, 252);
+            panel1.BackColor = PosPalette.Surface;
             panel1.Padding = new Padding(12);
-            panel2.BackColor = Color.FromArgb(226, 232, 240);
+            panel2.BackColor = PosPalette.Canvas;
             panel2.Padding = new Padding(10);
             panel3.Height = 54;
-            panel3.BackColor = Color.FromArgb(248, 250, 252);
+            panel3.BackColor = PosPalette.Surface;
 
             label3.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             label3.Location = new Point(14, 18);

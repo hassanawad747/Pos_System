@@ -98,7 +98,8 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 31);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Zone";
+            this.label2.Text = "";
+            this.label2.Visible = false;
             // 
             // label1
             // 
@@ -112,7 +113,8 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 31);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Bike";
+            this.label1.Text = "";
+            this.label1.Visible = false;
             // 
             // panel1
             // 

@@ -43,7 +43,7 @@ namespace Pos_System.Forms
         {
             Text = "Supplier";
             POS_System.Program.SettingsManager.RegisterForm(this);
-            BackColor = Color.FromArgb(244, 247, 252);
+            BackColor = PosPalette.Canvas;
             MinimumSize = new Size(1000, 620);
             Size = new Size(1200, 720);
 

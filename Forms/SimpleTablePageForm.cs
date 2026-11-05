@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
@@ -9,25 +10,31 @@ namespace Pos_System.Forms
         {
             Text = title;
             POS_System.Program.SettingsManager.RegisterForm(this);
-            BackColor = Color.White;
+            BackColor = PosPalette.Canvas;
+            Font = PosPalette.Ui(10F, FontStyle.Regular);
 
             Label titleLabel = new Label
             {
                 Dock = DockStyle.Top,
-                Height = 50,
-                Font = new Font("Segoe UI", 16F, FontStyle.Bold),
+                Height = 52,
+                Font = PosPalette.Ui(16F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = PosPalette.Header,
                 Text = title,
-                TextAlign = ContentAlignment.MiddleCenter
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(16, 0, 0, 0)
             };
 
             Label subtitleLabel = new Label
             {
                 Dock = DockStyle.Top,
                 Height = 36,
-                Font = new Font("Segoe UI", 10F),
-                ForeColor = Color.DimGray,
+                Font = PosPalette.Ui(10F, FontStyle.Regular),
+                ForeColor = PosPalette.Muted,
+                BackColor = PosPalette.Surface,
                 Text = subtitle + " - " + tableName,
-                TextAlign = ContentAlignment.MiddleCenter
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(16, 8, 16, 0)
             };
 
             TextBox messageBox = new TextBox
@@ -36,8 +43,9 @@ namespace Pos_System.Forms
                 Multiline = true,
                 ReadOnly = true,
                 BorderStyle = BorderStyle.None,
-                BackColor = Color.White,
-                Font = new Font("Segoe UI", 11F),
+                BackColor = PosPalette.Surface,
+                ForeColor = PosPalette.Ink,
+                Font = PosPalette.Ui(11F, FontStyle.Regular),
                 Text = message
             };
 

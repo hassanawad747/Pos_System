@@ -81,16 +81,16 @@ namespace Pos_System.Forms
             //BackColor = Color.FromArgb(244, 247, 252);
             //Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
 
-            panelheader.BackColor = Color.FromArgb(15, 23, 42);
-            panel1.BackColor = Color.White;
-            panel2.BackColor = Color.FromArgb(244, 247, 252);
-            panel4.BackColor = Color.White;
-            pnlProducts.BackColor = Color.White;
+            panelheader.BackColor = PosPalette.Header;
+            panel1.BackColor = PosPalette.Surface;
+            panel2.BackColor = PosPalette.Canvas;
+            panel4.BackColor = PosPalette.Surface;
+            pnlProducts.BackColor = PosPalette.Canvas;
 
-            label1.ForeColor = Color.FromArgb(234, 88, 12);
-            label2.ForeColor = Color.White;
-            label3.ForeColor = Color.FromArgb(191, 219, 254);
-            labeldate.ForeColor = Color.FromArgb(226, 232, 240);
+            label1.Visible = false;
+            label2.Visible = false;
+            label3.ForeColor = Color.White;
+            labeldate.ForeColor = Color.White;
 
             StyleTextBox(txtsearch, 12F, false);
             StyleTextBox(txtquantity, 12F, true);
@@ -1784,7 +1784,7 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                 MinimumSize = new Size(940, 640),
                 RightToLeft = RightToLeft.Yes,
                 RightToLeftLayout = true,
-                BackColor = Color.FromArgb(244, 247, 252),
+                BackColor = PosPalette.Canvas,
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 MaximizeBox = false,
                 MinimizeBox = false
@@ -1903,7 +1903,7 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
             {
                 Dock = DockStyle.Bottom,
                 Height = 226,
-                BackColor = Color.FromArgb(244, 247, 252),
+                BackColor = PosPalette.Canvas,
                 Padding = new Padding(18, 14, 18, 14)
             };
 

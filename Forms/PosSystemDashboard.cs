@@ -66,6 +66,11 @@ namespace Pos_System.Forms
         private Panel cardInvoices;
         private Panel cardProducts;
         private Panel cardCapital;
+        private Panel smartFocus;
+        private Label focusShiftLabel;
+        private Label focusWorkLabel;
+        private Label focusStockLabel;
+        private Label focusNoteLabel;
 
 
 
@@ -314,17 +319,17 @@ namespace Pos_System.Forms
 
         private void ConfigureDashboardShell()
         {
-            Text = "POS System Dashboard";
-            BackColor = Color.FromArgb(244, 247, 252);
-            panelContent.BackColor = Color.FromArgb(244, 247, 252);
-            panel1.BackColor = Color.FromArgb(15, 23, 42);
-            panelheader.BackColor = Color.FromArgb(17, 24, 39);
+            Text = "Smart POS";
+            BackColor = PosPalette.Canvas;
+            panelContent.BackColor = PosPalette.Canvas;
+            panel1.BackColor = PosPalette.Sidebar;
+            panelheader.BackColor = PosPalette.Surface;
             panelheader.Dock = DockStyle.None;
             panelheader.Height = 74;
             panel2.Dock = DockStyle.None;
             panel3.Dock = DockStyle.None;
-            panel2.BackColor = Color.White;
-            panel3.BackColor = Color.White;
+            panel2.BackColor = PosPalette.Surface;
+            panel3.BackColor = PosPalette.Surface;
 
             button11.Visible = false;
             button12.Visible = false;
@@ -949,7 +954,7 @@ namespace Pos_System.Forms
 
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;
-            button.BackColor = Color.FromArgb(15, 23, 42);
+            button.BackColor = PosPalette.Sidebar;
             button.ForeColor = Color.White;
             button.TextAlign = ContentAlignment.MiddleLeft;
             button.Padding = new Padding(18, 0, 0, 0);
@@ -1293,11 +1298,13 @@ namespace Pos_System.Forms
             {
                 Dock = DockStyle.Top,
                 Height = 22,
-                Text = "Shop floor",
+                Text = "Point of Sale",
                 Font = PosPalette.Ui(9F, FontStyle.Regular),
-                ForeColor = PosPalette.Muted,
+                ForeColor = PosPalette.SidebarMuted,
                 Padding = new Padding(10, 0, 0, 0)
             };
+            PosPresenter.SetRole(brandSub, "sidebar-muted");
+            PosPresenter.SetRole(brandName, "sidebar-text");
             brand.Controls.Add(brandSub);
             brand.Controls.Add(brandName);
             brand.Controls.Add(mark);
@@ -1305,10 +1312,10 @@ namespace Pos_System.Forms
             smartNav = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                FlowDirection = FlowDirection.LeftToRight,
-                WrapContents = true,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
                 AutoScroll = true,
-                Padding = new Padding(10, 8, 10, 8),
+                Padding = new Padding(12, 8, 12, 8),
                 BackColor = PosPalette.Sidebar
             };
             PosPresenter.SetRole(smartNav, "sidebar");
@@ -1366,8 +1373,10 @@ namespace Pos_System.Forms
             lbrole.AutoSize = false;
             lbrole.Dock = DockStyle.Top;
             lbrole.Height = 20;
-            PosPresenter.SetRole(lbusername, "ink");
-            PosPresenter.SetRole(lbrole, "muted");
+            PosPresenter.SetRole(lbusername, "sidebar-text");
+            PosPresenter.SetRole(lbrole, "sidebar-muted");
+            lbusername.ForeColor = PosPalette.SidebarInk;
+            lbrole.ForeColor = PosPalette.SidebarMuted;
             if (endWorkDayButton != null)
             {
                 PosPresenter.SetRole(endWorkDayButton, "danger");
@@ -1452,9 +1461,9 @@ namespace Pos_System.Forms
             }
 
             cardSales = MakeMetricCard(label8, lbmbe3atlyoum, labelprofit, PosPalette.Accent, "Sales today");
-            cardInvoices = MakeMetricCard(label9, lb3ddfweter, label18, PosPalette.Gold, "Invoices");
+            cardInvoices = MakeMetricCard(label9, lb3ddfweter, label18, PosPalette.Warning, "Invoices");
             cardProducts = MakeMetricCard(label13, lb3ddmontajet, label19, PosPalette.Success, "Products");
-            cardCapital = MakeMetricCard(label14, lbr2slmal, label20, PosPalette.Header, "Inventory");
+            cardCapital = MakeMetricCard(label14, lbr2slmal, label20, PosPalette.Secondary, "Inventory");
 
             TableLayoutPanel kpiRow = new TableLayoutPanel
             {
@@ -1496,9 +1505,11 @@ namespace Pos_System.Forms
             if (customerBalancePanel != null)
             {
                 customerBalancePanel.Dock = DockStyle.Bottom;
-                customerBalancePanel.Height = 220;
-                PosPresenter.SetRole(customerBalancePanel, "surface");
+                customerBalancePanel.Height = 210;
+                PosPresenter.SetRole(customerBalancePanel, "canvas");
             }
+
+            smartFocus = BuildTodayFocus();
 
             smartHome = new Panel { Dock = DockStyle.Fill, BackColor = PosPalette.Canvas };
             PosPresenter.SetRole(smartHome, "canvas");
@@ -1508,6 +1519,7 @@ namespace Pos_System.Forms
                 smartHome.Controls.Add(customerBalancePanel);
             }
 
+            smartHome.Controls.Add(smartFocus);
             smartHome.Controls.Add(kpiRow);
 
             smartPageHost = new Panel { Dock = DockStyle.Fill, Visible = false, BackColor = PosPalette.Canvas };
@@ -1537,6 +1549,67 @@ namespace Pos_System.Forms
             PosPresenter.SetRole(this, "canvas");
             HideDuplicateMenuNavigation();
             LayoutSmartChrome();
+        }
+
+        private Panel BuildTodayFocus()
+        {
+            Panel card = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 64,
+                Margin = new Padding(8),
+                BackColor = PosPalette.Surface,
+                Padding = new Padding(16, 10, 16, 10)
+            };
+            PosPresenter.SetRole(card, "surface");
+
+            Label title = new Label
+            {
+                Dock = DockStyle.Left,
+                Width = 140,
+                Text = "Today's Focus",
+                Font = PosPalette.Ui(12F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            PosPresenter.SetRole(title, "ink");
+
+            focusShiftLabel = FocusChip("Shift");
+            focusWorkLabel = FocusChip("Work");
+            focusStockLabel = FocusChip("Stock");
+            focusNoteLabel = FocusChip("Status");
+
+            FlowLayoutPanel chips = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,
+                Padding = new Padding(8, 6, 0, 0),
+                BackColor = PosPalette.Surface
+            };
+            PosPresenter.SetRole(chips, "surface");
+            chips.Controls.Add(focusShiftLabel);
+            chips.Controls.Add(focusWorkLabel);
+            chips.Controls.Add(focusStockLabel);
+            chips.Controls.Add(focusNoteLabel);
+
+            card.Controls.Add(chips);
+            card.Controls.Add(title);
+            return card;
+        }
+
+        private static Label FocusChip(string text)
+        {
+            Label label = new Label
+            {
+                AutoSize = true,
+                Margin = new Padding(0, 4, 18, 4),
+                Font = PosPalette.Ui(9.5F, FontStyle.Regular),
+                ForeColor = PosPalette.Muted,
+                Text = text
+            };
+            PosPresenter.SetRole(label, "muted");
+            return label;
         }
 
         private Panel MakeMetricCard(Label title, Label value, Label subtitle, Color accent, string titleText)
@@ -1881,6 +1954,7 @@ namespace Pos_System.Forms
                 label18.Text = "Customers: " + stats.CustomerCount.ToString("N0");
                 label19.Text = "Low stock: " + stats.LowStockCount.ToString("N0");
                 label20.Text = "Top product: " + stats.TopProductName;
+                UpdateTodayFocus(stats);
 
                 LoadSalesTrendChart();
                 LoadInventoryChart();
@@ -1897,6 +1971,7 @@ namespace Pos_System.Forms
                 label18.Text = ex.Message;
                 label19.Text = string.Empty;
                 label20.Text = string.Empty;
+                UpdateTodayFocus(null);
             }
         }
 
@@ -2218,6 +2293,41 @@ namespace Pos_System.Forms
         private DateTime GetWorkDayStart()
         {
             return WorkHistoryService.GetDashboardWorkStart(LoginForm.LoggedInUserId, _username) ?? DateTime.Today;
+        }
+
+        private void UpdateTodayFocus(DashboardStats stats)
+        {
+            if (smartFocus == null)
+            {
+                return;
+            }
+
+            string shift = DateTime.Now.Hour < 12 ? "Morning shift" :
+                DateTime.Now.Hour < 18 ? "Afternoon shift" : "Evening shift";
+            DateTime workStart = GetWorkDayStart();
+            if (focusShiftLabel != null)
+            {
+                focusShiftLabel.Text = shift;
+            }
+
+            if (focusWorkLabel != null)
+            {
+                focusWorkLabel.Text = "Work started " + workStart.ToString("HH:mm");
+            }
+
+            if (focusStockLabel != null)
+            {
+                int low = stats == null ? 0 : stats.LowStockCount;
+                focusStockLabel.Text = low > 0 ? "Low stock: " + low.ToString("N0") : "Stock is healthy";
+                focusStockLabel.ForeColor = low > 0 ? PosPalette.Danger : PosPalette.Success;
+            }
+
+            if (focusNoteLabel != null)
+            {
+                decimal profit = stats == null ? 0m : stats.TodayProfit;
+                focusNoteLabel.Text = "Profit today " + FormatCurrency(profit);
+                focusNoteLabel.ForeColor = PosPalette.Ink;
+            }
         }
 
         private void EndWorkDayButton_Click(object sender, EventArgs e)
@@ -2575,17 +2685,17 @@ namespace Pos_System.Forms
 
         private void ApplyDashboardVisualStyle()
         {
-            BackColor = Color.FromArgb(244, 247, 252);
-            panel1.BackColor = Color.FromArgb(15, 23, 42);
-            panelheader.BackColor = Color.White;
-            panelContent.BackColor = Color.FromArgb(244, 247, 252);
+            BackColor = PosPalette.Canvas;
+            panel1.BackColor = PosPalette.Sidebar;
+            panelheader.BackColor = PosPalette.Surface;
+            panelContent.BackColor = PosPalette.Canvas;
             label11.Text = "Dashboard";
-            label11.ForeColor = Color.FromArgb(15, 23, 42);
-            label10.ForeColor = Color.FromArgb(100, 116, 139);
-            lbuser1.ForeColor = Color.FromArgb(37, 99, 235);
-            lbdatetime.ForeColor = Color.FromArgb(100, 116, 139);
-            label5.ForeColor = Color.FromArgb(100, 116, 139);
-            label6.ForeColor = Color.FromArgb(15, 23, 42);
+            label11.ForeColor = PosPalette.Ink;
+            label10.ForeColor = PosPalette.Muted;
+            lbuser1.ForeColor = PosPalette.Accent;
+            lbdatetime.ForeColor = PosPalette.Muted;
+            label5.ForeColor = PosPalette.Muted;
+            label6.ForeColor = PosPalette.Ink;
             label10.Text = "Welcome,";
             label11.Text = "Dashboard";
             label6.Text = "Admin Panel";
@@ -2603,9 +2713,10 @@ namespace Pos_System.Forms
             btnAddUsers.Text = "Add Users";
             btnEarningReports.Text = "Earning Reports";
             btnsettings.Text = "Settings";
+            btnAddUsers.Text = "Users";
             panel3.Visible = true;
             panel2.Visible = true;
-            panelheader.Height = 74;
+            panelheader.Height = 72;
 
             foreach (Control control in panel1.Controls)
             {
@@ -2616,15 +2727,15 @@ namespace Pos_System.Forms
                     menuButton.Height = 42;
                     menuButton.BackColor = Color.Transparent;
                     menuButton.ForeColor = Color.White;
-                    menuButton.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular);
+                    menuButton.Font = PosPalette.Ui(10.5F, FontStyle.Regular);
                     menuButton.TextAlign = ContentAlignment.MiddleLeft;
                     menuButton.Padding = new Padding(14, 0, 0, 0);
                 }
             }
 
             button1.FlatAppearance.BorderSize = 0;
-            button1.BackColor = Color.FromArgb(30, 41, 59);
-            button1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            button1.BackColor = PosPalette.Secondary;
+            button1.Font = PosPalette.Ui(10F, FontStyle.Bold);
         }
 
         private void ActivateMenuButton(Button button)

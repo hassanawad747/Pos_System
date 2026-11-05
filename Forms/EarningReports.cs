@@ -43,12 +43,12 @@ namespace Pos_System.Forms
         private void ConfigureForm()
         {
             MinimumSize = new Size(980, 560);
-            BackColor = Color.FromArgb(244, 247, 252);
+            BackColor = PosPalette.Canvas;
 
-            panelheader.BackColor = Color.FromArgb(15, 23, 42);
-            panel1.BackColor = Color.White;
-            panel2.BackColor = Color.FromArgb(244, 247, 252);
-            panel3.BackColor = Color.White;
+            panelheader.BackColor = PosPalette.Header;
+            panel1.BackColor = PosPalette.Surface;
+            panel2.BackColor = PosPalette.Canvas;
+            panel3.BackColor = PosPalette.Surface;
 
             panel1.Dock = DockStyle.Top;
             panel2.Dock = DockStyle.Top;

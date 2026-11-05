@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
@@ -20,9 +21,10 @@ namespace Pos_System.Forms
 
         private void InitializeStartScreen()
         {
-            BackColor = Color.FromArgb(244, 247, 252);
+            BackColor = PosPalette.Canvas;
             Dock = DockStyle.Fill;
-            Font = new Font("Segoe UI", 11F, FontStyle.Regular);
+            Font = PosPalette.Ui(11F, FontStyle.Regular);
+            Text = "Start work";
 
             TableLayoutPanel layout = new TableLayoutPanel
             {
@@ -30,21 +32,21 @@ namespace Pos_System.Forms
                 ColumnCount = 1,
                 RowCount = 5,
                 Padding = new Padding(24),
-                BackColor = Color.FromArgb(244, 247, 252)
+                BackColor = PosPalette.Canvas
             };
 
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 28F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 120F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 72F));
 
             Label titleLabel = new Label
             {
                 Dock = DockStyle.Fill,
                 Text = "Start Sales Work",
-                Font = new Font("Segoe UI", 24F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(15, 23, 42),
+                Font = PosPalette.Ui(24F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 TextAlign = ContentAlignment.BottomCenter
             };
 
@@ -52,18 +54,18 @@ namespace Pos_System.Forms
             {
                 Dock = DockStyle.Fill,
                 Text = string.IsNullOrWhiteSpace(username) ? DateTime.Now.ToString("yyyy-MM-dd HH:mm") : username,
-                Font = new Font("Segoe UI", 13F, FontStyle.Regular),
-                ForeColor = Color.FromArgb(71, 85, 105),
+                Font = PosPalette.Ui(13F, FontStyle.Regular),
+                ForeColor = PosPalette.Muted,
                 TextAlign = ContentAlignment.MiddleCenter
             };
 
             Button startButton = new Button
             {
                 Anchor = AnchorStyles.None,
-                BackColor = Color.FromArgb(22, 163, 74),
+                BackColor = PosPalette.Success,
                 Cursor = Cursors.Hand,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 24F, FontStyle.Bold),
+                Font = PosPalette.Ui(24F, FontStyle.Bold),
                 ForeColor = Color.White,
                 Size = new Size(360, 96),
                 Text = "START"
@@ -71,6 +73,7 @@ namespace Pos_System.Forms
 
             startButton.FlatAppearance.BorderSize = 0;
             startButton.Click += startClicked;
+            PosPresenter.SetRole(startButton, "success");
 
             layout.Controls.Add(titleLabel, 0, 1);
             layout.Controls.Add(userLabel, 0, 2);

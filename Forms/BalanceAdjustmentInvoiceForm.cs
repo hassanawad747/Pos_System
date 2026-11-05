@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
@@ -49,7 +50,7 @@ namespace Pos_System.Forms
             StartPosition = FormStartPosition.CenterParent;
             Size = new Size(720, 520);
             MinimumSize = new Size(640, 460);
-            BackColor = Color.FromArgb(244, 247, 252);
+            BackColor = PosPalette.Canvas;
 
             Panel headerPanel = new Panel
             {

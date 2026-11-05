@@ -93,7 +93,8 @@ namespace Pos_System.Forms
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(105, 47);
             this.label2.TabIndex = 2;
-            this.label2.Text = "ZONE";
+            this.label2.Text = "";
+            this.label2.Visible = false;
             // 
             // label1
             // 
@@ -105,7 +106,8 @@ namespace Pos_System.Forms
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 47);
             this.label1.TabIndex = 1;
-            this.label1.Text = "BIKE";
+            this.label1.Text = "";
+            this.label1.Visible = false;
             // 
             // summaryPanel
             // 

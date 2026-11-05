@@ -28,7 +28,7 @@ namespace Pos_System.Forms
             StartPosition = FormStartPosition.CenterParent;
             Size = new Size(980, 620);
             MinimumSize = new Size(820, 520);
-            BackColor = Color.FromArgb(244, 247, 252);
+            BackColor = PosPalette.Canvas;
 
             BuildUi();
             Load += (s, e) =>
@@ -51,7 +51,7 @@ namespace Pos_System.Forms
             {
                 Dock = DockStyle.Top,
                 Height = 64,
-                BackColor = Color.FromArgb(15, 23, 42),
+                BackColor = PosPalette.Header,
                 Padding = new Padding(18, 12, 18, 12)
             };
             Label title = new Label

@@ -4,24 +4,14 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Pos_System.Services
 {
     /// <summary>
-    /// Replaces legacy Bike/Zone chrome with one Smart POS presentation.
-    /// Functional controls (inputs, grids, buttons, charts) are kept and reparented.
-    /// Old decorative panels are removed from the visible tree, not covered up.
-    ///
-    /// Covered windows:
-    /// LoginForm, PosSystemDashboard, Dashboard, Sales, SalesStartForm,
-    /// Products, ProductsPageForm, InventoryPageForm, AddProducts,
-    /// Customers, CustomersPageForm, AddCustomers,
-    /// SupplierForm, SuppliersPageForm, SupplierBalanceForm,
-    /// CategoryForm, Settings, SettingsPageForm, DiscountSettingsForm, UserPermissionsForm,
-    /// AddUsers, UsersPageForm, ReportsForm, ReportsOverviewPageForm,
-    /// EarningReports, WarhouseReports, addsalesform, ActivityLogForm,
-    /// AdminDashboardHomeForm, BalanceAdjustmentInvoiceForm, SimpleTablePageForm,
-    /// plus the sales invoice and sale-review dialogs created inside Sales.
+    /// Replaces legacy Bike/Zone chrome with one readable Smart POS presentation.
+    /// Functional controls are kept. Decorative leftovers are removed, not covered.
+    /// Applies to every Form in Forms/.
     /// </summary>
     internal static class PosPresenter
     {
@@ -37,8 +27,13 @@ namespace Pos_System.Services
             }
 
             Watched.Add(form);
+            form.HandleCreated += Form_HandleCreated;
             form.Load += Form_Load;
             form.Disposed += Form_Disposed;
+            if (form.IsHandleCreated)
+            {
+                Mount(form);
+            }
         }
 
         public static bool IsMounted(Form form)
@@ -71,6 +66,11 @@ namespace Pos_System.Services
             return new SmartToolStripRenderer();
         }
 
+        private static void Form_HandleCreated(object sender, EventArgs e)
+        {
+            Mount(sender as Form);
+        }
+
         private static void Form_Load(object sender, EventArgs e)
         {
             Mount(sender as Form);
@@ -86,6 +86,7 @@ namespace Pos_System.Services
 
             Watched.Remove(form);
             Mounted.Remove(form);
+            form.HandleCreated -= Form_HandleCreated;
             form.Load -= Form_Load;
             form.Disposed -= Form_Disposed;
         }
@@ -109,16 +110,15 @@ namespace Pos_System.Services
             }
 
             string name = form.GetType().Name;
-            if (name == "PosSystemDashboard")
-            {
-                Mounted.Add(form);
-                return;
-            }
-
             form.SuspendLayout();
             try
             {
-                if (name == "LoginForm")
+                form.Font = PosPalette.Ui(10F, FontStyle.Regular);
+                if (name == "PosSystemDashboard")
+                {
+                    RestyleTree(form);
+                }
+                else if (name == "LoginForm")
                 {
                     MountLogin(form);
                 }
@@ -132,8 +132,8 @@ namespace Pos_System.Services
                     RestyleTree(form);
                 }
 
-                form.Font = PosPalette.Ui(10F, FontStyle.Regular);
                 form.BackColor = PosPalette.Canvas;
+                form.ForeColor = PosPalette.Ink;
                 Mounted.Add(form);
             }
             finally
@@ -156,57 +156,76 @@ namespace Pos_System.Services
             form.StartPosition = FormStartPosition.CenterScreen;
             form.MaximizeBox = false;
             form.MinimizeBox = false;
-            form.ClientSize = new Size(860, 520);
+            form.ClientSize = new Size(900, 540);
+            form.BackColor = PosPalette.Canvas;
 
             Panel root = new Panel { Dock = DockStyle.Fill, BackColor = PosPalette.Canvas };
             SetRole(root, "canvas");
 
-            Panel brand = new Panel { Dock = DockStyle.Left, Width = 340, BackColor = PosPalette.Header };
-            SetRole(brand, "header");
-            brand.Controls.Add(new Label
+            Panel brand = new Panel { Dock = DockStyle.Left, Width = 360, BackColor = PosPalette.Sidebar };
+            SetRole(brand, "sidebar");
+            Label brandBody = new Label
             {
                 Dock = DockStyle.Fill,
-                ForeColor = Color.White,
-                Font = PosPalette.Ui(14F, FontStyle.Regular),
-                Text = "Sign in to the shop floor.\r\nSales, stock, and customers\r\nstay on this counter.",
+                ForeColor = PosPalette.SidebarMuted,
+                Font = PosPalette.Ui(12F, FontStyle.Regular),
+                Text = "Sales, inventory, customers, and reports\r\nstay on this register.\r\n\r\nالمبيعات والمخزون والزبائن على هذا الصندوق.",
                 TextAlign = ContentAlignment.BottomLeft,
-                Padding = new Padding(28)
-            });
-            brand.Controls.Add(new Label
+                Padding = new Padding(32, 16, 32, 36)
+            };
+            SetRole(brandBody, "sidebar-muted");
+            Label brandTitle = new Label
             {
                 Dock = DockStyle.Top,
-                Height = 160,
+                Height = 170,
                 ForeColor = Color.White,
-                Font = PosPalette.Ui(28F, FontStyle.Bold),
+                Font = PosPalette.Ui(30F, FontStyle.Bold),
                 Text = "Smart POS",
                 TextAlign = ContentAlignment.BottomLeft,
-                Padding = new Padding(28, 0, 28, 0)
-            });
+                Padding = new Padding(32, 0, 32, 8)
+            };
+            SetRole(brandTitle, "sidebar-text");
+            Label brandMark = new Label
+            {
+                Dock = DockStyle.Top,
+                Height = 56,
+                ForeColor = Color.White,
+                Font = PosPalette.Ui(11F, FontStyle.Bold),
+                Text = "POINT OF SALE",
+                TextAlign = ContentAlignment.BottomLeft,
+                Padding = new Padding(32, 28, 32, 0)
+            };
+            SetRole(brandMark, "sidebar-muted");
+            brand.Controls.Add(brandBody);
+            brand.Controls.Add(brandTitle);
+            brand.Controls.Add(brandMark);
 
             Panel card = new Panel
             {
                 Dock = DockStyle.Fill,
                 BackColor = PosPalette.Surface,
-                Padding = new Padding(48, 64, 48, 40)
+                Padding = new Padding(52, 72, 52, 40)
             };
             SetRole(card, "surface");
 
             Label heading = new Label
             {
                 Dock = DockStyle.Top,
-                Height = 48,
-                Text = "Welcome back",
-                Font = PosPalette.Ui(22F, FontStyle.Bold),
+                Height = 46,
+                Text = "Sign in",
+                Font = PosPalette.Ui(24F, FontStyle.Bold),
                 ForeColor = PosPalette.Ink
             };
+            SetRole(heading, "ink");
             Label sub = new Label
             {
                 Dock = DockStyle.Top,
-                Height = 32,
-                Text = "Use the account already stored on this register.",
-                Font = PosPalette.Ui(10F, FontStyle.Regular),
+                Height = 36,
+                Text = "Use the account stored on this register.",
+                Font = PosPalette.Ui(10.5F, FontStyle.Regular),
                 ForeColor = PosPalette.Muted
             };
+            SetRole(sub, "muted");
 
             if (username is TextBox usernameBox)
             {
@@ -224,15 +243,15 @@ namespace Pos_System.Services
             {
                 loginButton.Text = "Sign in";
                 SetRole(loginButton, "accent");
-                loginButton.Height = 44;
+                loginButton.Height = 46;
                 loginButton.Dock = DockStyle.Top;
             }
 
             if (toggle is Button toggleButton)
             {
-                toggleButton.Width = 44;
+                toggleButton.Width = 46;
                 toggleButton.Dock = DockStyle.Right;
-                SetRole(toggleButton, "header");
+                SetRole(toggleButton, "secondary");
             }
 
             Panel userRow = FieldRow("Username", username);
@@ -240,6 +259,7 @@ namespace Pos_System.Services
             if (toggle != null)
             {
                 passRow.Controls.Add(toggle);
+                toggle.BringToFront();
             }
 
             card.Controls.Add(login);
@@ -258,22 +278,24 @@ namespace Pos_System.Services
             Panel row = new Panel
             {
                 Dock = DockStyle.Top,
-                Height = 72,
+                Height = 78,
                 BackColor = PosPalette.Surface,
                 Padding = new Padding(0, 8, 0, 8)
             };
+            SetRole(row, "surface");
             Label label = new Label
             {
                 Dock = DockStyle.Top,
-                Height = 18,
+                Height = 20,
                 Text = caption,
                 ForeColor = PosPalette.Muted,
                 Font = PosPalette.Ui(9F, FontStyle.Bold)
             };
+            SetRole(label, "muted");
             if (input != null)
             {
                 input.Dock = DockStyle.Top;
-                input.Height = 32;
+                input.Height = 34;
             }
 
             row.Controls.Add(input);
@@ -285,24 +307,33 @@ namespace Pos_System.Services
         {
             Control search = Find(form, "txtsearch");
             Control quantity = Find(form, "txtquantity");
+            Control quantityLabel = Find(form, "label8");
             Control category = Find(form, "cmbCategory");
             Control add = Find(form, "button5");
             Control products = Find(form, "pnlProducts");
             Control grid = Find(form, "datagridsales");
+            Control customerLabel = Find(form, "label5");
             Control customer = Find(form, "cmbCustomer");
+            Control paidLabel = Find(form, "label6");
             Control paid = Find(form, "txtPaidAmount");
             Control dollar = Find(form, "rbDollar");
             Control lebanon = Find(form, "rbLebanon");
             Control discount = Find(form, "chkUseDiscount");
             Control discountLabel = Find(form, "lblDiscountAmount");
             Control discountAmount = Find(form, "txtDiscountAmount");
+            Control paymentLabel = Find(form, "label7");
             Control payment = Find(form, "comboPaymentMethod");
+            Control saleIdLabel = Find(form, "label10");
             Control saleId = Find(form, "txtSaleId");
             Control totalCaption = Find(form, "label9");
             Control total = Find(form, "lblTotal");
             Control liraCaption = Find(form, "label11");
             Control lira = Find(form, "lbtotal_lebanon");
+            Control rateLabel = Find(form, "label4");
+            Control rate = Find(form, "txtdollar");
+            Control rateSave = Find(form, "btndollar");
             Control save = Find(form, "btnSaveSale");
+            Control quick = Find(form, "btnsare3");
             Control excel = Find(form, "btnexcel");
             Control invoice = Find(form, "btn3rdfetora");
             Control returns = Find(form, "btnmortaja3");
@@ -319,27 +350,37 @@ namespace Pos_System.Services
             Panel rail = new Panel
             {
                 Dock = DockStyle.Right,
-                Width = 300,
+                Width = 320,
                 BackColor = PosPalette.Surface,
-                Padding = new Padding(12)
+                Padding = new Padding(14)
             };
             SetRole(rail, "surface");
             Panel railStack = new Panel { Dock = DockStyle.Fill, AutoScroll = true, BackColor = PosPalette.Surface };
-            StackTop(railStack, delete, 40);
-            StackTop(railStack, returns, 40);
-            StackTop(railStack, invoice, 40);
-            StackTop(railStack, excel, 40);
-            StackTop(railStack, save, 46);
-            StackTop(railStack, lira, 32);
-            StackTop(railStack, liraCaption, 20);
-            StackTop(railStack, total, 32);
-            StackTop(railStack, totalCaption, 20);
+            SetRole(railStack, "surface");
+
+            StackTop(railStack, delete, 42);
+            StackTop(railStack, returns, 42);
+            StackTop(railStack, invoice, 42);
+            StackTop(railStack, excel, 42);
+            if (quick != null && quick.Visible)
+            {
+                StackTop(railStack, quick, 42);
+            }
+
+            StackTop(railStack, save, 48);
+            StackTop(railStack, lira, 30);
+            StackTop(railStack, liraCaption, 22);
+            StackTop(railStack, total, 30);
+            StackTop(railStack, totalCaption, 22);
             StackTop(railStack, saleId, 32);
+            StackCaption(railStack, saleIdLabel);
             StackTop(railStack, payment, 32);
+            StackCaption(railStack, paymentLabel);
             StackTop(railStack, discountAmount, 32);
-            StackTop(railStack, discountLabel, 20);
+            StackCaption(railStack, discountLabel);
             StackTop(railStack, discount, 28);
             Panel currency = new Panel { Height = 32, BackColor = PosPalette.Surface };
+            SetRole(currency, "surface");
             if (dollar != null)
             {
                 dollar.Dock = DockStyle.Left;
@@ -355,11 +396,40 @@ namespace Pos_System.Services
 
             StackTop(railStack, currency, 32);
             StackTop(railStack, paid, 32);
+            StackCaption(railStack, paidLabel);
             StackTop(railStack, customer, 32);
+            StackCaption(railStack, customerLabel);
+
+            Panel rateRow = new Panel { Height = 36, BackColor = PosPalette.Surface };
+            SetRole(rateRow, "surface");
+            if (rateSave != null)
+            {
+                rateSave.Dock = DockStyle.Right;
+                rateSave.Width = 72;
+                rateRow.Controls.Add(rateSave);
+            }
+
+            if (rate != null)
+            {
+                rate.Dock = DockStyle.Fill;
+                rateRow.Controls.Add(rate);
+            }
+
+            StackTop(railStack, rateRow, 36);
+            StackCaption(railStack, rateLabel);
             rail.Controls.Add(railStack);
 
             Panel workspace = new Panel { Dock = DockStyle.Fill, BackColor = PosPalette.Canvas, Padding = new Padding(12) };
-            Panel filters = new Panel { Dock = DockStyle.Top, Height = 56, BackColor = PosPalette.Canvas, Padding = new Padding(0, 8, 0, 8) };
+            SetRole(workspace, "canvas");
+            Panel filters = new Panel { Dock = DockStyle.Top, Height = 58, BackColor = PosPalette.Surface, Padding = new Padding(10, 10, 10, 10) };
+            SetRole(filters, "surface");
+            if (category != null)
+            {
+                category.Dock = DockStyle.Right;
+                category.Width = 170;
+                filters.Controls.Add(category);
+            }
+
             if (quantity != null)
             {
                 quantity.Dock = DockStyle.Right;
@@ -367,11 +437,13 @@ namespace Pos_System.Services
                 filters.Controls.Add(quantity);
             }
 
-            if (category != null)
+            if (quantityLabel != null)
             {
-                category.Dock = DockStyle.Right;
-                category.Width = 180;
-                filters.Controls.Add(category);
+                quantityLabel.Dock = DockStyle.Right;
+                quantityLabel.AutoSize = false;
+                quantityLabel.Width = 88;
+                quantityLabel.TextAlign = ContentAlignment.MiddleRight;
+                filters.Controls.Add(quantityLabel);
             }
 
             if (add != null)
@@ -394,12 +466,14 @@ namespace Pos_System.Services
                 RowCount = 2,
                 BackColor = PosPalette.Canvas
             };
+            SetRole(body, "canvas");
             body.RowStyles.Add(new RowStyle(SizeType.Percent, 38F));
             body.RowStyles.Add(new RowStyle(SizeType.Percent, 62F));
             if (products != null)
             {
                 products.Dock = DockStyle.Fill;
                 products.BackColor = PosPalette.Canvas;
+                SetRole(products, "canvas");
                 body.Controls.Add(products, 0, 0);
             }
 
@@ -423,6 +497,7 @@ namespace Pos_System.Services
 
             if (products != null)
             {
+                products.ControlAdded -= ProductHost_ControlAdded;
                 products.ControlAdded += ProductHost_ControlAdded;
                 foreach (Control child in products.Controls)
                 {
@@ -434,6 +509,18 @@ namespace Pos_System.Services
             }
 
             RestyleTree(form);
+        }
+
+        private static void StackCaption(Control parent, Control label)
+        {
+            if (label is Label caption)
+            {
+                caption.AutoSize = false;
+                caption.TextAlign = ContentAlignment.MiddleLeft;
+                SetRole(caption, "muted");
+            }
+
+            StackTop(parent, label, 20);
         }
 
         private static void ProductHost_ControlAdded(object sender, ControlEventArgs e)
@@ -459,6 +546,7 @@ namespace Pos_System.Services
             button.ForeColor = PosPalette.Ink;
             button.Font = PosPalette.Ui(9F, FontStyle.Bold);
             button.Cursor = Cursors.Hand;
+            button.TextAlign = ContentAlignment.MiddleCenter;
         }
 
         private static void StackTop(Control parent, Control child, int height)
@@ -480,7 +568,7 @@ namespace Pos_System.Services
             Panel header = new Panel
             {
                 Dock = DockStyle.Top,
-                Height = 56,
+                Height = 52,
                 BackColor = PosPalette.Header,
                 Padding = new Padding(16, 0, 16, 0)
             };
@@ -490,7 +578,7 @@ namespace Pos_System.Services
                 Dock = DockStyle.Fill,
                 Text = title,
                 ForeColor = Color.White,
-                Font = PosPalette.Ui(18F, FontStyle.Bold),
+                Font = PosPalette.Ui(16F, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleLeft
             };
             SetRole(label, "header-text");
@@ -501,6 +589,7 @@ namespace Pos_System.Services
         private static void ReplaceLegacyChrome(Form form)
         {
             RemoveBrandLabels(form);
+            NormalizeFonts(form);
 
             foreach (Panel panel in All(form).OfType<Panel>().ToList())
             {
@@ -509,16 +598,29 @@ namespace Pos_System.Services
                     continue;
                 }
 
+                if (!form.TopLevel)
+                {
+                    panel.Visible = false;
+                    continue;
+                }
+
                 panel.BackColor = PosPalette.Header;
                 panel.ForeColor = Color.White;
+                panel.Height = Math.Min(panel.Height, 56);
                 SetRole(panel, "header");
                 foreach (Control child in panel.Controls)
                 {
                     if (child is Label label)
                     {
+                        if (IsBrand(label.Text))
+                        {
+                            label.Visible = false;
+                            continue;
+                        }
+
                         label.ForeColor = Color.White;
                         label.BackColor = Color.Transparent;
-                        label.Font = PosPalette.Ui(label.Font.Size > 16F ? 16F : 12F, FontStyle.Bold);
+                        label.Font = PosPalette.Ui(label.Font.Size > 14F ? 16F : 11F, FontStyle.Bold);
                         SetRole(label, "header-text");
                     }
                 }
@@ -558,6 +660,8 @@ namespace Pos_System.Services
                     continue;
                 }
 
+                label.Visible = false;
+                label.Text = string.Empty;
                 label.Parent?.Controls.Remove(label);
             }
         }
@@ -566,7 +670,44 @@ namespace Pos_System.Services
         {
             string value = (text ?? string.Empty).Trim();
             return value.Equals("bike", StringComparison.OrdinalIgnoreCase) ||
-                   value.Equals("zone", StringComparison.OrdinalIgnoreCase);
+                   value.Equals("zone", StringComparison.OrdinalIgnoreCase) ||
+                   value.Equals("bike zone", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static void NormalizeFonts(Control root)
+        {
+            foreach (Control control in All(root))
+            {
+                ApplyUiFont(control);
+            }
+
+            ApplyUiFont(root);
+        }
+
+        private static void ApplyUiFont(Control control)
+        {
+            if (control == null || control is PictureBox || control.Font == null)
+            {
+                return;
+            }
+
+            string family = control.Font.FontFamily.Name;
+            if (family.Equals("Segoe UI", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            float size = control.Font.Size;
+            if (size < 8F)
+            {
+                size = 9F;
+            }
+            else if (size > 28F)
+            {
+                size = 22F;
+            }
+
+            control.Font = PosPalette.Ui(size, control.Font.Style);
         }
 
         private static void RestyleTree(Control root)
@@ -589,6 +730,8 @@ namespace Pos_System.Services
             {
                 ApplyRole(root, Roles[root]);
             }
+
+            ApplyUiFont(root);
 
             foreach (Control child in root.Controls.Cast<Control>().ToList())
             {
@@ -626,7 +769,8 @@ namespace Pos_System.Services
                 return ClassifyButton(button);
             }
 
-            if (control is TextBox || control is ComboBox || control is DateTimePicker || control is NumericUpDown || control is MaskedTextBox)
+            if (control is TextBox || control is ComboBox || control is DateTimePicker ||
+                control is NumericUpDown || control is MaskedTextBox || control is RichTextBox)
             {
                 return "input";
             }
@@ -636,29 +780,68 @@ namespace Pos_System.Services
                 return "grid";
             }
 
-            if (control is Label)
+            if (control is Chart)
             {
-                return ParentRole(control) == "header" ? "header-text" : "ink";
+                return "chart";
             }
 
-            if (control is CheckBox || control is RadioButton || control is GroupBox)
+            if (control is Label)
             {
+                string parent = ParentRole(control);
+                if (parent == "header")
+                {
+                    return "header-text";
+                }
+
+                if (parent == "sidebar")
+                {
+                    return "sidebar-text";
+                }
+
                 return "ink";
             }
 
-            if (control is Panel || control is FlowLayoutPanel || control is TableLayoutPanel)
+            if (control is CheckBox || control is RadioButton || control is GroupBox || control is LinkLabel)
+            {
+                string parent = ParentRole(control);
+                return parent == "sidebar" ? "sidebar-text" : "ink";
+            }
+
+            if (control is Panel || control is FlowLayoutPanel || control is TableLayoutPanel || control is SplitContainer)
             {
                 if (IsLegacyHeader(control as Panel) || ParentRole(control) == "header")
                 {
                     return "header";
                 }
 
+                if (ParentRole(control) == "sidebar")
+                {
+                    return "sidebar";
+                }
+
+                if (control is Panel panel &&
+                    (string.Equals(panel.Name, "panel1", StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(panel.Name, "panelContent", StringComparison.OrdinalIgnoreCase)))
+                {
+                    return panel.Dock == DockStyle.Left ? "sidebar" : "canvas";
+                }
+
                 return "surface";
             }
 
-            if (control is MenuStrip || control is ToolStrip)
+            if (control is MenuStrip || control is ToolStrip || control is StatusStrip)
             {
                 return "surface";
+            }
+
+            if (control is TabControl || control is TabPage)
+            {
+                return "surface";
+            }
+
+            if (control is ListBox || control is ListView || control is TreeView)
+            {
+                return "input";
             }
 
             return null;
@@ -686,17 +869,17 @@ namespace Pos_System.Services
             string text = (button.Text ?? string.Empty).Trim().ToLowerInvariant();
             string blob = name + " " + text;
 
-            if (ContainsAny(blob, "delete", "remove", "logout", "حذف", "مسح"))
+            if (ContainsAny(blob, "delete", "remove", "logout", "log out", "حذف", "مسح"))
             {
                 return "danger";
             }
 
-            if (ContainsAny(blob, "save", "add", "login", "signin", "start", "بيع", "اضافة", "إضافة", "حفظ"))
+            if (ContainsAny(blob, "save", "add", "login", "signin", "sign in", "start", "بيع", "اضافة", "إضافة", "حفظ"))
             {
                 return "accent";
             }
 
-            if (ContainsAny(blob, "excel", "export", "print", "طباعة"))
+            if (ContainsAny(blob, "excel", "export", "print", "طباعة", "طبع"))
             {
                 return "success";
             }
@@ -724,6 +907,7 @@ namespace Pos_System.Services
                 return;
             }
 
+            string parent = ParentRole(control);
             switch (role)
             {
                 case "canvas":
@@ -731,9 +915,12 @@ namespace Pos_System.Services
                     control.ForeColor = PosPalette.Ink;
                     break;
                 case "surface":
-                case "sidebar":
-                    control.BackColor = role == "sidebar" ? PosPalette.Sidebar : PosPalette.Surface;
+                    control.BackColor = PosPalette.Surface;
                     control.ForeColor = PosPalette.Ink;
+                    break;
+                case "sidebar":
+                    control.BackColor = PosPalette.Sidebar;
+                    control.ForeColor = PosPalette.SidebarInk;
                     break;
                 case "header":
                     control.BackColor = PosPalette.Header;
@@ -743,15 +930,23 @@ namespace Pos_System.Services
                     control.ForeColor = Color.White;
                     control.BackColor = Color.Transparent;
                     break;
+                case "sidebar-text":
+                    control.ForeColor = PosPalette.SidebarInk;
+                    control.BackColor = Color.Transparent;
+                    break;
+                case "sidebar-muted":
+                    control.ForeColor = PosPalette.SidebarMuted;
+                    control.BackColor = Color.Transparent;
+                    break;
                 case "ink":
-                    control.ForeColor = PosPalette.Ink;
+                    control.ForeColor = parent == "sidebar" ? PosPalette.SidebarInk : PosPalette.Ink;
                     if (!(control is Button))
                     {
                         control.BackColor = Color.Transparent;
                     }
                     break;
                 case "muted":
-                    control.ForeColor = PosPalette.Muted;
+                    control.ForeColor = parent == "sidebar" ? PosPalette.SidebarMuted : PosPalette.Muted;
                     control.BackColor = Color.Transparent;
                     break;
                 case "input":
@@ -761,6 +956,12 @@ namespace Pos_System.Services
                     if (control is DataGridView grid)
                     {
                         StyleGrid(grid);
+                    }
+                    break;
+                case "chart":
+                    if (control is Chart chart)
+                    {
+                        StyleChart(chart);
                     }
                     break;
                 case "nav":
@@ -776,9 +977,9 @@ namespace Pos_System.Services
                     }
                     break;
                 default:
-                    if (control is Button button)
+                    if (control is Button action)
                     {
-                        StyleActionButton(button, role);
+                        StyleActionButton(action, role);
                     }
                     break;
             }
@@ -791,12 +992,17 @@ namespace Pos_System.Services
                 return;
             }
 
-            control.BackColor = PosPalette.Dark ? PosPalette.Canvas : Color.White;
+            control.BackColor = PosPalette.InputFill;
             control.ForeColor = PosPalette.Ink;
             control.Font = PosPalette.Ui(10F, FontStyle.Regular);
             if (control is TextBox textBox)
             {
                 textBox.BorderStyle = BorderStyle.FixedSingle;
+            }
+
+            if (control is ComboBox combo)
+            {
+                combo.FlatStyle = FlatStyle.Flat;
             }
         }
 
@@ -809,6 +1015,7 @@ namespace Pos_System.Services
 
             grid.BackgroundColor = PosPalette.Surface;
             grid.BorderStyle = BorderStyle.None;
+            grid.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             grid.GridColor = PosPalette.Line;
             grid.EnableHeadersVisualStyles = false;
             if (grid.ColumnHeadersHeightSizeMode == DataGridViewColumnHeadersHeightSizeMode.AutoSize)
@@ -817,20 +1024,57 @@ namespace Pos_System.Services
             }
 
             grid.ColumnHeadersHeight = Math.Max(36, grid.ColumnHeadersHeight);
-            grid.ColumnHeadersDefaultCellStyle.BackColor = PosPalette.Header;
+            grid.ColumnHeadersDefaultCellStyle.BackColor = PosPalette.Sidebar;
             grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             grid.ColumnHeadersDefaultCellStyle.Font = PosPalette.Ui(9.5F, FontStyle.Bold);
-            grid.ColumnHeadersDefaultCellStyle.SelectionBackColor = PosPalette.Header;
+            grid.ColumnHeadersDefaultCellStyle.SelectionBackColor = PosPalette.Sidebar;
+            grid.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
             grid.DefaultCellStyle.BackColor = PosPalette.Surface;
             grid.DefaultCellStyle.ForeColor = PosPalette.Ink;
             grid.DefaultCellStyle.Font = PosPalette.Ui(9.5F, FontStyle.Regular);
             grid.DefaultCellStyle.SelectionBackColor = PosPalette.Selection;
             grid.DefaultCellStyle.SelectionForeColor = PosPalette.Ink;
             grid.AlternatingRowsDefaultCellStyle.BackColor = PosPalette.Dark
-                ? Color.FromArgb(56, 42, 34)
-                : Color.FromArgb(248, 242, 234);
+                ? Color.FromArgb(30, 41, 59)
+                : Color.FromArgb(248, 250, 252);
             grid.AlternatingRowsDefaultCellStyle.ForeColor = PosPalette.Ink;
             grid.RowHeadersVisible = false;
+            grid.RowTemplate.Height = 32;
+        }
+
+        public static void StyleChart(Chart chart)
+        {
+            if (chart == null)
+            {
+                return;
+            }
+
+            chart.BackColor = PosPalette.Surface;
+            chart.ForeColor = PosPalette.Ink;
+            foreach (ChartArea area in chart.ChartAreas)
+            {
+                area.BackColor = PosPalette.Surface;
+                area.AxisX.MajorGrid.LineColor = PosPalette.Line;
+                area.AxisY.MajorGrid.LineColor = PosPalette.Line;
+                area.AxisX.LineColor = PosPalette.Line;
+                area.AxisY.LineColor = PosPalette.Line;
+                area.AxisX.LabelStyle.ForeColor = PosPalette.Muted;
+                area.AxisY.LabelStyle.ForeColor = PosPalette.Muted;
+                area.AxisX.TitleForeColor = PosPalette.Ink;
+                area.AxisY.TitleForeColor = PosPalette.Ink;
+            }
+
+            foreach (Legend legend in chart.Legends)
+            {
+                legend.BackColor = PosPalette.Surface;
+                legend.ForeColor = PosPalette.Ink;
+            }
+
+            foreach (Title title in chart.Titles)
+            {
+                title.ForeColor = PosPalette.Ink;
+                title.Font = PosPalette.Ui(11F, FontStyle.Bold);
+            }
         }
 
         private static void StyleActionButton(Button button, string role)
@@ -850,15 +1094,19 @@ namespace Pos_System.Services
             {
                 case "danger":
                     button.BackColor = PosPalette.Danger;
+                    button.FlatAppearance.MouseOverBackColor = Color.FromArgb(185, 28, 28);
                     break;
                 case "success":
                     button.BackColor = PosPalette.Success;
+                    button.FlatAppearance.MouseOverBackColor = Color.FromArgb(4, 120, 87);
                     break;
                 case "accent":
                     button.BackColor = PosPalette.Accent;
+                    button.FlatAppearance.MouseOverBackColor = PosPalette.AccentDeep;
                     break;
                 default:
-                    button.BackColor = PosPalette.AccentDeep;
+                    button.BackColor = PosPalette.Secondary;
+                    button.FlatAppearance.MouseOverBackColor = Color.FromArgb(30, 41, 59);
                     break;
             }
         }
@@ -878,8 +1126,8 @@ namespace Pos_System.Services
             button.Padding = new Padding(14, 0, 8, 0);
             button.Font = PosPalette.Ui(10.5F, active ? FontStyle.Bold : FontStyle.Regular);
             button.BackColor = active ? PosPalette.Accent : PosPalette.Sidebar;
-            button.ForeColor = active ? Color.White : PosPalette.SidebarInk;
-            button.FlatAppearance.MouseOverBackColor = active ? PosPalette.AccentDeep : PosPalette.AccentSoft;
+            button.ForeColor = Color.White;
+            button.FlatAppearance.MouseOverBackColor = active ? PosPalette.AccentDeep : PosPalette.NavHover;
         }
 
         private static string CleanTitle(string text, string typeName)
@@ -888,7 +1136,8 @@ namespace Pos_System.Services
                 text.Equals("Form1", StringComparison.OrdinalIgnoreCase) ||
                 text.IndexOf("PosSystem", StringComparison.OrdinalIgnoreCase) >= 0 ||
                 text.EndsWith("Form", StringComparison.OrdinalIgnoreCase) ||
-                text.IndexOf("form", StringComparison.OrdinalIgnoreCase) >= 0)
+                text.IndexOf("form", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                IsBrand(text))
             {
                 return FriendlyTypeName(typeName);
             }
@@ -944,9 +1193,13 @@ namespace Pos_System.Services
                     return "Balance invoice";
                 case "SimpleTablePageForm":
                     return "Records";
+                case "ExchangeForm":
+                    return "Exchange";
                 case "Dashboard":
                 case "AdminDashboardHomeForm":
                     return "Dashboard";
+                case "LoginForm":
+                    return "Smart POS";
                 default:
                     return "Smart POS";
             }
@@ -998,6 +1251,12 @@ namespace Pos_System.Services
             protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
             {
                 e.TextColor = PosPalette.Ink;
+                if (string.Equals(e.Item?.Text, "Logout", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(e.Item?.Text, "Log out", StringComparison.OrdinalIgnoreCase))
+                {
+                    e.TextColor = Color.White;
+                }
+
                 base.OnRenderItemText(e);
             }
         }
@@ -1016,6 +1275,9 @@ namespace Pos_System.Services
             public override Color ButtonPressedGradientEnd => PosPalette.Accent;
             public override Color SeparatorDark => PosPalette.Line;
             public override Color SeparatorLight => PosPalette.Surface;
+            public override Color MenuItemSelected => PosPalette.AccentSoft;
+            public override Color MenuItemSelectedGradientBegin => PosPalette.AccentSoft;
+            public override Color MenuItemSelectedGradientEnd => PosPalette.AccentSoft;
         }
     }
 }
