@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Windows.Forms;
 using Pos_System.Services;
 
@@ -8,6 +9,7 @@ namespace Pos_System.Forms
         public ExchangeForm()
         {
             Text = "Exchange";
+            Font = PosPalette.Ui(10F);
             POS_System.Program.SettingsManager.RegisterForm(this);
             Width = 420;
             Height = 240;
