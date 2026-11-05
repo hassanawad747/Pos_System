@@ -154,6 +154,33 @@ namespace Pos_System.Services
 
         private static void MountLogin(Form form)
         {
+            if (Find(form, "panelLoginRoot") != null)
+            {
+                form.Text = "Smart POS";
+                form.BackColor = PosPalette.Canvas;
+                form.Font = PosPalette.Ui(10F, FontStyle.Regular);
+                SetRole(Find(form, "panelLoginRoot"), "canvas");
+                SetRole(Find(form, "panelLoginBrand"), "sidebar");
+                SetRole(Find(form, "lblBrandBody"), "sidebar-muted");
+                SetRole(Find(form, "label3"), "sidebar-text");
+                SetRole(Find(form, "label4"), "sidebar-muted");
+                SetRole(Find(form, "panelLoginCard"), "surface");
+                SetRole(Find(form, "panelUsername"), "surface");
+                SetRole(Find(form, "panelPassword"), "surface");
+                SetRole(Find(form, "lblSignInHeading"), "ink");
+                SetRole(Find(form, "lblSignInSub"), "muted");
+                SetRole(Find(form, "label1"), "muted");
+                SetRole(Find(form, "label2"), "muted");
+                SetRole(Find(form, "lblError"), "danger-text");
+                SetRole(Find(form, "txtusername"), "input");
+                SetRole(Find(form, "txtpassword"), "input");
+                SetRole(Find(form, "btnlogin"), "accent");
+                SetRole(Find(form, "btnExit"), "secondary");
+                SetRole(Find(form, "btnTogglePassword"), "secondary");
+                RestyleTree(form);
+                return;
+            }
+
             Control username = Find(form, "txtusername");
             Control password = Find(form, "txtpassword");
             Control login = Find(form, "btnlogin");
