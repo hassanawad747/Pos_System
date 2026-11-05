@@ -909,7 +909,7 @@
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "PosSystemDashboard";
-            this.Text = "PosSystemDashboard";
+            this.Text = "Smart POS";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.PosSystemDashboard_Load);
             this.panel1.ResumeLayout(false);
