@@ -62,10 +62,8 @@ namespace Pos_System.Forms
             // 
             // panelheader
             // 
-            this.panelheader.BackColor = System.Drawing.Color.Black;
+            this.panelheader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
             this.panelheader.Controls.Add(this.label3);
-            this.panelheader.Controls.Add(this.label2);
-            this.panelheader.Controls.Add(this.label1);
             this.panelheader.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelheader.ForeColor = System.Drawing.Color.White;
             this.panelheader.Location = new System.Drawing.Point(0, 0);
@@ -80,6 +78,7 @@ namespace Pos_System.Forms
             this.label3.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.label3.Location = new System.Drawing.Point(16, 23);
             this.label3.Name = "label3";
+            this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Size = new System.Drawing.Size(198, 32);
             this.label3.TabIndex = 0;
             this.label3.Text = "Warehouse Reports";
@@ -88,24 +87,26 @@ namespace Pos_System.Forms
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Bold);
             this.label2.Location = new System.Drawing.Point(675, 14);
             this.label2.Name = "label2";
+            this.label2.Visible = false;
             this.label2.Size = new System.Drawing.Size(105, 47);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Warehouse";
+            this.label2.Text = "";
             // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(583, 14);
             this.label1.Name = "label1";
+            this.label1.Visible = false;
             this.label1.Size = new System.Drawing.Size(92, 47);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Smart POS";
+            this.label1.Text = "";
             // 
             // summaryPanel
             // 
@@ -348,7 +349,7 @@ namespace Pos_System.Forms
             // 
             // btnRefresh
             // 
-            this.btnRefresh.BackColor = System.Drawing.Color.FromArgb(71, 85, 105);
+            this.btnRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(65)))), ((int)(((byte)(85)))));
             this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
@@ -363,7 +364,7 @@ namespace Pos_System.Forms
             // btnexcel
             // 
             this.btnexcel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            this.btnexcel.BackColor = System.Drawing.Color.FromArgb(22, 163, 74);
+            this.btnexcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(150)))), ((int)(((byte)(105)))));
             this.btnexcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnexcel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnexcel.ForeColor = System.Drawing.Color.White;
@@ -436,6 +437,7 @@ namespace Pos_System.Forms
             this.Controls.Add(this.summaryPanel);
             this.Controls.Add(this.panelheader);
             this.MinimumSize = new System.Drawing.Size(1000, 640);
+            this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.Name = "WarhouseReports";
             this.Text = "Warehouse Reports";
             this.Load += new System.EventHandler(this.WarhouseReports_Load);
