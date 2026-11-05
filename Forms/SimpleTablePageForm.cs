@@ -9,6 +9,7 @@ namespace Pos_System.Forms
         public SimpleTablePageForm(string title, string subtitle, string tableName, string message)
         {
             Text = title;
+            Font = PosPalette.Ui(10F);
             POS_System.Program.SettingsManager.RegisterForm(this);
             BackColor = PosPalette.Canvas;
 
@@ -16,6 +17,7 @@ namespace Pos_System.Forms
             {
                 Dock = DockStyle.Top,
                 Height = 50,
+                BackColor = PosPalette.Canvas,
                 Font = PosPalette.Ui(16F, FontStyle.Bold),
                 ForeColor = PosPalette.Ink,
                 Text = title,
@@ -26,6 +28,7 @@ namespace Pos_System.Forms
             {
                 Dock = DockStyle.Top,
                 Height = 36,
+                BackColor = PosPalette.Canvas,
                 Font = PosPalette.Ui(10F, FontStyle.Regular),
                 ForeColor = PosPalette.Muted,
                 Text = subtitle + " - " + tableName,
