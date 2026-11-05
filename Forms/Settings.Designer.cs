@@ -102,11 +102,9 @@
             // 
             // panelheader
             // 
-            this.panelheader.BackColor = System.Drawing.Color.Black;
+            this.panelheader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
             this.panelheader.Controls.Add(this.labeldate);
             this.panelheader.Controls.Add(this.label3);
-            this.panelheader.Controls.Add(this.label2);
-            this.panelheader.Controls.Add(this.label1);
             this.panelheader.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelheader.ForeColor = System.Drawing.Color.White;
             this.panelheader.Location = new System.Drawing.Point(0, 0);
@@ -118,9 +116,10 @@
             // 
             this.labeldate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labeldate.AutoSize = true;
-            this.labeldate.Font = new System.Drawing.Font("Microsoft Yi Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labeldate.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labeldate.Location = new System.Drawing.Point(1647, 20);
             this.labeldate.Name = "labeldate";
+            this.labeldate.ForeColor = System.Drawing.Color.White;
             this.labeldate.Size = new System.Drawing.Size(48, 23);
             this.labeldate.TabIndex = 6;
             this.labeldate.Text = "Date";
@@ -128,9 +127,10 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Yi Baiti", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(12, 20);
             this.label3.Name = "label3";
+            this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Size = new System.Drawing.Size(83, 23);
             this.label3.TabIndex = 2;
             this.label3.Text = "Settings";
@@ -140,25 +140,27 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(972, 9);
             this.label2.Name = "label2";
+            this.label2.Visible = false;
             this.label2.Size = new System.Drawing.Size(95, 38);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Settings";
+            this.label2.Text = "";
             // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(884, 9);
             this.label1.Name = "label1";
+            this.label1.Visible = false;
             this.label1.Size = new System.Drawing.Size(85, 38);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Smart POS";
+            this.label1.Text = "";
             // 
             // panel1
             // 
@@ -201,7 +203,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.Location = new System.Drawing.Point(275, 125);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(153, 29);
@@ -228,7 +230,7 @@
             // rdAdmin
             // 
             this.rdAdmin.AutoSize = true;
-            this.rdAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdAdmin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rdAdmin.Location = new System.Drawing.Point(569, 64);
             this.rdAdmin.Name = "rdAdmin";
             this.rdAdmin.Size = new System.Drawing.Size(94, 29);
@@ -240,7 +242,7 @@
             // rdManager
             // 
             this.rdManager.AutoSize = true;
-            this.rdManager.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdManager.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rdManager.Location = new System.Drawing.Point(430, 64);
             this.rdManager.Name = "rdManager";
             this.rdManager.Size = new System.Drawing.Size(118, 29);
@@ -252,7 +254,7 @@
             // rdCasheir
             // 
             this.rdCasheir.AutoSize = true;
-            this.rdCasheir.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdCasheir.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rdCasheir.Location = new System.Drawing.Point(312, 64);
             this.rdCasheir.Name = "rdCasheir";
             this.rdCasheir.Size = new System.Drawing.Size(108, 29);
@@ -264,7 +266,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(67, 195);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(217, 29);
@@ -274,7 +276,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(67, 125);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(213, 29);
@@ -284,7 +286,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(67, 59);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(164, 29);
@@ -321,7 +323,7 @@
             // rdDark
             // 
             this.rdDark.AutoSize = true;
-            this.rdDark.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdDark.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rdDark.Location = new System.Drawing.Point(315, 203);
             this.rdDark.Name = "rdDark";
             this.rdDark.Size = new System.Drawing.Size(78, 29);
@@ -333,7 +335,7 @@
             // rdlight
             // 
             this.rdlight.AutoSize = true;
-            this.rdlight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdlight.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rdlight.Location = new System.Drawing.Point(197, 203);
             this.rdlight.Name = "rdlight";
             this.rdlight.Size = new System.Drawing.Size(80, 29);
@@ -354,7 +356,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(51, 130);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(135, 29);
@@ -364,7 +366,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(51, 195);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(102, 29);
@@ -383,7 +385,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(51, 59);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(124, 29);
@@ -447,7 +449,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.Location = new System.Drawing.Point(398, 48);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(76, 29);
@@ -465,7 +467,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.Location = new System.Drawing.Point(53, 189);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(223, 29);
@@ -475,7 +477,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.Location = new System.Drawing.Point(53, 122);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(188, 29);
@@ -485,7 +487,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.Location = new System.Drawing.Point(53, 51);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(201, 29);
@@ -526,7 +528,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.Location = new System.Drawing.Point(51, 122);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(276, 29);
@@ -536,7 +538,7 @@
             // Tax
             // 
             this.Tax.AutoSize = true;
-            this.Tax.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Tax.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Tax.Location = new System.Drawing.Point(51, 51);
             this.Tax.Name = "Tax";
             this.Tax.Size = new System.Drawing.Size(204, 29);
@@ -587,7 +589,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(483, 162);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(114, 29);
@@ -607,7 +609,7 @@
             this.checkBox_Lock.AutoSize = true;
             this.checkBox_Lock.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkBox_Lock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBox_Lock.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_Lock.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_Lock.Location = new System.Drawing.Point(35, 153);
             this.checkBox_Lock.Name = "checkBox_Lock";
             this.checkBox_Lock.Size = new System.Drawing.Size(336, 29);
@@ -620,7 +622,7 @@
             this.checkBoxManager.AutoSize = true;
             this.checkBoxManager.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkBoxManager.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxManager.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxManager.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxManager.Location = new System.Drawing.Point(35, 92);
             this.checkBoxManager.Name = "checkBoxManager";
             this.checkBoxManager.Size = new System.Drawing.Size(323, 29);
@@ -633,7 +635,7 @@
             this.checkBox_Audit.AutoSize = true;
             this.checkBox_Audit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkBox_Audit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBox_Audit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_Audit.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_Audit.Location = new System.Drawing.Point(35, 37);
             this.checkBox_Audit.Name = "checkBox_Audit";
             this.checkBox_Audit.Size = new System.Drawing.Size(206, 29);
@@ -654,9 +656,9 @@
             // 
             // btnCLose
             // 
-            this.btnCLose.BackColor = System.Drawing.Color.Red;
+            this.btnCLose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(65)))), ((int)(((byte)(85)))));
             this.btnCLose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCLose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCLose.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCLose.ForeColor = System.Drawing.Color.White;
             this.btnCLose.Location = new System.Drawing.Point(1627, 3);
             this.btnCLose.Name = "btnCLose";
@@ -668,21 +670,24 @@
             // 
             // btnReset
             // 
+            this.btnReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(65)))), ((int)(((byte)(85)))));
+            this.btnReset.FlatAppearance.BorderSize = 0;
             this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReset.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReset.ForeColor = System.Drawing.Color.White;
             this.btnReset.Location = new System.Drawing.Point(259, 3);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(241, 48);
             this.btnReset.TabIndex = 10;
             this.btnReset.Text = "Reset Defaults";
-            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.UseVisualStyleBackColor = false;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.Navy;
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Location = new System.Drawing.Point(12, 4);
             this.btnSave.Name = "btnSave";
@@ -695,7 +700,7 @@
             // rdDefault
             // 
             this.rdDefault.AutoSize = true;
-            this.rdDefault.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdDefault.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rdDefault.Location = new System.Drawing.Point(422, 203);
             this.rdDefault.Name = "rdDefault";
             this.rdDefault.Size = new System.Drawing.Size(101, 29);
@@ -709,12 +714,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(245)))), ((int)(((byte)(249)))));
             this.ClientSize = new System.Drawing.Size(1786, 936);
             this.Controls.Add(this.panel10);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelheader);
+            this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.Name = "Settings";
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.Settings_Load);

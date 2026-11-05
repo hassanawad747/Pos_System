@@ -101,10 +101,10 @@ namespace Pos_System.Forms
             {
                 Name = "btnDiscountSettings",
                 Text = "Discount Settings",
-                BackColor = Color.FromArgb(37, 99, 235),
+                BackColor = PosPalette.Accent,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold),
+                Font = PosPalette.Ui(12F, FontStyle.Bold),
                 Size = new Size(210, 48),
                 Location = new Point(760, 3),
                 Anchor = AnchorStyles.Top | AnchorStyles.Left
@@ -140,10 +140,10 @@ namespace Pos_System.Forms
             {
                 Name = "btnOptions",
                 Text = "Options",
-                BackColor = Color.FromArgb(15, 118, 110),
+                BackColor = PosPalette.Secondary,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold),
+                Font = PosPalette.Ui(12F, FontStyle.Bold),
                 Size = new Size(241, 48),
                 Location = new Point(506, 3),
                 Anchor = AnchorStyles.Top | AnchorStyles.Left
@@ -191,7 +191,8 @@ namespace Pos_System.Forms
                     Name = "txtExchangeRate",
                     Location = new Point(334, 185),
                     Size = new Size(160, 32),
-                    Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                    Font = PosPalette.Ui(11F, FontStyle.Bold),
+                    ForeColor = PosPalette.Ink,
                     TextAlign = HorizontalAlignment.Center
                 };
                 txtExchangeRate.KeyPress += NumericTextBox_KeyPress;
@@ -206,8 +207,8 @@ namespace Pos_System.Forms
                     Text = "سعر صرف الدولار",
                     AutoSize = true,
                     Location = new Point(51, 190),
-                    Font = new Font("Segoe UI", 11F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(30, 41, 59)
+                    Font = PosPalette.Ui(11F, FontStyle.Bold),
+                    ForeColor = PosPalette.Ink
                 };
                 grpSale_Transactions.Controls.Add(lblExchangeRate);
             }
