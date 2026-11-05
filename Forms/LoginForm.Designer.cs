@@ -36,63 +36,61 @@
             this.btnTogglePassword = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.lblError = new System.Windows.Forms.Label();
+            this.btnExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(9, 64);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(51, 65, 85);
+            this.label1.Location = new System.Drawing.Point(420, 176);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(139, 26);
+            this.label1.Size = new System.Drawing.Size(67, 15);
             this.label1.TabIndex = 0;
-            this.label1.Text = "UserName: ";
+            this.label1.Text = "Username";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(9, 111);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(51, 65, 85);
+            this.label2.Location = new System.Drawing.Point(420, 246);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(137, 26);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Password : ";
+            this.label2.Size = new System.Drawing.Size(61, 15);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Password";
             // 
             // txtusername
             // 
-            this.txtusername.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtusername.Location = new System.Drawing.Point(140, 65);
-            this.txtusername.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.txtusername.Multiline = true;
+            this.txtusername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtusername.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.txtusername.Location = new System.Drawing.Point(420, 196);
             this.txtusername.Name = "txtusername";
-            this.txtusername.Size = new System.Drawing.Size(180, 27);
+            this.txtusername.Size = new System.Drawing.Size(320, 29);
             this.txtusername.TabIndex = 1;
             // 
             // txtpassword
             // 
-            this.txtpassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtpassword.Location = new System.Drawing.Point(140, 114);
-            this.txtpassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.txtpassword.Multiline = true;
+            this.txtpassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtpassword.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.txtpassword.Location = new System.Drawing.Point(420, 266);
             this.txtpassword.Name = "txtpassword";
             this.txtpassword.PasswordChar = '*';
-            this.txtpassword.Size = new System.Drawing.Size(147, 27);
+            this.txtpassword.Size = new System.Drawing.Size(274, 29);
             this.txtpassword.TabIndex = 2;
             // 
             // btnTogglePassword
             // 
-            this.btnTogglePassword.BackColor = System.Drawing.Color.Black;
+            this.btnTogglePassword.AccessibleName = "Show password";
+            this.btnTogglePassword.BackColor = System.Drawing.Color.FromArgb(51, 65, 85);
             this.btnTogglePassword.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTogglePassword.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnTogglePassword.FlatAppearance.BorderSize = 0;
             this.btnTogglePassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTogglePassword.Location = new System.Drawing.Point(291, 114);
-            this.btnTogglePassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnTogglePassword.Location = new System.Drawing.Point(698, 266);
             this.btnTogglePassword.Name = "btnTogglePassword";
-            this.btnTogglePassword.Size = new System.Drawing.Size(29, 27);
+            this.btnTogglePassword.Size = new System.Drawing.Size(42, 29);
             this.btnTogglePassword.TabIndex = 5;
             this.btnTogglePassword.TabStop = false;
             this.btnTogglePassword.UseVisualStyleBackColor = false;
@@ -101,48 +99,77 @@
             // 
             // btnlogin
             // 
+            this.btnlogin.BackColor = System.Drawing.Color.FromArgb(37, 99, 235);
+            this.btnlogin.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnlogin.FlatAppearance.BorderSize = 0;
             this.btnlogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnlogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnlogin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnlogin.ForeColor = System.Drawing.Color.White;
-            this.btnlogin.Location = new System.Drawing.Point(140, 159);
-            this.btnlogin.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnlogin.Location = new System.Drawing.Point(420, 360);
             this.btnlogin.Name = "btnlogin";
-            this.btnlogin.Size = new System.Drawing.Size(92, 37);
+            this.btnlogin.Size = new System.Drawing.Size(320, 44);
             this.btnlogin.TabIndex = 3;
-            this.btnlogin.Text = "LogIn";
-            this.btnlogin.UseVisualStyleBackColor = true;
+            this.btnlogin.Text = "Sign in";
+            this.btnlogin.UseVisualStyleBackColor = false;
             this.btnlogin.Click += new System.EventHandler(this.btnlogin_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(94, 7);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 28F, System.Drawing.FontStyle.Bold);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(28, 72);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 26);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "BIKE";
+            this.label3.Size = new System.Drawing.Size(214, 51);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Smart POS";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(154, 7);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(148, 163, 184);
+            this.label4.Location = new System.Drawing.Point(32, 48);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 26);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "ZONE";
+            this.label4.Size = new System.Drawing.Size(118, 20);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "POINT OF SALE";
+            // 
+            // lblError
+            // 
+            this.lblError.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.lblError.ForeColor = System.Drawing.Color.FromArgb(220, 38, 38);
+            this.lblError.Location = new System.Drawing.Point(420, 304);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(320, 48);
+            this.lblError.TabIndex = 8;
+            this.lblError.Text = "";
+            // 
+            // btnExit
+            // 
+            this.btnExit.BackColor = System.Drawing.Color.FromArgb(51, 65, 85);
+            this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnExit.FlatAppearance.BorderSize = 0;
+            this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnExit.ForeColor = System.Drawing.Color.White;
+            this.btnExit.Location = new System.Drawing.Point(420, 412);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(320, 40);
+            this.btnExit.TabIndex = 4;
+            this.btnExit.Text = "Exit";
+            this.btnExit.UseVisualStyleBackColor = false;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(328, 206);
+            this.BackColor = System.Drawing.Color.FromArgb(15, 23, 42);
+            this.ClientSize = new System.Drawing.Size(900, 540);
+            this.Controls.Add(this.btnExit);
+            this.Controls.Add(this.lblError);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnlogin);
@@ -151,12 +178,14 @@
             this.Controls.Add(this.txtusername);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "LoginForm";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Smart POS";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -169,6 +198,7 @@
         private System.Windows.Forms.Button btnTogglePassword;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Button btnExit;
     }
 }
-

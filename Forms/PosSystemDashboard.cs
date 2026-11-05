@@ -2729,10 +2729,6 @@ namespace Pos_System.Forms
             isLoggingOut = true;
             CleanupSessionTracking();
             AppSession.Clear();
-
-            Hide();
-            LoginForm loginForm = new LoginForm();
-            loginForm.ShowDialog();
             Close();
         }
 

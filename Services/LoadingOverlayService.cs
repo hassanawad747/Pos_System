@@ -15,7 +15,7 @@ namespace Pos_System.Services
 
             Panel overlay = new Panel
             {
-                BackColor = Color.FromArgb(245, 247, 250),
+                BackColor = Color.FromArgb(230, PosPalette.Canvas),
                 Dock = DockStyle.Fill,
                 Cursor = Cursors.WaitCursor
             };
@@ -24,9 +24,9 @@ namespace Pos_System.Services
             {
                 AutoSize = false,
                 Dock = DockStyle.Fill,
-                Font = new Font("Segoe UI", 16F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(15, 23, 42),
-                Text = message,
+                Font = PosPalette.Ui(16F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
+                Text = string.IsNullOrWhiteSpace(message) ? "Loading..." : message,
                 TextAlign = ContentAlignment.MiddleCenter
             };
 
