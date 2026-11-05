@@ -347,7 +347,11 @@ namespace Pos_System.Forms
             txtConfirmPassword.MaxLength = maxLength;
             ConfigureAdminRoleVisibility();
             ApplyDefaultRole();
-            LoadUsers();
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                LoadUsers();
+            }
+
             PermissionService.ApplyActionPermissions(this, PermissionService.ScreenUsers);
         }
 

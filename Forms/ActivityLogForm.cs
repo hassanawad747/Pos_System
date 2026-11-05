@@ -13,9 +13,9 @@ namespace Pos_System.Forms
 
         public ActivityLogForm()
         {
-            Text = "Activity Log";
+            Text = "Activity";
             POS_System.Program.SettingsManager.RegisterForm(this);
-            BackColor = Color.White;
+            BackColor = PosPalette.Canvas;
             Width = 900;
             Height = 520;
 
@@ -32,7 +32,10 @@ namespace Pos_System.Forms
 
         private void ActivityLogForm_Load(object sender, EventArgs e)
         {
-            LoadAuditRows();
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                LoadAuditRows();
+            }
         }
 
         private void LoadAuditRows()

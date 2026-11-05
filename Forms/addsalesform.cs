@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using Pos_System.Services;
+
 namespace Pos_System.Forms
 {
     public partial class addsalesform : Form
@@ -88,12 +90,14 @@ namespace Pos_System.Forms
 
         private void addsalesform_Load(object sender, EventArgs e)
         {
-            LoginForm loginForm = new LoginForm();
-            this.suppliersTableAdapter.Fill(this.pos_systemDataSet16.Suppliers);
-            lbDate.Text = DateTime.Now.ToString("dd-MMM-yyyy");
-            lbusername.Text = LoginForm.LoggedInUsername; // from login form
-            LoadCustomers();
-            LoadStock("", ""); // عرض كل البيانات بدون فلترة
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                this.suppliersTableAdapter.Fill(this.pos_systemDataSet16.Suppliers);
+                lbDate.Text = DateTime.Now.ToString("dd-MMM-yyyy");
+                lbusername.Text = LoginForm.LoggedInUsername;
+                LoadCustomers();
+                LoadStock("", "");
+            }
 
             // تعبئة ComboBox بالموردين
             using (SqlConnection con = new SqlConnection(connStr))

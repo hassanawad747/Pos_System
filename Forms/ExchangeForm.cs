@@ -11,6 +11,7 @@ namespace Pos_System.Forms
             POS_System.Program.SettingsManager.RegisterForm(this);
             Width = 420;
             Height = 240;
+            BackColor = PosPalette.Canvas;
             StartPosition = FormStartPosition.CenterParent;
         }
     }

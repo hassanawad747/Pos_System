@@ -36,7 +36,11 @@ namespace Pos_System.Forms
             }
 
             labeldate.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-            LoadSettingsIntoControls();
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                LoadSettingsIntoControls();
+            }
+
             ApplySelectedLanguagePreview();
             if (canOpenSettings)
             {

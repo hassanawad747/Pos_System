@@ -33,7 +33,7 @@ namespace Pos_System.Forms
             StartPosition = FormStartPosition.CenterParent;
             MinimumSize = new Size(920, 620);
             Size = new Size(1100, 700);
-            BackColor = Color.FromArgb(245, 247, 250);
+            BackColor = PosPalette.Canvas;
 
             Panel topPanel = new Panel
             {
@@ -197,7 +197,10 @@ namespace Pos_System.Forms
                 return;
             }
 
-            LoadUsers();
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                LoadUsers();
+            }
         }
 
         private void LoadUsers()

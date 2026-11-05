@@ -28,7 +28,7 @@ namespace Pos_System.Forms
             StartPosition = FormStartPosition.CenterParent;
             Size = new Size(980, 620);
             MinimumSize = new Size(820, 520);
-            BackColor = Color.FromArgb(244, 247, 252);
+            BackColor = PosPalette.Canvas;
 
             BuildUi();
             Load += (s, e) =>
@@ -36,12 +36,15 @@ namespace Pos_System.Forms
                 if (!PermissionService.EnsureScreenAccess(this, PermissionService.ScreenDiscountSettings))
                     return;
 
-                EnsureDiscountRulesTable();
-                LoadProducts();
-                LoadCategories();
-                LoadUsers();
-                LoadRules();
-                UpdateTargetInputs();
+                using (LoadingOverlayService.Show(this, "Loading..."))
+                {
+                    EnsureDiscountRulesTable();
+                    LoadProducts();
+                    LoadCategories();
+                    LoadUsers();
+                    LoadRules();
+                    UpdateTargetInputs();
+                }
             };
         }
 
@@ -51,7 +54,7 @@ namespace Pos_System.Forms
             {
                 Dock = DockStyle.Top,
                 Height = 64,
-                BackColor = Color.FromArgb(15, 23, 42),
+                BackColor = PosPalette.Sidebar,
                 Padding = new Padding(18, 12, 18, 12)
             };
             Label title = new Label
@@ -68,7 +71,7 @@ namespace Pos_System.Forms
             {
                 Dock = DockStyle.Top,
                 Height = 230,
-                BackColor = Color.White,
+                BackColor = PosPalette.Surface,
                 Padding = new Padding(16)
             };
 
@@ -128,7 +131,7 @@ namespace Pos_System.Forms
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 RowHeadersVisible = false,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                BackgroundColor = Color.White
+                BackgroundColor = PosPalette.Surface
             };
             gridRules.CellDoubleClick += (s, e) => LoadSelectedRuleIntoEditor();
 
