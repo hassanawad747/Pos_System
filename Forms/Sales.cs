@@ -35,11 +35,15 @@ namespace Pos_System.Forms
         public Sales(string username, string role)
         {
             InitializeComponent();
+            btnsare3.Visible = false;
+            txtdollar.Visible = false;
+            btndollar.Visible = false;
+            label4.Visible = false;
+            AddDiscountControls();
             POS_System.Program.SettingsManager.RegisterForm(this);
             labeldate.Text = DateTime.Now.ToString("yyyy-MM-dd");
             _username = username;
             _role = role;
-
         }
 
         private decimal GetDecimalCellValue(DataGridViewRow row, string columnName)
@@ -78,8 +82,17 @@ namespace Pos_System.Forms
 
         private void StyleSalesForm()
         {
-            //BackColor = Color.FromArgb(244, 247, 252);
-            //Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
+            AddDiscountControls();
+            btnsare3.Visible = false;
+            txtdollar.Visible = false;
+            btndollar.Visible = false;
+            label4.Visible = false;
+            btnSaveSale.Text = "بيع";
+
+            if (PosPresenter.IsMounted(this))
+            {
+                return;
+            }
 
             panelheader.BackColor = Color.FromArgb(15, 23, 42);
             panel1.BackColor = Color.White;
@@ -134,14 +147,6 @@ namespace Pos_System.Forms
             lbtotal_lebanon.BorderStyle = BorderStyle.FixedSingle;
 
             StyleDataGridView();
-
-            btnSaveSale.Text = "بيع";
-            btnsare3.Visible = false;
-            txtdollar.Visible = false;
-            btndollar.Visible = false;
-            label4.Visible = false;
-
-            AddDiscountControls();
             ConfigureSalesResponsiveLayout();
         }
 
@@ -837,7 +842,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
                 Text = $"Invoice #{saleId}",
                 Size = new Size(1080, 760),
                 StartPosition = FormStartPosition.CenterScreen,
-                BackColor = Color.FromArgb(245, 247, 250),
+                BackColor = PosPalette.Canvas,
                 RightToLeft = RightToLeft.Yes,
                 RightToLeftLayout = true
             };
@@ -846,7 +851,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             {
                 Dock = DockStyle.Top,
                 Height = 110,
-                BackColor = Color.FromArgb(18, 52, 86)
+                BackColor = PosPalette.Sidebar
             };
 
             Label titleLabel = new Label
@@ -1784,7 +1789,7 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                 MinimumSize = new Size(940, 640),
                 RightToLeft = RightToLeft.Yes,
                 RightToLeftLayout = true,
-                BackColor = Color.FromArgb(244, 247, 252),
+                BackColor = PosPalette.Canvas,
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 MaximizeBox = false,
                 MinimizeBox = false
@@ -1794,7 +1799,7 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
             {
                 Dock = DockStyle.Top,
                 Height = 92,
-                BackColor = Color.FromArgb(15, 23, 42),
+                BackColor = PosPalette.Sidebar,
                 Padding = new Padding(24, 14, 24, 12)
             };
 
@@ -2262,8 +2267,44 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                 return false;
             }
 
+            string loadingMessage = string.Equals(
+                POS_System.Program.SettingsManager.GetSetting("language", "English"),
+                "Arabic",
+                StringComparison.OrdinalIgnoreCase)
+                ? "جاري حفظ البيع..."
+                : "Saving sale...";
+            using (LoadingOverlayService.Show(FindForm() ?? this, loadingMessage))
+            {
+                return SaveSaleAfterValidation(
+                    printReceipt,
+                    customerPaid,
+                    userId,
+                    customerId,
+                    customerName,
+                    paymentMethod,
+                    safeTotalUsd,
+                    safeTotalLb,
+                    safeBalanceUsd,
+                    safeBalanceLb,
+                    selectedTotalAmount,
+                    totalQuantity);
+            }
+        }
 
-
+        private bool SaveSaleAfterValidation(
+            bool printReceipt,
+            decimal customerPaid,
+            int userId,
+            int customerId,
+            string customerName,
+            string paymentMethod,
+            decimal safeTotalUsd,
+            decimal safeTotalLb,
+            decimal? safeBalanceUsd,
+            decimal? safeBalanceLb,
+            decimal selectedTotalAmount,
+            int totalQuantity)
+        {
             int saleId;
 
             using (SqlConnection conn = new SqlConnection(connStr))

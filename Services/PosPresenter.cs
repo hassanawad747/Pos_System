@@ -402,24 +402,33 @@ namespace Pos_System.Services
         {
             Control search = Find(form, "txtsearch");
             Control quantity = Find(form, "txtquantity");
+            Control quantityLabel = Find(form, "label8");
             Control category = Find(form, "cmbCategory");
             Control add = Find(form, "button5");
             Control products = Find(form, "pnlProducts");
             Control grid = Find(form, "datagridsales");
+            Control customerLabel = Find(form, "label5");
             Control customer = Find(form, "cmbCustomer");
+            Control paidLabel = Find(form, "label6");
             Control paid = Find(form, "txtPaidAmount");
             Control dollar = Find(form, "rbDollar");
             Control lebanon = Find(form, "rbLebanon");
             Control discount = Find(form, "chkUseDiscount");
             Control discountLabel = Find(form, "lblDiscountAmount");
             Control discountAmount = Find(form, "txtDiscountAmount");
+            Control paymentLabel = Find(form, "label7");
             Control payment = Find(form, "comboPaymentMethod");
+            Control saleIdLabel = Find(form, "label10");
             Control saleId = Find(form, "txtSaleId");
             Control totalCaption = Find(form, "label9");
             Control total = Find(form, "lblTotal");
             Control liraCaption = Find(form, "label11");
             Control lira = Find(form, "lbtotal_lebanon");
+            Control rateLabel = Find(form, "label4");
+            Control rate = Find(form, "txtdollar");
+            Control rateSave = Find(form, "btndollar");
             Control save = Find(form, "btnSaveSale");
+            Control quick = Find(form, "btnsare3");
             Control excel = Find(form, "btnexcel");
             Control invoice = Find(form, "btn3rdfetora");
             Control returns = Find(form, "btnmortaja3");
@@ -436,27 +445,49 @@ namespace Pos_System.Services
             Panel rail = new Panel
             {
                 Dock = DockStyle.Right,
-                Width = 300,
+                Width = 320,
                 BackColor = PosPalette.Surface,
-                Padding = new Padding(12)
+                Padding = new Padding(14)
             };
             SetRole(rail, "surface");
             Panel railStack = new Panel { Dock = DockStyle.Fill, AutoScroll = true, BackColor = PosPalette.Surface };
-            StackTop(railStack, delete, 40);
-            StackTop(railStack, returns, 40);
-            StackTop(railStack, invoice, 40);
-            StackTop(railStack, excel, 40);
-            StackTop(railStack, save, 46);
-            StackTop(railStack, lira, 32);
-            StackTop(railStack, liraCaption, 20);
-            StackTop(railStack, total, 32);
-            StackTop(railStack, totalCaption, 20);
+            SetRole(railStack, "surface");
+
+            StackTop(railStack, delete, 42);
+            StackTop(railStack, returns, 42);
+            StackTop(railStack, invoice, 42);
+            StackTop(railStack, excel, 42);
+            if (quick != null && quick.Visible)
+            {
+                StackTop(railStack, quick, 42);
+            }
+
+            StackTop(railStack, save, 48);
+            StackTop(railStack, lira, 30);
+            StackTop(railStack, liraCaption, 22);
+            StackTop(railStack, total, 30);
+            StackTop(railStack, totalCaption, 22);
             StackTop(railStack, saleId, 32);
+            StackCaption(railStack, saleIdLabel);
             StackTop(railStack, payment, 32);
-            StackTop(railStack, discountAmount, 32);
-            StackTop(railStack, discountLabel, 20);
-            StackTop(railStack, discount, 28);
+            StackCaption(railStack, paymentLabel);
+            if (discountAmount != null && discountAmount.Visible)
+            {
+                StackTop(railStack, discountAmount, 32);
+            }
+
+            if (discountLabel != null && discountLabel.Visible)
+            {
+                StackCaption(railStack, discountLabel);
+            }
+
+            if (discount != null && discount.Visible)
+            {
+                StackTop(railStack, discount, 28);
+            }
+
             Panel currency = new Panel { Height = 32, BackColor = PosPalette.Surface };
+            SetRole(currency, "surface");
             if (dollar != null)
             {
                 dollar.Dock = DockStyle.Left;
@@ -472,37 +503,49 @@ namespace Pos_System.Services
 
             StackTop(railStack, currency, 32);
             StackTop(railStack, paid, 32);
+            StackCaption(railStack, paidLabel);
             StackTop(railStack, customer, 32);
+            StackCaption(railStack, customerLabel);
+
+            if (rate != null && rate.Visible)
+            {
+                Panel rateRow = new Panel { Height = 36, BackColor = PosPalette.Surface };
+                SetRole(rateRow, "surface");
+                if (rateSave != null)
+                {
+                    rateSave.Dock = DockStyle.Right;
+                    rateSave.Width = 72;
+                    rateRow.Controls.Add(rateSave);
+                }
+
+                rate.Dock = DockStyle.Fill;
+                rateRow.Controls.Add(rate);
+                StackTop(railStack, rateRow, 36);
+                StackCaption(railStack, rateLabel);
+            }
+
             rail.Controls.Add(railStack);
 
             Panel workspace = new Panel { Dock = DockStyle.Fill, BackColor = PosPalette.Canvas, Padding = new Padding(12) };
-            Panel filters = new Panel { Dock = DockStyle.Top, Height = 56, BackColor = PosPalette.Canvas, Padding = new Padding(0, 8, 0, 8) };
-            if (quantity != null)
+            SetRole(workspace, "canvas");
+            Panel filters = new Panel
             {
-                quantity.Dock = DockStyle.Right;
-                quantity.Width = 72;
-                filters.Controls.Add(quantity);
-            }
-
-            if (category != null)
-            {
-                category.Dock = DockStyle.Right;
-                category.Width = 180;
-                filters.Controls.Add(category);
-            }
-
-            if (add != null)
-            {
-                add.Dock = DockStyle.Right;
-                add.Width = 96;
-                filters.Controls.Add(add);
-            }
-
+                Dock = DockStyle.Top,
+                Height = 58,
+                BackColor = PosPalette.Surface,
+                Padding = new Padding(10)
+            };
+            SetRole(filters, "surface");
             if (search != null)
             {
                 search.Dock = DockStyle.Fill;
                 filters.Controls.Add(search);
             }
+
+            AddRightFilter(filters, add, 96);
+            AddRightFilter(filters, quantityLabel, 88);
+            AddRightFilter(filters, quantity, 72);
+            AddRightFilter(filters, category, 170);
 
             TableLayoutPanel body = new TableLayoutPanel
             {
@@ -511,12 +554,14 @@ namespace Pos_System.Services
                 RowCount = 2,
                 BackColor = PosPalette.Canvas
             };
+            SetRole(body, "canvas");
             body.RowStyles.Add(new RowStyle(SizeType.Percent, 38F));
             body.RowStyles.Add(new RowStyle(SizeType.Percent, 62F));
             if (products != null)
             {
                 products.Dock = DockStyle.Fill;
                 products.BackColor = PosPalette.Canvas;
+                SetRole(products, "canvas");
                 body.Controls.Add(products, 0, 0);
             }
 
@@ -540,6 +585,7 @@ namespace Pos_System.Services
 
             if (products != null)
             {
+                products.ControlAdded -= ProductHost_ControlAdded;
                 products.ControlAdded += ProductHost_ControlAdded;
                 foreach (Control child in products.Controls)
                 {
@@ -551,6 +597,38 @@ namespace Pos_System.Services
             }
 
             RestyleTree(form);
+        }
+
+        private static void AddRightFilter(Control parent, Control child, int width)
+        {
+            if (parent == null || child == null)
+            {
+                return;
+            }
+
+            child.Dock = DockStyle.Right;
+            child.Width = width;
+            if (child is Label label)
+            {
+                label.AutoSize = false;
+                label.TextAlign = ContentAlignment.MiddleRight;
+                SetRole(label, "muted");
+            }
+
+            parent.Controls.Add(child);
+            child.BringToFront();
+        }
+
+        private static void StackCaption(Control parent, Control label)
+        {
+            if (label is Label caption)
+            {
+                caption.AutoSize = false;
+                caption.TextAlign = ContentAlignment.MiddleLeft;
+                SetRole(caption, "muted");
+            }
+
+            StackTop(parent, label, 20);
         }
 
         private static void ProductHost_ControlAdded(object sender, ControlEventArgs e)
