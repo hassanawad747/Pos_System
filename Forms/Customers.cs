@@ -107,19 +107,22 @@ namespace Pos_System.Forms
 
         private void CreateBalanceAdjustmentControls()
         {
-            panel3.BackColor = Color.WhiteSmoke;
+            panel3.BackColor = PosPalette.Surface;
 
             Label lblBalanceAmount = new Label
             {
                 AutoSize = true,
-                Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold),
+                Font = PosPalette.Ui(11F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(18, 22),
                 Text = "Balance amount"
             };
 
             txtBalanceAmount = new TextBox
             {
-                Font = new Font("Microsoft Sans Serif", 12F),
+                BorderStyle = BorderStyle.FixedSingle,
+                Font = PosPalette.Ui(12F, FontStyle.Regular),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(160, 15),
                 Name = "txtBalanceAmount",
                 Size = new Size(170, 34),
@@ -129,7 +132,8 @@ namespace Pos_System.Forms
             cmbBalanceCurrency = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
-                Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold),
+                Font = PosPalette.Ui(11F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(344, 15),
                 Name = "cmbBalanceCurrency",
                 Size = new Size(100, 34),
@@ -140,9 +144,9 @@ namespace Pos_System.Forms
 
             btnBalancePlus = new Button
             {
-                BackColor = Color.SeaGreen,
+                BackColor = PosPalette.Success,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold),
+                Font = PosPalette.Ui(12F, FontStyle.Bold),
                 ForeColor = Color.White,
                 Location = new Point(462, 10),
                 Name = "btnBalancePlus",
@@ -155,9 +159,9 @@ namespace Pos_System.Forms
 
             btnBalanceMinus = new Button
             {
-                BackColor = Color.Firebrick,
+                BackColor = PosPalette.Danger,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold),
+                Font = PosPalette.Ui(12F, FontStyle.Bold),
                 ForeColor = Color.White,
                 Location = new Point(604, 10),
                 Name = "btnBalanceMinus",
@@ -171,8 +175,8 @@ namespace Pos_System.Forms
             Label lblHint = new Label
             {
                 AutoSize = true,
-                Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular),
-                ForeColor = Color.DimGray,
+                Font = PosPalette.Ui(9F, FontStyle.Regular),
+                ForeColor = PosPalette.Muted,
                 Location = new Point(752, 24),
                 Text = "Select customer row first. Plus adds debt, minus reduces paid balance."
             };
