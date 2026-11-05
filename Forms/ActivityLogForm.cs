@@ -14,10 +14,27 @@ namespace Pos_System.Forms
         public ActivityLogForm()
         {
             Text = "Activity";
+            Font = PosPalette.Ui(10F);
             POS_System.Program.SettingsManager.RegisterForm(this);
             BackColor = PosPalette.Canvas;
             Width = 900;
             Height = 520;
+
+            Panel header = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 56,
+                BackColor = PosPalette.Header
+            };
+            header.Controls.Add(new Label
+            {
+                Dock = DockStyle.Fill,
+                Text = "Activity",
+                ForeColor = Color.White,
+                Font = PosPalette.Ui(16F, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(16, 0, 0, 0)
+            });
 
             grid.Dock = DockStyle.Fill;
             grid.ReadOnly = true;
@@ -25,7 +42,9 @@ namespace Pos_System.Forms
             grid.AllowUserToDeleteRows = false;
             grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             grid.RowHeadersVisible = false;
+            PosPresenter.StyleGrid(grid);
             Controls.Add(grid);
+            Controls.Add(header);
 
             Load += ActivityLogForm_Load;
         }
