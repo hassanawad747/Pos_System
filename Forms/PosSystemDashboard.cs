@@ -368,7 +368,7 @@ namespace Pos_System.Forms
             BackColor = PosPalette.Canvas;
             panelContent.BackColor = PosPalette.Canvas;
             panel1.BackColor = PosPalette.Sidebar;
-            panelheader.BackColor = PosPalette.Surface;
+            panelheader.BackColor = PosPalette.Header;
             panelheader.Dock = DockStyle.None;
             panelheader.Height = 74;
             panel2.Dock = DockStyle.None;
@@ -636,10 +636,10 @@ namespace Pos_System.Forms
             endWorkDayButton = new Button
             {
                 Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
-                BackColor = Color.FromArgb(220, 38, 38),
+                BackColor = PosPalette.Danger,
                 Cursor = Cursors.Hand,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                Font = PosPalette.Ui(10F, FontStyle.Bold),
                 ForeColor = Color.White,
                 Location = new Point(panelContent.Width - 190, panelContent.Height - 58),
                 Name = "btnEndWorkDay",
@@ -663,7 +663,7 @@ namespace Pos_System.Forms
             auditNotificationButton = new Button
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                BackColor = Color.FromArgb(17, 24, 39),
+                BackColor = PosPalette.Accent,
                 Cursor = Cursors.Hand,
                 FlatStyle = FlatStyle.Flat,
                 ForeColor = Color.White,
@@ -682,9 +682,9 @@ namespace Pos_System.Forms
             auditBadgeLabel = new Label
             {
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                BackColor = Color.FromArgb(220, 38, 38),
+                BackColor = PosPalette.Danger,
                 ForeColor = Color.White,
-                Font = new Font("Segoe UI", 7F, FontStyle.Bold),
+                Font = PosPalette.Ui(7F, FontStyle.Bold),
                 Location = new Point(panelheader.Width - 28, 10),
                 Name = "auditBadgeLabel",
                 Size = new Size(24, 18),
@@ -1454,20 +1454,20 @@ namespace Pos_System.Forms
             panelheader.Dock = DockStyle.Top;
             panelheader.Height = 72;
             label11.Text = "Dashboard";
-            PosPresenter.SetRole(panelheader, "surface");
+            PosPresenter.SetRole(panelheader, "header");
             label11.Font = PosPalette.Ui(20F, FontStyle.Bold);
             label11.AutoSize = false;
             label11.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             label11.TextAlign = ContentAlignment.MiddleLeft;
-            PosPresenter.SetRole(label11, "ink");
+            PosPresenter.SetRole(label11, "header-text");
             label10.AutoSize = true;
             lbuser1.AutoSize = true;
             label6.AutoSize = true;
             lbdatetime.AutoSize = true;
-            PosPresenter.SetRole(label10, "muted");
-            PosPresenter.SetRole(lbuser1, "ink");
-            PosPresenter.SetRole(label6, "muted");
-            PosPresenter.SetRole(lbdatetime, "muted");
+            PosPresenter.SetRole(label10, "sidebar-muted");
+            PosPresenter.SetRole(lbuser1, "header-text");
+            PosPresenter.SetRole(label6, "sidebar-muted");
+            PosPresenter.SetRole(lbdatetime, "sidebar-muted");
             label5.Visible = false;
             label4.Visible = false;
             label7.Visible = false;
@@ -2753,15 +2753,15 @@ namespace Pos_System.Forms
             Text = "Smart POS";
             BackColor = PosPalette.Canvas;
             panel1.BackColor = PosPalette.Sidebar;
-            panelheader.BackColor = PosPalette.Surface;
+            panelheader.BackColor = PosPalette.Header;
             panelContent.BackColor = PosPalette.Canvas;
             label11.Text = "Dashboard";
-            label11.ForeColor = PosPalette.Ink;
-            label10.ForeColor = PosPalette.Muted;
-            lbuser1.ForeColor = PosPalette.Accent;
-            lbdatetime.ForeColor = PosPalette.Muted;
-            label5.ForeColor = PosPalette.Muted;
-            label6.ForeColor = PosPalette.Ink;
+            label11.ForeColor = Color.White;
+            label10.ForeColor = PosPalette.SidebarMuted;
+            lbuser1.ForeColor = Color.White;
+            lbdatetime.ForeColor = PosPalette.SidebarMuted;
+            label5.ForeColor = PosPalette.SidebarMuted;
+            label6.ForeColor = Color.White;
             label10.Text = "Welcome,";
             label11.Text = "Dashboard";
             label6.Text = "Admin Panel";
