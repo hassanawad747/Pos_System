@@ -40,21 +40,23 @@ namespace Pos_System.Forms
                 Dock = DockStyle.Top,
                 Height = 90,
                 Padding = new Padding(16),
-                BackColor = Color.White
+                BackColor = PosPalette.Surface
             };
 
             Label lblUser = new Label
             {
                 AutoSize = true,
                 Location = new Point(16, 18),
-                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                Font = PosPalette.Ui(11F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 Text = "User"
             };
 
             comboUsers = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
-                Font = new Font("Segoe UI", 10.5F, FontStyle.Regular),
+                Font = PosPalette.Ui(10.5F, FontStyle.Regular),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(80, 14),
                 Width = 260
             };
@@ -64,7 +66,8 @@ namespace Pos_System.Forms
             {
                 AutoSize = true,
                 Location = new Point(360, 18),
-                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                Font = PosPalette.Ui(11F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 Text = "Role"
             };
 
@@ -72,7 +75,8 @@ namespace Pos_System.Forms
             {
                 AutoSize = true,
                 Location = new Point(410, 18),
-                Font = new Font("Segoe UI", 11F, FontStyle.Regular),
+                Font = PosPalette.Ui(11F, FontStyle.Regular),
+                ForeColor = PosPalette.Muted,
                 Text = "-"
             };
 
@@ -80,14 +84,16 @@ namespace Pos_System.Forms
             {
                 AutoSize = true,
                 Location = new Point(16, 52),
-                Font = new Font("Segoe UI", 10.5F, FontStyle.Bold),
+                Font = PosPalette.Ui(10.5F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 Text = "Can see notifications"
             };
 
             grpDeleteNotifications = new GroupBox
             {
                 Text = "Delete notifications",
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Font = PosPalette.Ui(9F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(250, 45),
                 Size = new Size(260, 40),
                 Visible = false
@@ -114,7 +120,7 @@ namespace Pos_System.Forms
             btnRefresh = new Button
             {
                 Text = "Reload",
-                BackColor = Color.FromArgb(71, 85, 105),
+                BackColor = PosPalette.Secondary,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Width = 120,
@@ -142,19 +148,20 @@ namespace Pos_System.Forms
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 RowHeadersVisible = false
             };
+            PosPresenter.StyleGrid(permissionGrid);
 
             Panel bottomPanel = new Panel
             {
                 Dock = DockStyle.Bottom,
                 Height = 70,
                 Padding = new Padding(16),
-                BackColor = Color.White
+                BackColor = PosPalette.Surface
             };
 
             btnSave = new Button
             {
                 Text = "Save Permissions",
-                BackColor = Color.FromArgb(37, 99, 235),
+                BackColor = PosPalette.Accent,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Width = 180,
@@ -167,7 +174,7 @@ namespace Pos_System.Forms
             btnClose = new Button
             {
                 Text = "Close",
-                BackColor = Color.FromArgb(220, 38, 38),
+                BackColor = PosPalette.Secondary,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Width = 120,
