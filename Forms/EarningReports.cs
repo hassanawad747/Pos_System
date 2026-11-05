@@ -48,10 +48,16 @@ namespace Pos_System.Forms
             MinimumSize = new Size(980, 560);
             BackColor = PosPalette.Canvas;
 
-            panelheader.BackColor = PosPalette.Sidebar;
+            panelheader.BackColor = PosPalette.Header;
             panel1.BackColor = PosPalette.Surface;
             panel2.BackColor = PosPalette.Canvas;
             panel3.BackColor = PosPalette.Surface;
+            label1.Visible = false;
+            label2.Visible = false;
+            label1.Text = string.Empty;
+            label2.Text = string.Empty;
+            label3.ForeColor = Color.White;
+            label3.Font = PosPalette.Ui(16F, FontStyle.Bold);
 
             panel1.Dock = DockStyle.Top;
             panel2.Dock = DockStyle.Top;
@@ -68,9 +74,9 @@ namespace Pos_System.Forms
 
             AddAdvancedFilterControls();
 
-            StyleButton(btnadd, Color.FromArgb(37, 99, 235), "بحث");
-            StyleButton(btnclear, Color.FromArgb(100, 116, 139), "مسح");
-            StyleButton(btnexcel, Color.FromArgb(22, 163, 74), "Excel");
+            StyleButton(btnadd, PosPalette.Accent, "بحث");
+            StyleButton(btnclear, PosPalette.Secondary, "مسح");
+            StyleButton(btnexcel, PosPalette.Success, "Excel");
             StyleTextBox(txtSearch);
             StyleGrid();
             StyleSummaryCards();
@@ -94,7 +100,8 @@ namespace Pos_System.Forms
                 comboReportMode = new ComboBox
                 {
                     DropDownStyle = ComboBoxStyle.DropDownList,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Bold)
+                    Font = PosPalette.Ui(10F, FontStyle.Bold),
+                    ForeColor = PosPalette.Ink
                 };
                 comboReportMode.Items.AddRange(new object[]
                 {
@@ -111,7 +118,8 @@ namespace Pos_System.Forms
             {
                 txtSearch = new TextBox
                 {
-                    Font = new Font("Segoe UI", 10F, FontStyle.Regular)
+                    Font = PosPalette.Ui(10F, FontStyle.Regular),
+                    ForeColor = PosPalette.Ink
                 };
                 txtSearch.KeyDown += (sender, args) =>
                 {
@@ -150,8 +158,8 @@ namespace Pos_System.Forms
             return new Label
             {
                 AutoSize = true,
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(51, 65, 85),
+                Font = PosPalette.Ui(9F, FontStyle.Bold),
+                ForeColor = PosPalette.Muted,
                 Text = text
             };
         }
@@ -163,40 +171,34 @@ namespace Pos_System.Forms
             button.ForeColor = Color.White;
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;
-            button.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            button.Font = PosPalette.Ui(10F, FontStyle.Bold);
             button.Cursor = Cursors.Hand;
         }
 
         private void StyleTextBox(TextBox textBox)
         {
             textBox.BorderStyle = BorderStyle.FixedSingle;
-            textBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            textBox.Font = PosPalette.Ui(10F, FontStyle.Regular);
+            textBox.ForeColor = PosPalette.Ink;
+            textBox.BackColor = PosPalette.InputFill;
             textBox.TextAlign = HorizontalAlignment.Center;
         }
 
         private void StyleGrid()
         {
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.BackgroundColor = Color.White;
-            dataGridView1.BorderStyle = BorderStyle.None;
-            dataGridView1.EnableHeadersVisualStyles = false;
-            dataGridView1.GridColor = Color.FromArgb(226, 232, 240);
             dataGridView1.ReadOnly = true;
-            dataGridView1.RowHeadersVisible = false;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.MultiSelect = false;
-            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(15, 23, 42);
-            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
-            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
+            PosPresenter.StyleGrid(dataGridView1);
         }
 
         private void StyleSummaryCards()
         {
             foreach (TextBox box in new[] { textBox1, textBox2, textBox3, textBox4 })
             {
-                box.BackColor = Color.White;
+                box.BackColor = PosPalette.Surface;
+                box.ForeColor = PosPalette.Ink;
                 box.BorderStyle = BorderStyle.FixedSingle;
                 box.ReadOnly = true;
                 box.TabStop = false;
@@ -204,14 +206,14 @@ namespace Pos_System.Forms
 
             foreach (Label label in new[] { label8, label9, label10, label11 })
             {
-                label.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-                label.ForeColor = Color.FromArgb(71, 85, 105);
+                label.Font = PosPalette.Ui(9F, FontStyle.Bold);
+                label.ForeColor = PosPalette.Muted;
             }
 
             foreach (Label label in new[] { lbbe3dollar, lbbe3lebanon, lbrebe7dollar, lbrebe7lebanon })
             {
-                label.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-                label.ForeColor = Color.FromArgb(15, 23, 42);
+                label.Font = PosPalette.Ui(12F, FontStyle.Bold);
+                label.ForeColor = PosPalette.Ink;
             }
         }
 

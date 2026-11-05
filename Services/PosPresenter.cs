@@ -932,6 +932,11 @@ namespace Pos_System.Services
             string text = (button.Text ?? string.Empty).Trim().ToLowerInvariant();
             string blob = name + " " + text;
 
+            if (text == "clear" || text == "مسح" || name.Contains("clear"))
+            {
+                return "secondary";
+            }
+
             if (ContainsAny(blob, "delete", "remove", "logout", "log out", "حذف", "مسح"))
             {
                 return "danger";
