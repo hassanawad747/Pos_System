@@ -59,7 +59,8 @@ namespace Pos_System.Forms
             comboSupplier = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
-                Font = new Font("Segoe UI", 10F),
+                Font = PosPalette.Ui(10F, FontStyle.Regular),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(85, 11),
                 Size = new Size(240, 30)
             };
@@ -78,7 +79,8 @@ namespace Pos_System.Forms
             comboBalanceType = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
-                Font = new Font("Segoe UI", 10F),
+                Font = PosPalette.Ui(10F, FontStyle.Regular),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(120, 54),
                 Size = new Size(170, 30)
             };
@@ -92,7 +94,8 @@ namespace Pos_System.Forms
             comboCurrency = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
-                Font = new Font("Segoe UI", 10F),
+                Font = PosPalette.Ui(10F, FontStyle.Regular),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(500, 54),
                 Size = new Size(85, 30)
             };
@@ -126,10 +129,10 @@ namespace Pos_System.Forms
             };
             dateTo.ValueChanged += (sender, args) => LoadSupplierItems();
 
-            Button btnPrint = CreateButton("Print", 12, 88, 90, Color.FromArgb(71, 85, 105));
+            Button btnPrint = CreateButton("Print", 12, 88, 90, PosPalette.Secondary);
             btnPrint.Click += (sender, args) => PrintSupplierInvoice();
 
-            Button btnExcel = CreateButton("Excel", 112, 88, 90, Color.FromArgb(22, 163, 74));
+            Button btnExcel = CreateButton("Excel", 112, 88, 90, PosPalette.Success);
             btnExcel.Click += (sender, args) => ExportSupplierInvoiceToExcel();
 
             topPanel.Controls.AddRange(new Control[]
@@ -163,7 +166,8 @@ namespace Pos_System.Forms
             return new Label
             {
                 AutoSize = true,
-                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                Font = PosPalette.Ui(9.5F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(x, y),
                 Text = text
             };
@@ -173,7 +177,8 @@ namespace Pos_System.Forms
         {
             return new TextBox
             {
-                Font = new Font("Segoe UI", 10F),
+                Font = PosPalette.Ui(10F, FontStyle.Regular),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(x, y),
                 Size = new Size(width, 30)
             };
@@ -186,7 +191,7 @@ namespace Pos_System.Forms
                 BackColor = color,
                 FlatStyle = FlatStyle.Flat,
                 ForeColor = Color.White,
-                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                Font = PosPalette.Ui(9.5F, FontStyle.Bold),
                 Location = new Point(x, y),
                 Size = new Size(width, 32),
                 Text = text
@@ -197,7 +202,7 @@ namespace Pos_System.Forms
 
         private DataGridView CreateGrid()
         {
-            return new DataGridView
+            DataGridView grid = new DataGridView
             {
                 AllowUserToAddRows = false,
                 AllowUserToDeleteRows = false,
@@ -208,6 +213,8 @@ namespace Pos_System.Forms
                 RowHeadersVisible = false,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect
             };
+            PosPresenter.StyleGrid(grid);
+            return grid;
         }
 
         private void SupplierBalanceForm_Load(object sender, EventArgs e)
@@ -469,9 +476,9 @@ namespace Pos_System.Forms
 
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
-            Font titleFont = new Font("Segoe UI", 16F, FontStyle.Bold);
-            Font textFont = new Font("Segoe UI", 10F);
-            Font headerFont = new Font("Segoe UI", 9F, FontStyle.Bold);
+            Font titleFont = PosPalette.Ui(16F, FontStyle.Bold);
+            Font textFont = PosPalette.Ui(10F, FontStyle.Regular);
+            Font headerFont = PosPalette.Ui(9F, FontStyle.Bold);
             int y = 40;
 
             string supplier = comboSupplier.Text;
