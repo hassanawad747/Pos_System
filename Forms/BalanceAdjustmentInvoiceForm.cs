@@ -51,6 +51,7 @@ namespace Pos_System.Forms
             Size = new Size(720, 520);
             MinimumSize = new Size(640, 460);
             BackColor = PosPalette.Canvas;
+            Font = PosPalette.Ui(10F, FontStyle.Regular);
 
             Panel headerPanel = new Panel
             {
@@ -62,7 +63,7 @@ namespace Pos_System.Forms
             Label titleLabel = new Label
             {
                 AutoSize = true,
-                Font = new Font("Segoe UI", 18F, FontStyle.Bold),
+                Font = PosPalette.Ui(18F, FontStyle.Bold),
                 ForeColor = Color.White,
                 Location = new Point(24, 18),
                 Text = "Balance Adjustment Invoice"
@@ -71,8 +72,8 @@ namespace Pos_System.Forms
             Label dateLabel = new Label
             {
                 AutoSize = true,
-                Font = new Font("Segoe UI", 10F, FontStyle.Regular),
-                ForeColor = Color.FromArgb(191, 219, 254),
+                Font = PosPalette.Ui(10F, FontStyle.Regular),
+                ForeColor = PosPalette.SidebarMuted,
                 Location = new Point(26, 54),
                 Text = generatedAt.ToString("yyyy-MM-dd HH:mm")
             };
@@ -84,7 +85,7 @@ namespace Pos_System.Forms
             {
                 Dock = DockStyle.Fill,
                 Padding = new Padding(24),
-                BackColor = Color.White
+                BackColor = PosPalette.Surface
             };
 
             int top = 24;
@@ -105,13 +106,13 @@ namespace Pos_System.Forms
             {
                 Dock = DockStyle.Bottom,
                 Height = 72,
-                BackColor = Color.FromArgb(248, 250, 252)
+                BackColor = PosPalette.Canvas
             };
 
             Button btnPrint = new Button
             {
                 Text = "Print Invoice",
-                BackColor = Color.FromArgb(37, 99, 235),
+                BackColor = PosPalette.Accent,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Size = new Size(150, 40),
@@ -123,7 +124,7 @@ namespace Pos_System.Forms
             Button btnClose = new Button
             {
                 Text = "Close",
-                BackColor = Color.FromArgb(71, 85, 105),
+                BackColor = PosPalette.Secondary,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Size = new Size(120, 40),
@@ -151,8 +152,8 @@ namespace Pos_System.Forms
             Label titleLabel = new Label
             {
                 AutoSize = false,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(30, 41, 59),
+                Font = PosPalette.Ui(10F, FontStyle.Bold),
+                ForeColor = PosPalette.Muted,
                 Location = new Point(0, 8),
                 Size = new Size(180, 26),
                 Text = title
@@ -161,8 +162,8 @@ namespace Pos_System.Forms
             Label valueLabel = new Label
             {
                 AutoSize = false,
-                Font = new Font("Segoe UI", 10F, FontStyle.Regular),
-                ForeColor = Color.FromArgb(15, 23, 42),
+                Font = PosPalette.Ui(10F, FontStyle.Regular),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(190, 8),
                 Size = new Size(430, 26),
                 Text = value
@@ -190,9 +191,9 @@ namespace Pos_System.Forms
 
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
-            using (Font titleFont = new Font("Segoe UI", 18F, FontStyle.Bold))
-            using (Font headerFont = new Font("Segoe UI", 10F, FontStyle.Bold))
-            using (Font textFont = new Font("Segoe UI", 10F, FontStyle.Regular))
+            using (Font titleFont = PosPalette.Ui(18F, FontStyle.Bold))
+            using (Font headerFont = PosPalette.Ui(10F, FontStyle.Bold))
+            using (Font textFont = PosPalette.Ui(10F, FontStyle.Regular))
             {
                 int y = 40;
                 int left = 40;
