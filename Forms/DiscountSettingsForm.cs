@@ -62,7 +62,7 @@ namespace Pos_System.Forms
                 Text = "Discount Settings",
                 Dock = DockStyle.Fill,
                 ForeColor = Color.White,
-                Font = new Font("Segoe UI", 18F, FontStyle.Bold),
+                Font = PosPalette.Ui(18F, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleLeft
             };
             header.Controls.Add(title);
@@ -93,15 +93,16 @@ namespace Pos_System.Forms
             {
                 Text = "Active",
                 Checked = true,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                Font = PosPalette.Ui(10F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 AutoSize = true
             };
 
-            Button btnSave = CreateButton("Save Rule", Color.FromArgb(22, 163, 74));
+            Button btnSave = CreateButton("Save Rule", PosPalette.Accent);
             btnSave.Click += (s, e) => SaveRule();
-            Button btnDelete = CreateButton("Delete Selected", Color.FromArgb(220, 38, 38));
+            Button btnDelete = CreateButton("Delete Selected", PosPalette.Danger);
             btnDelete.Click += (s, e) => DeleteSelectedRule();
-            Button btnClear = CreateButton("Clear", Color.FromArgb(100, 116, 139));
+            Button btnClear = CreateButton("Clear", PosPalette.Secondary);
             btnClear.Click += (s, e) => ClearEditor();
 
             AddField(editor, "Rule Name", txtRuleName, 16, 18, 190);
@@ -133,6 +134,7 @@ namespace Pos_System.Forms
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 BackgroundColor = PosPalette.Surface
             };
+            PosPresenter.StyleGrid(gridRules);
             gridRules.CellDoubleClick += (s, e) => LoadSelectedRuleIntoEditor();
 
             Controls.Add(gridRules);
@@ -144,7 +146,8 @@ namespace Pos_System.Forms
         {
             return new TextBox
             {
-                Font = new Font("Segoe UI", 10F),
+                Font = PosPalette.Ui(10F, FontStyle.Regular),
+                ForeColor = PosPalette.Ink,
                 BorderStyle = BorderStyle.FixedSingle
             };
         }
@@ -153,7 +156,8 @@ namespace Pos_System.Forms
         {
             return new ComboBox
             {
-                Font = new Font("Segoe UI", 10F),
+                Font = PosPalette.Ui(10F, FontStyle.Regular),
+                ForeColor = PosPalette.Ink,
                 DropDownStyle = ComboBoxStyle.DropDownList
             };
         }
@@ -166,7 +170,7 @@ namespace Pos_System.Forms
                 BackColor = color,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold)
+                Font = PosPalette.Ui(10F, FontStyle.Bold)
             };
             button.FlatAppearance.BorderSize = 0;
             return button;
@@ -179,8 +183,8 @@ namespace Pos_System.Forms
                 Text = labelText,
                 Location = new Point(x, y),
                 Size = new Size(width, 22),
-                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(30, 41, 59)
+                Font = PosPalette.Ui(9.5F, FontStyle.Bold),
+                ForeColor = PosPalette.Muted
             };
             input.SetBounds(x, y + 26, width, 28);
             parent.Controls.Add(label);
