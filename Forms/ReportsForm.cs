@@ -142,15 +142,11 @@ END", connection))
             grid.ColumnHeadersHeight = 32;
             grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            grid.BackgroundColor = Color.White;
+            PosPresenter.StyleGrid(grid);
+            grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            grid.ColumnHeadersHeight = 32;
+            grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             grid.BorderStyle = BorderStyle.FixedSingle;
-            grid.EnableHeadersVisualStyles = false;
-            grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(15, 23, 42);
-            grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            grid.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
-            grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(219, 234, 254);
-            grid.DefaultCellStyle.SelectionForeColor = Color.FromArgb(15, 23, 42);
         }
 
         private void ConfigureSummaryCards()
@@ -158,15 +154,15 @@ END", connection))
             textBox1.ReadOnly = true;
             textBox2.ReadOnly = true;
             textBox3.ReadOnly = true;
-            textBox1.BackColor = Color.White;
-            textBox2.BackColor = Color.White;
-            textBox3.BackColor = Color.White;
+            textBox1.BackColor = PosPalette.Surface;
+            textBox2.BackColor = PosPalette.Surface;
+            textBox3.BackColor = PosPalette.Surface;
             textBox1.BorderStyle = BorderStyle.FixedSingle;
             textBox2.BorderStyle = BorderStyle.FixedSingle;
             textBox3.BorderStyle = BorderStyle.FixedSingle;
-            textBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            textBox2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            textBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            textBox1.Font = PosPalette.Ui(9F, FontStyle.Bold);
+            textBox2.Font = PosPalette.Ui(9F, FontStyle.Bold);
+            textBox3.Font = PosPalette.Ui(9F, FontStyle.Bold);
         }
 
         private void ConfigureDynamicControls()
@@ -177,7 +173,8 @@ END", connection))
                 {
                     Name = "comboReportType",
                     DropDownStyle = ComboBoxStyle.DropDownList,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    Font = PosPalette.Ui(10F, FontStyle.Bold),
+                    ForeColor = PosPalette.Ink,
                     Location = new Point(16, 64),
                     Size = new Size(244, 28)
                 };
@@ -191,8 +188,8 @@ END", connection))
                 {
                     Name = "lblReportType",
                     Text = "\u0646\u0648\u0639 \u0627\u0644\u062a\u0642\u0631\u064a\u0631",
-                    Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(30, 41, 59),
+                    Font = PosPalette.Ui(9F, FontStyle.Bold),
+                    ForeColor = PosPalette.Muted,
                     AutoSize = true
                 };
 
@@ -205,10 +202,10 @@ END", connection))
                 {
                     Name = "btnRefresh",
                     Text = "تحديث",
-                    BackColor = Color.FromArgb(37, 99, 235),
+                    BackColor = PosPalette.Accent,
                     ForeColor = Color.White,
                     FlatStyle = FlatStyle.Flat,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    Font = PosPalette.Ui(10F, FontStyle.Bold),
                     Location = new Point(322, 64),
                     Size = new Size(112, 28)
                 };
@@ -223,7 +220,8 @@ END", connection))
                 {
                     Name = "comboUserFilter",
                     DropDownStyle = ComboBoxStyle.DropDownList,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    Font = PosPalette.Ui(10F, FontStyle.Bold),
+                    ForeColor = PosPalette.Ink,
                     Location = new Point(450, 64),
                     Size = new Size(180, 28)
                 };
@@ -237,8 +235,8 @@ END", connection))
                 {
                     Name = "lblUserFilter",
                     Text = "User",
-                    Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(30, 41, 59),
+                    Font = PosPalette.Ui(9F, FontStyle.Bold),
+                    ForeColor = PosPalette.Muted,
                     AutoSize = true
                 };
 
@@ -252,8 +250,8 @@ END", connection))
                     Text = "نتائج التقرير",
                     Dock = DockStyle.Top,
                     Height = 28,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(15, 23, 42),
+                    Font = PosPalette.Ui(10F, FontStyle.Bold),
+                    ForeColor = PosPalette.Ink,
                     TextAlign = ContentAlignment.MiddleCenter
                 };
 
@@ -268,8 +266,8 @@ END", connection))
                     Text = "سجل التقارير",
                     Dock = DockStyle.Top,
                     Height = 28,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(15, 23, 42),
+                    Font = PosPalette.Ui(10F, FontStyle.Bold),
+                    ForeColor = PosPalette.Ink,
                     TextAlign = ContentAlignment.MiddleCenter
                 };
 
@@ -287,25 +285,27 @@ END", connection))
 
             SuspendLayout();
 
-            BackColor = Color.FromArgb(241, 245, 249);
+            BackColor = PosPalette.Canvas;
             panelheader.Height = 60;
-            panelheader.BackColor = Color.FromArgb(2, 6, 23);
+            panelheader.BackColor = PosPalette.Header;
             panel1.Height = 156;
-            panel1.BackColor = Color.FromArgb(248, 250, 252);
+            panel1.BackColor = PosPalette.Surface;
             panel1.Padding = new Padding(12);
-            panel2.BackColor = Color.FromArgb(226, 232, 240);
+            panel2.BackColor = PosPalette.Canvas;
             panel2.Padding = new Padding(10);
             panel3.Height = 54;
-            panel3.BackColor = Color.FromArgb(248, 250, 252);
+            panel3.BackColor = PosPalette.Surface;
 
-            label3.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            label3.Location = new Point(14, 18);
-            labeldate.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            label3.Font = PosPalette.Ui(16F, FontStyle.Bold);
+            label3.ForeColor = Color.White;
+            label3.Location = new Point(14, 16);
+            labeldate.Font = PosPalette.Ui(9F, FontStyle.Regular);
+            labeldate.ForeColor = PosPalette.SidebarMuted;
             labeldate.Location = new Point(Math.Max(720, panelheader.Width - 290), 20);
-            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold | FontStyle.Italic);
-            label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold | FontStyle.Italic);
-            label1.Location = new Point(Math.Max(340, panelheader.Width / 2 - 78), 12);
-            label2.Location = new Point(label1.Right + 8, 12);
+            label1.Visible = false;
+            label2.Visible = false;
+            label1.Text = string.Empty;
+            label2.Text = string.Empty;
 
             int margin = 12;
             int labelTop = 8;
@@ -347,11 +347,11 @@ END", connection))
             btnexcel.Location = new Point(btnmonthlyreport.Right + 8, filterTop);
             btnexcel.Size = new Size(buttonWidth, controlHeight);
 
-            StyleReportButton(btnRefresh, Color.FromArgb(37, 99, 235));
-            StyleReportButton(btnsave, Color.FromArgb(22, 163, 74));
-            StyleReportButton(btndailyreport, Color.FromArgb(71, 85, 105));
-            StyleReportButton(btnmonthlyreport, Color.FromArgb(71, 85, 105));
-            StyleReportButton(btnexcel, Color.FromArgb(5, 150, 105));
+            StyleReportButton(btnRefresh, PosPalette.Accent);
+            StyleReportButton(btnsave, PosPalette.Accent);
+            StyleReportButton(btndailyreport, PosPalette.Secondary);
+            StyleReportButton(btnmonthlyreport, PosPalette.Secondary);
+            StyleReportButton(btnexcel, PosPalette.Success);
 
             int cardTop = 76;
             int cardGap = 10;
@@ -427,7 +427,7 @@ END", connection))
             button.ForeColor = Color.White;
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;
-            button.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            button.Font = PosPalette.Ui(9.5F, FontStyle.Bold);
             button.TextAlign = ContentAlignment.MiddleCenter;
         }
 
@@ -435,10 +435,10 @@ END", connection))
         {
             card.Location = new Point(x, y);
             card.Size = new Size(width, height);
-            card.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            card.Font = PosPalette.Ui(9.5F, FontStyle.Bold);
+            card.ForeColor = PosPalette.Ink;
+            card.BackColor = PosPalette.Surface;
             card.TextAlign = HorizontalAlignment.Left;
-            card.BackColor = Color.White;
-            card.ForeColor = Color.FromArgb(15, 23, 42);
             card.BorderStyle = BorderStyle.FixedSingle;
         }
 
