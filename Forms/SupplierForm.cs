@@ -154,14 +154,17 @@ namespace Pos_System.Forms
             Label lblBalance = new Label
             {
                 AutoSize = true,
-                Font = new Font("Microsoft Sans Serif", 9.5F, FontStyle.Bold),
+                Font = PosPalette.Ui(9.5F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(15, 238),
                 Text = "Balance"
             };
 
             txtSupplierBalance = new TextBox
             {
-                Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold),
+                BorderStyle = BorderStyle.FixedSingle,
+                Font = PosPalette.Ui(10F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(15, 260),
                 Name = "txtSupplierBalance",
                 Size = new Size(112, 27),
@@ -172,7 +175,8 @@ namespace Pos_System.Forms
             cmbSupplierBalanceCurrency = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
-                Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold),
+                Font = PosPalette.Ui(9F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 Location = new Point(133, 260),
                 Name = "cmbSupplierBalanceCurrency",
                 Size = new Size(121, 26)
@@ -182,7 +186,7 @@ namespace Pos_System.Forms
 
             btnSupplierBalancePlus = new Button
             {
-                BackColor = Color.FromArgb(22, 163, 74),
+                BackColor = PosPalette.Success,
                 FlatStyle = FlatStyle.Flat,
                 ForeColor = Color.White,
                 Location = new Point(15, 294),
@@ -195,7 +199,7 @@ namespace Pos_System.Forms
 
             btnSupplierBalanceMinus = new Button
             {
-                BackColor = Color.FromArgb(220, 38, 38),
+                BackColor = PosPalette.Danger,
                 FlatStyle = FlatStyle.Flat,
                 ForeColor = Color.White,
                 Location = new Point(133, 294),
