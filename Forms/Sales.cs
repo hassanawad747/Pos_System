@@ -88,22 +88,27 @@ namespace Pos_System.Forms
             btndollar.Visible = false;
             label4.Visible = false;
             btnSaveSale.Text = "بيع";
+            label1.Visible = false;
+            label1.Text = string.Empty;
+            label2.Visible = false;
+            label2.Text = string.Empty;
 
             if (PosPresenter.IsMounted(this))
             {
                 return;
             }
 
-            panelheader.BackColor = Color.FromArgb(15, 23, 42);
-            panel1.BackColor = Color.White;
-            panel2.BackColor = Color.FromArgb(244, 247, 252);
-            panel4.BackColor = Color.White;
-            pnlProducts.BackColor = Color.White;
+            BackColor = PosPalette.Canvas;
+            panelheader.BackColor = PosPalette.Header;
+            panel1.BackColor = PosPalette.Surface;
+            panel2.BackColor = PosPalette.Canvas;
+            panel4.BackColor = PosPalette.Surface;
+            pnlProducts.BackColor = PosPalette.Surface;
 
-            label1.ForeColor = Color.FromArgb(234, 88, 12);
-            label2.ForeColor = Color.White;
-            label3.ForeColor = Color.FromArgb(191, 219, 254);
-            labeldate.ForeColor = Color.FromArgb(226, 232, 240);
+            label3.ForeColor = Color.White;
+            label3.Font = PosPalette.Ui(16F, FontStyle.Bold);
+            labeldate.ForeColor = PosPalette.SidebarMuted;
+            labeldate.Font = PosPalette.Ui(10F, FontStyle.Regular);
 
             StyleTextBox(txtsearch, 12F, false);
             StyleTextBox(txtquantity, 12F, true);
@@ -115,32 +120,32 @@ namespace Pos_System.Forms
             StyleComboBox(cmbCustomer);
             StyleComboBox(comboPaymentMethod);
 
-            StylePrimaryButton(button5, Color.FromArgb(37, 99, 235));
-            StylePrimaryButton(btnSaveSale, Color.FromArgb(22, 163, 74));
-            StylePrimaryButton(btnsare3, Color.FromArgb(59, 130, 246));
-            StylePrimaryButton(btnexcel, Color.FromArgb(5, 150, 105));
-            StylePrimaryButton(btn3rdfetora, Color.FromArgb(245, 158, 11));
-            StylePrimaryButton(btnmortaja3, Color.FromArgb(100, 116, 139));
-            StylePrimaryButton(btndelete, Color.FromArgb(220, 38, 38));
+            StylePrimaryButton(button5, PosPalette.Accent);
+            StylePrimaryButton(btnSaveSale, PosPalette.Accent);
+            StylePrimaryButton(btnsare3, PosPalette.Accent);
+            StylePrimaryButton(btnexcel, PosPalette.Success);
+            StylePrimaryButton(btn3rdfetora, PosPalette.Secondary);
+            StylePrimaryButton(btnmortaja3, PosPalette.Secondary);
+            StylePrimaryButton(btndelete, PosPalette.Danger);
 
             StyleRadioButton(rbDollar);
             StyleRadioButton(rbLebanon);
-            rbLebanon.ForeColor = Color.FromArgb(30, 41, 59);
-            rbDollar.ForeColor = Color.FromArgb(30, 41, 59);
+            rbLebanon.ForeColor = PosPalette.Ink;
+            rbDollar.ForeColor = PosPalette.Ink;
 
-            label9.ForeColor = Color.FromArgb(30, 41, 59);
-            label11.ForeColor = Color.FromArgb(30, 41, 59);
+            label9.ForeColor = PosPalette.Muted;
+            label11.ForeColor = PosPalette.Muted;
             label9.BackColor = Color.Transparent;
             label11.BackColor = Color.Transparent;
-            label9.Font = new Font("Segoe UI", 11.5F, FontStyle.Bold);
-            label11.Font = new Font("Segoe UI", 11.5F, FontStyle.Bold);
+            label9.Font = PosPalette.Ui(11.5F, FontStyle.Bold);
+            label11.Font = PosPalette.Ui(11.5F, FontStyle.Bold);
 
-            lblTotal.ForeColor = Color.FromArgb(22, 101, 52);
-            lbtotal_lebanon.ForeColor = Color.FromArgb(30, 64, 175);
-            lblTotal.BackColor = Color.FromArgb(240, 253, 244);
-            lbtotal_lebanon.BackColor = Color.FromArgb(239, 246, 255);
-            lblTotal.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lbtotal_lebanon.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblTotal.ForeColor = PosPalette.Ink;
+            lbtotal_lebanon.ForeColor = PosPalette.Ink;
+            lblTotal.BackColor = PosPalette.Surface;
+            lbtotal_lebanon.BackColor = PosPalette.Surface;
+            lblTotal.Font = PosPalette.Ui(12F, FontStyle.Bold);
+            lbtotal_lebanon.Font = PosPalette.Ui(12F, FontStyle.Bold);
             // lblTotal.Padding = new Padding(10, 0, 0, 0);
             //lbtotal_lebanon.Padding = new Padding(10, 0, 0, 0);
             lblTotal.BorderStyle = BorderStyle.FixedSingle;
@@ -159,8 +164,8 @@ namespace Pos_System.Forms
                     Name = "chkUseDiscount",
                     Text = "Use Discount",
                     AutoSize = false,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(30, 41, 59)
+                    Font = PosPalette.Ui(10F, FontStyle.Bold),
+                    ForeColor = PosPalette.Ink
                 };
                 chkUseDiscount.CheckedChanged += (s, e) => ReapplyDiscountsToRows();
                 panel1.Controls.Add(chkUseDiscount);
@@ -173,8 +178,8 @@ namespace Pos_System.Forms
                     Name = "lblDiscountAmount",
                     Text = "Discount %:",
                     AutoSize = false,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(30, 41, 59),
+                    Font = PosPalette.Ui(10F, FontStyle.Bold),
+                    ForeColor = PosPalette.Ink,
                     TextAlign = ContentAlignment.MiddleRight
                 };
                 panel1.Controls.Add(lblDiscountAmount);
@@ -186,7 +191,7 @@ namespace Pos_System.Forms
                 {
                     Name = "txtDiscountAmount",
                     BorderStyle = BorderStyle.FixedSingle,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Regular),
+                    Font = PosPalette.Ui(10F, FontStyle.Regular),
                     TextAlign = HorizontalAlignment.Center
                 };
                 txtDiscountAmount.TextChanged += (s, e) => ReapplyDiscountsToRows();
@@ -447,18 +452,18 @@ namespace Pos_System.Forms
         private void StyleTextBox(TextBox textBox, float fontSize, bool centered)
         {
             textBox.BorderStyle = BorderStyle.FixedSingle;
-            textBox.BackColor = Color.White;
-            textBox.ForeColor = Color.FromArgb(30, 41, 59);
-            textBox.Font = new Font("Segoe UI", fontSize, FontStyle.Regular);
+            textBox.BackColor = PosPalette.InputFill;
+            textBox.ForeColor = PosPalette.Ink;
+            textBox.Font = PosPalette.Ui(fontSize, FontStyle.Regular);
             textBox.TextAlign = centered ? HorizontalAlignment.Center : HorizontalAlignment.Left;
         }
 
         private void StyleComboBox(ComboBox comboBox)
         {
             comboBox.FlatStyle = FlatStyle.Flat;
-            comboBox.BackColor = Color.White;
-            comboBox.ForeColor = Color.FromArgb(30, 41, 59);
-            comboBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            comboBox.BackColor = PosPalette.InputFill;
+            comboBox.ForeColor = PosPalette.Ink;
+            comboBox.Font = PosPalette.Ui(10F, FontStyle.Regular);
             comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox.Height = 34;
         }
@@ -470,34 +475,21 @@ namespace Pos_System.Forms
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;
             button.Cursor = Cursors.Hand;
-            button.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            button.Font = PosPalette.Ui(11F, FontStyle.Bold);
         }
 
         private void StyleRadioButton(RadioButton radioButton)
         {
-            radioButton.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            radioButton.Font = PosPalette.Ui(10.5F, FontStyle.Bold);
             radioButton.AutoSize = true;
         }
 
         private void StyleDataGridView()
         {
-            datagridsales.BackgroundColor = Color.White;
-            datagridsales.BorderStyle = BorderStyle.None;
-            datagridsales.EnableHeadersVisualStyles = false;
-            datagridsales.GridColor = Color.FromArgb(226, 232, 240);
-            datagridsales.RowHeadersVisible = false;
+            PosPresenter.StyleGrid(datagridsales);
             datagridsales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             datagridsales.MultiSelect = false;
             datagridsales.AllowUserToResizeRows = false;
-            datagridsales.DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            datagridsales.DefaultCellStyle.BackColor = Color.White;
-            datagridsales.DefaultCellStyle.ForeColor = Color.FromArgb(30, 41, 59);
-            datagridsales.DefaultCellStyle.SelectionBackColor = Color.FromArgb(219, 234, 254);
-            datagridsales.DefaultCellStyle.SelectionForeColor = Color.FromArgb(15, 23, 42);
-            datagridsales.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-            datagridsales.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(15, 23, 42);
-            datagridsales.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            datagridsales.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             datagridsales.ColumnHeadersHeight = 38;
             datagridsales.RowTemplate.Height = 30;
             datagridsales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -571,8 +563,8 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
                 Text = text,
                 Location = location,
                 Size = size,
-                Font = new Font("Segoe UI", bold ? 11F : 10F, bold ? FontStyle.Bold : FontStyle.Regular),
-                ForeColor = Color.FromArgb(45, 52, 54),
+                Font = PosPalette.Ui(bold ? 11F : 10F, bold ? FontStyle.Bold : FontStyle.Regular),
+                ForeColor = PosPalette.Ink,
                 TextAlign = ContentAlignment.MiddleRight
             };
         }
@@ -592,8 +584,8 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
                 Text = title,
                 Dock = DockStyle.Top,
                 Height = 24,
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(99, 110, 114),
+                Font = PosPalette.Ui(9F, FontStyle.Bold),
+                ForeColor = PosPalette.Muted,
                 TextAlign = ContentAlignment.MiddleRight
             };
 
@@ -601,8 +593,8 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             {
                 Text = value,
                 Dock = DockStyle.Fill,
-                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(33, 37, 41),
+                Font = PosPalette.Ui(11F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
                 TextAlign = ContentAlignment.MiddleRight
             };
 
@@ -702,7 +694,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             titleRange.Font.Name = "Segoe UI";
             titleRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             titleRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
-            titleRange.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(18, 52, 86));
+            titleRange.Interior.Color = ColorTranslator.ToOle(PosPalette.Sidebar);
             titleRange.Font.Color = ColorTranslator.ToOle(Color.White);
             titleRange.RowHeight = 34;
 
@@ -712,7 +704,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             subTitleRange.Font.Size = 11;
             subTitleRange.Font.Name = "Segoe UI";
             subTitleRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            subTitleRange.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(225, 233, 242));
+            subTitleRange.Interior.Color = ColorTranslator.ToOle(PosPalette.AccentSoft);
 
             worksheet.Range["A5"].Value2 = "الزبون";
             worksheet.Range["B5"].Value2 = customerName;
@@ -734,8 +726,8 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             summaryRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             summaryRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
             summaryRange.RowHeight = 24;
-            worksheet.Range["A5", "A7"].Interior.Color = ColorTranslator.ToOle(Color.FromArgb(239, 243, 248));
-            worksheet.Range["D5", "D7"].Interior.Color = ColorTranslator.ToOle(Color.FromArgb(239, 243, 248));
+            worksheet.Range["A5", "A7"].Interior.Color = ColorTranslator.ToOle(PosPalette.AccentSoft);
+            worksheet.Range["D5", "D7"].Interior.Color = ColorTranslator.ToOle(PosPalette.AccentSoft);
 
             int headerRow = 10;
             worksheet.Cells[headerRow, 1] = "الصنف";
@@ -752,7 +744,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             tableHeaderRange.Font.Name = "Segoe UI";
             tableHeaderRange.Font.Size = 11;
             tableHeaderRange.Font.Color = ColorTranslator.ToOle(Color.White);
-            tableHeaderRange.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(18, 52, 86));
+            tableHeaderRange.Interior.Color = ColorTranslator.ToOle(PosPalette.Sidebar);
             tableHeaderRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             tableHeaderRange.RowHeight = 26;
 
@@ -786,7 +778,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
 
                 Excel.Range alternatingRange = worksheet.Range[$"A{headerRow + 1}", $"H{lastItemRow}"];
                 alternatingRange.FormatConditions.Add(Type: Excel.XlFormatConditionType.xlExpression, Formula1: "=MOD(ROW(),2)=0");
-                alternatingRange.FormatConditions[1].Interior.Color = ColorTranslator.ToOle(Color.FromArgb(247, 249, 252));
+                alternatingRange.FormatConditions[1].Interior.Color = ColorTranslator.ToOle(PosPalette.Canvas);
             }
 
             int totalsRow = lastItemRow + 2;
@@ -796,7 +788,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             totalsRange.Font.Bold = true;
             totalsRange.Font.Name = "Segoe UI";
             totalsRange.Font.Size = 12;
-            totalsRange.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(232, 242, 255));
+            totalsRange.Interior.Color = ColorTranslator.ToOle(PosPalette.AccentSoft);
             totalsRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
             worksheet.Range[$"F{totalsRow}"].NumberFormat = "#,##0.00000000";
 
@@ -808,7 +800,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             thanksRange.Font.Name = "Segoe UI";
             thanksRange.Font.Size = 12;
             thanksRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            thanksRange.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(248, 250, 252));
+            thanksRange.Interior.Color = ColorTranslator.ToOle(PosPalette.Canvas);
 
             worksheet.Columns["A:F"].AutoFit();
             worksheet.Columns["A"].ColumnWidth = 24;
@@ -858,7 +850,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             {
                 Text = "فاتورة المبيعات",
                 ForeColor = Color.White,
-                Font = new Font("Segoe UI", 20F, FontStyle.Bold),
+                Font = PosPalette.Ui(20F, FontStyle.Bold),
                 Location = new Point(760, 18),
                 AutoSize = true
             };
@@ -866,8 +858,8 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             Label subtitleLabel = new Label
             {
                 Text = $"Invoice #{saleId}   |   {saleDate:yyyy/MM/dd HH:mm}",
-                ForeColor = Color.FromArgb(220, 230, 240),
-                Font = new Font("Segoe UI", 10F, FontStyle.Regular),
+                ForeColor = PosPalette.SidebarMuted,
+                Font = PosPalette.Ui(10F, FontStyle.Regular),
                 Location = new Point(640, 62),
                 AutoSize = true
             };
@@ -907,15 +899,7 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
                 RightToLeft = RightToLeft.Yes
             };
 
-            detailsGrid.EnableHeadersVisualStyles = false;
-            detailsGrid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(18, 52, 86);
-            detailsGrid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            detailsGrid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            detailsGrid.ColumnHeadersHeight = 38;
-            detailsGrid.DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            detailsGrid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(220, 235, 252);
-            detailsGrid.DefaultCellStyle.SelectionForeColor = Color.Black;
-            detailsGrid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 252);
+            PosPresenter.StyleGrid(detailsGrid);
             detailsGrid.RowTemplate.Height = 32;
 
             if (detailsGrid.Columns.Contains("product_id"))
@@ -974,8 +958,8 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
                 Text = "تفاصيل الأصناف",
                 Location = new Point(918, 130),
                 AutoSize = true,
-                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(18, 52, 86)
+                Font = PosPalette.Ui(12F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink
             };
 
             bodyPanel.Controls.Add(detailsTitle);
@@ -1000,10 +984,10 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
                 Text = "إغلاق",
                 Size = new Size(120, 36),
                 Location = new Point(18, 95),
-                BackColor = Color.FromArgb(18, 52, 86),
+                BackColor = PosPalette.Secondary,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold)
+                Font = PosPalette.Ui(10F, FontStyle.Bold)
             };
             closeButton.FlatAppearance.BorderSize = 0;
             closeButton.Click += (s, e) => invoiceForm.Close();
@@ -1014,10 +998,10 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
                 Text = "طباعة",
                 Size = new Size(120, 36),
                 Location = new Point(148, 95),
-                BackColor = Color.FromArgb(71, 85, 105),
+                BackColor = PosPalette.Accent,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold)
+                Font = PosPalette.Ui(10F, FontStyle.Bold)
             };
             printButton.FlatAppearance.BorderSize = 0;
             printButton.Click += (s, e) => PrintViewedInvoice(saleId, customerName, paymentMethod, totalAmount, balanceUsd, balanceLb, saleDate, itemsTable, invoiceForm);
@@ -1070,9 +1054,9 @@ IF COL_LENGTH('dbo.Sale_Items', 'discount_by') IS NULL
             decimal totalAmount, decimal? balanceUsd, decimal? balanceLb, DateTime saleDate, DataTable itemsTable,
             ref int printRowIndex)
         {
-            using (Font titleFont = new Font("Segoe UI", 16F, FontStyle.Bold))
-            using (Font textFont = new Font("Segoe UI", 10F))
-            using (Font headerFont = new Font("Segoe UI", 9F, FontStyle.Bold))
+            using (Font titleFont = PosPalette.Ui(16F, FontStyle.Bold))
+            using (Font textFont = PosPalette.Ui(10F, FontStyle.Regular))
+            using (Font headerFont = PosPalette.Ui(9F, FontStyle.Bold))
             {
                 int y = 40;
                 int left = 40;
@@ -1673,11 +1657,11 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
 
         private void PrintDoc_PrintPage(object sender, PrintPageEventArgs e, int saleId, string customerName, string paymentMethod)
         {
-            Font font = new Font("Arial", 10);
+            Font font = PosPalette.Ui(10F, FontStyle.Regular);
             float y = 20;
 
             // رأس الفاتورة
-            e.Graphics.DrawString("فاتورة المبيعات", new Font("Arial", 14, FontStyle.Bold), Brushes.Black, 20, y);
+            e.Graphics.DrawString("فاتورة المبيعات", PosPalette.Ui(14F, FontStyle.Bold), Brushes.Black, 20, y);
             y += 30;
             e.Graphics.DrawString("رقم الفاتورة: " + saleId, font, Brushes.Black, 20, y);
             y += 20;
@@ -1808,7 +1792,7 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                 Text = "مراجعة البيع قبل الحفظ",
                 Dock = DockStyle.Top,
                 Height = 36,
-                Font = new Font("Segoe UI", 18F, FontStyle.Bold),
+                Font = PosPalette.Ui(18F, FontStyle.Bold),
                 ForeColor = Color.White,
                 TextAlign = ContentAlignment.MiddleRight
             };
@@ -1818,8 +1802,8 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                 Text = (withInvoice ? "مع فاتورة" : "بدون فاتورة") + "   |   " + cmbCustomer.Text + "   |   " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 Dock = DockStyle.Top,
                 Height = 28,
-                Font = new Font("Segoe UI", 10.5F, FontStyle.Regular),
-                ForeColor = Color.FromArgb(203, 213, 225),
+                Font = PosPalette.Ui(10.5F, FontStyle.Regular),
+                ForeColor = PosPalette.SidebarMuted,
                 TextAlign = ContentAlignment.MiddleRight
             };
 
@@ -1829,25 +1813,15 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                 AllowUserToAddRows = false,
                 AllowUserToResizeRows = false,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                BackgroundColor = Color.White,
+                BackgroundColor = PosPalette.Surface,
                 BorderStyle = BorderStyle.None,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 MultiSelect = false,
                 RowHeadersVisible = false,
-                Font = new Font("Segoe UI", 10.5F),
-                EnableHeadersVisualStyles = false,
-                GridColor = Color.FromArgb(226, 232, 240),
                 AllowUserToDeleteRows = false
             };
-            reviewGrid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 41, 59);
-            reviewGrid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            reviewGrid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            PosPresenter.StyleGrid(reviewGrid);
             reviewGrid.ColumnHeadersHeight = 42;
-            reviewGrid.DefaultCellStyle.BackColor = Color.White;
-            reviewGrid.DefaultCellStyle.ForeColor = Color.FromArgb(30, 41, 59);
-            reviewGrid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(219, 234, 254);
-            reviewGrid.DefaultCellStyle.SelectionForeColor = Color.FromArgb(15, 23, 42);
-            reviewGrid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
             reviewGrid.RowTemplate.Height = 34;
 
             reviewGrid.Columns.Add("product_id", "Product ID");
@@ -1900,7 +1874,7 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
             Panel bodyPanel = new Panel
             {
                 Dock = DockStyle.Fill,
-                BackColor = Color.White,
+                BackColor = PosPalette.Surface,
                 Padding = new Padding(18)
             };
 
@@ -1908,16 +1882,16 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
             {
                 Dock = DockStyle.Bottom,
                 Height = 226,
-                BackColor = Color.FromArgb(244, 247, 252),
+                BackColor = PosPalette.Canvas,
                 Padding = new Padding(18, 14, 18, 14)
             };
 
             Label totalValueLabel = CreateSummaryValueLabel();
             Label paidValueLabel = CreateSummaryValueLabel();
-            Label changeValueLabel = CreateSummaryColoredValueLabel(Color.FromArgb(22, 101, 52));
-            Label invoiceBalanceValueLabel = CreateSummaryColoredValueLabel(Color.FromArgb(180, 83, 9));
+            Label changeValueLabel = CreateSummaryColoredValueLabel(PosPalette.Success);
+            Label invoiceBalanceValueLabel = CreateSummaryColoredValueLabel(PosPalette.Warning);
             Label currentBalanceValueLabel = CreateSummaryValueLabel();
-            Label afterBalanceValueLabel = CreateSummaryColoredValueLabel(Color.FromArgb(37, 99, 235));
+            Label afterBalanceValueLabel = CreateSummaryColoredValueLabel(PosPalette.Accent);
 
             TableLayoutPanel summaryCards = new TableLayoutPanel
             {
@@ -1932,12 +1906,12 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
             summaryCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.34F));
             summaryCards.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             summaryCards.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            summaryCards.Controls.Add(CreateSummaryCard("المجموع", totalValueLabel, Color.FromArgb(37, 99, 235)), 0, 0);
-            summaryCards.Controls.Add(CreateSummaryCard("المدفوع", paidValueLabel, Color.FromArgb(15, 118, 110)), 1, 0);
-            summaryCards.Controls.Add(CreateSummaryCard("ارد له", changeValueLabel, Color.FromArgb(22, 163, 74)), 2, 0);
-            summaryCards.Controls.Add(CreateSummaryCard("باقي هذه الفاتورة", invoiceBalanceValueLabel, Color.FromArgb(245, 158, 11)), 0, 1);
-            summaryCards.Controls.Add(CreateSummaryCard("رصيد الزبون الحالي", currentBalanceValueLabel, Color.FromArgb(100, 116, 139)), 1, 1);
-            summaryCards.Controls.Add(CreateSummaryCard("الرصيد بعد البيع", afterBalanceValueLabel, Color.FromArgb(79, 70, 229)), 2, 1);
+            summaryCards.Controls.Add(CreateSummaryCard("المجموع", totalValueLabel, PosPalette.Accent), 0, 0);
+            summaryCards.Controls.Add(CreateSummaryCard("المدفوع", paidValueLabel, PosPalette.Success), 1, 0);
+            summaryCards.Controls.Add(CreateSummaryCard("ارد له", changeValueLabel, PosPalette.Success), 2, 0);
+            summaryCards.Controls.Add(CreateSummaryCard("باقي هذه الفاتورة", invoiceBalanceValueLabel, PosPalette.Warning), 0, 1);
+            summaryCards.Controls.Add(CreateSummaryCard("رصيد الزبون الحالي", currentBalanceValueLabel, PosPalette.Secondary), 1, 1);
+            summaryCards.Controls.Add(CreateSummaryCard("الرصيد بعد البيع", afterBalanceValueLabel, PosPalette.Accent), 2, 1);
 
             Panel actionPanel = new Panel
             {
@@ -1954,10 +1928,10 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                 Height = 44,
                 Left = 188,
                 Top = 7,
-                BackColor = Color.FromArgb(22, 163, 74),
+                BackColor = PosPalette.Accent,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 12F, FontStyle.Bold)
+                Font = PosPalette.Ui(12F, FontStyle.Bold)
             };
             okButton.FlatAppearance.BorderSize = 0;
 
@@ -1969,10 +1943,10 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                 Height = 44,
                 Left = 10,
                 Top = 7,
-                BackColor = Color.FromArgb(220, 38, 38),
+                BackColor = PosPalette.Danger,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 12F, FontStyle.Bold)
+                Font = PosPalette.Ui(12F, FontStyle.Bold)
             };
             noButton.FlatAppearance.BorderSize = 0;
 
@@ -2112,7 +2086,7 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
 
             Label CreateSummaryValueLabel()
             {
-                return CreateSummaryColoredValueLabel(Color.FromArgb(15, 23, 42));
+                return CreateSummaryColoredValueLabel(PosPalette.Ink);
             }
 
             Label CreateSummaryColoredValueLabel(Color color)
@@ -2120,7 +2094,7 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                 return new Label
                 {
                     Dock = DockStyle.Fill,
-                    Font = new Font("Segoe UI", 11.5F, FontStyle.Bold),
+                    Font = PosPalette.Ui(11.5F, FontStyle.Bold),
                     ForeColor = color,
                     TextAlign = ContentAlignment.MiddleRight
                 };
@@ -2131,7 +2105,7 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                 Panel card = new Panel
                 {
                     Dock = DockStyle.Fill,
-                    BackColor = Color.White,
+                    BackColor = PosPalette.Surface,
                     Margin = new Padding(6),
                     Padding = new Padding(12, 8, 12, 8)
                 };
@@ -2148,8 +2122,8 @@ ORDER BY CASE WHEN target_type = 'Product' THEN 0 ELSE 1 END, discount_rule_id D
                     Dock = DockStyle.Top,
                     Height = 22,
                     Text = title,
-                    Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(100, 116, 139),
+                    Font = PosPalette.Ui(9.5F, FontStyle.Bold),
+                    ForeColor = PosPalette.Muted,
                     TextAlign = ContentAlignment.MiddleRight
                 };
 
