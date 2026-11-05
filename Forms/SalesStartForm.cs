@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Pos_System.Services;
 
 namespace Pos_System.Forms
 {
@@ -8,74 +9,131 @@ namespace Pos_System.Forms
     {
         private readonly string username;
         private readonly EventHandler startClicked;
+        private Button startButton;
+        private bool starting;
 
         public SalesStartForm(string username, EventHandler startClicked)
         {
             this.username = username;
             this.startClicked = startClicked;
-            POS_System.Program.SettingsManager.RegisterForm(this);
-
             InitializeStartScreen();
+            POS_System.Program.SettingsManager.RegisterForm(this);
         }
 
         private void InitializeStartScreen()
         {
-            BackColor = Color.FromArgb(244, 247, 252);
+            Text = "Start work";
+            BackColor = PosPalette.Canvas;
             Dock = DockStyle.Fill;
-            Font = new Font("Segoe UI", 11F, FontStyle.Regular);
+            Font = PosPalette.Ui(11F, FontStyle.Regular);
+            PosPresenter.SetRole(this, "canvas");
 
-            TableLayoutPanel layout = new TableLayoutPanel
+            Panel card = new Panel
             {
-                Dock = DockStyle.Fill,
-                ColumnCount = 1,
-                RowCount = 5,
-                Padding = new Padding(24),
-                BackColor = Color.FromArgb(244, 247, 252)
+                Size = new Size(520, 340),
+                BackColor = PosPalette.Surface,
+                Padding = new Padding(36, 32, 36, 32)
             };
-
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 120F));
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));
+            PosPresenter.SetRole(card, "surface");
+            card.Anchor = AnchorStyles.None;
 
             Label titleLabel = new Label
             {
-                Dock = DockStyle.Fill,
+                Dock = DockStyle.Top,
+                Height = 48,
                 Text = "Start Sales Work",
-                Font = new Font("Segoe UI", 24F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(15, 23, 42),
-                TextAlign = ContentAlignment.BottomCenter
+                Font = PosPalette.Ui(24F, FontStyle.Bold),
+                ForeColor = PosPalette.Ink,
+                TextAlign = ContentAlignment.MiddleCenter
             };
+            PosPresenter.SetRole(titleLabel, "ink");
 
             Label userLabel = new Label
             {
-                Dock = DockStyle.Fill,
-                Text = string.IsNullOrWhiteSpace(username) ? DateTime.Now.ToString("yyyy-MM-dd HH:mm") : username,
-                Font = new Font("Segoe UI", 13F, FontStyle.Regular),
-                ForeColor = Color.FromArgb(71, 85, 105),
+                Dock = DockStyle.Top,
+                Height = 32,
+                Text = string.IsNullOrWhiteSpace(username)
+                    ? DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+                    : username + "  ·  " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                Font = PosPalette.Ui(11F, FontStyle.Regular),
+                ForeColor = PosPalette.Muted,
                 TextAlign = ContentAlignment.MiddleCenter
             };
+            PosPresenter.SetRole(userLabel, "muted");
 
-            Button startButton = new Button
+            Label hintLabel = new Label
             {
-                Anchor = AnchorStyles.None,
-                BackColor = Color.FromArgb(22, 163, 74),
+                Dock = DockStyle.Top,
+                Height = 48,
+                Text = "Open the ticket for this shift.\r\nابدأ وردية المبيعات على هذا الصندوق.",
+                Font = PosPalette.Ui(10.5F, FontStyle.Regular),
+                ForeColor = PosPalette.Muted,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            PosPresenter.SetRole(hintLabel, "muted");
+
+            startButton = new Button
+            {
+                Name = "btnStartWork",
+                Dock = DockStyle.Bottom,
+                Height = 56,
                 Cursor = Cursors.Hand,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 24F, FontStyle.Bold),
-                ForeColor = Color.White,
-                Size = new Size(360, 96),
+                Font = PosPalette.Ui(18F, FontStyle.Bold),
                 Text = "START"
             };
-
             startButton.FlatAppearance.BorderSize = 0;
-            startButton.Click += startClicked;
+            startButton.Click += StartButton_Click;
+            PosPresenter.SetRole(startButton, "accent");
+            AcceptButton = startButton;
 
-            layout.Controls.Add(titleLabel, 0, 1);
-            layout.Controls.Add(userLabel, 0, 2);
-            layout.Controls.Add(startButton, 0, 3);
-            Controls.Add(layout);
+            card.Controls.Add(startButton);
+            card.Controls.Add(hintLabel);
+            card.Controls.Add(userLabel);
+            card.Controls.Add(titleLabel);
+
+            Controls.Add(card);
+            Resize += (sender, args) => CenterCard(card);
+            Shown += (sender, args) =>
+            {
+                CenterCard(card);
+                startButton.Focus();
+            };
+        }
+
+        private void CenterCard(Control card)
+        {
+            if (card == null)
+            {
+                return;
+            }
+
+            card.Location = new Point(
+                Math.Max(16, (ClientSize.Width - card.Width) / 2),
+                Math.Max(16, (ClientSize.Height - card.Height) / 2));
+        }
+
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            if (starting)
+            {
+                return;
+            }
+
+            starting = true;
+            startButton.Enabled = false;
+            try
+            {
+                startClicked?.Invoke(sender, e);
+            }
+            finally
+            {
+                starting = false;
+                if (!IsDisposed && startButton != null)
+                {
+                    startButton.Enabled = true;
+                }
+            }
         }
     }
 }

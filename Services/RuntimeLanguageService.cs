@@ -98,6 +98,8 @@ namespace Pos_System.Services
             Add("Evening shift", "وردية مسائية"),
             Add("Stock is healthy", "المخزون سليم"),
             Add("Loading...", "جاري التحميل..."),
+            Add("Starting work...", "جاري بدء العمل..."),
+            Add("Start work", "بدء العمل"),
             Add("Users", "المستخدمون"),
             Add("Smart POS", "نقطة البيع"),
             Add("Sign in", "دخول"),

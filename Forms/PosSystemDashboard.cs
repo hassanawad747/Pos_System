@@ -117,9 +117,14 @@ namespace Pos_System.Forms
 
         private void StartSalesWork_Click(object sender, EventArgs e)
         {
+            string loadingMessage = IsArabicUi() ? "جاري بدء العمل..." : "Starting work...";
             try
             {
-                WorkHistoryService.StartWork(LoginForm.LoggedInUserId, _username);
+                using (LoadingOverlayService.Show(this, loadingMessage))
+                {
+                    WorkHistoryService.StartWork(LoginForm.LoggedInUserId, _username);
+                }
+
                 LoadSalesForm();
             }
             catch (Exception ex)
