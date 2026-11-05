@@ -612,7 +612,7 @@
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MinimumSize = new System.Drawing.Size(792, 535);
             this.Name = "AddProducts";
-            this.Text = "AddProducts";
+            this.Text = "Product";
             this.Load += new System.EventHandler(this.AddProducts_Load);
             this.panelheader.ResumeLayout(false);
             this.panelheader.PerformLayout();

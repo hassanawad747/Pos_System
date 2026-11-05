@@ -552,7 +552,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelheader);
             this.Name = "Products";
-            this.Text = "Products";
+            this.Text = "Inventory";
             this.Load += new System.EventHandler(this.Products_Load);
             this.panelheader.ResumeLayout(false);
             this.panelheader.PerformLayout();

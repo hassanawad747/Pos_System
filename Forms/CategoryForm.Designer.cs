@@ -300,7 +300,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelheader);
             this.Name = "CategoryForm";
-            this.Text = "CategoryForm";
+            this.Text = "Categories";
             this.Load += new System.EventHandler(this.CategoryForm_Load);
             this.panelheader.ResumeLayout(false);
             this.panelheader.PerformLayout();
