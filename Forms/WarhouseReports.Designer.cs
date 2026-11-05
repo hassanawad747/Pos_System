@@ -93,19 +93,19 @@ namespace Pos_System.Forms
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(105, 47);
             this.label2.TabIndex = 2;
-            this.label2.Text = "ZONE";
+            this.label2.Text = "Warehouse";
             // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic);
-            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(583, 14);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 47);
             this.label1.TabIndex = 1;
-            this.label1.Text = "BIKE";
+            this.label1.Text = "Smart POS";
             // 
             // summaryPanel
             // 

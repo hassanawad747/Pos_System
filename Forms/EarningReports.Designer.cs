@@ -105,7 +105,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(95, 38);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Zone";
+            this.label2.Text = "Earnings";
             // 
             // label1
             // 
@@ -113,12 +113,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(884, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(85, 38);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Bike";
+            this.label1.Text = "Smart POS";
             // 
             // panel1
             // 

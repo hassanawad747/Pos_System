@@ -21,7 +21,10 @@ namespace Pos_System.Forms
         private void WarhouseReports_Load(object sender, EventArgs e)
         {
             cmbStockFilter.SelectedIndex = 0;
-            LoadWarehouseReport();
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                LoadWarehouseReport();
+            }
         }
 
         private void LoadWarehouseReport()

@@ -45,12 +45,15 @@ namespace Pos_System.Forms
         {
             try
             {
-                ConfigureReportControls();
-                EnsureReportsTable();
-                EnsureSaleItemsDiscountColumns();
-                WorkHistoryService.EnsureHistoryTable();
-                LoadReportsHistory();
-                LoadSelectedReport("all");
+                using (LoadingOverlayService.Show(this, "Loading..."))
+                {
+                    ConfigureReportControls();
+                    EnsureReportsTable();
+                    EnsureSaleItemsDiscountColumns();
+                    WorkHistoryService.EnsureHistoryTable();
+                    LoadReportsHistory();
+                    LoadSelectedReport("all");
+                }
             }
             catch (Exception ex)
             {
