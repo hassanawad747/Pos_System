@@ -41,9 +41,9 @@ namespace Pos_System.Forms
 
         private void InitializeSupplierBalanceForm()
         {
-            Text = "Supplier";
+            Text = "Suppliers";
             POS_System.Program.SettingsManager.RegisterForm(this);
-            BackColor = Color.FromArgb(244, 247, 252);
+            BackColor = PosPalette.Canvas;
             MinimumSize = new Size(1000, 620);
             Size = new Size(1200, 720);
 
@@ -51,7 +51,7 @@ namespace Pos_System.Forms
             {
                 Dock = DockStyle.Top,
                 Height = 120,
-                BackColor = Color.White,
+                BackColor = PosPalette.Surface,
                 Padding = new Padding(12)
             };
 
@@ -71,7 +71,7 @@ namespace Pos_System.Forms
             Label lblEmail = CreateLabel("Email", 575, 15);
             txtEmail = CreateTextBox(630, 11, 220);
 
-            Button btnSaveContact = CreateButton("Save Info", 865, 10, 100, Color.FromArgb(37, 99, 235));
+            Button btnSaveContact = CreateButton("Save Info", 865, 10, 100, PosPalette.Accent);
             btnSaveContact.Click += (sender, args) => SaveSupplierInfo();
 
             Label lblType = CreateLabel("Balance Type", 12, 58);
@@ -99,10 +99,10 @@ namespace Pos_System.Forms
             comboCurrency.Items.AddRange(new object[] { "USD", "L.L" });
             comboCurrency.SelectedIndex = 0;
 
-            Button btnAdd = CreateButton("+ Add", 600, 52, 90, Color.FromArgb(22, 163, 74));
+            Button btnAdd = CreateButton("+ Add", 600, 52, 90, PosPalette.Success);
             btnAdd.Click += (sender, args) => AdjustSupplierBalance(true);
 
-            Button btnLess = CreateButton("- Less", 700, 52, 90, Color.FromArgb(185, 28, 28));
+            Button btnLess = CreateButton("- Less", 700, 52, 90, PosPalette.Danger);
             btnLess.Click += (sender, args) => AdjustSupplierBalance(false);
 
             Label lblFrom = CreateLabel("From", 805, 58);
@@ -202,7 +202,7 @@ namespace Pos_System.Forms
                 AllowUserToAddRows = false,
                 AllowUserToDeleteRows = false,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                BackgroundColor = Color.White,
+                BackgroundColor = PosPalette.Surface,
                 Dock = DockStyle.Fill,
                 ReadOnly = true,
                 RowHeadersVisible = false,
@@ -217,8 +217,12 @@ namespace Pos_System.Forms
                 return;
             }
 
-            AuditLogger.EnsureSupplierBalanceColumns();
-            LoadSuppliers();
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                AuditLogger.EnsureSupplierBalanceColumns();
+                LoadSuppliers();
+            }
+
             PermissionService.ApplyActionPermissions(this, PermissionService.ScreenSuppliers);
         }
 

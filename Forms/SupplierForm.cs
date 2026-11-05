@@ -41,10 +41,14 @@ namespace Pos_System.Forms
                 return;
             }
 
-            AuditLogger.EnsureSupplierBalanceColumns();
-            EnsureBalanceColumns();
-            EnsureActionColumns();
-            RefreshSuppliers();
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                AuditLogger.EnsureSupplierBalanceColumns();
+                EnsureBalanceColumns();
+                EnsureActionColumns();
+                RefreshSuppliers();
+            }
+
             PermissionService.ApplyActionPermissions(this, PermissionService.ScreenSuppliers);
         }
 

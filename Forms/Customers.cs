@@ -31,9 +31,13 @@ namespace Pos_System.Forms
                 return;
             }
 
-            AuditLogger.EnsureCustomerBalanceColumns();
-            this.customersTableAdapter1.Fill(this.pos_systemDataSet15.Customers);
-            LoadCustomers("");
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                AuditLogger.EnsureCustomerBalanceColumns();
+                this.customersTableAdapter1.Fill(this.pos_systemDataSet15.Customers);
+                LoadCustomers("");
+            }
+
             PermissionService.ApplyActionPermissions(this, PermissionService.ScreenCustomers);
 
         }

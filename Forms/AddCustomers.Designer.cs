@@ -98,7 +98,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 31);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Zone";
+            this.label2.Text = "Customer";
             // 
             // label1
             // 
@@ -106,13 +106,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(663, 7);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 31);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Bike";
+            this.label1.Text = "Smart POS";
             // 
             // panel1
             // 
@@ -264,7 +264,7 @@
             this.Controls.Add(this.panelheader);
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "AddCustomers";
-            this.Text = "AddCustomers";
+            this.Text = "Customer";
             this.panelheader.ResumeLayout(false);
             this.panelheader.PerformLayout();
             this.panel1.ResumeLayout(false);

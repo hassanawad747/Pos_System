@@ -107,7 +107,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(95, 38);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Zone";
+            this.label2.Text = "Suppliers";
             // 
             // label4
             // 
@@ -115,12 +115,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(884, 9);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(85, 38);
             this.label4.TabIndex = 0;
-            this.label4.Text = "Bike";
+            this.label4.Text = "Smart POS";
             // 
             // panel1
             // 
@@ -326,7 +326,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelheader);
             this.Name = "SupplierForm";
-            this.Text = "SupplierForm";
+            this.Text = "Suppliers";
             this.Load += new System.EventHandler(this.SupplierForm_Load);
             this.panelheader.ResumeLayout(false);
             this.panelheader.PerformLayout();
