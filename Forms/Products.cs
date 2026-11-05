@@ -25,8 +25,12 @@ namespace Pos_System.Forms
                 return;
             }
 
-            EnsureProductLookupColumns();
-            RefreshAllGrids();
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                EnsureProductLookupColumns();
+                RefreshAllGrids();
+            }
+
             LayoutInventoryControls();
             PermissionService.ApplyActionPermissions(this, PermissionService.ScreenProducts);
         }

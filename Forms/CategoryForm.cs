@@ -30,7 +30,10 @@ namespace Pos_System.Forms
         private void CategoryForm_Load(object sender, EventArgs e)
         {
             EnsureActionColumns();
-            RefreshCategories();
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                RefreshCategories();
+            }
         }
 
         private void btnadd_Click(object sender, EventArgs e)

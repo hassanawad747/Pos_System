@@ -58,13 +58,17 @@ namespace Pos_System.Forms
                 return;
             }
 
-            EnsureActionColumns();
-            LoadCategories();
-            LoadSuppliers();
-            RefreshProductsGrid();
-            UseSettingsExchangeRate();
-            HideLocalExchangeRateInput();
-            SetupBarcodeMode();
+            using (LoadingOverlayService.Show(this, "Loading..."))
+            {
+                EnsureActionColumns();
+                LoadCategories();
+                LoadSuppliers();
+                RefreshProductsGrid();
+                UseSettingsExchangeRate();
+                HideLocalExchangeRateInput();
+                SetupBarcodeMode();
+            }
+
             LayoutBottomButtons();
 
             if (editingProductId.HasValue)
